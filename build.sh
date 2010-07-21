@@ -84,7 +84,7 @@ echo
 
 # cleanup the repo, including the Buildfile
 # TODO: uncomment me on hudson (pain to test this way though!)
-# git checkout -f 
+git checkout -f 
 
 # build a release of the demos
 cat >>Buildfile <<END
