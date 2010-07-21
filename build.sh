@@ -63,7 +63,7 @@ mkdir -p apps/my_system/debug
 curl http://github.com/concord-consortium/testswarm/raw/cc/js/inject.js -o apps/my_system/debug/HUDSON-inject.js
 
 # build the project in debug mode, to get tests
-sc-build -c --mode=debug --buildroot="build_folder"
+sc-build --languages=en -c --mode=debug --buildroot="build_folder"
 
 # leave the repo happy for the next pull
 git checkout -f apps/my_system/debug
@@ -92,7 +92,7 @@ config :all,
   :url_prefix => '/my_system/demos/$COMMIT_HASH/'
 END
 
-sc-build -c --buildroot="build_folder"
+sc-build --languages=en -c --buildroot="build_folder"
 cp -r build_folder/my_system/demos/$COMMIT_HASH $PROJECT_DIR/demos/
 
 # for each demo app, publish the commit as 'latest'
