@@ -66,7 +66,7 @@ curl http://github.com/concord-consortium/testswarm/raw/cc/js/inject.js -o apps/
 sc-build --languages=en -c --mode=debug --buildroot="build_folder"
 
 # leave the repo happy for the next pull
-git checkout -f apps/my_system/debug
+# git checkout -f apps/my_system/debug
 
 # copy tests over to release site
 cp -r build_folder/my_system/test/$COMMIT_HASH $PROJECT_DIR/test/
