@@ -1,11 +1,10 @@
 #/bin/bash
 
 # expects: 
-# $PROJECT_URL to be the root URL project will be published to 
 # $PROJECT_DIR to point at filesystem directory published at $PROJECT_URL (no trailing slash)
 # correct gems set up for sproutcore-abbot
 
-echo "Building MySystem for release to $PROJECT_URL/"
+echo "Building MySystem for release to $PROJECT_DIR/"
 
 # get the commit #
 export COMMIT_HASH=`git log -1 --format=%H`
@@ -59,7 +58,7 @@ config :all,
   :url_prefix => '/my_system/test/$COMMIT_HASH/'
 END
 
-# add testswarm's inject.js to the debug folder of my_system, so it's included in all raphael_views tests
+# add testswarm's inject.js to the debug folder of my_system, so it's included in all my_system tests
 mkdir -p apps/my_system/debug
 curl http://github.com/concord-consortium/testswarm/raw/cc/js/inject.js -o apps/my_system/debug/HUDSON-inject.js
 
@@ -90,11 +89,11 @@ git checkout -f
 cat >>Buildfile <<END
 # (leave this line blank in case Buildfile lacks trailing whitespace/newline)
 config :all,
-  :url_prefix => '/raphael_views/demos/$COMMIT_HASH/'
+  :url_prefix => '/my_system/demos/$COMMIT_HASH/'
 END
 
 sc-build -c --buildroot="build_folder"
-cp -r build_folder/raphael_views/demos/$COMMIT_HASH $PROJECT_DIR/demos/
+cp -r build_folder/my_system/demos/$COMMIT_HASH $PROJECT_DIR/demos/
 
 # for each demo app, publish the commit as 'latest'
 for appname in `ls apps` ; do
