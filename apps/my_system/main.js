@@ -19,11 +19,9 @@ MySystem.main = function main() {
   // create multiple pages and panes.  
   MySystem.getPath('mainPage.mainPane').append() ;
 
-  // Step 2. Set the content property on your primary controller.
-  // This will make your app come alive!
-
-  // TODO: Set the content property on your primary controller
-  // ex: MySystem.contactsController.set('content',MySystem.contacts);
+  // Set the content property on the primary controller
+  var nodes = MySystem.store.find(MySystem.Node);
+  MySystem.nodesController.set('content', nodes);
 
 } ;
 

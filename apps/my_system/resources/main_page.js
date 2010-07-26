@@ -2,7 +2,9 @@
 // Project:   MySystem - mainPage
 // Copyright: ©2010 My Company, Inc.
 // ==========================================================================
-/*globals MySystem */
+/*globals MySystem LinkIt SCUI */
+
+sc_require('views/node');
 
 // This page describes the main user interface for your application.  
 MySystem.mainPage = SC.Page.design({
@@ -11,13 +13,12 @@ MySystem.mainPage = SC.Page.design({
   // Add childViews to this pane for views to display immediately on page 
   // load.
   mainPane: SC.MainPane.design({
-    childViews: 'labelView'.w(),
+    childViews: 'systemView'.w(),
     
-    labelView: SC.LabelView.design({
-      layout: { centerX: 0, centerY: 0, width: 200, height: 18 },
-      textAlign: SC.ALIGN_CENTER,
-      tagName: "h1", 
-      value: "Welcome to SproutCore!"
+    systemView: LinkIt.CanvasView.design( SCUI.Cleanup, {
+      contentBinding: SC.Binding.from('MySystem.nodesController').oneWay(),
+      selectionBinding: 'MySystem.nodesController.selection',
+      exampleView: MySystem.NodeView
     })
   })
 
