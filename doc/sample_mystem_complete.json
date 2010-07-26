@@ -1,0 +1,91 @@
+[ { "containers" : 
+  [ { "className" : "WireIt-Container WireIt-ImageContainer",
+          "title" : "table",
+          "xtype" : "MySystemContainer"
+          "close" : true,
+          "closeButtonClassName" : "WireIt-Container-closebutton",
+          "ddHandle" : false,
+          "ddHandleClassName" : "WireIt-Container-ddhandle",
+          "draggable" : true,
+          "fields" : { "efficiency" : 1,
+              "energy" : 100,
+              "form" : "light"
+            },
+          "has_sub" : false,
+          "icon" : "./images/thermodynamics/table.png",
+          "image" : "./images/thermodynamics/table.png",
+          "name" : "table",
+          "position" : [ "200px","67px"],
+          "preventSelfWiring" : true,
+          "resizable" : false,
+          "resizeHandleClassName" : "WireIt-Container-resizehandle",
+          "terminals" : 
+            [ { "ddConfig" : { "allowedTypes" : [ "input", "output" ], "type" : "input" },
+                "direction" : [ 0, -1],
+                "name" : "Terminal1",
+                "offsetPosition" : { "left" : 20,"top" : -25 },
+                "wireConfig" : { "drawingMethod" : "bezierArrows" }
+              },
+              { "ddConfig" : { "allowedTypes" : [ "input", "output" ], "type" : "output" },
+                "direction" : [ 0, 1 ],
+                "name" : "Terminal2",
+                "offsetPosition" : { "bottom" : -25, "left" : 20 },
+                "wireConfig" : { "drawingMethod" : "bezierArrows" }
+              }
+            ],
+        },
+        { "className" : "WireIt-Container WireIt-ImageContainer",
+          "close" : true,
+          "closeButtonClassName" : "WireIt-Container-closebutton",
+          "ddHandle" : false,
+          "ddHandleClassName" : "WireIt-Container-ddhandle",
+          "draggable" : true,
+          "fields" : { "efficiency" : 1,
+              "energy" : 100,
+              "form" : "light",
+              "name" : "hot bowl"
+            },
+          "has_sub" : false,
+          "icon" : "./images/thermodynamics/hotbowl.png",
+          "image" : "./images/thermodynamics/hotbowl.png",
+          "name" : "hot bowl",
+          "position" : [ "72px", "83px"],
+          "preventSelfWiring" : true,
+          "resizable" : false,
+          "resizeHandleClassName" : "WireIt-Container-resizehandle",
+          "terminals" : [ { "ddConfig" : { "allowedTypes" : [ "input", "output" ], "type" : "input"},
+                "direction" : [ 0, -1 ],
+                "name" : "Terminal1",
+                "offsetPosition" : { "left" : 20, "top" : -25 },
+                "wireConfig" : { "drawingMethod" : "bezierArrows" }
+              },
+              { "ddConfig" : { "allowedTypes" : [ "input", "output" ], "type" : "output" },
+                "direction" : [ 0, 1 ],
+                "name" : "Terminal2",
+                "offsetPosition" : { "bottom" : -25, "left" : 20 },
+                "wireConfig" : { "drawingMethod" : "bezierArrows" }
+              }
+            ],
+          "xtype" : "MySystemContainer"
+        }
+      ],
+    "wires" : [ { "options" : { "bordercap" : "round",
+              "bordercolor" : "#000000",
+              "borderwidth" : 1,
+              "cap" : "round",
+              "className" : "WireIt-Wire",
+              "coeffMulDirection" : 100,
+              "color" : "#BD1550",
+              "drawingMethod" : "bezierArrows",
+              "fields" : { 
+                  "color" : "color2",
+                  "name" : "flow",
+                  "width" : 5
+              },
+              "selected" : false,
+              "width" : 5
+            },
+          "src" : { "moduleId" : 1, "terminal" : "Terminal2" },
+          "tgt" : { "moduleId" : 0, "terminal" : "Terminal2" }
+        } ]
+  } ]
