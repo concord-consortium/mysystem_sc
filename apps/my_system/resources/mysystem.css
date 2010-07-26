@@ -11,21 +11,22 @@
 }
 
 
- /* Nodes */
- .node {
-   border: 2px solid rgba(112, 255, 255, 0);
-   background-color: gray;
- }
+/* Nodes */
+.node {
+  border: 2px solid rgba(112, 255, 255, 0);
+  background-color: #aaaaaa;
+  opacity: 0.3;
+}
 
- .node.selected {
-   border: 2px solid red;
- }
+.node.selected {
+  border: 2px solid red;
+}
 
- /* Invites */
- .invite {
-   border: 2px solid white;
- }
- 
- .accept {
-   background-color: black;
- }
+/* Invites */
+.invite {
+  border: 2px solid green;
+}
+
+.accept {
+  background-color: black;
+}
