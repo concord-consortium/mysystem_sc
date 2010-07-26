@@ -1,25 +1,55 @@
 /* Terminal colors*/
-.input-terminal, .output-terminal {
+.terminal {
   border: 2px solid rgba(255, 255, 255, 0);
-  -moz-transition: border .1s linear;
-  -moz-box-shadow: 0px 0px 2px rgba(0,0,0,.75);
-  -moz-border-radius: 7px;
+  opacity: 1;
+
   
-  -webkit-transition: border .1s linear;
+  -moz-box-shadow: 0px 0px 2px rgba(0,0,0,.75);
   -webkit-box-shadow: 0px 0px 2px rgba(0,0,0,.75);
+
+  -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
 }
 
+.input .output {
+  opacity: 0.5;  
+}
+.input {
+  background-color: #ffaaaa;
+}
+.output {
+  background-color: #aaffaa;
+}
 
-/* Nodes */
+}
+.output:hover .input:hover {
+  background-color: #aaaa00;
+  opacity: 1;
+}
+
 .node {
+  border: 1px solid rgba(0,0,0,.2);
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-box-shadow: 0px 4px 4px rgba(0,0,0,.1);
+  -webkit-box-shadow: 0px 4px 4px rgba(0,0,0,.1);
+}
+/* Nodes */
+.node_content {
   border: 2px solid rgba(112, 255, 255, 0);
   background-color: #aaaaaa;
   opacity: 0.3;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  
+  -moz-box-shadow: 0px 4px 2px rgba(0,0,0,.75);
+  -webkit-box-shadow: 0px 4px 2px rgba(0,0,0,.75);
 }
 
+
 .node.selected {
-  border: 2px solid red;
+  -moz-box-shadow: 0px 5px 5px rgba(0,0,0,.25);
+  -webkit-box-shadow: 0px 5px 5px rgba(0,0,0,.25);
 }
 
 /* Invites */

@@ -12,8 +12,8 @@
 */
 MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
 /** @scope MySystem.NodeView.prototype */ {
-
-  layout: { top: 0, left: 0, width: 100, height: 100 },
+  
+  layout: { top: 0, left: 0, width: 100, height: 120 },
   classNames: 'node'.w(),
   
   displayProperties: 'content isSelected'.w(),
@@ -27,8 +27,9 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     if (this.get('isSelected')) context.addClass('selected');
   },  
 
+
   label: SC.LabelView.design({
-    layout: { centerY: 0, centerX: 0, width: 100, height: 25 },
+    layout: { bottom: 12, centerX: 0, width: 100, height: 25 },
     classNames: ['name'],
     textAlign: SC.ALIGN_CENTER,    
     valueBinding: '.parentView*content.title',
@@ -36,18 +37,18 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   }),
   
   inputTerminal: SC.View.design(LinkIt.Terminal, {
-    layout: { left: 50, top: -5, width: 10, height: 10 },
-    classNames: ['input-terminal'],
-    linkStyle: { lineStyle: LinkIt.STRAIGHT, width: 3, color: '#A5C0DC', cap: LinkIt.ROUND},
+    layout: { left: 45, top: +5, width: 10, height: 10 },
+    classNames: 'input terminal'.w(),
+    linkStyle: { lineStyle: LinkIt.VERTICAL_CURVED, width: 3, color: '#A5C0DC', cap: LinkIt.ROUND},
     nodeBinding: '.parentView*content',
     terminal: 'input',
     direction: LinkIt.INPUT_TERMINAL
   }),
   
   outputTerminal: SC.View.design(LinkIt.Terminal, {
-    layout: { left: 50, bottom: -5, width: 10, height: 10 },
-    classNames: ['output-terminal'],
-    linkStyle: { lineStyle: LinkIt.STRAIGHT, width: 3, color: '#A5C0DC', cap: LinkIt.ROUND},
+    layout: { left: 45, bottom: +5, width: 10, height: 10 },
+    classNames: 'output terminal'.w(),
+    linkStyle: { lineStyle: LinkIt.VERTICAL_CURVED, width: 3, color: '#A5C0DC', cap: LinkIt.ROUND},
     nodeBinding: '.parentView*content',
     terminal: 'output',
     direction: LinkIt.OUTPUT_TERMINAL
