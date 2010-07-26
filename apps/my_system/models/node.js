@@ -66,30 +66,76 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     this.set('links', links);
   },
   
-  // TODO implement canLink() method to validate link before creating it.
+  // tell LinkIt whether the proposed link is valid
+  canLink: function (link) {
+    if (!link) return NO;
+    
+    var sn = link.get('startNode'), 
+        st = link.get('startTerminal');
+    var en = link.get('endNode'), 
+        et = link.get('endTerminal');
+    
+    // Make sure we don't connect to ourselves.
+    if (sn === en) return NO;
+
+    // Make sure we don't already have this link.
+    if (this._hasLink(link)) return NO;
+    
+    if ( (st === 'input' && et === 'output') || (st === 'output' && et === 'input')) {
+      return YES;
+    }
+    
+    // TODO under what other circumstances would we refuse a link?
+    return NO;
+  },
+    
+  // do we already have the proposed new link 'link'?  
+  _hasLink: function (link) {
+    var links = this.get('links') || [];
+    var len = links.get('length'), n;
+    var linkID = LinkIt.genLinkID(link);
+    for (var i = 0; i < len; i++) {
+      n = links.objectAt(i);
+      if (LinkIt.genLinkID(n) === linkID) {
+        return YES;
+      }
+    }
+  },
   
   didCreateLink: function (link) {
-    var sn = link.get('startNode'), st = link.get('startTerminal');
-    var en = link.get('endNode'), et = link.get('endTerminal');
+    var sn = link.get('startNode'), 
+        st = link.get('startTerminal');
+    var en = link.get('endNode'), 
+        et = link.get('endTerminal');
     
     console.log(
       'didCreateLink: this.id = %s, startNode.id = %s, startTerminal = %s, endNode.id = %s, endTerminal = %s', 
       this.get('id'), sn.get('id'), st, en.get('id'), et);
     
-    if (sn === this && st === 'output') {
+    if (sn === this && st === 'output' && et === 'input') {
       var outputs = this.get('outputs');
       outputs.pushObject(en);
-      //this.set('outputs', outputs);
     }
-    if (en === this && et === 'input') {
+    else if (sn === this && st === 'input' && et === 'output') {
       var inputs = this.get('inputs');
-      inputs.pushObject(sn);
-      //this.set('inputs', inputs);
+      inputs.pushObject(en);
     }
-    
   },
   
   willDeleteLink: function (link) {
+    var sn = link.get('startNode'), 
+        st = link.get('startTerminal');
+    var en = link.get('endNode'), 
+        et = link.get('endTerminal');
+      
+    if (et === 'input') {
+      var outputs = this.get('outputs');
+      outputs.removeObject(en);
+    }
+    else if (et === 'output') {
+      var inputs = this.get('inputs');
+      inputs.removeObject(en);
+    }  
   }
 
 }) ;
