@@ -1,9 +1,8 @@
 /* Terminal colors*/
 .terminal {
   border: 2px solid rgba(255, 255, 255, 0);
-  opacity: 1;
+  opacity: 0.5;
 
-  
   -moz-box-shadow: 0px 0px 2px rgba(0,0,0,.75);
   -webkit-box-shadow: 0px 0px 2px rgba(0,0,0,.75);
 
@@ -11,9 +10,6 @@
   -webkit-border-radius: 7px;
 }
 
-.input .output {
-  opacity: 0.5;  
-}
 .input {
   background-color: #ffaaaa;
 }
@@ -21,10 +17,19 @@
   background-color: #aaffaa;
 }
 
-}
-.output:hover .input:hover {
-  background-color: #aaaa00;
+.terminal:hover {
   opacity: 1;
+}
+
+/* Invites */
+.invite {
+  opacity: 1;
+  border: 2px solid rgba(255, 255, 0, 128);
+}
+
+.accept {
+  background-color: green;
+  border: 2px solid rgba(255, 255, 0, 255);
 }
 
 .node {
@@ -52,11 +57,3 @@
   -webkit-box-shadow: 0px 5px 5px rgba(0,0,0,.25);
 }
 
-/* Invites */
-.invite {
-  border: 2px solid green;
-}
-
-.accept {
-  background-color: black;
-}
