@@ -27,4 +27,5 @@ config :standard_theme,
 config :my_system do |c|
   c[:required] = [:sproutcore, :scui]
   c[:theme] = :standard_theme
+  c[:load_fixtures] = true
 end
