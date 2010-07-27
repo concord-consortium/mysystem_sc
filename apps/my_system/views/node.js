@@ -20,13 +20,19 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   content: null,
   isSelected: false,
   
-  childViews: 'label inputTerminal outputTerminal'.w(),
+  childViews: 'icon label inputTerminal outputTerminal'.w(),
   
   render: function (context) {
     sc_super();
     if (this.get('isSelected')) context.addClass('selected');
   },  
 
+  icon: SC.ImageView.design({
+    classNames: 'image',
+    layout: { top: 20, width:50, height:70, centerX: 0},
+    // value: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/clay_red_tn.png',
+    valueBinding: '.parentView*content.image'
+  }),
 
   label: SC.LabelView.design({
     layout: { bottom: 12, centerX: 0, width: 100, height: 25 },
