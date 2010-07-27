@@ -14,35 +14,8 @@ rm -rf tmp
 # clean out *tracked* files that might have been modified. 
 # Leaves, e.g., abbot/ and frameworks/sproutcore/ alone if present.
 git checkout -f
-
-# setup raphael-git. Include the --recursive in case we end up adding submodules that have their own submodules
-# (a la Smartgraphs including MySystem which in turn includes RaphaelJS)
-# git submodule update --init --recursive
-
-# make sure we're using the latest abbot
-#if [ ! -d abbot ] ; then
-#  git clone git://github.com/sproutit/sproutcore-abbot.git abbot ;
-#else
-#  cd abbot
-#  git checkout -f master
-#  git pull
-#  cd .. ;
-#fi
-
-# make sure we're using the correct sproutcore framework ... Since we're distributing a framework to be used
-# with a users' own Sproutcore install, we (probably) don't want to include sproutcore as a git submodule
-#if ! git submodule | grep 'frameworks/sproutcore' ; then
-#
-#  if [ ! -d frameworks/sproutcore ] ; then
-#    git clone git://github.com/sproutit/sproutcore frameworks/sproutcore ;
-#  fi
-#
-#  cd frameworks/sproutcore
-#  git checkout -f master
-#  git pull
-#  git checkout `cat ../../sproutcore.commit`
-#  cd ../.. ;
-#fi
+git submodule init
+git submodule update
 
 echo
 echo "********************************************"
