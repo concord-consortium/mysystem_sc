@@ -12,14 +12,20 @@ MySystem.Node.FIXTURES = [
     image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/clay_red_tn.png',
     title: 'First Node',
     inputs: [],
-    outputs: []
+    outputs: [2,3]
   },
   
   { guid: '2',
     image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/hand_tn.png',
     title: 'Second Node',
-    inputs: [],
+    inputs: [1],
+    output: []
+  },
+  
+  { guid: '3',
+    image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/hand_tn.png',
+    title: 'Third Node',
+    inputs: [1],
     output: []
   }
-  
 ];
