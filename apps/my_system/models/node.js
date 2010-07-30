@@ -92,7 +92,8 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   // do we already have the proposed new link 'link'?  
   _hasLink: function (link) {
     var links = this.get('links') || [];
-    var len = links.get('length'), n;
+    var len = links.get('length');
+    var n;
     var linkID = LinkIt.genLinkID(link);
     for (var i = 0; i < len; i++) {
       n = links.objectAt(i);
