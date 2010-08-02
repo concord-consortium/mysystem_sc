@@ -11,6 +11,14 @@
 
 -----------------
 
+### Getting started: ###
+
+1. git clone git://github.com/concord-consortium/mysystem_sc.git mysystem_sc
+2. cd mysystem_sc
+3. git submodule init
+4. git submodule update
+5. sc-server
+
 ### More information: ###
 
 * [Current feature](http://bit.ly/bhGHKR) being worked on.
