@@ -1,6 +1,7 @@
 // ==========================================================================
 // Project:   MySystem.NodeView
-// Copyright: ©2010 My Company, Inc.
+// Copyright: ©2010 Concord Consortium 
+// under the MIT License (see LICENSE file for more info)
 // ==========================================================================
 /*globals MySystem LinkIt SCUI */
 
@@ -10,6 +11,8 @@
 
   @extends SC.View
 */
+sc_require('MySystem.Link');
+
 MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
 /** @scope MySystem.NodeView.prototype */ {
   
@@ -48,8 +51,9 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     linkStyle: { lineStyle: LinkIt.VERTICAL_CURVED, width: 3, color: '#A5C0DC', cap: LinkIt.ROUND},
     label: { text: "new input", fontSize: 33 },
     nodeBinding: '.parentView*content',
-    terminal: 'input',
-    direction: LinkIt.INPUT_TERMINAL
+    terminal: 'a',
+    linkClass: MySystem.Link
+    // direction: LinkIt.INPUT_TERMINAL
   }),
   
   outputTerminal: SC.View.design(LinkIt.Terminal, {
@@ -58,8 +62,9 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     linkStyle: { lineStyle: LinkIt.VERTICAL_CURVED, width: 3, color: '#A5C0DC', cap: LinkIt.ROUND},
     label: { text: "new output", fontSize: 30 },
     nodeBinding: '.parentView*content',
-    terminal: 'output',
-    direction: LinkIt.OUTPUT_TERMINAL
+    terminal: 'b',
+    linkClass: MySystem.Link
+    // direction: LinkIt.OUTPUT_TERMINAL
   }),
 
   // ..........................................................
