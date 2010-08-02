@@ -1,11 +1,10 @@
 // ==========================================================================
 // Project:   MySystem.Link
-// Copyright: ©2010 My Company, Inc.
+// Copyright: ©2010 My Concord Consrtium, Inc.
 // ==========================================================================
 /*globals MySystem LinkIt SC*/
 
-/** @class
-
+/** @class 
   
   @extends SC.Record
   @version 0.1
