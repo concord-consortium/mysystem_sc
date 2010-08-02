@@ -10,22 +10,22 @@ MySystem.Node.FIXTURES = [
 
   { guid: '1',
     image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/clay_red_tn.png',
-    title: 'First Node',
-    inputs: [],
-    outputs: [2,3]
+    title: 'A Node',
+    inLinks: [],
+    outLinks: ['link1', 'link2']
   },
   
   { guid: '2',
     image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/hand_tn.png',
-    title: 'Second Node',
-    inputs: [1],
-    output: []
+    title: 'B Node',
+    inLinks: ['link1'],
+    outLinks: []
   },
   
   { guid: '3',
-    image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/hand_tn.png',
+    image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png',
     title: 'Third Node',
-    inputs: [1],
-    output: []
+    inLinks: ['link2'],
+    outLinks: []
   }
 ];
