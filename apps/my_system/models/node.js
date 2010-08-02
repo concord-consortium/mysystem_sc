@@ -17,11 +17,18 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   image: SC.Record.attr(String),
   title: SC.Record.attr(String),
-  outputs: SC.Record.toMany('MySystem.Node'),
-  inputs: SC.Record.toMany('MySystem.Node'),
   
-  terminals: ['input', 'output'],
+  outLinks: SC.Record.toMany('MySystem.Link',{
+    inverse: 'startNode'
+  }),
   
+  inLinks: SC.Record.toMany('MySystem.Link', {
+    inverse: 'endNode'
+  }),
+  
+  terminals: ['a', 'b'],
+  
+  // We have to maintain this list. Its observed from our mixin: LinkIt.Node 
   links: [],
   
   init: function () {
@@ -30,41 +37,33 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     this.invokeLater(this._calculateLinks);
   },
   
-  _nodeArraysDidChange: function () {
-    console.log('_nodeArraysDidChange!');
-    this.invokeOnce(this._calculateLinks);
-  }.observes('.inputs.[]', '.outputs.[]'),
-  
+
+  _linkArraysDidChange: function () {
+     console.log('_linkArraysDidChange!');
+     this.invokeOnce(this._calculateLinks);
+  }.observes('.outLinks.[]', '.inLinks.[]'),
+
+  // method to maintain our links property
   _calculateLinks: function () {
-    var links = [], 
-        link;
-    var inputs = this.get('inputs'),
-        outputs = this.get('outputs');
-    
-    // process inputs
-    for (var i = 0, ii = inputs.get('length'); i < ii; i++) {
-      link = SC.Object.create(LinkIt.Link, {
-        startNode: inputs.objectAt(i),
-        startTerminal: 'output',
-        endNode: this,
-        endTerminal: 'input'
-      });
-      links.pushObject(link);
-    }
-    
-    // process outputs
-    for (i = 0, ii = outputs.get('length'); i < ii; i++) {
-      link = SC.Object.create(LinkIt.Link, {
-        startNode: this,
-        startTerminal: 'output',
-        endNode: outputs.objectAt(i),
-        endTerminal: 'input'
-      });
-      links.pushObject(link);
-    }
-    
+     var links = [], 
+         link;
+     var inputs = this.get('inLinks'),
+         outputs = this.get('outLinks');
+     
+     // process inputs
+     for (var i = 0, ii = inputs.get('length'); i < ii; i++) {
+       link = inputs.objectAt(i);
+       links.pushObject(link);
+     }
+     
+     // process outputs
+     for (i = 0, ii = outputs.get('length'); i < ii; i++) {
+       link = outputs.objectAt(i);
+       links.pushObject(link);
+     }
+     
     this.set('links', links);
-  },
+   },
   
   // tell LinkIt whether the proposed link is valid
   canLink: function (link) {
@@ -84,14 +83,15 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     if ( (st === 'input' && et === 'output') || (st === 'output' && et === 'input')) {
       return YES;
     }
-    
+    return YES;
     // TODO under what other circumstances would we refuse a link?
-    return NO;
+    // return NO;
   },
     
+  
   // do we already have the proposed new link 'link'?  
   _hasLink: function (link) {
-    var links = this.get('links') || [];
+    var links = this.get("links");
     var len = links.get('length');
     var n;
     var linkID = LinkIt.genLinkID(link);
@@ -108,18 +108,19 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         st = link.get('startTerminal');
     var en = link.get('endNode'), 
         et = link.get('endTerminal');
-    
+    link.set("guid", 'something fake for now');
+    link.set("text", 'label me');
+    link.set("color", 'default color');
     console.log(
       'didCreateLink: this.id = %s, startNode.id = %s, startTerminal = %s, endNode.id = %s, endTerminal = %s', 
       this.get('id'), sn.get('id'), st, en.get('id'), et);
-    
-    if (sn === this && st === 'output' && et === 'input') {
-      var outputs = this.get('outputs');
-      outputs.pushObject(en);
+    if (sn === this) {
+      this.get('outLinks').pushObject(link);
+      SC.Logger.log("this: output %@",this);
     }
-    else if (sn === this && st === 'input' && et === 'output') {
-      var inputs = this.get('inputs');
-      inputs.pushObject(en);
+    else if (en === this) {
+      this.get('inLinks').pushObject(link); // is that going to work?
+      SC.Logger.log("this: input %@",this);
     }
   },
   
@@ -129,14 +130,8 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     var en = link.get('endNode'), 
         et = link.get('endTerminal');
       
-    if (et === 'input') {
-      var outputs = this.get('outputs');
-      outputs.removeObject(en);
-    }
-    else if (et === 'output') {
-      var inputs = this.get('inputs');
-      inputs.removeObject(en);
-    }  
+    this.get("outlinks").removeObject(link);
+    this.get("inlinks").removeObject(link);
   }
 
 }) ;
