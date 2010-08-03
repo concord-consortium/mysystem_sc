@@ -9,7 +9,12 @@
   @extends SC.Record
   @version 0.1
 */
-MySystem.Link = SC.Record.extend(LinkIt.Link,
+MySystem.Link = SC.Record.extend(
+
+  // Mixing in the weird view / model mixin
+  // TODO: break up LinkIt.Link
+  LinkIt.Link,
+
 /** @scope MySystem.Link.prototype */ {
   color: SC.Record.attr(String),
   text: SC.Record.attr(String),
@@ -27,7 +32,7 @@ MySystem.Link = SC.Record.extend(LinkIt.Link,
     fontSize: 12,
     fontFamily: 'sans-serif',
     fontStyle: 'normal',
-    backgroundColor: "#FF0000"
+    backgroundColor: "#FFFFFF"
   },
   
   startTerminal: SC.Record.attr(String),
