@@ -23,7 +23,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   content: null,
   isSelected: false,
   
-  childViews: 'icon label inputTerminal outputTerminal'.w(),
+  childViews: 'icon label aTerminal bTerminal'.w(),
   
   render: function (context) {
     sc_super();
@@ -45,22 +45,22 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     isEditable: YES
   }),
   
-  inputTerminal: SC.View.design(LinkIt.Terminal, {
+  aTerminal: SC.View.design(LinkIt.Terminal, {
     layout: { left: 45, top: +5, width: 10, height: 10 },
     classNames: 'input terminal'.w(),
     linkStyle: { lineStyle: LinkIt.VERTICAL_CURVED, width: 3, color: '#A5C0DC', cap: LinkIt.ROUND},
-    label: { text: "new input", fontSize: 33 },
+    label: { text: "term a input", fontSize: 16, backgroundColor: "#FFFFFF"},
     nodeBinding: '.parentView*content',
     terminal: 'a',
     linkClass: MySystem.Link
     // direction: LinkIt.INPUT_TERMINAL
   }),
   
-  outputTerminal: SC.View.design(LinkIt.Terminal, {
+  bTerminal: SC.View.design(LinkIt.Terminal, {
     layout: { left: 45, bottom: +5, width: 10, height: 10 },
     classNames: 'output terminal'.w(),
     linkStyle: { lineStyle: LinkIt.VERTICAL_CURVED, width: 3, color: '#A5C0DC', cap: LinkIt.ROUND},
-    label: { text: "new output", fontSize: 30 },
+    label: { text: "term b output", fontSize: 16, backgroundColor: "#FFFFFF" },
     nodeBinding: '.parentView*content',
     terminal: 'b',
     linkClass: MySystem.Link
