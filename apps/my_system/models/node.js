@@ -96,7 +96,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   
   // do we already have the proposed new link 'link'?  
   _hasLink: function (link) {
-    var links = this.get("links");
+    var links = this.get("links") || [];
     var len = links.get('length');
     var n;
     var linkID = LinkIt.genLinkID(link);
@@ -109,23 +109,36 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   },
   
   didCreateLink: function (link) {
+
     var sn = link.get('startNode'), 
         st = link.get('startTerminal');
     var en = link.get('endNode'), 
         et = link.get('endTerminal');
-    link.set("guid", 'something fake for now');
-    link.set("text", 'label me');
-    link.set("color", 'default color');
+        
     console.log(
       'didCreateLink: this.id = %s, startNode.id = %s, startTerminal = %s, endNode.id = %s, endTerminal = %s', 
       this.get('id'), sn.get('id'), st, en.get('id'), et);
-    if (sn === this) {
-      this.get('outLinks').pushObject(link);
-      SC.Logger.log("this: output %@",this);
-    }
-    else if (en === this) {
-      this.get('inLinks').pushObject(link); // is that going to work?
-      SC.Logger.log("this: input %@",this);
+
+    // add only completed links (both sides are mapped)
+    if(sn && st && en && et) {
+      link.set("text", 'label me');
+      link.set("color", 'default color');
+
+      // Add this Link to the datastore if its not there.
+      // I think this is required for the inverse part of 
+      // the ManyArray.
+      if(SC.none(link.get("guid"))) {
+        link.set("guid", MySystem.Link.newGuid());
+        link = MySystem.store.createRecord(MySystem.Link, link); 
+      }
+      if (sn === this) {
+        this.get('outLinks').pushObject(link);
+        SC.Logger.log("this: output %@",this);
+      }
+      else if (en === this) {
+        this.get('inLinks').pushObject(link); 
+      }
+
     }
   },
   
