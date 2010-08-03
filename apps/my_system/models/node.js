@@ -45,24 +45,29 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   // method to maintain our links property
   _calculateLinks: function () {
-     var links = [], 
+     var _links = [], 
          link;
      var inputs = this.get('inLinks'),
          outputs = this.get('outLinks');
      
+
      // process inputs
      for (var i = 0, ii = inputs.get('length'); i < ii; i++) {
        link = inputs.objectAt(i);
-       links.pushObject(link);
+       if (link) {
+         _links.pushObject(link);
+       }
      }
      
      // process outputs
      for (i = 0, ii = outputs.get('length'); i < ii; i++) {
        link = outputs.objectAt(i);
-       links.pushObject(link);
+       if(link) {
+         _links.pushObject(link);
+       }
      }
      
-    this.set('links', links);
+    this.set('links', _links);
    },
   
   // tell LinkIt whether the proposed link is valid
