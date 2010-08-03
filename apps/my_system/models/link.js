@@ -56,3 +56,5 @@ MySystem.Link = SC.Record.extend(LinkIt.Link,
   }
   
 }) ;
+MySystem.Link.GuidCounter = 100;
+MySystem.Link.newGuid = function() { return "link" + MySystem.Link.GuidCounter++;};
