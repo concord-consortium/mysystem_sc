@@ -4,4 +4,5 @@
 [submodule "frameworks/scui"]
 	path = frameworks/scui
 #	url = http://github.com/etgryphon/sproutcore-ui.git
-  url = git@github.com:concord-consortium/sproutcore-ui.git
+# url = git@github.com:concord-consortium/sproutcore-ui.git
+  url = git://github.com/concord-consortium/mysystem_sc.git
