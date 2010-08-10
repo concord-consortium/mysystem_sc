@@ -169,19 +169,18 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
       var guid = MySystem.Link.newGuid();
       tmpHash.guid = guid;
-      link = MySystem.store.createRecord(MySystem.Link, tmpHash, guid);
-      link.commitRecord();
+
+      
 
       if (sn === this) {
-         links = this.get('outLinks');
-         links.pushObject(link);
-         this.set('outLinks',links);
-         // SC.Logger.log("this: output %@",this);
+         tmpHash.startNode = null;
+         tmpHash.endNode = null;
+         link = MySystem.store.createRecord(MySystem.Link, tmpHash, guid);
+         link.set("startNode",sn);
+         link.set("endNode",en);
        }
        else if (en === this) {
-         links = this.get('inLinks');
-         links.pushObject(link);
-         this.set('inLinks',links);
+         // if we are the end-node let our peer start-node do the object creation ... 
        }
     }
   },
