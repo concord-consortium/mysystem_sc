@@ -31,10 +31,11 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   terminals: ['a', 'b'],
   
   // We have to maintain this list. Its observed from our mixin: LinkIt.Node 
-  links: [],
+  // links: [],
   
   links: function() {
-     var _links = [], 
+     SC.Logger.log('Computing links...');
+		 var _links = [], 
          link;
          
      var inputs = this.get('inLinks'),
@@ -58,7 +59,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
      
     // this.set('links', _links);
      return _links;
-   }.property('.outLinks.[]', '.inLinks.[]').cacheable(),
+   }.property().cacheable(),
    
   init: function () {
     sc_super();
@@ -67,10 +68,10 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   },
   
 
-  // _linkArraysDidChange: function () {
-  //    console.log('_linkArraysDidChange!');
-  //    this.invokeOnce(this._calculateLinks);
-  // }.observes('.outLinks.[]', '.inLinks.[]'),
+  _linkArraysDidChange: function () {
+     console.log('_linkArraysDidChange!');
+     this.notifyPropertyChange('links');
+  }.observes('.outLinks.[]', '.inLinks.[]'),
 
   // TODO: replace with cached property?
   // return a list of LinkIt.Links. from our
