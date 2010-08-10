@@ -135,7 +135,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     
     // funny, we sometimes get new nodes?
     if (SC.none(this.get("guid"))) {
-      debugger;
+      SC.Logger.log("No guid found for %@", this);
       return;
     }
     // add only completed links (both sides are mapped)
