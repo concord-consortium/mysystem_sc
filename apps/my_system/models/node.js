@@ -33,27 +33,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   // We have to maintain this list. Its observed from our mixin: LinkIt.Node 
   links: [],
   
-  // links: function() {
-  //   
-  // }.property('.outLinks.[]', '.inLinks.[]').cacheable(),
-  // 
-  init: function () {
-    sc_super();
-    // setup the links property initially
-    this.invokeLater(this._calculateLinks);
-  },
-  
-
-  _linkArraysDidChange: function () {
-     console.log('_linkArraysDidChange!');
-     this.invokeOnce(this._calculateLinks);
-  }.observes('.outLinks.[]', '.inLinks.[]'),
-
-  // TODO: replace with cached property?
-  // return a list of LinkIt.Links. from our
-  // inlinks and outlinks.
-  // TODO: bind our links to these...
-  _calculateLinks: function () {
+  links: function() {
      var _links = [], 
          link;
          
@@ -76,8 +56,51 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
        }
      }
      
-    this.set('links', _links);
-   },
+    // this.set('links', _links);
+     return _links;
+   }.property('.outLinks.[]', '.inLinks.[]').cacheable(),
+   
+  init: function () {
+    sc_super();
+    // setup the links property initially
+    // this.invokeLater(this._calculateLinks);
+  },
+  
+
+  // _linkArraysDidChange: function () {
+  //    console.log('_linkArraysDidChange!');
+  //    this.invokeOnce(this._calculateLinks);
+  // }.observes('.outLinks.[]', '.inLinks.[]'),
+
+  // TODO: replace with cached property?
+  // return a list of LinkIt.Links. from our
+  // inlinks and outlinks.
+  // TODO: bind our links to these...
+  // _calculateLinks: function () {
+    //  var _links = [], 
+    //      link;
+    //      
+    //  var inputs = this.get('inLinks'),
+    //      outputs = this.get('outLinks');
+    //  
+    //  // process inputs
+    //  for (var i = 0, ii = inputs.get('length'); i < ii; i++) {
+    //    link = inputs.objectAt(i);
+    //    if (link) {
+    //      _links.pushObject(link.makeLinkItLink());
+    //    }
+    //  }
+    //  
+    //  // process outputs
+    //  for (i = 0, ii = outputs.get('length'); i < ii; i++) {
+    //    link = outputs.objectAt(i);
+    //    if(link) {
+    //      _links.pushObject(link.makeLinkItLink());
+    //    }
+    //  }
+    //  
+    // this.set('links', _links);
+  //  },
   
   // tell LinkIt whether the proposed link is valid
   canLink: function (link) {
