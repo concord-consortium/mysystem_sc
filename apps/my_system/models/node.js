@@ -33,6 +33,10 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   // We have to maintain this list. Its observed from our mixin: LinkIt.Node 
   links: [],
   
+  // links: function() {
+  //   
+  // }.property('.outLinks.[]', '.inLinks.[]').cacheable(),
+  // 
   init: function () {
     sc_super();
     // setup the links property initially
@@ -45,19 +49,22 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
      this.invokeOnce(this._calculateLinks);
   }.observes('.outLinks.[]', '.inLinks.[]'),
 
-  // method to maintain our links property
+  // TODO: replace with cached property?
+  // return a list of LinkIt.Links. from our
+  // inlinks and outlinks.
+  // TODO: bind our links to these...
   _calculateLinks: function () {
      var _links = [], 
          link;
+         
      var inputs = this.get('inLinks'),
          outputs = this.get('outLinks');
      
-
      // process inputs
      for (var i = 0, ii = inputs.get('length'); i < ii; i++) {
        link = inputs.objectAt(i);
        if (link) {
-         _links.pushObject(link);
+         _links.pushObject(link.makeLinkItLink());
        }
      }
      
@@ -65,7 +72,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
      for (i = 0, ii = outputs.get('length'); i < ii; i++) {
        link = outputs.objectAt(i);
        if(link) {
-         _links.pushObject(link);
+         _links.pushObject(link.makeLinkItLink());
        }
      }
      
@@ -110,40 +117,52 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     }
   },
   
-  didCreateLink: function (link) {
+  didCreateLink: function (inlink) {
 
-    var sn = link.get('startNode'), 
-        st = link.get('startTerminal');
-    var en = link.get('endNode'), 
-        et = link.get('endTerminal');
+    // 
+    var tmpHash = MySystem.Link.hashFromLinkItLink(inlink);
+    var link = null,
+        links;
+        
+    var sn = tmpHash.startNode,
+        st = tmpHash.startTerminal,
+        en = tmpHash.endNode, 
+        et = tmpHash.endTerminal;
         
     console.log(
       'didCreateLink: this.id = %s, startNode.id = %s, startTerminal = %s, endNode.id = %s, endTerminal = %s', 
       this.get('id'), sn.get('id'), st, en.get('id'), et);
-
+    
+    // funny, we sometimes get new nodes?
+    if (SC.none(this.get("guid"))) {
+      debugger;
+      return;
+    }
     // add only completed links (both sides are mapped)
     if(sn && st && en && et) {
-      link.set("text", 'label me');
-      link.set("color", 'default color');
+      tmpHash.text =  'label me';
+      tmpHash.color = 'default color';
 
-      // Add this Link to the datastore if its not there.
-      // I think this is required for the inverse part of 
-      // the ManyArray.
-      if(SC.none(link.get("guid"))) {
-        link.set("guid", MySystem.Link.newGuid());
-        link = MySystem.store.createRecord(MySystem.Link, link); 
-      }
+      var guid = MySystem.Link.newGuid();
+      tmpHash.guid = guid;
+      link = MySystem.store.createRecord(MySystem.Link, tmpHash, guid);
+      link.commitRecord();
+
       if (sn === this) {
-        this.get('outLinks').pushObject(link);
-        SC.Logger.log("this: output %@",this);
-      }
-      else if (en === this) {
-        this.get('inLinks').pushObject(link); 
-      }
-
+         links = this.get('outLinks');
+         links.pushObject(link);
+         this.set('outLinks',links);
+         // SC.Logger.log("this: output %@",this);
+       }
+       else if (en === this) {
+         links = this.get('inLinks');
+         links.pushObject(link);
+         this.set('inLinks',links);
+       }
     }
   },
   
+  // TODO: this link is probably a proxy object...
   willDeleteLink: function (link) {
     var sn = link.get('startNode'), 
         st = link.get('startTerminal');
