@@ -19,11 +19,13 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   title: SC.Record.attr(String),
   
   outLinks: SC.Record.toMany('MySystem.Link',{
-    inverse: 'startNode'
+    inverse: 'startNode',
+    isMaster: YES
   }),
   
   inLinks: SC.Record.toMany('MySystem.Link', {
-    inverse: 'endNode'
+    inverse: 'endNode',
+    isMaster: YES
   }),
   
   terminals: ['a', 'b'],
