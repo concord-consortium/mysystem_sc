@@ -11,10 +11,6 @@
 */
 MySystem.Link = SC.Record.extend(
 
-  // Mixing in the weird view / model mixin
-  // TODO: break up LinkIt.Link
-  LinkIt.Link,
-
 /** @scope MySystem.Link.prototype */ {
   color: SC.Record.attr(String),
   text: SC.Record.attr(String),
@@ -44,6 +40,16 @@ MySystem.Link = SC.Record.extend(
     //this.invokeLater(this._calculateLinks);
   },
   
+  makeLinkItLink: function() {
+    var tempHash = {};
+    tempHash.startNode = this.get('startNode');
+    tempHash.startTerminal = this.get('startTerminal');
+    tempHash.endNode = this.get('endNode');
+    tempHash.endTerminal = this.get('endTerminal');
+    tempHash.label = SC.clone(this.get('label'));
+    return SC.Object.create( LinkIt.Link, tempHash);
+  },
+  
   _textChanged: function() {
     console.log('_textChanged!');
     this.invokeOnce(this._setLabel);
@@ -63,3 +69,13 @@ MySystem.Link = SC.Record.extend(
 }) ;
 MySystem.Link.GuidCounter = 100;
 MySystem.Link.newGuid = function() { return "link" + MySystem.Link.GuidCounter++;};
+
+MySystem.Link.hashFromLinkItLink = function(linkItLink) {
+  var tempHash = {};
+  tempHash.startNode = linkItLink.get('startNode');
+  tempHash.startTerminal = linkItLink.get('startTerminal');
+  tempHash.endNode = linkItLink.get('endNode');
+  tempHash.endTerminal = linkItLink.get('endTerminal');
+  tempHash.label = SC.clone(linkItLink.get('label'));
+  return tempHash;
+};
