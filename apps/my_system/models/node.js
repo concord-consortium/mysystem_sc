@@ -159,8 +159,12 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         st = link.get('startTerminal');
     var en = link.get('endNode'), 
         et = link.get('endTerminal');
-    this.get("outlinks").removeObject(link);
-    this.get("inlinks").removeObject(link);
+    var model_link = link.model;
+    if (model_link) {
+      // SC.Logger.log("removing link %@".fmt(model_link));
+      this.get("outLinks").removeObject(model_link);
+      this.get("inLinks").removeObject(model_link);
+    }
   }
 
 }) ;
