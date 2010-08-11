@@ -33,35 +33,35 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   // We have to maintain this list of links. 
   // Its observed from our mixin: LinkIt.Node 
   // links: [],
-  
   links: function() {
-		 var _links = [], 
-     // SC.Logger.log('Computing links...');
-         link;
-         
-     var inputs = this.get('inLinks'),
-         outputs = this.get('outLinks');
-     
-     // process inputs
-     for (var i = 0, ii = inputs.get('length'); i < ii; i++) {
-       link = inputs.objectAt(i);
-       if (link) {
-         _links.pushObject(link.makeLinkItLink());
-       }
-     }
-     
-     // process outputs
-     for (i = 0, ii = outputs.get('length'); i < ii; i++) {
-       link = outputs.objectAt(i);
-       if(link) {
-         _links.pushObject(link.makeLinkItLink());
-       }
-     }
-     
+    var _links = [], 
+    // SC.Logger.log('Computing links...');
+    link;
+
+    var inputs = this.get('inLinks'),
+    outputs = this.get('outLinks');
+
+    // process inputs
+    for (var i = 0, ii = inputs.get('length'); i < ii; i++) {
+      link = inputs.objectAt(i);
+      if (link && link.isComplete()) {
+        _links.pushObject(link.makeLinkItLink());
+      }
+    }
+
+    // process outputs
+    for (i = 0, ii = outputs.get('length'); i < ii; i++) {
+      link = outputs.objectAt(i);
+      if(link && link.isComplete()) {
+        _links.pushObject(link.makeLinkItLink());
+      }
+    }
+
     // this.set('links', _links);
-     return _links;
-   }.property().cacheable(),
-   
+    return _links;
+  }.property().cacheable(),
+
+
   init: function () {
     sc_super();
   },
