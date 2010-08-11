@@ -47,6 +47,7 @@ MySystem.Link = SC.Record.extend(
     tempHash.endNode = this.get('endNode');
     tempHash.endTerminal = this.get('endTerminal');
     tempHash.label = SC.clone(this.get('label'));
+    tempHash.model = this; // reference back to this
     return SC.Object.create( LinkIt.Link, tempHash);
   },
   
