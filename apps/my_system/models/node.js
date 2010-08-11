@@ -112,6 +112,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     }
   },
   
+  // Part of LinkIt Node Contract. Called when a new link created by drag event.
   didCreateLink: function (inlink) {
     var tmpHash = MySystem.Link.hashFromLinkItLink(inlink);
     var link = null,
