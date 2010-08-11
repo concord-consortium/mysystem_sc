@@ -30,7 +30,8 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   
   terminals: ['a', 'b'],
   
-  // We have to maintain this list. Its observed from our mixin: LinkIt.Node 
+  // We have to maintain this list of links. 
+  // Its observed from our mixin: LinkIt.Node 
   // links: [],
   
   links: function() {
@@ -63,8 +64,6 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
    
   init: function () {
     sc_super();
-    // setup the links property initially
-    // this.invokeLater(this._calculateLinks);
   },
   
   // update our links before destroy
@@ -80,6 +79,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     sc_super();
   },
 
+  // manually invalidate our links[] cache.
   _linkArraysDidChange: function () {
      //SC.Logger.log('_linkArraysDidChange!');
      this.notifyPropertyChange('links');
@@ -134,10 +134,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         st = tmpHash.startTerminal,
         en = tmpHash.endNode, 
         et = tmpHash.endTerminal;
-        
-    console.log(
-      'didCreateLink: this.id = %s, startNode.id = %s, startTerminal = %s, endNode.id = %s, endTerminal = %s', 
-      this.get('id'), sn.get('id'), st, en.get('id'), et);
+
     
     // funny, we sometimes get new nodes?
     if (SC.none(this.get("guid"))) {
