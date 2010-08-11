@@ -32,6 +32,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
 
   icon: SC.ImageView.design({
     classNames: 'image',
+    useImageCache: true,
     layout: { top: 20, width:50, height:70, centerX: 0},
     // value: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/clay_red_tn.png',
     valueBinding: '.parentView*content.image'
