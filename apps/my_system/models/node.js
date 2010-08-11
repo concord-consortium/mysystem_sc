@@ -34,8 +34,8 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   // links: [],
   
   links: function() {
-     SC.Logger.log('Computing links...');
 		 var _links = [], 
+     // SC.Logger.log('Computing links...');
          link;
          
      var inputs = this.get('inLinks'),
@@ -69,7 +69,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   
 
   _linkArraysDidChange: function () {
-     console.log('_linkArraysDidChange!');
+     //SC.Logger.log('_linkArraysDidChange!');
      this.notifyPropertyChange('links');
   }.observes('.outLinks.[]', '.inLinks.[]'),
 
@@ -128,7 +128,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     
     // funny, we sometimes get new nodes?
     if (SC.none(this.get("guid"))) {
-      SC.Logger.log("No guid found for %@", this);
+      SC.Logger.warn("No guid found for %@".fmt(this));
       return;
     }
     // add only completed links (both sides are mapped)
