@@ -21,7 +21,7 @@ MySystem.mainPage = SC.Page.design({
 				anchorLocation: SC.ANCHOR_LEFT,
 				textAlign: SC.ALIGN_LEFT,
 				fontWeight: SC.BOLD_WEIGHT,
-				backgroundColor: 'Navy',
+				backgroundColor: 'Blue',
 				value: "Placeholder for node palette",
 				canCollapse: YES
 			}),
@@ -32,9 +32,14 @@ MySystem.mainPage = SC.Page.design({
 				topLeftView: SC.LabelView.design({ // Story section
 					layout: { top: 0, right: 0, left: 0 },
 					anchorLocation: SC.ANCHOR_TOP,
-					textAlign: SC.ALIGN_CENTER,
+					textAlign: SC.ALIGN_LEFT,
 					backgroundColor: 'White',
-					value: "Placeholder for story",
+					// contentBinding: 'MySystem.storyController.content',
+					// contentValueKey: 'storyHtml',
+					tagName: "div",
+					escapeHTML: NO,
+					valueBinding: 'MySystem.storyController.content.storyHtml',
+					// valueKey: 'storyHtml',
 					canCollapse: YES
 				}),
 				dividerView: SC.SplitDividerView, // Divider for resizing up/down
