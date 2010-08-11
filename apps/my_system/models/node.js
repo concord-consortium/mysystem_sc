@@ -142,8 +142,6 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   },
   
   didCreateLink: function (inlink) {
-
-    // 
     var tmpHash = MySystem.Link.hashFromLinkItLink(inlink);
     var link = null,
         links;
@@ -170,8 +168,6 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       var guid = MySystem.Link.newGuid();
       tmpHash.guid = guid;
 
-      
-
       if (sn === this) {
          tmpHash.startNode = null;
          tmpHash.endNode = null;
@@ -191,7 +187,6 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         st = link.get('startTerminal');
     var en = link.get('endNode'), 
         et = link.get('endTerminal');
-      
     this.get("outlinks").removeObject(link);
     this.get("inlinks").removeObject(link);
   }
