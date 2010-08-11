@@ -67,6 +67,18 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     // this.invokeLater(this._calculateLinks);
   },
   
+  // update our links before destroy
+  // fires off notifications to interested parties.
+  destroy: function() {
+    var outLinks = this.get('outLinks');
+    var inLinks = this.get('inLinks');
+    outLinks.invoke('destroy');
+    outLinks.invoke('destroy');
+    this.set('outLinks',[]);
+    this.set('inLinks', []);
+    SC.Logger.log("destroy called on %@", this);
+    sc_super();
+  },
 
   _linkArraysDidChange: function () {
      //SC.Logger.log('_linkArraysDidChange!');
