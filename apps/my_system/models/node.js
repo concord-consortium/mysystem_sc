@@ -73,36 +73,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
      this.notifyPropertyChange('links');
   }.observes('.outLinks.[]', '.inLinks.[]'),
 
-  // TODO: replace with cached property?
-  // return a list of LinkIt.Links. from our
-  // inlinks and outlinks.
-  // TODO: bind our links to these...
-  // _calculateLinks: function () {
-    //  var _links = [], 
-    //      link;
-    //      
-    //  var inputs = this.get('inLinks'),
-    //      outputs = this.get('outLinks');
-    //  
-    //  // process inputs
-    //  for (var i = 0, ii = inputs.get('length'); i < ii; i++) {
-    //    link = inputs.objectAt(i);
-    //    if (link) {
-    //      _links.pushObject(link.makeLinkItLink());
-    //    }
-    //  }
-    //  
-    //  // process outputs
-    //  for (i = 0, ii = outputs.get('length'); i < ii; i++) {
-    //    link = outputs.objectAt(i);
-    //    if(link) {
-    //      _links.pushObject(link.makeLinkItLink());
-    //    }
-    //  }
-    //  
-    // this.set('links', _links);
-  //  },
-  
+
   // tell LinkIt whether the proposed link is valid
   canLink: function (link) {
     if (!link) return NO;
