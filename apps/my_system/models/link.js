@@ -40,6 +40,24 @@ MySystem.Link = SC.Record.extend(
     //this.invokeLater(this._calculateLinks);
   },
   
+  // sanitation check on the link:
+  isComplete: function() {
+    var sNode = this.get('startNode');
+    var eNode = this.get('endNode');
+    var sTerm = this.get('startTerminal');
+    var eTerm = this.get('endTerminal');
+    
+    if (this.isDestroyed()) return false;
+    if (SC.none(sNode)) return false;
+    if (SC.none(eNode)) return false;
+    if (SC.none(sTerm)) return false;
+    if (SC.none(eTerm)) return false;
+    if (sNode.isDestroyed()) return false;
+    if (eNode.isDestroyed()) return false;
+    
+    return true;
+  },
+  
   makeLinkItLink: function() {
     var tempHash = {};
     tempHash.startNode = this.get('startNode');
