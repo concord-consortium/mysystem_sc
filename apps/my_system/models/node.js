@@ -153,7 +153,8 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     }
   },
   
-  // TODO: this link is probably a proxy object...
+  // @param link is a LinkIt.Link.
+  // we are notified from the LinkIt framework
   willDeleteLink: function (link) {
     var sn = link.get('startNode'), 
         st = link.get('startTerminal');
@@ -161,9 +162,18 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         et = link.get('endTerminal');
     var model_link = link.model;
     if (model_link) {
-      // SC.Logger.log("removing link %@".fmt(model_link));
-      this.get("outLinks").removeObject(model_link);
-      this.get("inLinks").removeObject(model_link);
+      var startNode = model_link.get("startNode");
+      var endNode = model_link.get("endNode");
+      // if we are the startNode then we are responsible for removing the link.
+      if (startNode && startNode == this) {
+        SC.Logger.log("removing link %@", model_link);
+        startNode.get("outLinks").removeObject(model_link);
+        startNode.get("inLinks").removeObject(model_link);
+        endNode.get("outLinks").removeObject(model_link);
+        endNode.get("inLinks").removeObject(model_link);
+        model_link.destroy();
+        link = null;
+      }
     }
   }
 
