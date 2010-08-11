@@ -51,7 +51,7 @@ MySystem.Link = SC.Record.extend(
   },
   
   _textChanged: function() {
-    console.log('_textChanged!');
+    //SC.Logger.log('_textChanged!');
     this.invokeOnce(this._setLabel);
   }.observes('.text'),
   
