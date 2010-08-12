@@ -19,6 +19,30 @@
 4. git submodule update
 5. sc-server
 
+
+### Lebowski testing: ###
+
+TODO: we should script lebowski testing...
+
+0. use the rvm gemset for mysystem, or make a new one for lebowski.
+1. Install prerequisit gems:
+  1. gem install rspec
+  2. gem install selenium
+  3. gem install hoe
+2. clone lebowski repo & build:
+  1. git clone http://github.com/FrozenCanuck/Lebowski.git
+  2. rake install_gem
+  3. (if you are using rvm, DONT let sudo install run, hit <C-t> to stop rake task, and run this:
+    <code>gem install --local pkg/lebowski-0.1.1.gem </code>
+
+After Lebowski is installed in your current rvm gemset, time to test!
+
+1. cd to your sproutcore directory: <code> cd /path/to/mysystem_sc </code>
+2. start the sproutcore server: <code>sc-server</code>
+3. start the lebowski-selenium server: <code>lebowski-start-server</code>
+4. run the test! <code>lebowski-spec spec/specfile_spec.rb</code> (where specfile_spec.rb is your test)
+
+
 ### More information: ###
 
 * [Current feature](http://bit.ly/bhGHKR) being worked on.
@@ -31,6 +55,7 @@ Related projects:
 * LinkIt <http://github.com/etgryphon/linkit-demo/>
 * SCUI <http://github.com/etgryphon/sproutcore-ui/>
 * SproutCore <http://github.com/sproutit/sproutcore/>
+* Lebowski <http://github.com/FrozenCanuck/Lebowski>
 * Previous mysystem effort: <http://github.com/knowuh/mysystem/>
 
 

@@ -4,8 +4,13 @@ daemons -v1.1.0
 erubis -v2.6.6
 eventmachine -v0.12.10
 extlib -v0.9.15
+hoe -v2.6.1
 json_pure -v1.4.3
+lebowski -v0.1.1
 rack -v1.2.1
+rspec -v1.3.0
+rubyforge -v2.0.4
+selenium-client -v1.2.18
 sproutcore -v1.0.1046
 thin -v1.2.7
 thor -v0.13.8
