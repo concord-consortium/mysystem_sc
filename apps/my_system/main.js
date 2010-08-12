@@ -20,7 +20,10 @@ MySystem.main = function main() {
   MySystem.getPath('mainPage.mainPane').append() ;
 
   // Set the content property on the primary controller
-  var nodes = MySystem.store.find(MySystem.Node);
+	var nodeQuery = SC.Query.create({
+		conditions: '(guid = "1") OR (guid = "2") OR (guid = "3")',
+		recordType: MySystem.Node }); // Get the first three fixtures for display
+  var nodes = MySystem.store.find(nodeQuery);
   MySystem.nodesController.set('content', nodes);
 	var story = MySystem.store.find(MySystem.Story, 1);
 	MySystem.storyController.set('content', story);
