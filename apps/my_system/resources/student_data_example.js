@@ -1,4 +1,4 @@
-[
+MySystem._tempStudentData = [
   {
     "containers": [
       {
