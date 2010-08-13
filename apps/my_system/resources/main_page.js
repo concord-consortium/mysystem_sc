@@ -16,14 +16,38 @@ MySystem.mainPage = SC.Page.design({
 	childViews: 'topView'.w(),
 		topView: SC.SplitView.design({
 			defaultThickness: 120,
-			topLeftView: SC.LabelView.design({ // Node Palette (left)
+			topLeftView: SC.View.design({ // Node Palette (left)
 				layout: { top: 0, bottom: 0, left: 0 },
-				anchorLocation: SC.ANCHOR_LEFT,
-				textAlign: SC.ALIGN_LEFT,
-				fontWeight: SC.BOLD_WEIGHT,
-				backgroundColor: '#F2F2F2',
-				value: "Placeholder for node palette",
-				canCollapse: YES
+	      childViews: 'addDecorator addClay addHand addBulb'.w(),
+
+	      addDecorator: SC.View.design({
+	        layout: { left: 0, right: 0, top: 0, height: 23 },
+	        classNames: ['add-decorator']
+	      }),
+
+	      addClay: MySystem.AddButtonView.design({
+	        layout: { left: 0, right: 0, top: 23, height: 65 },
+	        classNames: ['add-clay'],
+	        title: "Clay",
+	        target: MySystem.nodesController,
+	        action: 'addClay'
+	      }),
+
+	      addHand: MySystem.AddButtonView.design({
+	        layout: { left: 0, right: 0, top: 88, height: 66 },
+	        classNames: ['add-hand'],
+	        title: "Hand",
+	        target: MySystem.nodesController,
+	        action: 'addHand'
+	      }),
+
+	      addBulb: MySystem.AddButtonView.design({
+	        layout: { left: 0, right: 0, top: 154, height: 68 },
+	        classNames: ['add-bulb'],
+	        title: "Bulb",
+	        target: MySystem.nodesController,
+	        action: 'addBulb'
+	      })
 			}),
 			dividerView: SC.SplitDividerView, // Divider for resizing right/left
 			bottomRightView: SC.SplitView.design({ // Rest of app (right)
