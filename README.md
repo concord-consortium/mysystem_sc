@@ -38,9 +38,7 @@ TODO: we should script lebowski testing...
 After Lebowski is installed in your current rvm gemset, time to test!
 
 1. cd to your sproutcore directory: <code> cd /path/to/mysystem_sc </code>
-2. start the sproutcore server: <code>sc-server</code>
-3. start the lebowski-selenium server: <code>lebowski-start-server</code>
-4. run the test! <code>lebowski-spec spec/specfile_spec.rb</code> (where specfile_spec.rb is your test)
+2. run the test! <code>lebowski-spec spec/mysystem_spec.rb</code> (where mysystem_spec.rb is your test)
 
 
 ### More information: ###
