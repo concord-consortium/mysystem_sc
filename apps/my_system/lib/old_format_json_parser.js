@@ -11,7 +11,7 @@
       nodes.push(node);
     }
     for (i = 0; i < wires.length; ++i) {
-      createLink(wires[i], containers, nodes, 'link-' + i);
+      createLink(wires[i], nodes, 'link-' + i);
     }
   };
   
@@ -22,17 +22,19 @@
     }, guid);
   };
   
-  var createLink = function(wire, containers, nodes, guid) {
-      console.log('src id=' + wire.src.moduleId);
-      console.log('tgt id=' + wire.tgt.moduleId);
-      console.log('src id=' + nodes[Number(wire.src.moduleId)].get('id'));
-     return MySystem.store.createRecord(MySystem.Link, {
-         startNode: nodes[Number(wire.src.moduleId)].get('id'),
-         endNode: nodes[Number(wire.tgt.moduleId)].get('id'),
-         startTerminal: 'a',
-         endTerminal: 'b',
-         text: 'Link'
+  var createLink = function(wire, nodes, guid) {
+     var startNode = nodes[Number(wire.src.moduleId)];
+     var endNode = nodes[Number(wire.tgt.moduleId)];
+     var link = MySystem.store.createRecord(MySystem.Link, {
+         startNode: startNode.get('id'),
+         endNode: endNode.get('id'),
+         startTerminal: wire.src.terminal === 'Terminal1' ? 'a' : 'b',
+         endTerminal: wire.tgt.terminal === 'Terminal1' ? 'a' : 'b',
+         text: wire.options.fields.name
      }, guid);
+     startNode.get('outLinks').pushObject(link);
+     endNode.get('inLinks').pushObject(link);
+     return link;
   };
   
   var filterImagePath = function(path) {
