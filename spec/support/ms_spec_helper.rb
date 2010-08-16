@@ -13,10 +13,12 @@ include MySystem::Views
 ProxyFactory.proxy NodeView
 
 TEST_PORT =  ENV[:TEST_PORT] || 4022;
+SELENIUM_PORT = ENV[:SELENIUM_PORT] || 4244;
 TEST_SETTINGS = {
   :app_root_path => "/my_system",
   :app_name => "MySystem",
   :app_server_port => TEST_PORT,
+  :selenium_server_port => SELENIUM_PORT,
   :browser => :firefox
 }
 
@@ -28,7 +30,7 @@ $commands = {
     :pid => nil
   },
   :lebowski => {
-    :path => 'lebowski-start-server',
+    :path => "lebowski-start-server -port #{SELENIUM_PORT}",
     :name => "lebowski",
     :pid => nil
   }
