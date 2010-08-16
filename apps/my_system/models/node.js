@@ -60,8 +60,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     // this.set('links', _links);
     return _links;
   }.property().cacheable(),
-
-
+  
   init: function () {
     sc_super();
   },

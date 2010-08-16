@@ -18,7 +18,8 @@
   var createNode = function(container, guid) {
     return MySystem.store.createRecord(MySystem.Node, {
       title: container.name,
-      image: filterImagePath(container.image)
+      image: filterImagePath(container.image),
+      position: { x: container.position[0], y: container.position[1] }
     }, guid);
   };
   
