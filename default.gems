@@ -1,6 +1,8 @@
 # default.gems generated gem export file. Note that any env variable settings will be missing. Append these after using a ';' field separator
 abstract -v1.0.0
+builder -v2.1.2
 capybara -v0.3.9
+ci_reporter -v1.6.2
 culerity -v0.2.10
 daemons -v1.1.0
 erubis -v2.6.6
