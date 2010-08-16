@@ -72,7 +72,7 @@ def start_command(name)
     end
     puts "Started  #{command[:name] || name} with PID: #{command[:pid]}" 
   else
-    puts "WARNL: process  #{command[:name] || name} already started with #{command[:pid]}"
+    puts "WARNING: process  #{command[:name] || name} already started with #{command[:pid]}"
   end
   sleep 1 # Hackish pause to spin up job.
 end
