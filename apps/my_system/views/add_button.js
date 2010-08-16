@@ -12,56 +12,36 @@ sc_require('core');
   @since ALPHA
 
 */
-MySystem.AddButtonView = SC.View.extend( SCUI.SimpleButton,
-/** @scope SC.DockButtonView.prototype */ {
-  classNames: ['addbutton-view'],
-  title: "",
-  icon: null,
-  hasState: NO,
-  hasHover: YES,
-  isSelected: NO,
+MySystem.AddButtonView = SC.View.extend( // SCUI.SimpleButton, // TODO: Add button function
+  {
+  layout: { top: 0, left: 0, width: 100, height: 120 },
+  classNames: 'node'.w(),
 
-  /**
-    If YES, adds two divs for custom decoration styling when 'isSelected' is true.  See render().
-  */
-  hasSelectionDecoration: YES,
-  
-  buttonSize: { width: 77 },
-  
-  displayProperties: ['isSelected'],
-  
-  init: function(){
+  displayProperties: 'content isSelected'.w(),
+  content: null,
+  isSelected: false,
+
+  childViews: 'icon label'.w(),
+
+  render: function (context) {
     sc_super();
-    
-    var layout = this.get('layout');
-    var bSize = this.get('buttonSize');
-    layout = SC.merge(layout, bSize);
-    this.set('layout', layout);
-  },
-  
-  render: function(context, firstTime){
-    var isSel = this.get('isSelected');
-    if (isSel && this.get('hasSelectionDecoration')) {
-      context = context.begin('div').addClass('addbutton-inner');
-      context = this._addIconLabel(context);
-      context = context.end();
-      context = context.begin('div').addClass('addbutton-end').end();
-    }
-    else {
-      context = this._addIconLabel(context);
-    }
-    
-    context = context.setClass('sel', isSel);
-    sc_super();
-  },
-  
-  _addIconLabel: function(context){
-    var icon = this.get('icon');
-    var title = this.get('title');
-    
-    if (icon) context = context.begin('div').addClass('icon %@'.fmt(icon)).end();
-    context = context.begin('div').addClass('label').text(title).end();
-    return context;
-  }
-  
+    if (this.get('isSelected')) context.addClass('selected');
+  },  
+
+  icon: SC.ImageView.design({
+    classNames: 'image',
+    useImageCache: true,
+    layout: { top: 20, width:50, height:70, centerX: 0},
+    // value: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/clay_red_tn.png',
+    valueBinding: '.parentView.image'
+  }),
+
+  label: SC.LabelView.design({
+    layout: { bottom: 5, centerX: 0, width: 100, height: 25 },
+    classNames: ['name'],
+    textAlign: SC.ALIGN_CENTER,    
+    valueBinding: '.parentView.title',
+    isEditable: NO
+  })
+
 });

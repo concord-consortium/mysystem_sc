@@ -18,7 +18,7 @@ MySystem.mainPage = SC.Page.design({
       defaultThickness: 120,
       topLeftView: SC.View.design({ // Node Palette (left)
         layout: { top: 0, bottom: 0, left: 15 },
-        childViews: 'addDecorator addClay'.w(),
+        childViews: 'addDecorator addClay addHand addBulb'.w(),
 
         addDecorator: SC.View.design({
           layout: { left: 20, right: 0, top: 0, height: 23, width: 80 },
@@ -26,31 +26,25 @@ MySystem.mainPage = SC.Page.design({
         }),
 
         addClay: MySystem.AddButtonView.design({
-          layout: { left: 20, right: 0, top: 23, width: 100, height: 120 },
+          layout: { left: 10, right: 10, top: 33, width: 100, height: 120 },
           classNames: ['add-clay'],
           title: "Clay",
-          icon: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/clay_red_tn.png',
-          target: MySystem.nodesController,
-          action: 'addClay'
-        })
+          image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/clay_red_tn.png'
+        }),
 
-        // addHand: MySystem.AddButtonView.design({
-        //   layout: { left: 20, right: 0, top: 153, width: 100, height: 120 },
-        //   classNames: ['add-hand'],
-        //   icon: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/hand_tn.png',
-        //   title: "Hand",
-        //   target: MySystem.nodesController,
-        //   action: 'addHand'
-        // }),
-        // 
-        // addBulb: MySystem.AddButtonView.design({
-        //   layout: { left: 20, right: 0, top: 283, width: 100, height: 120 },
-        //   classNames: ['add-bulb'],
-        //   icon: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png',
-        //   title: "Bulb",
-        //   target: MySystem.nodesController,
-        //   action: 'addBulb'
-        // })
+        addHand: MySystem.AddButtonView.design({
+          layout: { left: 10, right: 10, top: 163, width: 100, height: 120 },
+          classNames: ['add-hand'],
+          image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/hand_tn.png',
+          title: "Hand"
+        }),
+
+        addBulb: MySystem.AddButtonView.design({
+          layout: { left: 10, right: 10, top: 293, width: 100, height: 120 },
+          classNames: ['add-bulb'],
+          image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png',
+          title: "Bulb"
+        })
       }),
       dividerView: SC.SplitDividerView, // Divider for resizing right/left
       bottomRightView: SC.SplitView.design({ // Rest of app (right)
