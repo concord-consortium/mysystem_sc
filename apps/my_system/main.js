@@ -23,11 +23,7 @@ MySystem.main = function main() {
   MySystem.getPath('mainPage.mainPane').append() ;
 
   // The following loads data from an old WireIt format layer data
-  /*
-  var state = MySystem.store.find(MySystem.StudentState).objectAt(0);
-  var json = JSON.parse(state.get('content'));
-  MySystem.parseOldFormatJson(json);
-  */
+  //MySystem.loadCanvas();
   
   var nodes = MySystem.store.find(MySystem.Node);
   //Set the content property on the primary controller
@@ -35,6 +31,27 @@ MySystem.main = function main() {
 	var story = MySystem.store.find(MySystem.Story, 1);
 	MySystem.storyController.set('content', story);
 
-} ;
+};
 
 function main() { MySystem.main(); }
+
+MySystem.clearCanvas = function () {
+    var i;
+    var nodes = MySystem.store.find(MySystem.Node);
+    for (i = 0; i < nodes.get('length'); ++i) {
+        nodes.objectAt(i).destroy();
+    }
+    var links = MySystem.store.find(MySystem.Link);
+    for (i = 0; i < links.get('length'); ++i) {
+        links.objectAt(i).destroy();
+    }
+};
+
+// Load canvas data for student
+MySystem.loadCanvas = function () {
+  MySystem.clearCanvas();
+  // For now it will only load from the fixture StudentState
+  var state = MySystem.store.find(MySystem.StudentState).objectAt(0);
+  var json = JSON.parse(state.get('content'));
+  MySystem.parseOldFormatJson(json);
+};
