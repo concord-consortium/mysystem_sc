@@ -1,4 +1,7 @@
 require "#{File.dirname(__FILE__)}/support/ms_spec_helper.rb"
+require 'rubygems'
+require 'lebowski'
+
 
 describe "MySystem" do
   before(:all) do

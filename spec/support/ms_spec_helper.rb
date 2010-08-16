@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'lebowski'
+
 dir = File.dirname(__FILE__) 
 Dir.glob(dir + '/linkit/**/*.rb') {|file| require file}
 require "#{dir}/node_view.rb"
