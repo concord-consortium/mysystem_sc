@@ -13,10 +13,12 @@ include MySystem::Views
 ProxyFactory.proxy NodeView
 
 TEST_PORT =  ENV[:TEST_PORT] || 4022;
+SELENIUM_PORT = ENV[:SELENIUM_PORT] || 4244;
 TEST_SETTINGS = {
   :app_root_path => "/my_system",
   :app_name => "MySystem",
   :app_server_port => TEST_PORT,
+  :selenium_server_port => SELENIUM_PORT,
   :browser => :firefox
 }
 
@@ -28,7 +30,7 @@ $commands = {
     :pid => nil
   },
   :lebowski => {
-    :path => 'lebowski-start-server',
+    :path => "lebowski-start-server -port #{SELENIUM_PORT}",
     :name => "lebowski",
     :pid => nil
   }
@@ -48,7 +50,7 @@ def new_test
   app =  MainApplication.new TEST_SETTINGS
   app.start
   app.maximize  # TODO: Seems like dragging doesn't work unless we are maximized.
-  sleep 1       # TODO: hackish pause, CanvasView is not ready otherwise..
+  sleep 2       # TODO: hackish pause, CanvasView is not ready otherwise..
   app.define 'canvas', 'mainPage.mainPane.topView.bottomRightView.bottomRightView', CanvasView
   return app
 end
@@ -70,9 +72,9 @@ def start_command(name)
     end
     puts "Started  #{command[:name] || name} with PID: #{command[:pid]}" 
   else
-    puts "WARNL: process  #{command[:name] || name} already started with #{command[:pid]}"
+    puts "WARNING: process  #{command[:name] || name} already started with #{command[:pid]}"
   end
-  sleep 1 # Hackish pause to spin up job.
+  sleep 2 # Hackish pause to spin up job.
 end
 
 
