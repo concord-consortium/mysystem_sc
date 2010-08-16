@@ -20,6 +20,29 @@ git submodule update
 echo
 echo "********************************************"
 echo
+echo "              Installing Lebowski Gem"
+echo 
+echo "********************************************"
+echo
+pushd Lebowski
+rake clean
+rake gem
+gem install pkg/lebowski-0.1.1.gem
+popd
+
+echo "*** Running Lebowski tets ***"
+export CI_REPORTS=reports
+export CI_FORMATTER=${rvm_ruby_gem_home}/gems/ci_reporter-1.6.2/lib/ci/reporter/rake/rspec_loader.rb
+spec --require ${CI_FORMATTER} --format CI::Reporter::RSpec ./spec/mysystem_spec.rb
+
+echo "*** Running CapyBara TestRunner tests ***"
+pushd capybara-testrunner
+ruby run-tests.rb -s 0.0.0.0 -p 4020 -t apps -o ../reports
+popd
+
+echo
+echo "********************************************"
+echo
 echo "              Building tests"
 echo 
 echo "********************************************"
