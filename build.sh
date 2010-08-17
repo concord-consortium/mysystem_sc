@@ -32,7 +32,7 @@ popd
 
 echo "*** Running Lebowski tets ***"
 export CI_REPORTS=reports
-export CI_FORMATTER=${rvm_ruby_gem_home}/gems/ci_reporter-1.6.2/lib/ci/reporter/rake/rspec_loader.rb
+export CI_FORMATTER=/home/maven/.rvm/gems/${RVM_RUBY}/gems/ci_reporter-1.6.2/lib/ci/reporter/rake/rspec_loader
 spec --require ${CI_FORMATTER} --format CI::Reporter::RSpec ./spec/mysystem_spec.rb
 
 echo "*** Running CapyBara TestRunner tests ***"
