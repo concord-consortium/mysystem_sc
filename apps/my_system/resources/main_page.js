@@ -16,7 +16,7 @@ MySystem.mainPage = SC.Page.design({
   childViews: 'topView'.w(),
     topView: SC.SplitView.design({
       defaultThickness: 120,
-      topLeftView: SC.View.design({ // Node Palette (left)
+      topLeftView: LinkIt.CanvasView.design({ // Node Palette (left)
         layout: { top: 0, bottom: 0, left: 15 },
         childViews: 'addDecorator addClay addHand addBulb'.w(),
 
@@ -26,6 +26,9 @@ MySystem.mainPage = SC.Page.design({
         }),
 
         addClay: MySystem.AddButtonView.design({
+          // TODO: These should be draggable, but on dropping they should come
+          // back to their origin. If dropped on the main canvas, that should
+          // fire the addNode controller method with the location of the drop.
           layout: { left: 10, right: 10, top: 33, width: 100, height: 120 },
           classNames: ['add-clay'],
           title: "Clay",
