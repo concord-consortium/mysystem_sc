@@ -22,11 +22,11 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     recordsToDestroy.invoke('destroy');
   },
 
-  addNode: function () {
+  addNode: function ( title, image, xPos, yPos ) {
     var node;
 
     // Create a new node in store
-    node = MySystem.store.createRecord(MySystem.Node, { "title": "Edit Title", "image": 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png' } );
+    node = MySystem.store.createRecord(MySystem.Node, { "title": title, "image": image, "position": { x: xPos, y: yPos } } );
 
     return YES;
   }
