@@ -2,9 +2,12 @@
 // MySystem.AddButtonView, from LinkItDemo.AddButtonView
 // ==========================================================================
 
+/*globals MySystem */
 sc_require('core');
 
-/** @class
+/**
+
+  @class
   
   @extends SC.View
   @author Evin Grano
@@ -42,6 +45,24 @@ MySystem.AddButtonView = SC.View.extend( // SCUI.SimpleButton, // TODO: Add butt
     textAlign: SC.ALIGN_CENTER,    
     valueBinding: '.parentView.title',
     isEditable: NO
-  })
-
+  }),
+  
+  dragDataForType: function(drag, dataType) { return null; },
+  
+  mouseDown: function(eventID) {
+    SC.Logger.log("mouseDown called");
+    var self = this;
+    var dragOpts = {
+      event: eventID,
+      source: self.get('parentView'),
+      dragView: self,
+      ghost: NO,
+      slideBack: NO,
+      data: {
+        title: this.get('title') || 'title',
+        image: this.get('image') || 'image'
+      }
+    };
+    SC.Drag.start(dragOpts);
+  }
 });
