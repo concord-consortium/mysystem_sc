@@ -16,7 +16,7 @@ MySystem.mainPage = SC.Page.design({
   childViews: 'topView'.w(),
     topView: SC.SplitView.design({
       defaultThickness: 120,
-      topLeftView: LinkIt.CanvasView.design({ // Node Palette (left)
+      topLeftView: SC.View.design({ // Node Palette (left)
         layout: { top: 0, bottom: 0, left: 15 },
         childViews: 'addDecorator addClay addHand addBulb'.w(),
 
@@ -64,11 +64,11 @@ MySystem.mainPage = SC.Page.design({
           canCollapse: YES
         }),
         dividerView: SC.SplitDividerView, // Divider for resizing up/down
-        bottomRightView: LinkIt.CanvasView.design( SCUI.Cleanup, { // Workspace
+        bottomRightView: MySystem.CanvasView.design({
           layout: { top: 120, left: 0, right: 0, bottom: 0 },
-          contentBinding: SC.Binding.from('MySystem.nodesController').oneWay(),
+          contentBinding: SC.Binding.from('MySystem.nodesController'),
           selectionBinding: 'MySystem.nodesController.selection',
-          exampleView: MySystem.NodeView
+          exampleView: MySystem.NodeView,
         })
       })
     })
