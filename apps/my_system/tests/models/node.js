@@ -49,6 +49,8 @@ test ("test that computed 'links' are updated when inlinks or outlinks changes",
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   newLink.set("startNode", nodeA);
   newLink.set("endNode", nodeB);
+  newLink.set("startTerminal","a");
+  newLink.set("endTerminal","b");
   
   var foundLinks = nodeA.get('links').get('length');
   equals(foundLinks, expectedLinks, "There should be "+ expectedLinks +" links");
