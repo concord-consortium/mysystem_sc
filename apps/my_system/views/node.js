@@ -23,8 +23,24 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   content: null,
   isSelected: false,
   
+  // implement action behavior of see sproutcore/desktop/view/button
+  target: "MySystem.nodesController",
+  action: "showAlert",
+  
   childViews: 'icon label aTerminal bTerminal'.w(),
   
+  
+  /** @private */
+  _runAction: function(evt) {
+    var action = this.get('action'),
+        target = this.get('target') || null;
+
+    if (action) {
+      this.getPath('pane.rootResponder').sendAction(action, target, this, this.get('pane'));
+    }
+  },
+  
+
   render: function (context) {
     sc_super();
     if (this.get('isSelected')) context.addClass('selected');
@@ -76,6 +92,16 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   */
   terminalViewFor: function (terminalKey) {
     return this[terminalKey + 'Terminal'];
+  },
+
+  
+  /** 
+  * implement action behavior of see sproutcore/desktop/view/button
+  */
+  doubleClick: function(evt, skipHoldRepeat) {
+      this._runAction(evt);
   }
+
+
 
 });
