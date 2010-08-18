@@ -21,9 +21,11 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, SC.DropTarget, {
       var title = drag.data.title;
       var xpos = drag.location.x;
       var ypos = drag.location.y;
+      var offsetX = this.parentView.get('frame').x;
+      var offsetY = this.get('frame').y;
       //( title, image, xPos, yPos )
       SC.Logger.log("drag performed");
-      MySystem.nodesController.addNode(image,title,xpos,ypos);
+      MySystem.nodesController.addNode(title, image, xpos - offsetX, ypos - offsetY);
       return SC.DRAG_COPY; 
     }
 });
