@@ -186,3 +186,6 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   }
 
 }) ;
+
+MySystem.Node.GuidCounter = 100;
+MySystem.Node.newGuid = function() { return "Node" + MySystem.Node.GuidCounter++;};
