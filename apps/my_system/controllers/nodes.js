@@ -37,17 +37,17 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   },
 
   showAlert: function() {
-    // SC.AlertPane.warn("Test", "testing", "1", "Cancel", "More Info...", MySystem.nodesController);
+    SC.AlertPane.warn("property editor", "Pretend this is a property editor.", "(please)", "No.", "What?", MySystem.nodesController);
 
     // SC.PickerPane.create({
     //   layout: { width: 400, height: 200 },
     //   contentView: SC.View.extend({})  // use some other view here
     // }).popup(this.get('selection'));
-    
-    SC.PanelPane.create({
-      layout: { width: 400, height: 200, centerX: 0, centerY: 0 },
-      contentView: SC.View.extend({})
-    }).append();
-    
+    // 
+    // SC.PanelPane.create({
+    //   layout: { width: 400, height: 200, centerX: 0, centerY: 0 },
+    //   contentView: SC.View.extend({})
+    // }).append();
+    // 
   }
 }) ;
