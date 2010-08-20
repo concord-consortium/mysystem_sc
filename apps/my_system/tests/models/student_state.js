@@ -6,10 +6,14 @@
 
 module("MySystem.StudentState");
 
-// TODO: Replace with real unit test for StudentState
-test("test description", function() {
-  var expected = "test";
-  var result   = "test";
-  equals(result, expected, "test should equal test");
+sc_require('resources/student_data_example.js');
+
+test("Testing model definition of Student State", function() {
+  // Imports the same data as the fixture
+  var state = MySystem.StudentState.create( { "content": JSON.stringify(MySystem._tempStudentData), "timestamp": 1281630733000 } );
+  var timestamp = new Date(state.timestamp);
+  equals(typeof state.content, "string", "Content should be a string");
+  equals(typeof state.timestamp, "number", "Timestamp should be a number");
+  equals(timestamp.getDate(), 12, "Date should be the 12th");
 });
 
