@@ -9,6 +9,7 @@ module("MySystem.nodesController");
 sc_require('lib/old_format_json_parser');
 
 test("Data loading", function() {
+  expect(2);
   // Tests that nodes get loaded from the store
   var nodes = MySystem.store.find(MySystem.Node);
   MySystem.nodesController.set('content', nodes);
@@ -17,6 +18,7 @@ test("Data loading", function() {
 });
 
 test("Data loading from JSON", function() {
+  expect(2);
   var oldFirstNode = MySystem.store.find(MySystem.Node).firstObject().toString();
   // To prove we're loading from JSON we should test that the nodes
   // loaded here are different from those loaded from the store.
@@ -26,4 +28,20 @@ test("Data loading from JSON", function() {
   var nodes = MySystem.store.find(MySystem.Node); // Load nodes from store.
   ok(nodes.get('length') > 0, "There should be nodes in the store");
   ok(!(nodes.firstObject().toString() == oldFirstNode), "The JSON objects shouldn't be the same as the fixture objects");
+});
+
+test("Adding nodes", function() {
+  expect(2);
+  var oldNodeCount = MySystem.store.find(MySystem.Node).get('length');
+  MySystem.nodesController.addNode("QUnit Test Node", "http://blog.concord.org/uploads/icons/software-badge.thumb.jpg", 100, 100);
+  var newNodeCount = MySystem.store.find(MySystem.Node).get('length');
+  equals(newNodeCount, oldNodeCount + 1, "There should be one more node in the store.");
+  // The method tolerates empty arguments
+  MySystem.nodesController.addNode();
+  equals(MySystem.store.find(MySystem.Node).get('length'), newNodeCount+1, "Adding with no arguments should still create a new node.");
+});
+
+test("Deleting nodes on-canvas", function() {
+  expect(1);
+  ok(true, "This might be better tested by Lebowski.");
 });
