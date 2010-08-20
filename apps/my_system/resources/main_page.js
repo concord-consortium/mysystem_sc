@@ -13,7 +13,7 @@ MySystem.mainPage = SC.Page.design({
   // Add childViews to this pane for views to display immediately on page 
   // load.
   mainPane: SC.MainPane.design({
-  childViews: 'topView'.w(),
+    childViews: 'topView'.w(),
     topView: SC.SplitView.design({
       defaultThickness: 120,
       topLeftView: SC.View.design({ // Node Palette (left)
