@@ -9,6 +9,7 @@ module("MySystem.StudentState");
 sc_require('resources/student_data_example.js');
 
 test("Testing model definition of Student State", function() {
+  expect(3);
   // Imports the same data as the fixture
   var state = MySystem.StudentState.create( { "content": JSON.stringify(MySystem._tempStudentData), "timestamp": 1281630733000 } );
   var timestamp = new Date(state.timestamp);
