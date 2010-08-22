@@ -51,7 +51,9 @@ def new_test
   app.start
   app.maximize  # TODO: Seems like dragging doesn't work unless we are maximized.
   sleep 2       # TODO: hackish pause, CanvasView is not ready otherwise..
-  app.define 'canvas', 'mainPage.mainPane.topView.bottomRightView.bottomRightView', CanvasView
+  app.define_path 'canvas', 'mainPage.mainPane.topView.bottomRightView.bottomRightView', CanvasView
+  app.define_path 'palette', 'mainPage.mainPane.topView.topLeftView', View
+  app.define_path 'story', 'mainPage.mainPane.topView.bottomRightView.topLeftView', LabelView
   return app
 end
 

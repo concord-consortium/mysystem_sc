@@ -11,10 +11,24 @@ describe "MySystem" do
     @node_0 = @canvas.nodes[0]
     @node_1 = @canvas.nodes[1]
     @node_2 = @canvas.nodes[2]
+    @palette = @test['palette']
   end
 
   after(:all) do
     stop_testing_servers
+  end
+
+  # This seems to prove that we have the chrome, but I think it just proves
+  # that there are views in the appropriate places in the view stack
+  it "will have two chrome views supporting the canvas" do
+    @canvas.parentView.childViews[0].should_not be nil
+    @canvas.parentView.childViews.count.should be 3 # StoryView, divider, Canvas
+    @canvas.parentView.parentView.childViews[0].should_not be nil
+    @canvas.parentView.parentView.childViews.count.should be 3 # Palette, divider, story-and-canvas
+  end
+  
+  it "will have at least one add-node button in the palette" do
+    @palette.childViews.count.should be <1 # Label view at top shouldn't count
   end
 
   it "will have at least 3 nodes loaded from the fixtures" do
@@ -49,7 +63,7 @@ describe "MySystem" do
   end
 
   # tricky & brittle! relies on fixture state
-  # as of 
+  # as of 17 August 2010
   it "some nodes loaded from fixtures should be linked" do
     @node_0.should be_linked_to 1
     @node_1.should be_linked_to 0
