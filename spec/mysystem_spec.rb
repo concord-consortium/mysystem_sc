@@ -24,8 +24,12 @@ describe "MySystem" do
   it "will have two chrome views supporting the canvas" do
     @canvas.parentView.childViews[0].should_not be nil
     @canvas.parentView.childViews.count.should be 3 # StoryView, divider, Canvas
+    @canvas.parentView.childViews[0].layout.top.should be 0 # StoryView at the top
+    @canvas.parentView.childViews[0].layout.left.should be 0
     @canvas.parentView.parentView.childViews[0].should_not be nil
     @canvas.parentView.parentView.childViews.count.should be 3 # Palette, divider, story-and-canvas
+    @canvas.parentView.parentView.childViews[0].layout.top.should be 0
+    @canvas.parentView.parentView.childViews[0].layout.left.should be 0
   end
   
   it "will have at least one add-node button in the palette" do
