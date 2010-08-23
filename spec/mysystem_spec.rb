@@ -28,7 +28,7 @@ describe "MySystem" do
   end
   
   it "will have at least one add-node button in the palette" do
-    @palette.childViews.count.should be <1 # Label view at top shouldn't count
+    @palette.childViews.count.should be >1 # Label view at top shouldn't count
   end
 
   it "will have at least 3 nodes loaded from the fixtures" do
