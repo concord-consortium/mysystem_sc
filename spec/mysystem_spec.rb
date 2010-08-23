@@ -12,6 +12,7 @@ describe "MySystem" do
     @node_1 = @canvas.nodes[1]
     @node_2 = @canvas.nodes[2]
     @palette = @test['palette']
+    @add_bulb = @palette.addBulb
   end
 
   after(:all) do
@@ -78,6 +79,12 @@ describe "MySystem" do
   it "will link node_1 to node_2" do      
     @node_2.terminal_by_name('a').link_to @node_1.terminal_by_name('a'), 8, 8 
     @node_2.should be_linked_to 1
+  end
+
+  it "will create a new node" do
+    # This is failing, 
+    @add_bulb.drag_in_canvas(500, 250)
+    @canvas.nodes.count.should be 4
   end
 end
 

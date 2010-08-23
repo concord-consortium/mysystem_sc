@@ -4,6 +4,7 @@ require 'lebowski'
 dir = File.dirname(__FILE__) 
 Dir.glob(dir + '/linkit/**/*.rb') {|file| require file}
 require "#{dir}/node_view.rb"
+require "#{dir}/add_button_view.rb"
 
 include Lebowski::Foundation
 include Lebowski::SCUI::Views
