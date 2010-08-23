@@ -15,7 +15,7 @@ sc_require('core');
   @since ALPHA
 
 */
-MySystem.AddButtonView = SC.View.extend( // SCUI.SimpleButton, // TODO: Add button function
+MySystem.AddButtonView = SC.View.extend( 
   {
   layout: { top: 0, left: 0, width: 100, height: 120 },
   classNames: 'node'.w(),
@@ -35,7 +35,6 @@ MySystem.AddButtonView = SC.View.extend( // SCUI.SimpleButton, // TODO: Add butt
     classNames: 'image',
     useImageCache: true,
     layout: { top: 20, width:50, height:70, centerX: 0},
-    // value: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/clay_red_tn.png',
     valueBinding: '.parentView.image'
   }),
 
