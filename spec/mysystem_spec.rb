@@ -60,7 +60,8 @@ describe "MySystem" do
 
   it "will drag the first node to coordinates (400, 150)" do
     @node_0.drag_in_canvas(400, 150)
-    # There's no test here...
+    @node_0.layout.top.should be 150
+    @node_0.layout.left.should be 400
   end
   
   it "will drag the second node below the first node (by the index)" do 
