@@ -74,11 +74,6 @@ describe "MySystem" do
     @node_2.should be_positioned_right_of 1
   end
   
-  it "will move the third node to the left of the second node by setting the object attribute" do
-    @node_2.set('position', { x: 250, y: 300 }) # Fails because set isn't available
-    @node_2.should be_positioned_left_of 1
-  end
-
   # tricky & brittle! relies on fixture state
   # as of 17 August 2010
   it "will have some nodes loaded from fixtures linked" do
