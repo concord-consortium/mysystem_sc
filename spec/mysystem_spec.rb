@@ -40,12 +40,17 @@ describe "MySystem" do
     @canvas.should_not be_empty
     @canvas.nodes.count.should be 3
   end
-      
+
   it "will verify that there are 3 nodes on the canvas" do
+    # Dependent on fixture state
     @node_0.should be_a_kind_of NodeView
     @node_0.should have_node_item_view_support
   end
   
+  it "will have at least 2 links loaded from the fixtures" do
+    @canvas.links.count.should be 4 # Apparently the link array is *2?
+  end
+
   it "will click each of the nodes, one by one" do
     @canvas.nodes.each do |node|
       node.click
