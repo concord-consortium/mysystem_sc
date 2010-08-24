@@ -79,10 +79,24 @@ describe "MySystem" do
     @node_1.should_not be_linked_to 2
     @node_2.should_not be_linked_to 1
   end
+  
+  it "will click each link, one by one" do
+    @canvas.links.each do |link|
+      link.click
+      link.should be_selected
+    end
+  end
 
   it "will link node_1 to node_2" do      
     @node_2.terminal_by_name('a').link_to @node_1.terminal_by_name('a'), 8, 8 
     @node_2.should be_linked_to 1
+  end
+
+  it "will delete the newly-created link" do
+    # Count links
+    # Click the link to select it
+    # Delete the selected link
+    # Count of links should be reduced by one
   end
 
   it "will create a new node" do
@@ -90,5 +104,9 @@ describe "MySystem" do
     @canvas.nodes.count.should be 4
   end
 
+  it "will appropriately adjust the location of the new node" do
+    @canvas.nodes[3].layout.top.should be 73 # 200 minus the 127 of the story view
+    @canvas.nodes[3].layout.left.should be 173 # 300 minus the 127 of the palette view
+  end
 end
 
