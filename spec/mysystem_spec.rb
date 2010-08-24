@@ -86,9 +86,9 @@ describe "MySystem" do
   end
 
   it "will create a new node" do
-    # This is failing, 
-    @add_bulb.drag_in_canvas(500, 250)
+    @add_bulb.drag_in_canvas(300, 200)
     @canvas.nodes.count.should be 4
   end
+
 end
 
