@@ -55,6 +55,7 @@ describe "MySystem" do
 
   it "will drag the first node to coordinates (400, 150)" do
     @node_0.drag_in_canvas(400, 150)
+    # There's no test here...
   end
   
   it "will drag the second node below the first node (by the index)" do 
@@ -66,10 +67,15 @@ describe "MySystem" do
     @node_2.drag_right_of 1
     @node_2.should be_positioned_right_of 1
   end
+  
+  it "will move the third node to the left of the second node by setting the object attribute" do
+    @node_2.set('position', { x: 250, y: 300 }) # Fails because set isn't available
+    @node_2.should be_positioned_left_of 1
+  end
 
   # tricky & brittle! relies on fixture state
   # as of 17 August 2010
-  it "some nodes loaded from fixtures should be linked" do
+  it "will have some nodes loaded from fixtures linked" do
     @node_0.should be_linked_to 1
     @node_1.should be_linked_to 0
     
