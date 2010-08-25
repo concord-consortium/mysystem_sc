@@ -115,8 +115,11 @@ describe "MySystem" do
   end
 
   it "will appropriately adjust the location of the new node" do
-    @canvas.nodes[3].layout.top.should be 73 # 200 minus the 127 of the story view
+    @canvas.nodes[3].position.x.should be 300 # position is from origin, not from parent view
+    @canvas.nodes[3].position.y.should be 200
+    @canvas.nodes[3].layout.top.should be 73 # layout is in parent view: 200 minus the 127 of the story view
     @canvas.nodes[3].layout.left.should be 173 # 300 minus the 127 of the palette view
   end
+
 end
 
