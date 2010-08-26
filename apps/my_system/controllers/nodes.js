@@ -12,7 +12,17 @@
 */
 MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate, 
 /** @scope MySystem.nodesController.prototype */ {
-
+  linkSelection: null,
+  
+  allSelected: function() {
+    var link  = this.get('linkSelection');
+    var resultSet = this.get('selection').clone();   
+    if (link) {
+      resultSet.addObject(link.get('model'));
+    }
+    return resultSet;
+  }.property('linkSelection','selection').cacheable(),
+  
   collectionViewDeleteContent: function (view, content, indices) {
     // destroy the records
     var recordsToDestroy = indices.map( function (idx) {
