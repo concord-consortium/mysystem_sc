@@ -45,3 +45,15 @@ test("Deleting nodes on-canvas", function() {
   expect(1);
   ok(true, "This might be better tested by Lebowski.");
 });
+
+test("Managing the selected array", function() {
+  expect(1);
+  var oldSelected = MySystem.nodesController.get('allSelected').get('length');
+  MySystem.nodesController.selectObject(MySystem.nodesController.get('content').firstObject());
+  var newSelected = MySystem.nodesController.get('allSelected').get('length');
+  equals(newSelected,oldSelected+1,"Another item is selected");
+  // Testing link selection isn't easy for QUnit at this point
+  // MySystem.nodesController.linkSelected = MySystem.store.find('MySystem.Link', 'link1');
+  // newSelected = MySystem.nodesController.get('allSelected').get('length');
+  // equals(newSelected,oldSelected+2,"A node and a link are selected");
+});
