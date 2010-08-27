@@ -46,8 +46,26 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     return YES;
   },
 
+	propertyWindowSelection: function() {
+		selection = MySystem.nodesController.get('allSelected');
+		if (selection.length() == 0) {
+			if (MySystem.getPath('mainPage.propertyViewPane').isPaneAttached)
+				MySystem.getPath('mainPage.propertyViewPane').remove();
+		} else if (selection.length() == 1) {
+			if (!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached)
+				MySystem.getPath('mainPage.propertyViewPane').append();
+		} else {
+			if (!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached)
+				MySystem.getPath('mainPage.propertyViewPane').append();
+		}
+	}.observes('allSelected'),
+
   showAlert: function() {
-    SC.AlertPane.warn("property editor", "Pretend this is a property editor.", "(please)", "No.", "What?", MySystem.nodesController);
+		MySystem.nodesController.showTextAlert("Pretend I'm a property editor");
+  },
+
+  showTextAlert: function(text) {
+    SC.AlertPane.warn("property editor", text.toString(), "(please)", "No.", "What?", MySystem.nodesController);
 
     // SC.PickerPane.create({
     //   layout: { width: 400, height: 200 },
