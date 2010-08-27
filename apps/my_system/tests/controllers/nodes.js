@@ -57,3 +57,14 @@ test("Managing the selected array", function() {
   // newSelected = MySystem.nodesController.get('allSelected').get('length');
   // equals(newSelected,oldSelected+2,"A node and a link are selected");
 });
+
+test("Property editor pane comes and goes", function() {
+  expect(3);
+  var nodes = MySystem.store.find(MySystem.Node);
+  MySystem.nodesController.set('content', nodes);
+  ok(!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached, "Starts out with no property editor");
+  MySystem.nodesController.selectObject(MySystem.nodesController.get('content').firstObject());
+  ok(MySystem.getPath('mainPage.propertyViewPane').isPaneAttached, "With a selection property editor should be attached.");
+  MySystem.nodesController.deselectObject(MySystem.nodesController.get('content').firstObject());
+  ok(!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached, "No nodes selected implies no property editor");
+});

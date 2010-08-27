@@ -5,6 +5,7 @@
 /*globals MySystem LinkIt SCUI */
 
 sc_require('views/node');
+sc_require('views/property_editor');
 
 // This page describes the main user interface for your application.  
 MySystem.mainPage = SC.Page.design({
@@ -69,7 +70,7 @@ MySystem.mainPage = SC.Page.design({
           contentBinding: SC.Binding.from('MySystem.nodesController'),
           selectionBinding: 'MySystem.nodesController.selection',
           linkSelectionBinding: 'MySystem.nodesController.linkSelection',
-          exampleView: MySystem.NodeView,
+          exampleView: MySystem.NodeView
         })
       })
     })
