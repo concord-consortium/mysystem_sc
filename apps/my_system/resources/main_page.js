@@ -68,6 +68,7 @@ MySystem.mainPage = SC.Page.design({
           layout: { top: 120, left: 0, right: 0, bottom: 0 },
           contentBinding: SC.Binding.from('MySystem.nodesController'),
           selectionBinding: 'MySystem.nodesController.selection',
+          linkSelectionBinding: 'MySystem.nodesController.linkSelection',
           exampleView: MySystem.NodeView,
         })
       })
