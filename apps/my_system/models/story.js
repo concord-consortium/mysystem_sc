@@ -14,6 +14,6 @@
 MySystem.Story = SC.Record.extend(
 /** @scope MySystem.Story.prototype */ {
 
-	storyHtml: SC.Record.attr(String)
+  storyHtml: SC.Record.attr(String)
 
 }) ;
