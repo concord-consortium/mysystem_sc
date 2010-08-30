@@ -15,6 +15,11 @@ MySystem.StudentState = SC.Record.extend(
 /** @scope MySystem.StudentState.prototype */ {
 
   content: SC.Record.attr(String),
-  timestamp: SC.Record.attr(Number)
+  timestamp: SC.Record.attr(Number),
+  
+  // return a hash of editable attributes for the property editor
+  formFields: {
+    
+  }
   
 }) ;

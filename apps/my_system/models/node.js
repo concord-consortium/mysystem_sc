@@ -30,6 +30,12 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   
   terminals: ['a', 'b'],
   
+  // return a hash of editable attributes for the property editor
+  formFields: {
+    'image': 'TextFieldView',
+    'title': 'TextFieldView'
+  },
+  
   // We have to maintain this list of links. 
   // Its observed from our mixin: LinkIt.Node 
   // links: [],

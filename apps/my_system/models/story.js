@@ -14,6 +14,11 @@
 MySystem.Story = SC.Record.extend(
 /** @scope MySystem.Story.prototype */ {
 
-  storyHtml: SC.Record.attr(String)
+  storyHtml: SC.Record.attr(String),
+
+  // return a hash of editable attributes for the property editor
+  formFields: {
+    'storyHtml': 'TextArea' // This is a TextFieldView with isTextArea = YES
+  }
 
 }) ;

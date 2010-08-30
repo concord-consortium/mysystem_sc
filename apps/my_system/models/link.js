@@ -34,6 +34,12 @@ MySystem.Link = SC.Record.extend(
   startTerminal: SC.Record.attr(String),
   endTerminal: SC.Record.attr(String),
   
+  // return a hash of editable attributes for the property editor
+  formFields: {
+    'color': 'TextFieldView',
+    'text': 'TextFieldView' 
+  },
+  
   init: function () {
     sc_super();
     // setup the links property initially
