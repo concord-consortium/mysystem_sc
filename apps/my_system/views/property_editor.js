@@ -4,34 +4,22 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
 {
     layout: {
         top: 0,
-        left: 0,
+        right: 0,
         width: 100,
         height: 120
     },
     classNames: 'node'.w(),
 
     displayProperties: 'content isSelected'.w(),
-    content: null,
+    objectToEdit: null,
     isSelected: false,
 
     childViews: 'label'.w(),
 
-    render: function(context) {
-        sc_super();
-        if (this.get('isSelected')) context.addClass('selected');
-    },
-
-    // icon: SC.ImageView.design({
-    //     classNames: 'image',
-    //     useImageCache: true,
-    //     layout: {
-    //         top: 20,
-    //         width: 50,
-    //         height: 70,
-    //         centerX: 0
-    //     },
-    //     valueBinding: '.parentView.image'
-    // }),
+    // render: function(context) {
+    //     sc_super();
+    //     if (this.get('isSelected')) context.addClass('selected');
+    // },
 
     label: SC.LabelView.design({
         layout: {
