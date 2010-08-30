@@ -17,13 +17,14 @@ MySystem.Story = SC.Record.extend(
   storyHtml: SC.Record.attr(String),
 
   // return a hash of editable attributes for the property editor
-  formFields: {
-    fields: "storyHtml".w(),
-    storyHtml: SC.FormView.row(SC.TextFieldView, {
+  formFields: [
+    // fields: "storyHtml".w(),
+    // storyHtml: 
+      Forms.FormView.row(SC.TextFieldView, {
       fieldKey: 'storyHtml',
       fieldLabel: 'Story',
       isTextArea: YES
     })
-  }
+  ]
 
 }) ;

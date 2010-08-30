@@ -31,17 +31,19 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   terminals: ['a', 'b'],
   
   // return a hash of editable attributes for the property editor
-  formFields: {
-    fields: "image title".w(),
-    image: SC.FormView.row(SC.TextFieldView, {
+  formFields: [
+    // fields: "image title".w(),
+    // image: 
+		Forms.FormView.row(SC.TextFieldView, {
       fieldKey: 'nodeImage',
       fieldLabel: 'Image:'
     }),
-    title: SC.FormView.row(SC.TextFieldView, {
+    // title: 
+		Forms.FormView.row(SC.TextFieldView, {
       fieldKey: 'nodeTitle',
       fieldLabel: 'Title:'
     })
-  },
+  ],
 
   // We have to maintain this list of links. 
   // Its observed from our mixin: LinkIt.Node 

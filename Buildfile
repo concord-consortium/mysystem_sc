@@ -4,10 +4,12 @@
 # ===========================================================================
 
 # Add initial buildfile information here
-config :all, :required => :sproutcore
+config :all, :required => [:forms, :sproutcore]
+config :my_system, :required => [:sproutcore, :scui, :forms]
 
 # CORE FRAMEWORKS
 config :scui, :required => [:sproutcore, :'scui/drawing', :'scui/linkit']
+#config :forms, :required => [:sproutcore]
 
 # SPECIAL FRAMEWORKS AND THEMES
 # These do not require any of the built-in SproutCore frameworks
@@ -25,7 +27,7 @@ config :standard_theme,
 # This configuration section will be applied to all bundles used by your
 # application, even bundles that come from other gems.
 config :my_system do |c|
-  c[:required] = [:sproutcore, :scui]
+  c[:required] = [:sproutcore, :scui, :forms]
   c[:theme] = :standard_theme
   c[:load_fixtures] = true
 end
