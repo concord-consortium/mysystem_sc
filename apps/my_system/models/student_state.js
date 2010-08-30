@@ -19,7 +19,7 @@ MySystem.StudentState = SC.Record.extend(
   
   // return a hash of editable attributes for the property editor
   formFields: {
-    
+    fields: "".w()
   }
   
 }) ;

@@ -18,7 +18,12 @@ MySystem.Story = SC.Record.extend(
 
   // return a hash of editable attributes for the property editor
   formFields: {
-    'storyHtml': 'TextArea' // This is a TextFieldView with isTextArea = YES
+    fields: "storyHtml".w(),
+    storyHtml: SC.FormView.row(SC.TextFieldView, {
+      fieldKey: 'storyHtml',
+      fieldLabel: 'Story',
+      isTextArea: YES
+    })
   }
 
 }) ;
