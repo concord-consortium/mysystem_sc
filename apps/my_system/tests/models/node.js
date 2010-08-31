@@ -19,7 +19,7 @@ test("test title from fixture", function() {
 
 test("test inLinks and outLinks from fixtures", function() {
   expect(2);
-  var node   = MySystem.store.find('MySystem.Node','1');
+  var node   = MySystem.store.find('MySystem.Node',1);
   var expectedOutLinks = 2;
   var expectedInLinks = 0;
   var foundOutlinks = node.get('outLinks').get('length');
@@ -41,14 +41,14 @@ test("test links computed param from fixtures", function() {
 
 test("test that computed 'links' are updated when inlinks or outlinks changes", function() {
   expect(1);
-  var nodeA   = MySystem.store.find('MySystem.Node','1');
-  var nodeB   = MySystem.store.find('MySystem.Node','2');
+  var nodeA   = MySystem.store.find('MySystem.Node',1);
+  var nodeB   = MySystem.store.find('MySystem.Node',2);
 
   var existingLinks = nodeA.get('links').get('length');
   var expectedLinks = existingLinks + 1;  
 
   var linkHash = {
-      guid: 'link3',
+      guid: MySystem.Link.newGuid(),
       text: 'third link'
     };
 

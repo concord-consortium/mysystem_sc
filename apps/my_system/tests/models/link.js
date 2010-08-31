@@ -22,18 +22,16 @@ test("New links should pass their own sanity checks", function() {
 
 test("Links should return the nodes they're linked to", function() {
   expect(2);
-  var newLink = MySystem.store.find('MySystem.Link','link3');
-  var nodeA   = MySystem.store.find('MySystem.Node','2');
+  var thisLink = MySystem.store.find('MySystem.Link','link2');
+  var nodeA   = MySystem.store.find('MySystem.Node','1');
   var nodeB   = MySystem.store.find('MySystem.Node','3');
-  newLink.set('startNode', nodeB);
-  newLink.set('endNode', nodeA);
-  equals(newLink.get('startNode'), nodeB, 'The link should return its start node');
-  equals(newLink.get('endNode'), nodeA, 'The link should return its end node');
+  equals(thisLink.get('startNode'), nodeA, 'The link should return its start node');
+  equals(thisLink.get('endNode'), nodeB, 'The link should return its end node');
 });
 
 test("Links should return LinkIt.Link objects when asked", function() {
   expect(4);
-  var newLink = MySystem.store.find('MySystem.Link', 'link3');
+  var newLink = MySystem.store.find('MySystem.Link', 'link1');
   var linkItLink = newLink.makeLinkItLink();
   equals(linkItLink.startNode, newLink.get('startNode'), "The LinkIt Link and MySystem Link should have the same start node");
   equals(linkItLink.endNode, newLink.get('endNode'), "The LinkIt Link and MySystem Link should have the same end node");
@@ -43,7 +41,7 @@ test("Links should return LinkIt.Link objects when asked", function() {
 
 test("Links should return an array of editable form fields when asked", function() {
   expect(2);
-  var newLink = MySystem.store.find("MySystem.Link", 'link3');
+  var newLink = MySystem.store.find("MySystem.Link", 'link1');
   var formFields = newLink.get('formFields');
   ok(isArray(formFields), "The formFields attribute should return an array");
   equals(formFields.length, 2, "Links should return two editable fields");
