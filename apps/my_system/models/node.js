@@ -35,12 +35,12 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     // fields: "image title".w(),
     // image: 
 		Forms.FormView.row(SC.TextFieldView, {
-      fieldKey: 'nodeImage',
+      fieldKey: 'image',
       fieldLabel: 'Image:'
     }),
     // title: 
 		Forms.FormView.row(SC.TextFieldView, {
-      fieldKey: 'nodeTitle',
+      fieldKey: 'title',
       fieldLabel: 'Title:'
     })
   ],
