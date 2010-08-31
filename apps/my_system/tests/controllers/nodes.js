@@ -59,9 +59,13 @@ test("Managing the selected array", function() {
 });
 
 test("Property editor pane comes and goes", function() {
-  expect(3);
+  expect(4);
   var nodes = MySystem.store.find(MySystem.Node);
   MySystem.nodesController.set('content', nodes);
+  if (MySystem.nodesController.get('allSelected').get('length') > 0) { // Deselect everything selected
+    MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
+  }
+  equals(MySystem.nodesController.get('allSelected').get('length'), 0, "No items are selected at first");
   ok(!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached, "Starts out with no property editor");
   MySystem.nodesController.selectObject(MySystem.nodesController.get('content').firstObject());
   ok(MySystem.getPath('mainPage.propertyViewPane').isPaneAttached, "With a selection property editor should be attached.");
