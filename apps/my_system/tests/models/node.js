@@ -35,7 +35,7 @@ test("test links computed param from fixtures", function() {
 });
 
 
-test ("test that computed 'links' are updated when inlinks or outlinks changes", function() {
+test("test that computed 'links' are updated when inlinks or outlinks changes", function() {
   expect(1);
   var nodeA   = MySystem.store.find('MySystem.Node','1');
   var nodeB   = MySystem.store.find('MySystem.Node','2');
