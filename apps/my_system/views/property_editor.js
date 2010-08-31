@@ -10,7 +10,7 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
     },
     classNames: 'node'.w(),
 
-    displayProperties: 'content isSelected'.w(),
+    displayProperties: 'objectToEdit isSelected'.w(),
     objectToEdit: null,
     isSelected: false,
 
@@ -31,15 +31,15 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
     //     classNames: ['name'],
     //     textAlign: SC.ALIGN_CENTER,
     //     value: 'Property Editor',
-    //     isEditable: NO
+    //     isEditable: NO,
     // }),
 
     enabledLabel: Forms.FormView.create({
       fields: "".w(),
       // title: Forms.FormView.row(SC.TextFieldView, {
-      // 	fieldKey: "title",
-      // 	fieldLabel: "Title:",
-      // 	value: "Initial title"
+      //  fieldKey: "title",
+      //  fieldLabel: "Title:",
+      //  value: "Initial title"
       // }),
       findField: function(key) {
         for (var i = 0; i < fields.length; i += 1) {
@@ -59,7 +59,7 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
         }
       } else {
         if (this.get('enabledLabel').parentView == null) {
-        	this.appendChild(this.getPath('enabledLabel'));
+          this.appendChild(this.getPath('enabledLabel'));
         }
         this.enabledLabel.set('fields', baseObject.formFields);
         for (i = 0; i < this.enabledLabel.fields.length; i += 1) {
@@ -71,28 +71,10 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
         }
       }
     }.observes('objectToEdit'),
-
+    
     fieldChanged: function(target, key, value, revision) {// note value will always be null
       field = target;
       newValue = field.get('value');
       this.get('objectToEdit').set(key, newValue);
     }
 });
-
-//     mouseDown: function(eventID) {
-//         SC.Logger.log("mouseDown called");
-//         var self = this;
-//         var dragOpts = {
-//             event: eventID,
-//             source: self.get('parentView'),
-//             dragView: self,
-//             ghost: NO,
-//             slideBack: NO,
-//             data: {
-//                 title: this.get('title') || 'title',
-//                 image: this.get('image') || 'image'
-//             }
-//         };
-//         SC.Drag.start(dragOpts);
-//     }
-// });
