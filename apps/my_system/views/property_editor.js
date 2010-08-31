@@ -29,31 +29,8 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
 
     childViews: ''.w(),
 
-    // render: function(context) {
-    //     sc_super();
-    //     if (this.get('isSelected')) context.addClass('selected');
-    // },
-
-    // label: SC.LabelView.design({
-    //     layout: {
-    //         top: 5,
-    //         centerX: 0,
-    //         width: 100,
-    //         height: 25
-    //     },
-    //     classNames: ['name'],
-    //     textAlign: SC.ALIGN_CENTER,
-    //     value: 'Property Editor',
-    //     isEditable: NO,
-    // }),
-
-    enabledLabel: Forms.FormView.create({
+    propertiesForm: Forms.FormView.create({
       fields: "".w(),
-      // title: Forms.FormView.row(SC.TextFieldView, {
-      //  fieldKey: "title",
-      //  fieldLabel: "Title:",
-      //  value: "Initial title"
-      // }),
       findField: function(key) {
         for (var i = 0; i < this.fields.length; i += 1) {
           if (this.fields[i].fieldKey == key) {
@@ -68,40 +45,28 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
       var baseObject = this.get('objectToEdit');
       if (baseObject === null) {
         // Clear fields
-        if (this.get('enabledLabel').parentView !== null) {
+        if (this.get('propertiesForm').parentView !== null) {
           SC.Logger.log("Clearing fields");
-          this.get('enabledLabel').set('fields', []);
-          this.get('enabledLabel').removeAllChildren();
+          this.get('propertiesForm').set('fields', []);
+          this.get('propertiesForm').removeAllChildren();
         }
       } else {
-        if (this.get('enabledLabel').parentView === null) {
-          this.appendChild(this.getPath('enabledLabel'));
+        // Add the form if it doesn't exist
+        if (this.get('propertiesForm').parentView === null) {
+          this.appendChild(this.getPath('propertiesForm'));
         }
-        this.enabledLabel.set('content', baseObject);
-        this.enabledLabel.set('fields', []);
-        this.get('enabledLabel').removeAllChildren();
-        // this.enabledLabel.set('childViews', []);
-        // this.enabledLabel.set('_display_fields', []);
+        this.get('propertiesForm').set('content', baseObject);
+        // Clear fields before we start
+        this.get('propertiesForm').set('fields', []);
+        this.get('propertiesForm').removeAllChildren();
+        // Add form rows
         for (var i = 0; i < baseObject.formFields.length; i += 1) {
           var field = baseObject.formFields[i];
-          SC.Logger.log(field);
-          // field.set('value', baseObject.get(field.key));
-          // field.value = baseObject.get(field.key);
-          //           SC.Logger.log(field);
-          //           SC.Logger.log(field.addObserver);
-          // for (var member in []) {
-          //  SC.Logger.log(member);
-          // }
-          // SC.Logger.log(field.design);
-          //           field.addObserver('value', this, 'fieldChanged');
-          this.enabledLabel.set('fields', this.enabledLabel.get('fields').concat(field));
-          SC.Logger.log(this.enabledLabel.get('fields'));
-          SC.Logger.log(this.enabledLabel.get('childViews'));
+          this.enabledLabel.set('fields', this.get('propertiesForm').get('fields').concat(field));
         }
-        // this.enabledLabel.fieldsDidChange();
       }
     }.observes('objectToEdit'),
-    
+
     fieldChanged: function(target, key, value, revision) {// note value will always be null
       var field = target;
       var newValue = field.get('value');
