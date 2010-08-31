@@ -7,7 +7,7 @@
 module("MySystem.Link");
 
 function isArray(testObject) {   
-    return testObject && !testObject.propertyIsEnumerable('length') && typeof testObject === 'object' && typeof testObject.length === 'number';
+  return testObject && !testObject.propertyIsEnumerable('length') && typeof testObject === 'object' && typeof testObject.length === 'number';
 }
 
 test("New links should pass their own sanity checks", function() {
