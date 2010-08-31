@@ -32,6 +32,7 @@
   border: 2px solid rgba(255, 255, 0, 255);
 }
 
+/* Nodes */
 .node {
   border: 1px solid rgba(0,0,0,.2);
   -moz-border-radius: 5px;
@@ -39,7 +40,6 @@
   -moz-box-shadow: 0px 4px 4px rgba(0,0,0,.1);
   -webkit-box-shadow: 0px 4px 4px rgba(0,0,0,.1);
 }
-/* Nodes */
 .node_content {
   border: 2px solid rgba(112, 255, 255, 0);
   background-color: #aaaaaa;
@@ -57,3 +57,16 @@
   -webkit-box-shadow: 0px 5px 5px rgba(0,0,0,.25);
 }
 
+/* Properties editor */
+.propertyEditor {
+  border: 1px solid rgba(0,0,0,.2);
+  background-color: #aaaaaa;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-box-shadow: 0px 4px 4px rgba(0,0,0,.1);
+  -webkit-box-shadow: 0px 4px 4px rgba(0,0,0,.1);
+}
+
+.propertyEditor>.sc-view {
+  margin: 5px;
+}

@@ -21,7 +21,7 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
         width: 250,
         height: 240
     },
-    classNames: 'node'.w(),
+    classNames: 'propertyEditor'.w(),
 
     displayProperties: 'objectToEdit isSelected'.w(),
     objectToEdit: null,
