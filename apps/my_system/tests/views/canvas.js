@@ -6,10 +6,10 @@
 
 module("MySystem.CanvasView");
 
-// TODO: Replace with real unit test for MySystem.CanvasView
-test("test description", function() {
-  var expected = "test";
-  var result   = "test";
-  equals(result, expected, "test should equal test");
-});
+var canvasView = MySystem.CanvasView.create();
 
+test("canvas was created", function() {
+  ok(canvasView !== null, "canvasView should not be null");
+	ok(canvasView.kindOf(MySystem.CanvasView), "canvasView should be a CanvasView.");
+	equals(canvasView.get('childViews').length, 0, "canvasView should not have any children.");
+});

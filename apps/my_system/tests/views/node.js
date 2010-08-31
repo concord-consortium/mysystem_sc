@@ -6,10 +6,12 @@
 
 module("MySystem.NodeView");
 
+var node = MySystem.NodeView.create();
+
 // TODO: Replace with real unit test for MySystem.NodeView
-test("test description", function() {
-  var expected = "test";
-  var result   = "test";
-  equals(result, expected, "test should equal test");
+test("Node was allocated.", function() {
+	ok(node !== null, "node is not null.");
+	ok(node.kindOf(MySystem.NodeView), "node is actually a NodeView");
+	ok(node.classNames.indexOf('node') != -1, "node has appropriate class.");
 });
 
