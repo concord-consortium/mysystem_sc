@@ -79,6 +79,7 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
         }
         this.enabledLabel.set('content', baseObject);
         this.enabledLabel.set('fields', []);
+        this.get('enabledLabel').removeAllChildren();
         // this.enabledLabel.set('childViews', []);
         // this.enabledLabel.set('_display_fields', []);
         for (var i = 0; i < baseObject.formFields.length; i += 1) {
