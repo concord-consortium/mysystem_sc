@@ -1,11 +1,24 @@
+// ==========================================================================
+// Project:   MySystem.PropertyEditorPane
+// Copyright: ©2010 Concord Consortium 
+// under the MIT License (see LICENSE file for more info)
+// ==========================================================================
+/*globals MySystem LinkIt SCUI Forms */
+
+/** @class
+
+  (Document Your View Here)
+
+  @extends SC.Pane
+*/
 sc_require('core');
 
 MySystem.PropertyEditorPane = SC.Pane.extend(
 {
     layout: {
-        top: 0,
+        top: 130,
         right: 0,
-        width: 200,
+        width: 250,
         height: 240
     },
     classNames: 'node'.w(),
@@ -45,7 +58,7 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
         for (var i = 0; i < this.fields.length; i += 1) {
           if (this.fields[i].fieldKey == key) {
             return this.fields[i];
-					}
+          }
         }
         return null;
       }
@@ -55,38 +68,38 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
       var baseObject = this.get('objectToEdit');
       if (baseObject === null) {
         if (this.get('enabledLabel').parentView !== null) {
-					SC.Logger.log("setting fields to []");
+          SC.Logger.log("setting fields to []");
           this.enabledLabel.set('fields', []);
           this.removeChild(this.getPath('enabledLabel'));
           // this.enabledLabel.set('_display_fields', []);
-					// this.enabledLabel.set('childViews', []);
-					// this.enabledLabel.fieldsDidChange();
+          // this.enabledLabel.set('childViews', []);
+          // this.enabledLabel.fieldsDidChange();
         }
       } else {
         if (this.get('enabledLabel').parentView === null) {
           this.appendChild(this.getPath('enabledLabel'));
         }
-				this.enabledLabel.set('content', baseObject);
+        this.enabledLabel.set('content', baseObject);
         this.enabledLabel.set('fields', []);
         // this.enabledLabel.set('childViews', []);
         // this.enabledLabel.set('_display_fields', []);
         for (var i = 0; i < baseObject.formFields.length; i += 1) {
           var field = baseObject.formFields[i];
-					SC.Logger.log(field);
-					// field.set('value', baseObject.get(field.key));
-					// field.value = baseObject.get(field.key);
-					//           SC.Logger.log(field);
-					//           SC.Logger.log(field.addObserver);
-					// for (var member in []) {
-					// 	SC.Logger.log(member);
-					// }
-					// SC.Logger.log(field.design);
-					//           field.addObserver('value', this, 'fieldChanged');
+          SC.Logger.log(field);
+          // field.set('value', baseObject.get(field.key));
+          // field.value = baseObject.get(field.key);
+          //           SC.Logger.log(field);
+          //           SC.Logger.log(field.addObserver);
+          // for (var member in []) {
+          //  SC.Logger.log(member);
+          // }
+          // SC.Logger.log(field.design);
+          //           field.addObserver('value', this, 'fieldChanged');
           this.enabledLabel.set('fields', this.enabledLabel.get('fields').concat(field));
-					SC.Logger.log(this.enabledLabel.get('fields'));
-					SC.Logger.log(this.enabledLabel.get('childViews'));
+          SC.Logger.log(this.enabledLabel.get('fields'));
+          SC.Logger.log(this.enabledLabel.get('childViews'));
         }
-				// this.enabledLabel.fieldsDidChange();
+        // this.enabledLabel.fieldsDidChange();
       }
     }.observes('objectToEdit'),
     
