@@ -67,13 +67,11 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
     update_everything: function() {
       var baseObject = this.get('objectToEdit');
       if (baseObject === null) {
+        // Clear fields
         if (this.get('enabledLabel').parentView !== null) {
-          SC.Logger.log("setting fields to []");
-          this.enabledLabel.set('fields', []);
-          this.removeChild(this.getPath('enabledLabel'));
-          // this.enabledLabel.set('_display_fields', []);
-          // this.enabledLabel.set('childViews', []);
-          // this.enabledLabel.fieldsDidChange();
+          SC.Logger.log("Clearing fields");
+          this.get('enabledLabel').set('fields', []);
+          this.get('enabledLabel').removeAllChildren();
         }
       } else {
         if (this.get('enabledLabel').parentView === null) {
