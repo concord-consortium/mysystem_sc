@@ -16,8 +16,8 @@ sc_require('core');
 MySystem.PropertyEditorPane = SC.Pane.extend(
 {
     layout: {
-        top: 130,
-        right: 0,
+        top: 135,
+        right: 5,
         width: 250,
         height: 240
     },
@@ -32,38 +32,38 @@ MySystem.PropertyEditorPane = SC.Pane.extend(
     propertiesForm: Forms.FormView.create({
       fields: "".w(),
       findField: function(key) {
-        for (var i = 0; i < this.fields.length; i += 1) {
-          if (this.fields[i].fieldKey == key) {
-            return this.fields[i];
+        var rightField = null;
+        this.fields.forEach( function (item, index, enumerable) {
+          if (item.get('fieldKey') == key) {
+            rightField = item;
           }
-        }
-        return null;
+        });
+        return rightField;
       }
     }),
 
     update_everything: function() {
+      var form = this.get('propertiesForm');
       var baseObject = this.get('objectToEdit');
       if (baseObject === null) {
         // Clear fields
-        if (this.get('propertiesForm').parentView !== null) {
-          SC.Logger.log("Clearing fields");
-          this.get('propertiesForm').set('fields', []);
-          this.get('propertiesForm').removeAllChildren();
+        if (form.parentView !== null) {
+          form.set('fields', []);
+          form.removeAllChildren();
         }
       } else {
         // Add the form if it doesn't exist
-        if (this.get('propertiesForm').parentView === null) {
-          this.appendChild(this.getPath('propertiesForm'));
+        if (form.parentView === null) {
+          this.appendChild(form);
         }
-        this.get('propertiesForm').set('content', baseObject);
+        form.set('content', baseObject);
         // Clear fields before we start
-        this.get('propertiesForm').set('fields', []);
-        this.get('propertiesForm').removeAllChildren();
-        // Add form rows
-        for (var i = 0; i < baseObject.formFields.length; i += 1) {
-          var field = baseObject.formFields[i];
-          this.enabledLabel.set('fields', this.get('propertiesForm').get('fields').concat(field));
-        }
+        form.set('fields', []);
+        form.removeAllChildren();
+        // Append form rows
+        baseObject.get('formFields').forEach( function (item, index, enumerable) {
+          form.set('fields', form.get('fields').concat(item));
+        });
       }
     }.observes('objectToEdit'),
 
