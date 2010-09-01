@@ -55,3 +55,13 @@ test("We should be able to generate a new GUID", function() {
   equals(typeof newGuid, 'string', "The newGuid function should return strings");
   ok((newGuid2 != newGuid), 'The second newGuid should not be the same as the first');
 });
+
+test("Link color should be editable and persistent in the store", function() {
+  expect(2);
+  var link1 = MySystem.store.find('MySystem.Link', 'link1');
+  var oldColor = link1.get('color');
+  link1.set('color', '#333333');
+  var newColor = link1.get('color');
+  ok((oldColor != newColor), "Color was changed");
+  equals(newColor, '#333333', "New color is dark grey #333");
+});
