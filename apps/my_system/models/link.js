@@ -97,12 +97,12 @@ MySystem.Link = SC.Record.extend(
   _textChanged: function() {
     SC.Logger.log('_textChanged!');
     this.invokeOnce(this._setLabel);
-  }.observes('text'),
+  }.observes('.text'),
   
   _colorChanged: function() {
     SC.Logger.log('_colorChanged!');
     this.invokeOnce(this._setLinkStyle);
-  }.observes('color'),
+  }.observes('.color'),
   
   _setLabel: function() {
     var newLabel = {
