@@ -113,6 +113,7 @@ MySystem.Link = SC.Record.extend(
       backgroundColor: "#ffffff"
     };
     this.set("label", newLabel);
+    this.get('startNode').notifyPropertyChange('links');
   },
   
   _setLinkStyle: function() {
@@ -123,6 +124,7 @@ MySystem.Link = SC.Record.extend(
       cap: LinkIt.ROUND
     };
     this.set("linkStyle", newLinkStyle);
+    this.get('startNode').notifyPropertyChange('links');
   }
 }) ;
 MySystem.Link.GuidCounter = 100;
