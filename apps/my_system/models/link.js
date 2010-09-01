@@ -2,7 +2,7 @@
 // Project:   MySystem.Link
 // Copyright: ©2010 My Concord Consrtium, Inc.
 // ==========================================================================
-/*globals MySystem LinkIt SC*/
+/*globals MySystem Forms LinkIt SC*/
 
 /** @class 
   
@@ -23,12 +23,19 @@ MySystem.Link = SC.Record.extend(
     inverse: 'inLinks'
   }),
 
+  linkStyle: {
+    lineStyle: LinkIt.VERTICAL_CURVED,
+    width: 3,
+    color: '#00ff00',
+    cap: LinkIt.ROUND
+  },
+
   label: {
     text: "label",
     fontSize: 12,
     fontFamily: 'sans-serif',
     fontStyle: 'normal',
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#ffffff"
   },
   
   startTerminal: SC.Record.attr(String),
@@ -75,19 +82,27 @@ MySystem.Link = SC.Record.extend(
   
   makeLinkItLink: function() {
     var tempHash = {};
+    this._setLabel();
+    this._setLinkStyle();
     tempHash.startNode = this.get('startNode');
     tempHash.startTerminal = this.get('startTerminal');
     tempHash.endNode = this.get('endNode');
     tempHash.endTerminal = this.get('endTerminal');
-    tempHash.label = SC.clone(this.get('label'));
+    tempHash.label = this.get('label');
+    tempHash.linkStyle = this.get('linkStyle');
     tempHash.model = this; // reference back to this
     return SC.Object.create( LinkIt.Link, tempHash);
   },
   
   _textChanged: function() {
-    //SC.Logger.log('_textChanged!');
+    SC.Logger.log('_textChanged!');
     this.invokeOnce(this._setLabel);
-  }.observes('.text'),
+  }.observes('text'),
+  
+  _colorChanged: function() {
+    SC.Logger.log('_colorChanged!');
+    this.invokeOnce(this._setLinkStyle);
+  }.observes('color'),
   
   _setLabel: function() {
     var newLabel = {
@@ -95,11 +110,20 @@ MySystem.Link = SC.Record.extend(
       fontSize: 12,
       fontFamily: 'sans-serif',
       fontStyle: 'normal',
-      backgroundColor: "#FF0000"
+      backgroundColor: "#ffffff"
     };
     this.set("label", newLabel);
-  }
+  },
   
+  _setLinkStyle: function() {
+    var newLinkStyle = {
+      lineStyle: LinkIt.VERTICAL_CURVED,
+      width: 3,
+      color: this.get('color'),
+      cap: LinkIt.ROUND
+    };
+    this.set("linkStyle", newLinkStyle);
+  }
 }) ;
 MySystem.Link.GuidCounter = 100;
 MySystem.Link.newGuid = function() { return "link" + MySystem.Link.GuidCounter++;};

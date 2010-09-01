@@ -2,7 +2,7 @@
 // Project:   MySystem.Node
 // Copyright: ©2010 My Company, Inc.
 // ==========================================================================
-/*globals MySystem LinkIt */
+/*globals MySystem LinkIt Forms */
 
 /** @class
 
@@ -157,8 +157,6 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     }
     // add only completed links (both sides are mapped)
     if(sn && st && en && et) {
-      tmpHash.text =  'label me';
-      tmpHash.color = 'default color';
 
       var guid = MySystem.Link.newGuid();
       tmpHash.guid = guid;
