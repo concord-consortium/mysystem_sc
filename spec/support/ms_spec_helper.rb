@@ -12,8 +12,8 @@ include MySystem::Views
 ProxyFactory.proxy NodeView
 ProxyFactory.proxy AddButtonView
 
-TEST_PORT =  ENV[:TEST_PORT] || 4022;
-SELENIUM_PORT = ENV[:SELENIUM_PORT] || 4244;
+TEST_PORT =  ENV[:TEST_PORT.to_s] || 4022;
+SELENIUM_PORT = ENV[:SELENIUM_PORT.to_s] || 4244;
 TEST_SETTINGS = {
   :app_root_path => "/my_system",
   :app_name => "MySystem",
