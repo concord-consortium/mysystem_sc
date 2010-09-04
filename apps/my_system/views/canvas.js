@@ -13,7 +13,7 @@
 sc_require('MySystem.NodeView');
 sc_require('LinkIt.CanvasView');
 sc_require('core');
-MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, SC.DropTarget, { 
+MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, { 
     isDropTarget: YES,
     computeDragOperations: function(drag, evt) { return SC.DRAG_COPY; },
     performDragOperation: function(drag, op) { 
