@@ -23,13 +23,37 @@ MySystem.Link = SC.Record.extend(
     inverse: 'inLinks'
   }),
 
+  // Parameters for LinkIt:Link styles:
+  //   lineStyle, one of:
+      // LinkIt.HORIZONTAL_CURVED
+      // LinkIt.VERTICAL_CURVED
+      // LinkIt.STRAIGHT (default)
+  //   width (in pixels, 3 by default)
+  //   color (HTML RGB color, '#ADD8E6' by default)
+  //   cap, (an un-arrowed line end) one of:
+      // LinkIt.ROUND (default)
+  //   arrows, one of:
+      // LinkIt.ARROW_END (default)
+      // LinkIt.ARROW_START
+      // LinkIt.ARROW_BOTH
+      // LinkIt.ARROW_NONE
+  //   arrowAngle (the width of the arrow "tip", 40 degress by default)
+  //   arrowLength (the length of the arrowhead, 5px by default)
   linkStyle: {
     lineStyle: LinkIt.VERTICAL_CURVED,
     width: 3,
     color: '#00ff00',
-    cap: LinkIt.ROUND
+    cap: LinkIt.ROUND,
+    arrows: LinkIt.ARROW_END
   },
 
+  // Parameters for LinkIt:Link labels:
+  //   text
+  //   fontSize
+  //   fontFamily
+  //   fontStyle
+  //   backgroundColor
+  //   padding
   label: {
     text: "label",
     fontSize: 12,
@@ -118,10 +142,11 @@ MySystem.Link = SC.Record.extend(
   
   _setLinkStyle: function() {
     var newLinkStyle = {
-      lineStyle: LinkIt.VERTICAL_CURVED,
-      width: 3,
+      lineStyle: this.get('linkStyle').lineStyle,
+      width: this.get('linkStyle').width,
       color: this.get('color'),
-      cap: LinkIt.ROUND
+      cap: this.get('linkStyle').cap,
+      arrows: this.get('linkStyle').arrows
     };
     this.set("linkStyle", newLinkStyle);
     this.get('startNode').notifyPropertyChange('links');
