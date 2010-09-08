@@ -121,11 +121,15 @@ MySystem.Link = SC.Record.extend(
   _textChanged: function() {
     SC.Logger.log('_textChanged!');
     this.invokeOnce(this._setLabel);
+    this.get('startNode').notifyPropertyChange('links');
+    this.get('endNode').notifyPropertyChange('links');
   }.observes('.text'),
   
   _colorChanged: function() {
     SC.Logger.log('_colorChanged!');
     this.invokeOnce(this._setLinkStyle);
+    this.get('startNode').notifyPropertyChange('links');
+    this.get('endNode').notifyPropertyChange('links');
   }.observes('.color'),
   
   _setLabel: function() {
@@ -137,7 +141,6 @@ MySystem.Link = SC.Record.extend(
       backgroundColor: "#ffffff"
     };
     this.set("label", newLabel);
-    this.get('startNode').notifyPropertyChange('links');
   },
   
   _setLinkStyle: function() {
@@ -149,7 +152,6 @@ MySystem.Link = SC.Record.extend(
       arrows: this.get('linkStyle').arrows
     };
     this.set("linkStyle", newLinkStyle);
-    this.get('startNode').notifyPropertyChange('links');
   }
 }) ;
 MySystem.Link.GuidCounter = 100;
