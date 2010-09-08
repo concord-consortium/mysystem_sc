@@ -133,5 +133,11 @@ describe "MySystem" do
     @canvas.nodes[3].layout.left.should be 173 # 300 minus the 127 of the palette view
   end
 
+  it "will select a node, which will be deselected on creation of a new node" do
+    @node_0.click
+    @node_0.should be_selected
+    @add_bulb.drag_in_canvas(150, 180)
+    @node_0.should_not be_selected
+  end
 end
 

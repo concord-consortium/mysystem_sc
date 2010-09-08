@@ -28,6 +28,7 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
       //( title, image, xPos, yPos )
       SC.Logger.log("drag performed");
       MySystem.nodesController.addNode(title, image, xpos - offsetX - gX, ypos - offsetY - gY);
+      MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
       return SC.DRAG_COPY; 
     }
 });
