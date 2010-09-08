@@ -48,21 +48,22 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
 
   propertyWindowSelection: function() {
     var selection = MySystem.nodesController.get('allSelected');
+    var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');
     if (selection.length() === 0) {
-      if (MySystem.getPath('mainPage.propertyViewPane').isPaneAttached) {
-        MySystem.getPath('mainPage.propertyViewPane').remove();
+      if (propertyEditor.isPaneAttached) {
+        propertyEditor.remove();
       }
-      MySystem.getPath('mainPage.propertyViewPane').set('objectToEdit', null);
+      propertyEditor.set('objectToEdit', null);
     } else if (selection.length() == 1) {
-      if (!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached) {
-        MySystem.getPath('mainPage.propertyViewPane').append();
+      if (!propertyEditor.isPaneAttached) {
+        propertyEditor.append();
       }
-      MySystem.getPath('mainPage.propertyViewPane').set('objectToEdit', selection.firstObject());
+      propertyEditor.set('objectToEdit', selection.firstObject());
     } else {
-      if (!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached) {
-        MySystem.getPath('mainPage.propertyViewPane').append();
+      if (!propertyEditor.isPaneAttached) {
+        propertyEditor.append();
       }
-      MySystem.getPath('mainPage.propertyViewPane').set('objectToEdit', null);
+      propertyEditor.set('objectToEdit', null);
     }
   }.observes('allSelected'),
 
