@@ -47,15 +47,25 @@ test("Deleting nodes on-canvas", function() {
 });
 
 test("Managing the selected array", function() {
-  expect(1);
+  expect(2);
   var oldSelected = MySystem.nodesController.get('allSelected').get('length');
+  equals(oldSelected, 0, "No items are selected at first");
   MySystem.nodesController.selectObject(MySystem.nodesController.get('content').firstObject());
   var newSelected = MySystem.nodesController.get('allSelected').get('length');
-  equals(newSelected,oldSelected+1,"Another item is selected");
+  equals(newSelected,oldSelected+1,"One item is selected");
   // Testing link selection isn't easy for QUnit at this point
   // MySystem.nodesController.linkSelected = MySystem.store.find('MySystem.Link', 'link1');
   // newSelected = MySystem.nodesController.get('allSelected').get('length');
   // equals(newSelected,oldSelected+2,"A node and a link are selected");
+});
+
+test("Multi-select is disabled", function() {
+  expect(2);
+  var firstNode = MySystem.nodesController.get('content').firstObject();
+  MySystem.nodesController.selectObject(firstNode);
+  equals(MySystem.nodesController.get('allSelected').get('length'), 1, "Only one node should be selected");
+  MySystem.nodesController.selectObject(MySystem.nodesController.get('content').nextObject(1, firstNode));
+  equals(MySystem.nodesController.get('allSelected').get('length'), 1, "Only one node should be selected");
 });
 
 test("Property editor pane comes and goes", function() {

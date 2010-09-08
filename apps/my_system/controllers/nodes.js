@@ -13,7 +13,9 @@
 MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate, 
 /** @scope MySystem.nodesController.prototype */ {
   linkSelection: null,
-  
+
+  allowsMultipleSelection: NO,
+
   allSelected: function() {
     var link  = this.get('linkSelection');
     var resultSet = this.get('selection').clone();   

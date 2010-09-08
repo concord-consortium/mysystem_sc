@@ -58,6 +58,16 @@ describe "MySystem" do
     end
   end
 
+  it "will click one node, then shift-click a second nodes" do
+    @node_0.click
+    @node_0.should be_selected
+    @node_1.key_down(:shift)
+    @node_1.click
+    @node_1.key_up(:shift)
+    @node_1.should be_selected
+    @node_0.should_not be_selected
+  end
+
   it "will drag the first node to coordinates (400, 150)" do
     @node_0.drag_in_canvas(400, 150)
     @node_0.layout.top.should be 150
