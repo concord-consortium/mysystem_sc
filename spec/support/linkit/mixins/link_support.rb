@@ -25,6 +25,14 @@ module Lebowski
           return self['endTerminal']
         end
         
+        def start_control_point
+          return { :x => self['_startControlPt'].x, :y => self['_startControlPt'].y }
+        end
+        
+        def end_control_point
+          return { :x => self['_endControlPt'].x, :y => self['_endControlPt'].y }
+        end
+        
       end
    
     end

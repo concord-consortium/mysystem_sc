@@ -4,6 +4,7 @@ require 'lebowski'
 dir = File.dirname(__FILE__) 
 Dir.glob(dir + '/linkit/**/*.rb') {|file| require file}
 Dir.glob(dir + '/*_view.rb') {|viewfile| require viewfile}
+require dir + '/link.rb'
 
 include Lebowski::Foundation
 include Lebowski::SCUI::Views
@@ -11,6 +12,7 @@ include MySystem::Views
 
 ProxyFactory.proxy NodeView
 ProxyFactory.proxy AddButtonView
+ProxyFactory.proxy Link
 
 TEST_PORT =  ENV[:TEST_PORT.to_s] || 4022;
 SELENIUM_PORT = ENV[:SELENIUM_PORT.to_s] || 4244;

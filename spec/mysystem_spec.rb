@@ -48,7 +48,7 @@ describe "MySystem" do
   end
   
   it "will have at least 2 links loaded from the fixtures" do
-    @canvas.links.count.should be 4 # Apparently the link array is *2?
+    @canvas.links.count.should be 4 # Apparently the link array is *2
   end
 
   it "will click each of the nodes, one by one" do
@@ -97,11 +97,13 @@ describe "MySystem" do
     @node_2.should_not be_linked_to 1
   end
   
+  # If we can get the _endControlPt values of the links, which are the inflection points
+  # of the curves, we could click at that point and know we're clicking the link.
   it "will click each link, one by one" do
-  #   @canvas.links.each do |link|
-  #     link.click
-  #     link.should be_selected
-  #   end
+    # @canvas.links.each do |link|
+    #   link.click_at(link.end_control_point[:x], link.end_control_point[:y])
+    #   link.should be_selected
+    # end
   end
   # The "click" action here appears to get pretty deep in LinkIt, deeper
   # than I've been able to get with Lebowski so far, so this is commented
