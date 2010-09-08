@@ -46,28 +46,28 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     return YES;
   },
 
-	propertyWindowSelection: function() {
-		selection = MySystem.nodesController.get('allSelected');
-		if (selection.length() == 0) {
-			if (MySystem.getPath('mainPage.propertyViewPane').isPaneAttached) {
-				MySystem.getPath('mainPage.propertyViewPane').remove();
-			}
-			MySystem.getPath('mainPage.propertyViewPane').set('objectToEdit', null);
-		} else if (selection.length() == 1) {
-			if (!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached) {
-				MySystem.getPath('mainPage.propertyViewPane').append();
-			}
-			MySystem.getPath('mainPage.propertyViewPane').set('objectToEdit', selection.firstObject());
-		} else {
-			if (!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached) {
-				MySystem.getPath('mainPage.propertyViewPane').append();
-			}
-			MySystem.getPath('mainPage.propertyViewPane').set('objectToEdit', null);
-		}
-	}.observes('allSelected'),
+  propertyWindowSelection: function() {
+    var selection = MySystem.nodesController.get('allSelected');
+    if (selection.length() === 0) {
+      if (MySystem.getPath('mainPage.propertyViewPane').isPaneAttached) {
+        MySystem.getPath('mainPage.propertyViewPane').remove();
+      }
+      MySystem.getPath('mainPage.propertyViewPane').set('objectToEdit', null);
+    } else if (selection.length() == 1) {
+      if (!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached) {
+        MySystem.getPath('mainPage.propertyViewPane').append();
+      }
+      MySystem.getPath('mainPage.propertyViewPane').set('objectToEdit', selection.firstObject());
+    } else {
+      if (!MySystem.getPath('mainPage.propertyViewPane').isPaneAttached) {
+        MySystem.getPath('mainPage.propertyViewPane').append();
+      }
+      MySystem.getPath('mainPage.propertyViewPane').set('objectToEdit', null);
+    }
+  }.observes('allSelected'),
 
   showAlert: function() {
-		MySystem.nodesController.showTextAlert("Pretend I'm a property editor");
+    MySystem.nodesController.showTextAlert("Pretend I'm a property editor");
   },
 
   showTextAlert: function(text) {
