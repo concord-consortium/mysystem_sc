@@ -2,7 +2,7 @@
 // Project:   MySystem Unit Test
 // Copyright: ©2010 My Company, Inc.
 // ==========================================================================
-/*globals MySystem module test ok equals same stop start */
+/*globals MySystem Forms module test ok equals same stop start */
 
 module("MySystem.PropertyEditorPane");
 
@@ -16,7 +16,7 @@ test("Edit pane was created", function() {
 });
 
 test("Edit pane with a node", function() {
-  expect();
+  expect(3);
   var node = MySystem.store.find('MySystem.Node', 1);
   propEdit.set('objectToEdit', node);
   same(propEdit.get('objectToEdit'), node, "propEdit should be editing the node");
@@ -25,11 +25,12 @@ test("Edit pane with a node", function() {
 });
 
 test("Edit pane with a link", function() {
-  expect();
+  expect(4);
   var link = MySystem.store.find('MySystem.Link', 'link1');
   propEdit.set('objectToEdit', link);
   same(propEdit.get('objectToEdit'), link, "propEdit should be editing the link");
   ok(propEdit.get('childViews').get('length') > 0, "propEdit should have children");
   equals(propEdit.get('childViews').firstObject().get('childViews').firstObject().get('fieldLabel'), 'Color:', "First field should be labeled Color");
+  ok(propEdit.get('childViews').firstObject().kindOf(Forms.FormRadioField), "First field should be a radio button");
 });
 
