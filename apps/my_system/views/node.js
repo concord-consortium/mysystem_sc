@@ -93,10 +93,8 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   /** 
   * implement action behavior of see sproutcore/desktop/view/button
   */
-  doubleClick: function(evt, skipHoldRepeat) {
-      this._runAction(evt);
-  }
-
-
+  // doubleClick: function(evt, skipHoldRepeat) {
+  //     this._runAction(evt);
+  // }
 
 });
