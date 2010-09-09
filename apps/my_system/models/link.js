@@ -69,9 +69,16 @@ MySystem.Link = SC.Record.extend(
   formFields: [
     // fields: "color text".w(),
     // color: 
-    Forms.FormView.row(SC.TextFieldView, {
+    Forms.FormView.row(SC.RadioView, {
       fieldKey: "color",
-      fieldLabel: "Color:"
+      fieldLabel: "Color:",
+      items: [{ title: "Red", value: 'red', enabled: YES },
+              { title: "Green", value: 'green', enabled: YES },
+              { title: "Blue", value: 'blue', enabled: YES }],
+      value: this.color,
+      itemTitleKey: 'title',
+      itemValueKey: 'value',
+      layoutDirection: SC.LAYOUT_VERTICAL
     }),
     //text: 
     Forms.FormView.row(SC.TextFieldView, {
