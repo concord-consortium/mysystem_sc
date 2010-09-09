@@ -14,8 +14,6 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
 /** @scope MySystem.nodesController.prototype */ {
   linkSelection: null,
 
-  allowsMultipleSelection: NO,
-
   allSelected: function() {
     var link  = this.get('linkSelection');
     var resultSet = this.get('selection').clone();   
@@ -32,6 +30,16 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     }, this);
 
     recordsToDestroy.invoke('destroy');
+  },
+
+  collectionViewSelectionForProposedSelection: function(view, sel) {
+    // Is this a shift-click?
+    if (view.get('mouseDownInfo') && view.get('mouseDownInfo').event.shiftKey) {
+      return null ; // No change to selection
+    }
+    else {
+      return sel ;
+    }
   },
 
   addNode: function ( title, image, xPos, yPos ) {
