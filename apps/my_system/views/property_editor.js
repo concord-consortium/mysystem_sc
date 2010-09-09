@@ -13,7 +13,7 @@
 */
 sc_require('core');
 
-MySystem.PropertyEditorPane = SC.Pane.extend(
+MySystem.PropertyEditorPane = SC.PalettePane.extend(
 {
     layout: {
         top: 135,
