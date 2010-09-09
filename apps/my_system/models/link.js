@@ -69,12 +69,12 @@ MySystem.Link = SC.Record.extend(
   formFields: [
     // fields: "color text".w(),
     // color: 
-		Forms.FormView.row(SC.TextFieldView, {
+    Forms.FormView.row(SC.TextFieldView, {
       fieldKey: "color",
       fieldLabel: "Color:"
     }),
     //text: 
-		Forms.FormView.row(SC.TextFieldView, {
+    Forms.FormView.row(SC.TextFieldView, {
       fieldKey: "text",
       fieldLabel: "Label:"
     })
