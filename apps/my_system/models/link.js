@@ -9,6 +9,9 @@
   @extends SC.Record
   @version 0.1
 */
+
+require('views/improved_radio.js');
+
 MySystem.Link = SC.Record.extend(
 
 /** @scope MySystem.Link.prototype */ {
@@ -69,15 +72,16 @@ MySystem.Link = SC.Record.extend(
   formFields: [
     // fields: "color text".w(),
     // color: 
-    Forms.FormView.row(SC.RadioView, {
+    // Forms.FormView.row(SC.RadioView, {
+    Forms.FormView.row(MySystem.ImprovedRadioView, {
       fieldKey: "color",
       fieldLabel: "Color:",
       items: [{ title: "Red", value: 'red', enabled: YES },
               { title: "Green", value: 'green', enabled: YES },
               { title: "Blue", value: 'blue', enabled: YES }],
-      value: this.color,
       itemTitleKey: 'title',
       itemValueKey: 'value',
+			itemIsEnabledKey: 'enabled',
       layoutDirection: SC.LAYOUT_VERTICAL
     }),
     //text: 

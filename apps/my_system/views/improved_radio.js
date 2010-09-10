@@ -222,9 +222,11 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
         disabled = (!item[2]) || (!this.get('isEnabled')) ? 'disabled="disabled" ' : '';
         
         labelText = this.escapeHTML ? SC.RenderContext.escapeHTML(item[0]) : item[0];
-        
+
+				checked = !isArray && value === item[1] ? 'checked="checked"' : '';
+
         context.push('<label class="sc-radio-button ', selectionStateClassNames, '">');
-        context.push('<input type="radio" value="', idx, '" name="', name, '" ', disabled, '/>');
+        context.push('<input type="radio" value="', idx, '" name="', name, '" ', disabled, ' ', checked, '/>');
         context.push('<span class="button"></span>');
         context.push('<span class="sc-button-label">', icon, labelText, '</span></label>');
       }
@@ -383,3 +385,4 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
   }
 
 });
+Forms.FormFieldView.registerSpecialization(MySystem.ImprovedRadioView, Forms.FormRadioView);
