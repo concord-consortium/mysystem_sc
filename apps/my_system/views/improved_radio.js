@@ -5,6 +5,7 @@
 //            Portions ©2008-2009 Apple Inc. All rights reserved.
 // License:   Licened under MIT license (see license.js)
 // ==========================================================================
+/*globals MySystem Forms */
 
 /** @class
 
@@ -223,7 +224,7 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
         
         labelText = this.escapeHTML ? SC.RenderContext.escapeHTML(item[0]) : item[0];
 
-				checked = !isArray && value === item[1] ? 'checked="checked"' : '';
+        var checked = !isArray && value === item[1] ? 'checked="checked"' : '';
 
         context.push('<label class="sc-radio-button ', selectionStateClassNames, '">');
         context.push('<input type="radio" value="', idx, '" name="', name, '" ', disabled, ' ', checked, '/>');
