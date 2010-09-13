@@ -66,7 +66,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     classNames: 'input terminal'.w(),
     nodeBinding: '.parentView*content',
     terminal: 'a',
-    linkClass: MySystem.Link
+    linkClass: 'MySystem.Link'
     // direction: LinkIt.INPUT_TERMINAL
   }),
   
@@ -75,7 +75,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     classNames: 'output terminal'.w(),
     nodeBinding: '.parentView*content',
     terminal: 'b',
-    linkClass: MySystem.Link
+    linkClass: 'MySystem.Link'
     // direction: LinkIt.OUTPUT_TERMINAL
   }),
 
@@ -87,7 +87,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   */
   terminalViewFor: function (terminalKey) {
     return this[terminalKey + 'Terminal'];
-  },
+  }
 
   
   /** 

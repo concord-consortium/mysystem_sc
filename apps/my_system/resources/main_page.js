@@ -54,15 +54,32 @@ MySystem.mainPage = SC.Page.design({
       bottomRightView: SC.SplitView.design({ // Rest of app (right)
         defaultThickness: 120,
         layoutDirection: SC.LAYOUT_VERTICAL,
-        topLeftView: SC.LabelView.design({ // Story section
-          layout: { top: 0, right: 0, left: 0 },
-          anchorLocation: SC.ANCHOR_TOP,
-          textAlign: SC.ALIGN_LEFT,
-          backgroundColor: '#CCCCFF',
-          tagName: "div",
-          escapeHTML: NO,
-          valueBinding: 'MySystem.storyController.content.storyHtml',
-          canCollapse: YES
+        topLeftView: SC.SplitView.design({ // Story section
+          layoutDirection: SC.LAYOUT_HORIZONTAL,
+          topLeftView: SC.LabelView.design({ // Assignment story
+            layout: { top: 0, right: 0, left: 0 },
+            anchorLocation: SC.ANCHOR_TOP,
+            textAlign: SC.ALIGN_LEFT,
+            backgroundColor: '#CCCCFF',
+            tagName: "div",
+            escapeHTML: NO,
+            valueBinding: 'MySystem.storyController.content.storyHtml',
+            canCollapse: YES
+          }),
+          dividerView: SC.SplitDividerView, // Divider for resizing up/down
+          bottomRightView: SC.ScrollView.design({
+            hasHorizontalScroller: NO,
+            layout: { top: 36, bottom: 32, left: 0, right: 0 },
+            backgroundColor: 'white',
+            contentView: SC.ListView.design({
+              contentBinding: 'MySystem.storySentenceController.arrangedObjects',
+              selectionBinding: 'MySystem.storySentenceController.selection',
+              contentValueKey: "bodyText",
+              rowHeight: 20,
+              canEditContent: YES,
+              canDeleteContent: YES
+            })
+          })
         }),
         dividerView: SC.SplitDividerView, // Divider for resizing up/down
         bottomRightView: MySystem.CanvasView.design({
