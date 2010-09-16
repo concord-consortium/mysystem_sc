@@ -15,7 +15,7 @@ sc_require('core');
 
 MySystem.PropertyEditorPane = SC.PalettePane.extend(
 {
-	acceptsFirstResponder: YES,
+  acceptsFirstResponder: YES,
     layout: {
         top: 135,
         right: 5,
@@ -74,17 +74,17 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
       this.get('objectToEdit').set(key, newValue);
     },
 
-		keyDown: function(evt) {
-			return this.interpretKeyEvents(evt) ? YES : NO;
-		},
+    keyDown: function(evt) {
+      return this.interpretKeyEvents(evt) ? YES : NO;
+    },
 
-		deleteBackward: function() {
-			this.get('objectToEdit').destroy();
-			return YES;
-		},
-		
-		deleteForward: function() {
-			this.get('objectToEdit').destroy();
-			return YES;
-		}
+    deleteBackward: function() {
+      this.get('objectToEdit').destroy();
+      return YES;
+    },
+
+    deleteForward: function() {
+      this.get('objectToEdit').destroy();
+      return YES;
+    }
 });

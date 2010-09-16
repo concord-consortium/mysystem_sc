@@ -106,7 +106,7 @@ MySystem.mainPage = SC.Page.design({
       })
     })
   }),
-	
-	propertyViewPane: MySystem.PropertyEditorPane.design({})
+
+  propertyViewPane: MySystem.PropertyEditorPane.design({})
 
 });

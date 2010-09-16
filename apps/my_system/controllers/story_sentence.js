@@ -24,6 +24,8 @@ MySystem.storySentenceController = SC.ArrayController.create(
     var selIndex = indexes.get('min')-1;
     if (selIndex<0) selIndex = 0;
     this.selectObject(this.objectAt(selIndex));
+
+    return YES ;
   },
 
   addStorySentence: function() {
@@ -46,6 +48,6 @@ MySystem.storySentenceController = SC.ArrayController.create(
       listItem.beginEditing();
     });
 
-    return YES;
+    return YES ;
   }
 }) ;
