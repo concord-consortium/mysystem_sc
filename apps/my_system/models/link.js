@@ -26,6 +26,10 @@ MySystem.Link = SC.Record.extend(
     inverse: 'inLinks'
   }),
 
+  sentences: SC.Record.toMany('MySystem.StorySentence', {
+    inverse: 'links', isMaster: NO
+  }),
+
   // Parameters for LinkIt:Link styles:
   //   lineStyle, one of:
       // LinkIt.HORIZONTAL_CURVED

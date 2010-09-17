@@ -28,6 +28,20 @@ test("test inLinks and outLinks from fixtures", function() {
   equals(foundInLinks, expectedInLinks, "There should be "+ expectedInLinks +" inLinks");
 });
 
+test("tests connecting nodes to storySentences", function () {
+  expect(3);
+  var node   = MySystem.store.find('MySystem.Node',1);
+  var sent   = MySystem.store.find('MySystem.StorySentence', 'ss1');
+  var originalNodeConnections = node.get('sentences').get('length');
+  var expectedNodeConnections = originalNodeConnections + 1;
+  var originalSentenceConnections = sent.get('nodes').get('length');
+  var expectedSentenceConnections = originalSentenceConnections + 1;
+  sent.get('nodes').pushObject(node);
+  equals(sent.get('nodes').get('length'), expectedSentenceConnections, "There should be " + expectedSentenceConnections + " node(s) associated with the sentence.");
+  equals(node.get('sentences').get('length'), expectedNodeConnections, "There should be " + expectedNodeConnections + " sentence(s) associated with the node.");
+  equals(sent.get('diagramObjects').get('length'), sent.get('nodes').get('length') + sent.get('links').get('length'), "The sentence's diagramObjects should equal the sum of the links and nodes.");
+});
+
 test("test links computed param from fixtures", function() {
   expect(1);
   var node   = MySystem.store.find('MySystem.Node','1');

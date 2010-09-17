@@ -28,18 +28,22 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     isMaster: YES
   }),
   
+  sentences: SC.Record.toMany('MySystem.StorySentence', {
+    inverse: 'nodes', isMaster: NO
+  }),
+
   terminals: ['a', 'b'],
-  
+
   // return a hash of editable attributes for the property editor
   formFields: [
     // fields: "image title".w(),
     // image: 
-		Forms.FormView.row(SC.TextFieldView, {
+    Forms.FormView.row(SC.TextFieldView, {
       fieldKey: 'image',
       fieldLabel: 'Image:'
     }),
     // title: 
-		Forms.FormView.row(SC.TextFieldView, {
+    Forms.FormView.row(SC.TextFieldView, {
       fieldKey: 'title',
       fieldLabel: 'Title:'
     })

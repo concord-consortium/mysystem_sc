@@ -65,3 +65,17 @@ test("Link color should be editable and persistent in the store", function() {
   ok((oldColor != newColor), "Color was changed");
   equals(newColor, '#333333', "New color is dark grey #333");
 });
+
+test("tests connecting links to storySentences", function () {
+  expect(3);
+  var link1 = MySystem.store.find('MySystem.Link', 'link1');
+  var sent = MySystem.store.find('MySystem.StorySentence', 'ss1');
+  var originalLinkConnections = link1.get('sentences').get('length');
+  var expectedLinkConnections = originalLinkConnections + 1;
+  var originalSentenceConnections = sent.get('links').get('length');
+  var expectedSentenceConnections = originalSentenceConnections + 1;
+  sent.get('links').pushObject(link1);
+  equals(sent.get('links').get('length'), expectedSentenceConnections, "There should be " + expectedSentenceConnections + " node(s) associated with the sentence.");
+  equals(link1.get('sentences').get('length'), expectedLinkConnections, "There should be " + expectedLinkConnections + " sentence(s) associated with the node.");
+  equals(sent.get('diagramObjects').get('length'), sent.get('nodes').get('length') + sent.get('links').get('length'), "The sentence's diagramObjects should equal the sum of the links and nodes.");
+});
