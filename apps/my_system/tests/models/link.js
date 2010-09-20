@@ -13,8 +13,8 @@ function isArray(testObject) {
 test("New links should pass their own sanity checks", function() {
   expect(1);
   var linkHash = {
-      guid: 'link3',
-      text: 'third link'
+      guid: MySystem.Link.newGuid(),
+      text: 'Test link for sanity check'
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   ok(newLink.isComplete, "The isComplete method should return true");
@@ -22,16 +22,26 @@ test("New links should pass their own sanity checks", function() {
 
 test("Links should return the nodes they're linked to", function() {
   expect(2);
-  var thisLink = MySystem.store.find('MySystem.Link','link2');
+  var linkHash = {
+      guid: MySystem.Link.newGuid(),
+      text: 'Test link for node returning'
+    };
+  var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var nodeA   = MySystem.store.find('MySystem.Node','1');
   var nodeB   = MySystem.store.find('MySystem.Node','3');
-  equals(thisLink.get('startNode'), nodeA, 'The link should return its start node');
-  equals(thisLink.get('endNode'), nodeB, 'The link should return its end node');
+  newLink.set('startNode', nodeA);
+  newLink.set('endNode', nodeB);
+  equals(newLink.get('startNode'), nodeA, 'The link should return its start node');
+  equals(newLink.get('endNode'), nodeB, 'The link should return its end node');
 });
 
 test("Links should return LinkIt.Link objects when asked", function() {
   expect(4);
-  var newLink = MySystem.store.find('MySystem.Link', 'link1');
+  var linkHash = {
+      guid: MySystem.Link.newGuid(),
+      text: 'Test link for LinkIt Links'
+    };
+  var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var linkItLink = newLink.makeLinkItLink();
   equals(linkItLink.startNode, newLink.get('startNode'), "The LinkIt Link and MySystem Link should have the same start node");
   equals(linkItLink.endNode, newLink.get('endNode'), "The LinkIt Link and MySystem Link should have the same end node");
@@ -41,7 +51,11 @@ test("Links should return LinkIt.Link objects when asked", function() {
 
 test("Links should return an array of editable form fields when asked", function() {
   expect(2);
-  var newLink = MySystem.store.find("MySystem.Link", 'link1');
+  var linkHash = {
+      guid: MySystem.Link.newGuid(),
+      text: 'Test link for form fields'
+    };
+  var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var formFields = newLink.get('formFields');
   ok(isArray(formFields), "The formFields attribute should return an array");
   equals(formFields.length, 2, "Links should return two editable fields");
@@ -58,7 +72,11 @@ test("We should be able to generate a new GUID", function() {
 
 test("Link color should be editable and persistent in the store", function() {
   expect(2);
-  var link1 = MySystem.store.find('MySystem.Link', 'link1');
+  var linkHash = {
+      guid: MySystem.Link.newGuid(),
+      text: 'Test link for color change.'
+    };
+  var link1 = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var oldColor = link1.get('color');
   link1.set('color', '#333333');
   var newColor = link1.get('color');
@@ -68,14 +86,18 @@ test("Link color should be editable and persistent in the store", function() {
 
 test("tests connecting links to storySentences", function () {
   expect(3);
-  var link1 = MySystem.store.find('MySystem.Link', 'link1');
+  var linkHash = {
+      guid: MySystem.Link.newGuid(),
+      text: 'Test link for StorySentence linking'
+    };
+  var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var sent = MySystem.store.find('MySystem.StorySentence', 'ss1');
-  var originalLinkConnections = link1.get('sentences').get('length');
+  var originalLinkConnections = newLink.get('sentences').get('length');
   var expectedLinkConnections = originalLinkConnections + 1;
   var originalSentenceConnections = sent.get('links').get('length');
   var expectedSentenceConnections = originalSentenceConnections + 1;
-  sent.get('links').pushObject(link1);
+  sent.get('links').pushObject(newLink);
   equals(sent.get('links').get('length'), expectedSentenceConnections, "There should be " + expectedSentenceConnections + " node(s) associated with the sentence.");
-  equals(link1.get('sentences').get('length'), expectedLinkConnections, "There should be " + expectedLinkConnections + " sentence(s) associated with the node.");
+  equals(newLink.get('sentences').get('length'), expectedLinkConnections, "There should be " + expectedLinkConnections + " sentence(s) associated with the node.");
   equals(sent.get('diagramObjects').get('length'), sent.get('nodes').get('length') + sent.get('links').get('length'), "The sentence's diagramObjects should equal the sum of the links and nodes.");
 });
