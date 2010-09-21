@@ -51,16 +51,16 @@ MySystem.storySentenceController = SC.ArrayController.create(
     return YES ;
   },
 
-	addLinksAndNodesToSentence: function(linksAndNodes, sentence) {
-		for (var i = 0; i < linksAndNodes.length; i += 1) {
-			var item = linksAndNodes[i];
-			if (item instanceof MySystem.Link) {
-				sentence.get('links').pushObject(item);
-			} else if (item instanceof MySystem.Node) {
-				sentence.get('nodes').pushObject(item);
-			} else {
-				SC.Logger.log("Bad item type " + item);
-			}
-		}
-	}
+  addLinksAndNodesToSentence: function(linksAndNodes, sentence) {
+    for (var i = 0; i < linksAndNodes.length; i += 1) {
+      var item = linksAndNodes[i];
+      if (item instanceof MySystem.Link) {
+        sentence.get('links').pushObject(item);
+      } else if (item instanceof MySystem.Node) {
+        sentence.get('nodes').pushObject(item);
+      } else {
+        SC.Logger.log("Bad item type " + item);
+      }
+    }
+  }
 }) ;
