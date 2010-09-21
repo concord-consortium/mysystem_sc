@@ -14,6 +14,8 @@ MySystem.storySentenceController = SC.ArrayController.create(
   SC.CollectionViewDelegate,
 /** @scope MySystem.storySentencesController.prototype */ {
 
+  allowsMultipleSelection: NO,
+
   collectionViewDeleteContent: function(view, content, indexes) {
     // Destroy the records
     var records = indexes.map(function(idx) {
