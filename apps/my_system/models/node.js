@@ -17,7 +17,8 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   image: SC.Record.attr(String),
   title: SC.Record.attr(String),
-  
+  transformer: SC.Record.attr(Boolean),
+
   outLinks: SC.Record.toMany('MySystem.Link',{
     inverse: 'startNode',
     isMaster: YES
@@ -46,7 +47,11 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     Forms.FormView.row(SC.TextFieldView, {
       fieldKey: 'title',
       fieldLabel: 'Title:'
-    })
+    }),
+		Forms.FormView.row(SC.CheckboxView, {
+			fieldKey: 'transformer',
+			fieldLabel: 'Transformer?'
+		})
   ],
 
   // We have to maintain this list of links. 

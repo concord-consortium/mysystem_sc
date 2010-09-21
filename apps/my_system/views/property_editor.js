@@ -62,9 +62,10 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
         form.set('fields', []);
         form.removeAllChildren();
         // Append form rows
-        baseObject.get('formFields').forEach( function (item, index, enumerable) {
-          form.set('fields', form.get('fields').concat(item));
-        });
+        // baseObject.get('formFields').forEach( function (item, index, enumerable) {
+        //   form.set('fields', form.get('fields').concat(item));
+        // });
+				form.set('fields', baseObject.get('formFields'));
       }
     }.observes('objectToEdit'),
 
