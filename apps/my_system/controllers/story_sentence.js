@@ -64,5 +64,15 @@ MySystem.storySentenceController = SC.ArrayController.create(
         SC.Logger.log("Bad item type " + item);
       }
     }
-  }
+  },
+
+  activateLinkingButton: function() {
+    if (this.get('selection').get('length') !== 0) {
+      // Turn on button
+      MySystem.mainPage.mainPane.topView.bottomRightView.topLeftView.bottomRightView.toolbar.showButton.set('isEnabled', YES);
+    } else {
+      // Turn off button
+      MySystem.mainPage.mainPane.topView.bottomRightView.topLeftView.bottomRightView.toolbar.showButton.set('isEnabled', NO);
+    }
+  }.observes('selection')
 }) ;
