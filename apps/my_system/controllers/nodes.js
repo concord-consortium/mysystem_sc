@@ -67,7 +67,7 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     } else if (selection.length() == 1) {
       if (!propertyEditor.isPaneAttached) {
         propertyEditor.append();
-				propertyEditor.becomeFirstResponder();
+        propertyEditor.becomeFirstResponder();
       }
       propertyEditor.set('objectToEdit', selection.firstObject());
     } else {
