@@ -7,6 +7,7 @@
 sc_require('views/node');
 sc_require('views/property_editor');
 sc_require('views/node_palette');
+sc_require('views/sentence');
 
 // This page describes the main user interface for your application.  
 MySystem.mainPage = SC.Page.design({

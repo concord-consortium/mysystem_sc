@@ -1,0 +1,31 @@
+// ==========================================================================
+// Project:   MySystem.SentenceView
+// Copyright: ©2010 My Company, Inc.
+// ==========================================================================
+/*globals MySystem */
+
+/** @class
+
+  (Document Your View Here)
+
+  @extends SC.View
+*/
+MySystem.SentenceView = SC.View.extend(
+/** @scope MySystem.SentenceView.prototype */ {
+  childViews: "sentenceText linkButton".w(),
+  classNames: "story-sentence",
+  sentenceText: SC.LabelView.design({
+    layout: { left: 5, right: 50 },
+    valueBinding: '.parentView*content.bodyText',
+    canEditContent: YES,
+    canDeleteContent: YES,
+    isEditable: YES
+  }),
+  linkButton: SC.ButtonView.design({
+    layout: { right: 5, width: 40 },
+    titleMinWidth: 45,
+    icon: sc_static('resources/icon_link.gif'),
+    toolTip: "Link this sentence with part of the diagram"
+  })
+
+});
