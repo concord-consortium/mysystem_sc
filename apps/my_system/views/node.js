@@ -27,7 +27,8 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   target: "MySystem.nodesController",
   action: "showAlert",
   
-  childViews: 'icon label aTerminal bTerminal'.w(),
+  // childViews: 'icon label aTerminal bTerminal'.w(),
+  childViews: 'icon label aTerminal bTerminal transformationIcon'.w(),
   
   
   /** @private */
@@ -78,6 +79,13 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     linkClass: 'MySystem.Link'
     // direction: LinkIt.OUTPUT_TERMINAL
   }),
+
+	transformationIcon: SC.ImageView.design({
+		classNames: 'image',
+		useImageCache: true,
+		layout: {left: 5, bottom: +5, width: 20, height:20 },
+		valueBinding: '.parentView*content.transformationIcon'
+	}),
 
   // ..........................................................
   // LINKIT Specific for the view

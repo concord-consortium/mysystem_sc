@@ -83,8 +83,11 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
     // this.set('links', _links);
     return _links;
-  }.property().cacheable(),
-  
+  }.property('.outlinks.[]', '.inLinks.[]'),
+  // This was not made cacheable because that broke link drawing when we added
+  // in transformations.  
+
+
   init: function () {
     sc_super();
   },
@@ -102,11 +105,11 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     sc_super();
   },
 
-  // manually invalidate our links[] cache.
-  _linkArraysDidChange: function () {
-     //SC.Logger.log('_linkArraysDidChange!');
-     this.notifyPropertyChange('links');
-  }.observes('.outLinks.[]', '.inLinks.[]'),
+  // // manually invalidate our links[] cache.
+  // _linkArraysDidChange: function () {
+  //    //SC.Logger.log('_linkArraysDidChange!');
+  //    this.notifyPropertyChange('links');
+  // }.observes('.outLinks.[]', '.inLinks.[]'),
 
 
   // tell LinkIt whether the proposed link is valid
@@ -205,8 +208,31 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         link = null;
       }
     }
-  }
+  },
 
+	transformationIcon: function() {
+		if (this.get('transformer')) {
+			return sc_static('resources/gotTransformationIcon.gif');
+		} else if (this.get('needsTransformation')) {
+			return sc_static('resources/transformationNeededIcon.gif');
+		} else {
+			return sc_static('resources/noTransformationNeededIcon.gif');
+		}
+	}.property('needsTransformation', 'transformer'),
+	
+	needsTransformation: function() {
+		var links = this.get('links');
+		if (links.get('length') < 2) {
+			return false;
+		} else {
+			var _needsTransformation = false;
+			var color = links.objectAt(0).get('model').get('color');
+			for (var i = 1; i < links.get('length'); i += 1) {
+				_needsTransformation |= links.objectAt(i).get('model').get('color') != color;
+			}
+			return _needsTransformation;
+		}
+	}.property('links')
 }) ;
 
 MySystem.Node.GuidCounter = 100;
