@@ -70,3 +70,7 @@
 .propertyEditor>.sc-view {
   margin: 5px;
 }
+
+.disabled .sc-button-label {
+  color: #666;
+}
