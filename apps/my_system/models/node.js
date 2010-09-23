@@ -212,7 +212,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     if (this.get('transformer')) {
       return sc_static('resources/gotTransformationIcon.png');
     } else if (this.get('needsTransformation')) {
-      return sc_static('resources/transformationNeededIcon.gif');
+      return sc_static('resources/transformationNeededIcon.png');
     } else {
       return sc_static('resources/noTransformationNeededIcon.gif');
     }
