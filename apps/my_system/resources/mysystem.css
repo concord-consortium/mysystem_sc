@@ -74,3 +74,7 @@
 .disabled .sc-button-label {
   color: #666;
 }
+
+.sc-button-view.sel {
+  border: 2px solid #aa3333;
+}
