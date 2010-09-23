@@ -66,6 +66,13 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
         //   form.set('fields', form.get('fields').concat(item));
         // });
 				form.set('fields', baseObject.get('formFields'));
+				if (baseObject.kindOf(MySystem.Link)) {
+					var startNode = baseObject.get('startNode');
+					if (!startNode.get('transformer')) {
+						// TODO: Figure out a more elegant way to do this
+						form.get('_displayFields').objectAt(0).get('_displayFields').objectAt(0).get('field').set('isEnabled', false);
+					}
+				}
       }
     }.observes('objectToEdit'),
 
