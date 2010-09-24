@@ -23,14 +23,14 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     return resultSet;
   }.property('linkSelection','selection').cacheable(),
   
-	unselectAll: function() {
-		debugger;
-		if (this.get('linkSelection')) {
-			this.deselectObject(this.get('linkSelection'));
-		}
-		var baseSet = this.get('selection').clone();
-		this.deselectObjects(baseSet);
-	},
+  unselectAll: function() {
+    debugger;
+    if (this.get('linkSelection')) {
+      this.deselectObject(this.get('linkSelection'));
+    }
+    var baseSet = this.get('selection').clone();
+    this.deselectObjects(baseSet);
+  },
 
   collectionViewDeleteContent: function (view, content, indices) {
     // destroy the records

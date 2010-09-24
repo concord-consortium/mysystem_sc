@@ -27,7 +27,7 @@ MySystem.SentenceView = SC.View.extend(
     buttonBehavior: SC.PUSH_BEHAVIOR,
     icon: sc_static('resources/icon_link.gif'),
     toolTip: "Link this sentence with part of the diagram",
-		action: 'linkButtonPushed',
-		target: MySystem.storySentenceController
+    action: 'linkButtonPushed',
+    target: MySystem.storySentenceController
   })
 });

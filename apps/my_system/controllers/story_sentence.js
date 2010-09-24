@@ -95,11 +95,11 @@ MySystem.storySentenceController = SC.ArrayController.create(
     }
   }.observes('selection'),
 
-	linkButtonPushed: function(e1, e2) {
-		MySystem.nodesController.unselectAll();
-		var sentence = e1.get('parentView').get('content');
-		this.addDiagramConnectPane(sentence);
-		MySystem.nodesController.selectObjects(sentence.get('links'), false);
-		MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
-	}
+  linkButtonPushed: function(e1, e2) {
+    MySystem.nodesController.unselectAll();
+    var sentence = e1.get('parentView').get('content');
+    this.addDiagramConnectPane(sentence);
+    MySystem.nodesController.selectObjects(sentence.get('links'), false);
+    MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
+  }
 }) ;

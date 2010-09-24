@@ -22,10 +22,9 @@ MySystem.SentenceConnectPane = SC.PalettePane.extend(
   classNames: 'sentence-connect-pane'.w(),
   // The sentence which is currently being linked to.
   activeSentence: null,
-  selectedObjectsBinding: 'MySystem.nodesController.allSelected',
+  selectedObjectsBinding: 'MySystem.nodesController.allSelected'
 
   // updateObjects: function() {
-  // 		debugger;
   //   // Reset the relationships before setting new
   //   this.activeSentence.get('links').set('length', 0);
   //   this.activeSentence.get('nodes').set('length', 0);
