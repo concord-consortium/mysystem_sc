@@ -53,7 +53,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
     return YES ;
   },
 
-  addLinksAndNodesToSentence: function(linksAndNodes, sentence) {
+  addLinksAndNodesToSentence: function (linksAndNodes, sentence) {
     for (var i = 0; i < linksAndNodes.length; i += 1) {
       var item = linksAndNodes[i];
       if (item instanceof MySystem.Link) {
@@ -66,6 +66,25 @@ MySystem.storySentenceController = SC.ArrayController.create(
     }
   },
 
+  // Open the SentenceConnectPane
+  addDiagramConnectPane: function (sentence) {
+    var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
+    if (!diagramPane.isPaneAttached) {
+      diagramPane.append();
+      // diagramPane.becomeFirstResponder();
+    }
+    diagramPane.set('activeSentence', sentence);
+  },
+
+  closeDiagramConnectPane: function () {
+    var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
+    if (diagramPane.isPaneAttached) {
+      diagramPane.remove();
+    }
+    diagramPane.set('activeSentence', null);
+  },
+
+  // Turns on and off a "link this to diagram" button in the top toolbar (not currently included)
   activateLinkingButton: function() {
     if (this.get('selection').get('length') !== 0) {
       // Turn on button
