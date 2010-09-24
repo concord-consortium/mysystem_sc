@@ -24,10 +24,11 @@ MySystem.SentenceConnectPane = SC.PalettePane.extend(
   activeSentence: null,
   selectedObjectsBinding: 'MySystem.nodesController.allSelected',
 
-  updateObjects: function() {
-    // Reset the relationships before setting new
-    this.activeSentence.get('links').set('length', 0);
-    this.activeSentence.get('nodes').set('length', 0);
-    MySystem.storySentenceController.addLinksAndNodesToSentence(this.selectedObjects, this.activeSentence);
-  }.observes('selectedObjects')
+  // updateObjects: function() {
+  // 		debugger;
+  //   // Reset the relationships before setting new
+  //   this.activeSentence.get('links').set('length', 0);
+  //   this.activeSentence.get('nodes').set('length', 0);
+  //   MySystem.storySentenceController.addLinksAndNodesToSentence(this.selectedObjects, this.activeSentence);
+  // }.observes('selectedObjects')
 });

@@ -24,9 +24,10 @@ MySystem.SentenceView = SC.View.extend(
   linkButton: SC.ButtonView.design({
     layout: { right: 5, width: 40 },
     titleMinWidth: 45,
-    buttonBehavior: SC.TOGGLE_BEHAVIOR,
+    buttonBehavior: SC.PUSH_BEHAVIOR,
     icon: sc_static('resources/icon_link.gif'),
-    toolTip: "Link this sentence with part of the diagram"
+    toolTip: "Link this sentence with part of the diagram",
+		action: 'linkButtonPushed',
+		target: MySystem.storySentenceController
   })
-
 });

@@ -93,5 +93,13 @@ MySystem.storySentenceController = SC.ArrayController.create(
       // Turn off button
       MySystem.mainPage.mainPane.topView.bottomRightView.topLeftView.bottomRightView.toolbar.showButton.set('isEnabled', NO);
     }
-  }.observes('selection')
+  }.observes('selection'),
+
+	linkButtonPushed: function(e1, e2) {
+		MySystem.nodesController.unselectAll();
+		var sentence = e1.get('parentView').get('content');
+		this.addDiagramConnectPane(sentence);
+		MySystem.nodesController.selectObjects(sentence.get('links'), false);
+		MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
+	}
 }) ;
