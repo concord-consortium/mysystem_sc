@@ -24,7 +24,6 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   }.property('linkSelection','selection').cacheable(),
   
   unselectAll: function() {
-    debugger;
     if (this.get('linkSelection')) {
       this.deselectObject(this.get('linkSelection'));
     }
