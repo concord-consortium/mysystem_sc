@@ -24,10 +24,19 @@ MySystem.SentenceView = SC.View.extend(
   linkButton: SC.ButtonView.design({
     layout: { right: 5, width: 40 },
     titleMinWidth: 45,
-    buttonBehavior: SC.PUSH_BEHAVIOR,
+    value: NO,
+    contentBinding: '.parentView*content',
+    buttonBehavior: SC.TOGGLE_BEHAVIOR,
     icon: sc_static('resources/icon_link.gif'),
     toolTip: "Link this sentence with part of the diagram",
-    action: 'linkButtonPushed',
-    target: MySystem.storySentenceController
+    // action: 'linkButtonPushed',
+    // target: MySystem.storySentenceController,
+    pushButton: function() {
+      if (this.value) { MySystem.storySentenceController.addDiagramConnectPane(this.content); }
+      // TODO: There's more going on here that needs to be triggered.
+    }.observes('value'),
+    unPushButton: function() {
+      if (!this.value) { MySystem.storySentenceController.closeDiagramConnectPane(); }
+    }.observes('value')
   })
 });
