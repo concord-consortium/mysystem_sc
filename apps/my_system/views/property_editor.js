@@ -22,7 +22,7 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
         width: 250,
         height: 240
     },
-    classNames: 'propertyEditor'.w(),
+    classNames: 'property-editor'.w(),
 
     displayProperties: 'objectToEdit isSelected'.w(),
     objectToEdit: null,
