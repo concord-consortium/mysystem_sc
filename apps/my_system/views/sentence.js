@@ -33,7 +33,6 @@ MySystem.SentenceView = SC.View.extend(
     // target: MySystem.storySentenceController,
     pushButton: function() {
       if (this.value) { MySystem.storySentenceController.addDiagramConnectPane(this.content); }
-      // TODO: There's more going on here that needs to be triggered.
     }.observes('value'),
     unPushButton: function() {
       if (!this.value) { MySystem.storySentenceController.closeDiagramConnectPane(); }
