@@ -85,24 +85,5 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
       }
       propertyEditor.set('objectToEdit', null);
     }
-  }.observes('allSelected'),
-
-  showAlert: function() {
-    MySystem.nodesController.showTextAlert("Pretend I'm a property editor");
-  },
-
-  showTextAlert: function(text) {
-    SC.AlertPane.warn("property editor", text.toString(), "(please)", "No.", "What?", MySystem.nodesController);
-
-    // SC.PickerPane.create({
-    //   layout: { width: 400, height: 200 },
-    //   contentView: SC.View.extend({})  // use some other view here
-    // }).popup(this.get('selection'));
-    // 
-    // SC.PanelPane.create({
-    //   layout: { width: 400, height: 200, centerX: 0, centerY: 0 },
-    //   contentView: SC.View.extend({})
-    // }).append();
-    // 
-  }
+  }.observes('allSelected')
 }) ;
