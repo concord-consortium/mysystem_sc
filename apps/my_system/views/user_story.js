@@ -11,6 +11,7 @@
 
   @extends SC.View
 */
+sc_require('views/sentence');
 
 MySystem.UserStoryView = SC.View.extend({
   childViews: 'toolbar sentencesView'.w(),
@@ -19,11 +20,18 @@ MySystem.UserStoryView = SC.View.extend({
     childViews: 'addButton'.w(),
     anchorLocation: SC.ANCHOR_TOP,
     addButton: SC.ButtonView.design({
-      layout: { centerY: 0, height: 20, width: 150 },
+      layout: { centerY: 0, height: 20, width: 150, left: 10 },
       title: "Add sentence to story",
       target: "MySystem.storySentenceController",
-      action: "addStorySentence"
+      action: "addStorySentence",
+      toolTip: "Add a sentence to the story"
     })
+    // showButton: SC.ButtonView.design({
+    //   layout: { centerY: 0, height: 20, width: 180, left: 170 },
+    //   title: "Connect sentence to diagram",
+    //   isEnabled: NO,
+    //   toolTip: "Select a sentence and click here to connect it to the diagram"
+    // })
   }),
   sentencesView: SC.ScrollView.design({
     hasHorizontalScroller: NO,
@@ -34,8 +42,10 @@ MySystem.UserStoryView = SC.View.extend({
       selectionBinding: 'MySystem.storySentenceController.selection',
       contentValueKey: "bodyText",
       rowHeight: 20,
-      canEditContent: YES, // isEditable: YES, // FIXME: Neither of these are working
-      canDeleteContent: YES
+      exampleView: MySystem.SentenceView,
+      canEditContent: YES,
+      canDeleteContent: YES,
+      canReorderContent: YES
     })
   })
 });

@@ -17,12 +17,12 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
 {
   acceptsFirstResponder: YES,
     layout: {
-        top: 135,
+        top: 150,
         right: 5,
         width: 250,
         height: 240
     },
-    classNames: 'propertyEditor'.w(),
+    classNames: 'property-editor'.w(),
 
     displayProperties: 'objectToEdit isSelected'.w(),
     objectToEdit: null,
@@ -62,9 +62,14 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
         form.set('fields', []);
         form.removeAllChildren();
         // Append form rows
-        baseObject.get('formFields').forEach( function (item, index, enumerable) {
-          form.set('fields', form.get('fields').concat(item));
-        });
+        form.set('fields', baseObject.get('formFields'));
+        if (baseObject.kindOf(MySystem.Link)) {
+          var startNode = baseObject.get('startNode');
+          if (!startNode.get('transformer')) {
+            // TODO: Figure out a more elegant way to do this
+            form.get('_displayFields').objectAt(0).get('_displayFields').objectAt(0).get('field').set('isEnabled', false);
+          }
+        }
       }
     }.observes('objectToEdit'),
 

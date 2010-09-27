@@ -58,7 +58,21 @@
 }
 
 /* Properties editor */
-.propertyEditor {
+.property-editor {
+  border: 1px solid rgba(0,0,0,.2);
+  background-color: #aaaaaa;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-box-shadow: 0px 4px 4px rgba(0,0,0,.1);
+  -webkit-box-shadow: 0px 4px 4px rgba(0,0,0,.1);
+}
+
+.property-editor>.sc-view {
+  margin: 5px;
+}
+
+/* SentenceLinkPane editor */
+.sentence-connect-pane {
   border: 1px solid rgba(0,0,0,.2);
   background-color: #aaaaaa;
   -moz-border-radius: 5px;
@@ -69,4 +83,12 @@
 
 .propertyEditor>.sc-view {
   margin: 5px;
+}
+
+.disabled .sc-button-label {
+  color: #666;
+}
+
+.sc-button-view.sel {
+  border: 2px solid #aa3333;
 }

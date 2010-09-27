@@ -25,12 +25,17 @@ test("Edit pane with a node", function() {
 });
 
 test("Edit pane with a link", function() {
-  expect(4);
+  expect(6);
   var link = MySystem.store.find('MySystem.Link', 'link1');
   propEdit.set('objectToEdit', link);
   same(propEdit.get('objectToEdit'), link, "propEdit should be editing the link");
   ok(propEdit.get('childViews').get('length') > 0, "propEdit should have children");
   equals(propEdit.get('childViews').firstObject().get('childViews').firstObject().get('fieldLabel'), 'Color:', "First field should be labeled Color");
-  ok(propEdit.get('childViews').firstObject().kindOf(Forms.FormRadioField), "First field should be a radio button");
+  ok(propEdit.get('childViews').firstObject().get('childViews').firstObject().get('childViews').firstObject().kindOf(Forms.FormRadioView), "First field should be a radio button");
+	ok(!propEdit.get('childViews').firstObject().get('childViews').firstObject().get('childViews').firstObject().get('field').get('isEnabled'), "Color editing should be disabled");
+	propEdit.set('objectToEdit', link.get('startNode'));
+	link.get('startNode').set('transformer', true);
+  propEdit.set('objectToEdit', link);
+	ok(propEdit.get('childViews').firstObject().get('childViews').firstObject().get('childViews').firstObject().get('field').get('isEnabled'), "Color editing should be enabled");
 });
 

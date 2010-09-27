@@ -17,7 +17,8 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   image: SC.Record.attr(String),
   title: SC.Record.attr(String),
-  
+  transformer: SC.Record.attr(Boolean),
+
   outLinks: SC.Record.toMany('MySystem.Link',{
     inverse: 'startNode',
     isMaster: YES
@@ -46,6 +47,10 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     Forms.FormView.row(SC.TextFieldView, {
       fieldKey: 'title',
       fieldLabel: 'Title:'
+    }),
+    Forms.FormView.row(SC.CheckboxView, {
+      fieldKey: 'transformer',
+      fieldLabel: 'Transformer?'
     })
   ],
 
@@ -78,8 +83,11 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
     // this.set('links', _links);
     return _links;
-  }.property().cacheable(),
-  
+  }.property('.outlinks.[]', '.inLinks.[]'),
+  // The cacheable property was removed because that broke link drawing when we added
+  // in transformations.
+
+
   init: function () {
     sc_super();
   },
@@ -97,28 +105,28 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     sc_super();
   },
 
-  // manually invalidate our links[] cache.
-  _linkArraysDidChange: function () {
-     //SC.Logger.log('_linkArraysDidChange!');
-     this.notifyPropertyChange('links');
-  }.observes('.outLinks.[]', '.inLinks.[]'),
+  // // manually invalidate our links[] cache.
+  // _linkArraysDidChange: function () {
+  //    //SC.Logger.log('_linkArraysDidChange!');
+  //    this.notifyPropertyChange('links');
+  // }.observes('.outLinks.[]', '.inLinks.[]'),
 
 
   // tell LinkIt whether the proposed link is valid
   canLink: function (link) {
     if (!link) return NO;
-    
+
     var sn = link.get('startNode'), 
         st = link.get('startTerminal');
     var en = link.get('endNode'), 
         et = link.get('endTerminal');
-    
+
     // Make sure we don't connect to ourselves.
     if (sn === en) return NO;
 
     // Make sure we don't already have this link.
     if (this._hasLink(link)) return NO;
-    
+
     if ( (st === 'input' && et === 'output') || (st === 'output' && et === 'input')) {
       return YES;
     }
@@ -126,8 +134,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     // TODO under what other circumstances would we refuse a link?
     // return NO;
   },
-    
-  
+
   // do we already have the proposed new link 'link'?  
   _hasLink: function (link) {
     var links = this.get("links") || [];
@@ -141,19 +148,18 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       }
     }
   },
-  
+
   // Part of LinkIt Node Contract. Called when a new link created by drag event.
   didCreateLink: function (inlink) {
     var tmpHash = MySystem.Link.hashFromLinkItLink(inlink);
     var link = null,
         links;
-        
+
     var sn = tmpHash.startNode,
         st = tmpHash.startTerminal,
         en = tmpHash.endNode, 
         et = tmpHash.endTerminal;
 
-    
     // funny, we sometimes get new nodes?
     if (SC.none(this.get("guid"))) {
       SC.Logger.warn("No guid found for %@".fmt(this));
@@ -200,9 +206,32 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         link = null;
       }
     }
-  }
+  },
 
-}) ;
+  transformationIcon: function() {
+    if (this.get('transformer')) {
+      return sc_static('resources/gotTransformationIcon.png');
+    } else if (this.get('needsTransformation')) {
+      return sc_static('resources/transformationNeededIcon.png');
+    } else {
+      return sc_static('resources/noTransformationNeededIcon.gif');
+    }
+  }.property('needsTransformation', 'transformer'),
+
+  needsTransformation: function() {
+    var links = this.get('links');
+    if (links.get('length') < 2) {
+      return false;
+    } else {
+      var _needsTransformation = false;
+      var color = links.objectAt(0).get('model').get('color');
+      for (var i = 1; i < links.get('length'); i += 1) {
+        _needsTransformation |= links.objectAt(i).get('model').get('color') != color;
+      }
+      return _needsTransformation;
+    }
+  }.property('links')
+});
 
 MySystem.Node.GuidCounter = 100;
 MySystem.Node.newGuid = function() { return "Node" + MySystem.Node.GuidCounter++;};

@@ -7,6 +7,8 @@
 sc_require('views/node');
 sc_require('views/property_editor');
 sc_require('views/node_palette');
+sc_require('views/sentence');
+sc_require('views/sentence_connect_pane');
 
 // This page describes the main user interface for your application.  
 MySystem.mainPage = SC.Page.design({
@@ -38,6 +40,8 @@ MySystem.mainPage = SC.Page.design({
     })
   }),
 
-  propertyViewPane: MySystem.PropertyEditorPane.design({})
+  propertyViewPane: MySystem.PropertyEditorPane.design({}),
+
+  sentenceLinkPane: MySystem.SentenceConnectPane.design({})
 
 });

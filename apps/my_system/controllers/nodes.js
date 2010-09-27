@@ -23,6 +23,14 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     return resultSet;
   }.property('linkSelection','selection').cacheable(),
   
+  unselectAll: function() {
+    if (this.get('linkSelection')) {
+      this.deselectObject(this.get('linkSelection'));
+    }
+    var baseSet = this.get('selection').clone();
+    this.deselectObjects(baseSet);
+  },
+
   collectionViewDeleteContent: function (view, content, indices) {
     // destroy the records
     var recordsToDestroy = indices.map( function (idx) {
@@ -59,19 +67,20 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   propertyWindowSelection: function() {
     var selection = MySystem.nodesController.get('allSelected');
     var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');
+    var sentenceConnect = MySystem.getPath('mainPage.sentenceLinkPane');
     if (selection.length() === 0) {
       if (propertyEditor.isPaneAttached) {
         propertyEditor.remove();
       }
       propertyEditor.set('objectToEdit', null);
     } else if (selection.length() == 1) {
-      if (!propertyEditor.isPaneAttached) {
+      if (!propertyEditor.isPaneAttached && !sentenceConnect.isPaneAttached) {
         propertyEditor.append();
-				propertyEditor.becomeFirstResponder();
+        propertyEditor.becomeFirstResponder();
       }
       propertyEditor.set('objectToEdit', selection.firstObject());
     } else {
-      if (!propertyEditor.isPaneAttached) {
+      if (!propertyEditor.isPaneAttached && !sentenceConnect.isPaneAttached) {
         propertyEditor.append();
       }
       propertyEditor.set('objectToEdit', null);

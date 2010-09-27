@@ -15,21 +15,21 @@ sc_require('MySystem.Link');
 
 MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
 /** @scope MySystem.NodeView.prototype */ {
-  
+
   layout: { top: 0, left: 0, width: 100, height: 120 },
   classNames: 'node'.w(),
-  
+
   displayProperties: 'content isSelected'.w(),
   content: null,
   isSelected: false,
-  
+
   // implement action behavior of see sproutcore/desktop/view/button
   target: "MySystem.nodesController",
   action: "showAlert",
-  
-  childViews: 'icon label aTerminal bTerminal'.w(),
-  
-  
+
+  // childViews: 'icon label aTerminal bTerminal'.w(),
+  childViews: 'icon label aTerminal bTerminal transformationIcon'.w(),
+
   /** @private */
   _runAction: function(evt) {
     var action = this.get('action'),
@@ -60,7 +60,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     valueBinding: '.parentView*content.title',
     isEditable: YES
   }),
-  
+
   aTerminal: SC.View.design(LinkIt.Terminal, {
     layout: { left: 45, top: +5, width: 10, height: 10 },
     classNames: 'input terminal'.w(),
@@ -69,7 +69,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     linkClass: 'MySystem.Link'
     // direction: LinkIt.INPUT_TERMINAL
   }),
-  
+
   bTerminal: SC.View.design(LinkIt.Terminal, {
     layout: { left: 45, bottom: +5, width: 10, height: 10 },
     classNames: 'output terminal'.w(),
@@ -77,6 +77,13 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     terminal: 'b',
     linkClass: 'MySystem.Link'
     // direction: LinkIt.OUTPUT_TERMINAL
+  }),
+
+  transformationIcon: SC.ImageView.design({
+    classNames: 'image',
+    useImageCache: true,
+    layout: {left: 5, bottom: +5, width: 20, height:20 },
+    valueBinding: '.parentView*content.transformationIcon'
   }),
 
   // ..........................................................
@@ -89,7 +96,6 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     return this[terminalKey + 'Terminal'];
   }
 
-  
   /** 
   * implement action behavior of see sproutcore/desktop/view/button
   */
