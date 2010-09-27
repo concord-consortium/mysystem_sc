@@ -54,16 +54,15 @@ MySystem.storySentenceController = SC.ArrayController.create(
   },
 
   addLinksAndNodesToSentence: function (linksAndNodes, sentence) {
-    for (var i = 0; i < linksAndNodes.length; i += 1) {
-      var item = linksAndNodes[i];
+    linksAndNodes.forEach( function (item, index, enumerable) {
       if (item instanceof MySystem.Link) {
         sentence.get('links').pushObject(item);
       } else if (item instanceof MySystem.Node) {
         sentence.get('nodes').pushObject(item);
       } else {
-        SC.Logger.log("Bad item type " + item);
+        SC.Logger.log('Bad item type ' + item);
       }
-    }
+    });
   },
 
   // Open the SentenceConnectPane
@@ -81,12 +80,16 @@ MySystem.storySentenceController = SC.ArrayController.create(
 
   closeDiagramConnectPane: function () {
     var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
-    var diagramObjects = SC.clone(diagramPane.get('selectedObjects'));
-    MySystem.nodesController.unselectAll();
+    var diagramObjects = diagramPane.get('selectedObjects');
+    var activeSentence = diagramPane.get('activeSentence');
+    // Remove previously associated nodes and links
+    activeSentence.get('nodes').removeObjects(activeSentence.get('nodes'));
+    activeSentence.get('links').removeObjects(activeSentence.get('links'));
+    this.addLinksAndNodesToSentence(diagramObjects, activeSentence);
     if (diagramPane.isPaneAttached) {
       diagramPane.remove();
     }
-    this.addLinksAndNodesToSentence(diagramObjects, diagramPane.get('activeSentence'));
+    MySystem.nodesController.unselectAll();
     diagramPane.set('activeSentence', null);
   },
 
