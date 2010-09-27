@@ -24,8 +24,10 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   }.property('linkSelection','selection').cacheable(),
   
   unselectAll: function() {
+    var theCanvas = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.bottomRightView');
     if (this.get('linkSelection')) {
-      this.deselectObject(this.get('linkSelection'));
+      theCanvas.set('linkSelection', null);
+      theCanvas.linksDidChange();
     }
     var baseSet = this.get('selection').clone();
     this.deselectObjects(baseSet);

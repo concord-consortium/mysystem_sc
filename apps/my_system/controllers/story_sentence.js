@@ -69,18 +69,24 @@ MySystem.storySentenceController = SC.ArrayController.create(
   // Open the SentenceConnectPane
   addDiagramConnectPane: function (sentence) {
     var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
+    MySystem.nodesController.unselectAll();
     if (!diagramPane.isPaneAttached) {
       diagramPane.append();
       // diagramPane.becomeFirstResponder();
     }
+    MySystem.nodesController.selectObjects(sentence.get('links'), true);
+    MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
     diagramPane.set('activeSentence', sentence);
   },
 
   closeDiagramConnectPane: function () {
     var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
+    var diagramObjects = SC.clone(diagramPane.get('selectedObjects'));
+    MySystem.nodesController.unselectAll();
     if (diagramPane.isPaneAttached) {
       diagramPane.remove();
     }
+    this.addLinksAndNodesToSentence(diagramObjects, diagramPane.get('activeSentence'));
     diagramPane.set('activeSentence', null);
   },
 
@@ -93,13 +99,6 @@ MySystem.storySentenceController = SC.ArrayController.create(
       // Turn off button
       MySystem.mainPage.mainPane.topView.bottomRightView.topLeftView.bottomRightView.toolbar.showButton.set('isEnabled', NO);
     }
-  }.observes('selection'),
+  }.observes('selection')
 
-  linkButtonPushed: function(e1, e2) {
-    MySystem.nodesController.unselectAll();
-    var sentence = e1.get('parentView').get('content');
-    this.addDiagramConnectPane(sentence);
-    MySystem.nodesController.selectObjects(sentence.get('links'), false);
-    MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
-  }
 }) ;
