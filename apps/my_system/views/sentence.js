@@ -32,10 +32,15 @@ MySystem.SentenceView = SC.View.extend(
     // action: 'linkButtonPushed',
     // target: MySystem.storySentenceController,
     pushButton: function() {
-      if (this.value) { MySystem.storySentenceController.addDiagramConnectPane(this.content); }
+      if (this.value) { 
+				MySystem.storyController.turnOffOtherButtons(this);
+				MySystem.storySentenceController.addDiagramConnectPane(this.content);
+			}
     }.observes('value'),
     unPushButton: function() {
-      if (!this.value) { MySystem.storySentenceController.closeDiagramConnectPane(); }
+      if (!this.value) { 
+				MySystem.storySentenceController.closeDiagramConnectPane();
+			}
     }.observes('value')
   })
 });

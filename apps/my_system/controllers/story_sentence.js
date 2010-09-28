@@ -71,7 +71,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
     MySystem.nodesController.unselectAll();
     if (!diagramPane.isPaneAttached) {
       diagramPane.append();
-      // diagramPane.becomeFirstResponder();
+      diagramPane.becomeFirstResponder();
     }
     MySystem.nodesController.selectObjects(sentence.get('links'), true);
     MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
