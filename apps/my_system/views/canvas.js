@@ -31,8 +31,8 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
       MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
       return SC.DRAG_COPY; 
     },
-		didCreateLayer: function () {
-			var frame = this.get('frame');
+    didCreateLayer: function () {
+      var frame = this.get('frame');
       var canvasElem = this.$('canvas.base-layer');
       if (canvasElem) {
         canvasElem.attr('width', frame.width);
@@ -54,7 +54,7 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
       else {
         LinkIt.log("Linkit.LayerView.render(): Canvas element is not accessible.");
       }
-    
+
     return sc_super();
   }
 });
