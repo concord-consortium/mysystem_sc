@@ -88,7 +88,7 @@ test("nodes should return an array of editable form fields when asked", function
   var ccNode = MySystem.store.find('MySystem.Node', 'testNode001');
   var formFields = ccNode.get('formFields');
   ok(isArray(formFields), "The formFields attribute should return an array");
-  equals(formFields.length, 2, "Nodes should return two editable fields");
+  equals(formFields.length, 3, "Nodes should return three editable fields");
 });
 
 test("We should be able to generate a new GUID", function() {

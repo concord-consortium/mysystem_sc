@@ -9,12 +9,16 @@ module("MySystem.Link");
 function isArray(testObject) {   
   return testObject && !testObject.propertyIsEnumerable('length') && typeof testObject === 'object' && typeof testObject.length === 'number';
 }
+var nodeA   = MySystem.store.find('MySystem.Node','1');
+var nodeB   = MySystem.store.find('MySystem.Node','3');
 
 test("New links should pass their own sanity checks", function() {
   expect(1);
   var linkHash = {
       guid: MySystem.Link.newGuid(),
-      text: 'Test link for sanity check'
+      text: 'Test link for sanity check',
+      startNode: nodeA,
+      endNode: nodeB
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   ok(newLink.isComplete, "The isComplete method should return true");
@@ -27,8 +31,6 @@ test("Links should return the nodes they're linked to", function() {
       text: 'Test link for node returning'
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
-  var nodeA   = MySystem.store.find('MySystem.Node','1');
-  var nodeB   = MySystem.store.find('MySystem.Node','3');
   newLink.set('startNode', nodeA);
   newLink.set('endNode', nodeB);
   equals(newLink.get('startNode'), nodeA, 'The link should return its start node');
@@ -39,7 +41,9 @@ test("Links should return LinkIt.Link objects when asked", function() {
   expect(4);
   var linkHash = {
       guid: MySystem.Link.newGuid(),
-      text: 'Test link for LinkIt Links'
+      text: 'Test link for LinkIt Links',
+      startNode: nodeA,
+      endNode: nodeB
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var linkItLink = newLink.makeLinkItLink();
@@ -53,7 +57,9 @@ test("Links should return an array of editable form fields when asked", function
   expect(2);
   var linkHash = {
       guid: MySystem.Link.newGuid(),
-      text: 'Test link for form fields'
+      text: 'Test link for form fields',
+      startNode: nodeA,
+      endNode: nodeB
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var formFields = newLink.get('formFields');
@@ -74,7 +80,9 @@ test("Link color should be editable and persistent in the store", function() {
   expect(2);
   var linkHash = {
       guid: MySystem.Link.newGuid(),
-      text: 'Test link for color change.'
+      text: 'Test link for color change.',
+      startNode: nodeA,
+      endNode: nodeB
     };
   var link1 = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var oldColor = link1.get('color');
@@ -88,7 +96,9 @@ test("tests connecting links to storySentences", function () {
   expect(3);
   var linkHash = {
       guid: MySystem.Link.newGuid(),
-      text: 'Test link for StorySentence linking'
+      text: 'Test link for StorySentence linking',
+      startNode: nodeA,
+      endNode: nodeB
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var sent = MySystem.store.find('MySystem.StorySentence', 'ss1');
