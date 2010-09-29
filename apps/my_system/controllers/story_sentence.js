@@ -82,10 +82,12 @@ MySystem.storySentenceController = SC.ArrayController.create(
     var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
     var diagramObjects = diagramPane.get('selectedObjects');
     var activeSentence = diagramPane.get('activeSentence');
-    // Remove previously associated nodes and links
-    activeSentence.get('nodes').removeObjects(activeSentence.get('nodes'));
-    activeSentence.get('links').removeObjects(activeSentence.get('links'));
-    this.addLinksAndNodesToSentence(diagramObjects, activeSentence);
+    if (activeSentence) {
+      // Remove previously associated nodes and links
+      activeSentence.get('nodes').removeObjects(activeSentence.get('nodes'));
+      activeSentence.get('links').removeObjects(activeSentence.get('links'));
+      this.addLinksAndNodesToSentence(diagramObjects, activeSentence);
+    }
     if (diagramPane.isPaneAttached) {
       diagramPane.remove();
     }
@@ -94,28 +96,18 @@ MySystem.storySentenceController = SC.ArrayController.create(
   },
 
   turnOffOtherButtons: function(buttonToLeaveOn) {
-    // TODO: There's got to be a better way than this:
-    var storyView = MySystem.mainPage.mainPane.childViews[0].bottomRightView.topLeftView.bottomRightView.childViews[1];
-    var sentenceViews = storyView.get('contentView').childViews;
-    sentenceViews.forEach(function(sentenceView) {
-      sentenceView.childViews.forEach(function(childView) {
-        if (childView.kindOf(SC.ButtonView) && childView != buttonToLeaveOn) {
-          childView.set('value', NO);
-        }
-      });
+    var storyView = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.topLeftView.bottomRightView.sentencesView');
+    var sentenceViews = storyView.get('contentView').get('childViews');
+    sentenceViews.forEach( function (sentenceView) {
+      if (sentenceView.get('linkButton') != buttonToLeaveOn) {
+          sentenceView.get('linkButton').set('value', NO);
+      }
     });
   },
 
   doneButtonPushed: function() {
-    var storyView = MySystem.mainPage.mainPane.childViews[0].bottomRightView.topLeftView.bottomRightView.childViews[1];
-    var sentenceViews = storyView.get('contentView').childViews;
-    sentenceViews.forEach(function(sentenceView) {
-      sentenceView.childViews.forEach(function(childView) {
-        if (childView.kindOf(SC.ButtonView)) {
-          childView.set('value', NO);
-        }
-      });
-    });
+    this.closeDiagramConnectPane();
+    this.turnOffOtherButtons(null);
   },
 
   // Turns on and off a "link this to diagram" button in the top toolbar (not currently included)
