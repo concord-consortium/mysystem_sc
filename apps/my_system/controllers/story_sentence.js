@@ -93,6 +93,31 @@ MySystem.storySentenceController = SC.ArrayController.create(
     diagramPane.set('activeSentence', null);
   },
 
+  turnOffOtherButtons: function(buttonToLeaveOn) {
+    // TODO: There's got to be a better way than this:
+    var storyView = MySystem.mainPage.mainPane.childViews[0].bottomRightView.topLeftView.bottomRightView.childViews[1];
+    var sentenceViews = storyView.get('contentView').childViews;
+    sentenceViews.forEach(function(sentenceView) {
+      sentenceView.childViews.forEach(function(childView) {
+        if (childView.kindOf(SC.ButtonView) && childView != buttonToLeaveOn) {
+          childView.set('value', NO);
+        }
+      });
+    });
+  },
+
+  doneButtonPushed: function() {
+    var storyView = MySystem.mainPage.mainPane.childViews[0].bottomRightView.topLeftView.bottomRightView.childViews[1];
+    var sentenceViews = storyView.get('contentView').childViews;
+    sentenceViews.forEach(function(sentenceView) {
+      sentenceView.childViews.forEach(function(childView) {
+        if (childView.kindOf(SC.ButtonView)) {
+          childView.set('value', NO);
+        }
+      });
+    });
+  },
+
   // Turns on and off a "link this to diagram" button in the top toolbar (not currently included)
   activateLinkingButton: function() {
     if (this.get('selection').get('length') !== 0) {
