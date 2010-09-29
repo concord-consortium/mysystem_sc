@@ -13,7 +13,7 @@
 
   @extends SC.PalettePane
 */
-MySystem.SentenceConnectPane = SC.PalettePane.extend(
+MySystem.SentenceConnectPane = SC.PalettePane.design(
 /** @scope MySystem.SentenceConnectPane.prototype */ {
   // isEnabled: YES,
   // acceptsFirstResponder: YES,
@@ -29,15 +29,15 @@ MySystem.SentenceConnectPane = SC.PalettePane.extend(
     //  acceptsKeyPane: YES,
     //  isEnabled: YES,
     childViews: "labelView doneButton".w(),
-    labelView: SC.LabelView.create({
+    labelView: SC.LabelView.design({
       layout: { left: 5, right: 5, top: 5, width: 140, height: 80 },
       value: "Select the nodes and links your sentence describes, then click the 'Done' button.",
       canEditContent: YES,
       canDeleteContent: YES,
       isEditable: YES,
-      mouseDown: function(evt) {console.log("label mouse down"); return YES;}
+			isEnabled: YES
     }),
-    doneButton: SC.ButtonView.create({
+    doneButton: SC.ButtonView.design({
       acceptsFirstResponder: YES,
       buttonBehavior: SC.PUSH_BEHAVIOR,
       layout: { left: 10, right: 10, bottom: 10, height:20 },
@@ -47,12 +47,7 @@ MySystem.SentenceConnectPane = SC.PalettePane.extend(
       target: "MySystem.storySentenceController",
       action: "doneButtonPushed",
       theme: "capsule",
-      isEnabled: YES,
-      mouseDown: function() { console.log("mouse down in button"); return sc_super(); }
-      // mouseUp: function(evt) { console.log("mouse up in button"); return NO; }
-    }),
-    // doneButtonPushed: function() { console.log("Done button pushed in contentView"); return YES; },
-    mouseDown: function(evt) { console.log("mouse down in contentView"); return sc_super(); }
-    // mouseUp: function(evt) { console.log("mouse up in contentView"); return NO; }
+      isEnabled: YES
+    })
   })
 });
