@@ -33,14 +33,14 @@ MySystem.SentenceView = SC.View.extend(
     // target: MySystem.storySentenceController,
     pushButton: function() {
       if (this.value) { 
-				MySystem.storyController.turnOffOtherButtons(this);
-				MySystem.storySentenceController.addDiagramConnectPane(this.content);
-			}
+        MySystem.storySentenceController.turnOffOtherButtons(this);
+        MySystem.storySentenceController.addDiagramConnectPane(this.content);
+      }
     }.observes('value'),
     unPushButton: function() {
       if (!this.value) { 
-				MySystem.storySentenceController.closeDiagramConnectPane();
-			}
+        MySystem.storySentenceController.closeDiagramConnectPane();
+      }
     }.observes('value')
   })
 });

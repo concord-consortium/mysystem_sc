@@ -15,9 +15,9 @@
 */
 MySystem.SentenceConnectPane = SC.PalettePane.extend(
 /** @scope MySystem.SentenceConnectPane.prototype */ {
-  isEnabled: YES,
-  acceptsFirstResponder: YES,
-  acceptsKeyPane: YES,
+  // isEnabled: YES,
+  // acceptsFirstResponder: YES,
+  // acceptsKeyPane: YES,
   layout: { top: 150, right: 5, width: 150, height: 150 },
   classNames: 'sentence-connect-pane'.w(),
   // The sentence which is currently being linked to.
@@ -44,16 +44,15 @@ MySystem.SentenceConnectPane = SC.PalettePane.extend(
       // icon: sc_static('resources/icon_link.gif'),
       title: "Done",
       toolTip: "Click to link and close this window",
-      target: MySystem.storyController,
+      target: "MySystem.storySentenceController",
       action: "doneButtonPushed",
       theme: "capsule",
-      value: NO,
-      isEnabled: YES
-      // mouseDown: function(evt) { console.log("mouse down in button"); return YES; },
+      isEnabled: YES,
+      mouseDown: function() { console.log("mouse down in button"); return sc_super(); }
       // mouseUp: function(evt) { console.log("mouse up in button"); return NO; }
     }),
-    doneButtonPushed: function() { console.log("Done button pushed in contentView"); return YES; },
-    mouseDown: function(evt) { console.log("mouse down in contentView"); return YES; },
-    mouseUp: function(evt) { console.log("mouse up in contentView"); return NO; }
+    // doneButtonPushed: function() { console.log("Done button pushed in contentView"); return YES; },
+    mouseDown: function(evt) { console.log("mouse down in contentView"); return sc_super(); }
+    // mouseUp: function(evt) { console.log("mouse up in contentView"); return NO; }
   })
 });
