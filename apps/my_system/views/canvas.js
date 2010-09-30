@@ -14,96 +14,92 @@ sc_require('MySystem.NodeView');
 sc_require('LinkIt.CanvasView');
 sc_require('core');
 MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, { 
-	allowMultipleSelection: YES,
-    isDropTarget: YES,
-    computeDragOperations: function(drag, evt) { return SC.DRAG_COPY; },
-    performDragOperation: function(drag, op) { 
-      var image = drag.data.image;
-      var title = drag.data.title;
-      var xpos = drag.location.x;
-      var ypos = drag.location.y;
-      var offsetX = this.parentView.get('frame').x;
-      var offsetY = this.get('frame').y;
-      var gX = drag.ghostOffset.x;
-      var gY = drag.ghostOffset.y;
-      //( title, image, xPos, yPos )
-      SC.Logger.log("drag performed");
-      MySystem.nodesController.addNode(title, image, xpos - offsetX - gX, ypos - offsetY - gY);
-      MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
-      return SC.DRAG_COPY; 
-    },
-    didCreateLayer: function () {
-      var frame = this.get('frame');
-      var canvasElem = this.$('canvas.base-layer');
-      if (canvasElem) {
-        canvasElem.attr('width', frame.width);
-        canvasElem.attr('height', frame.height);
-        if (canvasElem.length > 0) {
-          var cntx = canvasElem[0].getContext('2d'); // Get the actual canvas object context
-          if (cntx) {
-            cntx.clearRect(0, 0, frame.width, frame.height);
-            this._drawLinks(cntx);
-          }
-          else {
-            LinkIt.log("Linkit.LayerView.render(): Canvas object context is not accessible.");
-          }
+  allowMultipleSelection: YES,
+  isDropTarget: YES,
+  computeDragOperations: function(drag, evt) { return SC.DRAG_COPY; },
+  performDragOperation: function(drag, op) { 
+    var image = drag.data.image;
+    var title = drag.data.title;
+    var xpos = drag.location.x;
+    var ypos = drag.location.y;
+    var offsetX = this.parentView.get('frame').x;
+    var offsetY = this.get('frame').y;
+    var gX = drag.ghostOffset.x;
+    var gY = drag.ghostOffset.y;
+    //( title, image, xPos, yPos )
+    SC.Logger.log("drag performed");
+    MySystem.nodesController.addNode(title, image, xpos - offsetX - gX, ypos - offsetY - gY);
+    MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
+    return SC.DRAG_COPY; 
+  },
+  didCreateLayer: function () {
+    var frame = this.get('frame');
+    var canvasElem = this.$('canvas.base-layer');
+    if (canvasElem) {
+      canvasElem.attr('width', frame.width);
+      canvasElem.attr('height', frame.height);
+      if (canvasElem.length > 0) {
+        var cntx = canvasElem[0].getContext('2d'); // Get the actual canvas object context
+        if (cntx) {
+          cntx.clearRect(0, 0, frame.width, frame.height);
+          this._drawLinks(cntx);
+        } else {
+          LinkIt.log("Linkit.LayerView.render(): Canvas object context is not accessible.");
         }
-        else {
-          LinkIt.log("Linkit.LayerView.render(): Canvas element array length is zero.");
-        }
+      } else {
+        LinkIt.log("Linkit.LayerView.render(): Canvas element array length is zero.");
       }
-      else {
-        LinkIt.log("Linkit.LayerView.render(): Canvas element is not accessible.");
-      }
-
+    } else {
+      LinkIt.log("Linkit.LayerView.render(): Canvas element is not accessible.");
+    }
     return sc_super();
   },
 
-	/* Override selection behavior from CollectionView. */
-	select: function(indexes, extend) {
-		if (extend && (indexes === null || indexes.length === 0)) return;
-		return sc_super();
-	},
-	
-	/** @private
-	Copied from CollectionView and modified.
-	
-    Handles mouse down events on the collection view or on any of its 
+  /* Override selection behavior from CollectionView. */
+  select: function(indexes, extend) {
+    if (extend && (indexes === null || indexes.length === 0)) return;
+    return sc_super();
+  },
+  
+  /** @private
+  Copied from CollectionView and modified.
+
+    Handles mouse down events on the collection view or on any of its
     children.
-    
+
     The default implementation of this method can handle a wide variety
     of user behaviors depending on how you have configured the various
     options for the collection view.
-    
+
     @param ev {Event} the mouse down event
     @returns {Boolean} Usually YES.
   */
   collectionViewMouseDown: function(ev) {
-    
+
     // When the user presses the mouse down, we don't do much just yet.
     // Instead, we just need to save a bunch of state about the mouse down
     // so we can choose the right thing to do later.
-    
-    
+
+
     // find the actual view the mouse was pressed down on.  This will call
     // hitTest() on item views so they can implement non-square detection
     // modes. -- once we have an item view, get its content object as well.
     var itemView      = this.itemViewForEvent(ev),
         content       = this.get('content'),
-        contentIndex  = itemView ? itemView.get('contentIndex') : -1, 
+        contentIndex  = itemView ? itemView.get('contentIndex') : -1,
         info, anchor, sel, isSelected, modifierKeyPressed,
         allowsMultipleSel = content.get('allowsMultipleSelection');
-        
+
     info = this.mouseDownInfo = {
       event:        ev,  
       itemView:     itemView,
       contentIndex: contentIndex,
       at:           Date.now()
     };
-    
+
     // become first responder if possible.
     this.becomeFirstResponder() ;
-    
+
     // Toggle the selection if selectOnMouseDown is true
     if (this.get('useToggleSelection')) {
       if (this.get('selectOnMouseDown')) {
@@ -121,15 +117,14 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
           this.select(contentIndex, YES) ;
         }
       }
-      
       return YES;
     }
-        
-    // recieved a mouseDown on the collection element, but not on one of the 
+
+    // recieved a mouseDown on the collection element, but not on one of the
     // childItems... unless we do not allow empty selections, set it to empty.
-		// MODIFIED to not deselect if the modifier key is pressed and we select an empty item
+    // MODIFIED to not deselect if the modifier key is pressed and we select an empty item
     if (!itemView) {
-			modifierKeyPressed = ev.ctrlKey || ev.metaKey;
+      modifierKeyPressed = ev.ctrlKey || ev.metaKey;
       if (this.get('allowDeselectAll') && !modifierKeyPressed) this.select(null, false);
       return YES ;
     }
@@ -177,7 +172,7 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
     
     // saved for extend by shift ops.
     info.previousContentIndex = contentIndex;
-    
+
     return YES;
   },
   
@@ -212,7 +207,7 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
       }
     }
     else {
-			var multiSelect = evt.metaKey && this.get('allowMultipleSelection');
+      var multiSelect = evt.metaKey && this.get('allowMultipleSelection');
       pv = this.get('parentView');
       frame = this.get('frame');
       globalFrame = pv ? pv.convertFrameToView(frame, null) : frame;
