@@ -67,19 +67,24 @@ MySystem.storySentenceController = SC.ArrayController.create(
 
   // Open the SentenceConnectPane
   addDiagramConnectPane: function (sentence) {
+	debugger;
     var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
+		var theCanvas = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.bottomRightView');
     MySystem.nodesController.unselectAll();
+		theCanvas.selectObjects([]);
     if (!diagramPane.isPaneAttached) {
       diagramPane.append();
       diagramPane.becomeFirstResponder();
     }
-    MySystem.nodesController.selectObjects(sentence.get('links'), true);
+    theCanvas.selectObjects(sentence.get('links'), true);
     MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
     diagramPane.set('activeSentence', sentence);
   },
 
   closeDiagramConnectPane: function () {
+	debugger;
     var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
+		var theCanvas = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.bottomRightView');
     var diagramObjects = diagramPane.get('selectedObjects');
     var activeSentence = diagramPane.get('activeSentence');
     if (activeSentence) {
