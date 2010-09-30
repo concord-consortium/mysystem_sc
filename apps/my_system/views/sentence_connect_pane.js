@@ -15,9 +15,6 @@
 */
 MySystem.SentenceConnectPane = SC.PalettePane.design(
 /** @scope MySystem.SentenceConnectPane.prototype */ {
-  // isEnabled: YES,
-  // acceptsFirstResponder: YES,
-  // acceptsKeyPane: YES,
   layout: { top: 150, right: 5, width: 150, height: 150 },
   classNames: 'sentence-connect-pane'.w(),
   // The sentence which is currently being linked to.
@@ -25,9 +22,6 @@ MySystem.SentenceConnectPane = SC.PalettePane.design(
   // The selected objects in the diagram
   selectedObjectsBinding: 'MySystem.nodesController.allSelected',
   contentView: SC.View.design({
-    //  acceptsFirstResponder: YES,
-    //  acceptsKeyPane: YES,
-    //  isEnabled: YES,
     childViews: "labelView doneButton".w(),
     labelView: SC.LabelView.design({
       layout: { left: 5, right: 5, top: 5, width: 140, height: 80 },
@@ -35,7 +29,7 @@ MySystem.SentenceConnectPane = SC.PalettePane.design(
       canEditContent: YES,
       canDeleteContent: YES,
       isEditable: YES,
-			isEnabled: YES
+      isEnabled: YES
     }),
     doneButton: SC.ButtonView.design({
       acceptsFirstResponder: YES,
