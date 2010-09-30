@@ -209,28 +209,86 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   },
 
   transformationIcon: function() {
-    if (this.get('transformer')) {
-      return sc_static('resources/gotTransformationIcon.png');
-    } else if (this.get('needsTransformation')) {
-      return sc_static('resources/transformationNeededIcon.png');
+    if (this.get('transformer') || this.get('hasPotentialTransformations')) {
+      if (this.get('transformationsAreAllAnnotated')) {
+        return sc_static('resources/gotTransformationIcon.png');
+      } else {
+        return sc_static('resources/transformationNeededIcon.png');
+      }
     } else {
       return sc_static('resources/noTransformationNeededIcon.gif');
     }
-  }.property('needsTransformation', 'transformer'),
+  }.property('hasPotentialTransformations', 'transformer'),
 
-  needsTransformation: function() {
-    var links = this.get('links');
-    if (links.get('length') < 2) {
-      return false;
+  // This function doesn't calculate all transformations, or worry about which
+  // transformations actually work. It just verifies that a transformation is
+  // *possible*, that is, at least one inLink with a different color from at least
+  // one outLink.
+  hasPotentialTransformations: function() {
+    var inLinks = this.get('inLinks');
+    var outLinks = this.get('outLinks');
+    if ((inLinks.get('length') < 1) || (outLinks.get('length') < 1)) {
+      return false; // No transformation without both in-flow and out-flow
     } else {
-      var _needsTransformation = false;
-      var color = links.objectAt(0).get('model').get('color');
-      for (var i = 1; i < links.get('length'); i += 1) {
-        _needsTransformation |= links.objectAt(i).get('model').get('color') != color;
+      var _hasTransformation = false;
+      var color = null;
+      var inLength = inLinks.get('length');
+      var outLength = outLinks.get('length');
+      var i, j;
+      for (i=0; i<inLength; i++) { // Check each in-link
+        color = inLinks.objectAt(i).get('color');
+       for (j=0; j<outLength; j++) { // Check against each out-link
+          if (color != outLinks.objectAt(j).get('color')) {
+            _hasTransformation = true; // Found one
+            break; // stop looking at out-links
+          }
+        }
+        if (_hasTransformation) { break; } // If we found one, stop looking at in-links
       }
-      return _needsTransformation;
+      return _hasTransformation;
     }
-  }.property('links')
+  }.property('.outlinks.[]', '.inLinks.[]'),
+
+  // This function does not actually check each possible transformation.
+  // Rather, it checks the node itself (if it's not annotated, none of the
+  // transformations are), then the links, because if one of them is not
+  // annotated, at least one potential transformation is not annotated.
+  // This may produce "false negatives" where all the real transformations
+  // are annotated, or "false positives" where the transformations aren't
+  // annotated but all the components are related to sentences for other
+  // reasons.
+  transformationsAreAllAnnotated: function() {
+    if (this.get('hasPotentialTransformations')) {
+      var _annotated = true;
+      // Check node
+      if (this.get('sentences').get('length') < 1) {
+        _annotated = false;
+      } else {
+        var inLinks = this.get('inLinks');
+        var outLinks = this.get('outLinks');
+        var inLength = inLinks.get('length');
+        var outLength = outLinks.get('length');
+        var i;
+        for (i=0; i<inLength; i++) { // Check each in-link
+          if (inLinks.objectAt(i).get('sentences').get('length') < 1) {
+            _annotated = false;
+            break;
+          }
+        }
+        if (_annotated) { // Don't bother if we've already proved it false
+          for (i=0; i<outLength; i++) { // Check against each out-link
+            if (inLinks.objectAt(i).get('sentences').get('length') < 1) {
+              _annotated = false;
+              break;
+            }
+          }
+        }
+      }
+      return _annotated;
+    } else {
+      return false;
+    }
+  }.property('hasPotentialTransformations', '.outLinks.[]', '.inLinks.[]')
 });
 
 MySystem.Node.GuidCounter = 100;
