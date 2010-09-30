@@ -108,17 +108,6 @@ MySystem.storySentenceController = SC.ArrayController.create(
   doneButtonPushed: function() {
     this.closeDiagramConnectPane();
     this.turnOffOtherButtons(null);
-  },
-
-  // Turns on and off a "link this to diagram" button in the top toolbar (not currently included)
-  activateLinkingButton: function() {
-    if (this.get('selection').get('length') !== 0) {
-      // Turn on button
-      MySystem.mainPage.mainPane.topView.bottomRightView.topLeftView.bottomRightView.toolbar.showButton.set('isEnabled', YES);
-    } else {
-      // Turn off button
-      MySystem.mainPage.mainPane.topView.bottomRightView.topLeftView.bottomRightView.toolbar.showButton.set('isEnabled', NO);
-    }
-  }.observes('selection')
+  }
 
 }) ;
