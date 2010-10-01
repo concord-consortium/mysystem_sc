@@ -13,16 +13,14 @@
 MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate, 
 /** @scope MySystem.nodesController.prototype */ {
 
+	selectedLinksBinding: "MySystem.mainPage.mainPane.topView.bottomRightView.bottomRightView.selectedLinks",
+
   allSelected: function() {
-    var theCanvas = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.bottomRightView');
-    var links  = theCanvas.get('selectedLinks');
+    var links  = this.get('selectedLinks');
     var resultSet = this.get('selection').clone();
     resultSet = resultSet.addObjects(links.map(function(link){return link.get('model');}));
-    // if (link) {
-    //   resultSet.addObject(link.get('model'));
-    // }
     return resultSet;
-  }.property('mainPane.topView.bottomRightView.bottomRightView.selectedLinks','mainPane.topView.bottomRightView.bottomRightView.selectedLinks[]','selection').cacheable(),
+  }.property('selectedLinks','selectedLinks.[]','selection').cacheable(),
   
   unselectAll: function() {
     var theCanvas = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.bottomRightView');

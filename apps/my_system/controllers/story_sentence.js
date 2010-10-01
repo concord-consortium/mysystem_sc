@@ -47,17 +47,17 @@ MySystem.storySentenceController = SC.ArrayController.create(
       var contentIndex = this.indexOf(sentence);
       var list = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.topLeftView.bottomRightView.sentencesView.contentView');
       var listItem = list.itemViewForContentIndex(contentIndex);
-      listItem.beginEditing();
+      listItem.get('sentenceText').beginEditing();
     });
 
-    return YES ;
+    return sentence ;
   },
 
   addLinksAndNodesToSentence: function (linksAndNodes, sentence) {
     linksAndNodes.forEach( function (item, index, enumerable) {
-      if (item instanceof MySystem.Link) {
+      if (item.instanceOf(MySystem.Link)) {
         sentence.get('links').pushObject(item);
-      } else if (item instanceof MySystem.Node) {
+      } else if (item.instanceOf(MySystem.Node)) {
         sentence.get('nodes').pushObject(item);
       } else {
         SC.Logger.log('Bad item type ' + item);
@@ -96,6 +96,10 @@ MySystem.storySentenceController = SC.ArrayController.create(
     }
     MySystem.nodesController.unselectAll();
     diagramPane.set('activeSentence', null);
+		// Refresh the transformation "badges" on the nodes.
+		MySystem.get('nodesController').get('content').forEach(function(node) {
+			node.notifyPropertyChange('transformationIcon');
+		});
   },
 
   turnOffOtherButtons: function(buttonToLeaveOn) {
@@ -111,6 +115,11 @@ MySystem.storySentenceController = SC.ArrayController.create(
   doneButtonPushed: function() {
     this.closeDiagramConnectPane();
     this.turnOffOtherButtons(null);
-  }
+  },
 
+	createSentence: function(node) {
+		var sentence = this.addStorySentence();
+		this.addLinksAndNodesToSentence([node], sentence);
+		this.addLinksAndNodesToSentence(node.get('links').map(function(link){return link.model;}), sentence);
+	}
 }) ;

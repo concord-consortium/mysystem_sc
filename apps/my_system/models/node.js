@@ -277,7 +277,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         }
         if (_annotated) { // Don't bother if we've already proved it false
           for (i=0; i<outLength; i++) { // Check against each out-link
-            if (inLinks.objectAt(i).get('sentences').get('length') < 1) {
+            if (outLinks.objectAt(i).get('sentences').get('length') < 1) {
               _annotated = false;
               break;
             }

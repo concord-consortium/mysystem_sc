@@ -83,8 +83,12 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     classNames: 'image',
     useImageCache: true,
     layout: {left: 5, bottom: +5, width: 20, height:20 },
-    valueBinding: '.parentView*content.transformationIcon'
-  }),
+    valueBinding: '.parentView*content.transformationIcon',
+		click: function(evt) { 
+			MySystem.storySentenceController.createSentence(this.getPath('parentView.content')); 
+			return YES;
+		}
+	}),
 
   // ..........................................................
   // LINKIT Specific for the view
