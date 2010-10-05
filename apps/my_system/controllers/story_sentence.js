@@ -96,10 +96,10 @@ MySystem.storySentenceController = SC.ArrayController.create(
     }
     MySystem.nodesController.unselectAll();
     diagramPane.set('activeSentence', null);
-		// Refresh the transformation "badges" on the nodes.
-		MySystem.get('nodesController').get('content').forEach(function(node) {
-			node.notifyPropertyChange('transformationIcon');
-		});
+    // Refresh the transformation "badges" on the nodes.
+    MySystem.get('nodesController').get('content').forEach(function(node) {
+      node.notifyPropertyChange('transformationIcon');
+    });
   },
 
   turnOffOtherButtons: function(buttonToLeaveOn) {
@@ -117,9 +117,9 @@ MySystem.storySentenceController = SC.ArrayController.create(
     this.turnOffOtherButtons(null);
   },
 
-	createSentence: function(node) {
-		var sentence = this.addStorySentence();
-		this.addLinksAndNodesToSentence([node], sentence);
-		this.addLinksAndNodesToSentence(node.get('links').map(function(link){return link.model;}), sentence);
-	}
+  createSentence: function(node) {
+    var sentence = this.addStorySentence();
+    this.addLinksAndNodesToSentence([node], sentence);
+    this.addLinksAndNodesToSentence(node.get('links').map(function(link){return link.model;}), sentence);
+  }
 }) ;

@@ -13,7 +13,7 @@
 MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate, 
 /** @scope MySystem.nodesController.prototype */ {
 
-	selectedLinksBinding: "MySystem.mainPage.mainPane.topView.bottomRightView.bottomRightView.selectedLinks",
+  selectedLinksBinding: "MySystem.mainPage.mainPane.topView.bottomRightView.bottomRightView.selectedLinks",
 
   allSelected: function() {
     var links  = this.get('selectedLinks');
