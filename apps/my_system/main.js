@@ -28,10 +28,10 @@ MySystem.main = function main() {
   var nodes = MySystem.store.find(MySystem.Node);
   //Set the content property on the primary controller
   MySystem.nodesController.set('content', nodes);
-	var story = MySystem.store.find(MySystem.Story, 1);
-	MySystem.storyController.set('content', story);
-	var storySentences = MySystem.store.find(MySystem.StorySentence);
-	MySystem.storySentenceController.set('content', storySentences);
+  var story = MySystem.store.find(MySystem.Story, 1);
+  MySystem.storyController.set('content', story);
+  var storySentences = MySystem.store.find(MySystem.StorySentence);
+  MySystem.storySentenceController.set('content', storySentences);
 
 };
 
