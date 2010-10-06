@@ -18,6 +18,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   image: SC.Record.attr(String),
   title: SC.Record.attr(String),
   transformer: SC.Record.attr(Boolean),
+  toolTip: SC.Record.attr(String, { defaultValue: null }),
 
   outLinks: SC.Record.toMany('MySystem.Link',{
     inverse: 'startNode',
@@ -211,11 +212,14 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   transformationIcon: function() {
     if (this.get('transformer') || this.get('hasPotentialTransformations')) {
       if (this.get('transformationsAreAllAnnotated')) {
+        this.set('toolTip', 'All transformations are annotated.');
         return sc_static('resources/gotTransformationIcon.png');
       } else {
+        this.set('toolTip', 'This node has at least one transformation which needs annotation.');
         return sc_static('resources/transformationNeededIcon.png');
       }
     } else {
+      this.set('toolTip', null);
       return sc_static('resources/noTransformationNeededIcon.gif');
     }
   }.property('hasPotentialTransformations', 'transformer'),
