@@ -30,6 +30,17 @@ MySystem.storySentenceController = SC.ArrayController.create(
     return YES ;
   },
 
+  collectionViewPerformDragOperation: function(view, drag, op, proposedInsertionIndex, proposedDropOperation) {
+    var movingSentence = drag.get('source').get('selection').firstObject();
+    movingSentence.set('order', proposedInsertionIndex);
+    this.content.forEach( function (item, index, enumerable) {
+      if (item.get('order') >= proposedInsertionIndex) {
+        item.set('order', item.get('order') + 1);
+      }
+    });
+    return SC.DRAG_REORDER ;
+  },
+
   addStorySentence: function() {
     var sentence;
 

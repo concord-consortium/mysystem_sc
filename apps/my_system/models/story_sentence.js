@@ -14,6 +14,7 @@
 MySystem.StorySentence = SC.Record.extend(
 /** @scope MySystem.StorySentences.prototype */ {
 
+  order: SC.Record.attr(Number),
   bodyText: SC.Record.attr(String),
   nodes: SC.Record.toMany("MySystem.Node", {
     inverse: "sentences", isMaster: NO
