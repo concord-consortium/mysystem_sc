@@ -33,20 +33,19 @@ MySystem.storySentenceController = SC.ArrayController.create(
   collectionViewPerformDragOperation: function(view, drag, op, proposedInsertionIndex, proposedDropOperation) {
     var movingSentence = drag.get('source').get('selection').firstObject();
     movingSentence.set('order', proposedInsertionIndex);
-    this.content.forEach( function (item, index, enumerable) {
-      if (item.get('order') >= proposedInsertionIndex) {
-        item.set('order', item.get('order') + 1);
-      }
-    });
+    this.incrementOrderValues(proposedInsertionIndex);
     return SC.DRAG_REORDER ;
   },
 
   addStorySentence: function() {
     var sentence;
 
+    this.incrementOrderValues(0);
+
     // Create a new sentence in the store
     sentence = MySystem.store.createRecord(MySystem.StorySentence, {
       "guid": MySystem.StorySentence.newGuid(),
+      "order": 0,
       "bodyText": "Describe a new step in the story."
     });
 
@@ -132,5 +131,13 @@ MySystem.storySentenceController = SC.ArrayController.create(
     var sentence = this.addStorySentence();
     this.addLinksAndNodesToSentence([node], sentence);
     this.addLinksAndNodesToSentence(node.get('links').map(function(link){return link.model;}), sentence);
+  },
+
+  incrementOrderValues: function(startAt) {
+    this.content.forEach( function (item, index, enumerable) {
+      if (item.get('order') >= startAt) {
+        item.set('order', item.get('order') + 1);
+      }
+    });
   }
 }) ;
