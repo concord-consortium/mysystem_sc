@@ -86,7 +86,8 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     valueBinding: '.parentView*content.transformationIcon',
     toolTipBinding: '.parentView*content.toolTip',
     click: function(evt) {
-      MySystem.storySentenceController.createSentence(this.getPath('parentView.content'));
+      MySystem.nodesController.selectFirstTransformation(this.getPath('parentView.content'));
+      // MySystem.storySentenceController.createSentence(this.getPath('parentView.content'));
       return YES;
     }
   }),

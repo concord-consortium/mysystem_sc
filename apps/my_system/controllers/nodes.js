@@ -32,6 +32,14 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     this.deselectObjects(baseSet);
   },
 
+  selectFirstTransformation: function(node) {
+    this.unselectAll();
+    var transformationParts = node.firstUnannotatedTransformation();
+    if (transformationParts) {
+      MySystem.nodesController.selectObjects(transformationParts);
+    }
+  },
+
   collectionViewDeleteContent: function (view, content, indices) {
     // destroy the records
     var recordsToDestroy = indices.map( function (idx) {

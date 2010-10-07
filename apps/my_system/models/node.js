@@ -218,11 +218,55 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         this.set('toolTip', 'This node has at least one transformation which needs annotation.');
         return sc_static('resources/transformationNeededIcon.png');
       }
-    } else {
+    } else { // There are no transformations
       this.set('toolTip', null);
       return sc_static('resources/noTransformationNeededIcon.gif');
     }
   }.property('hasPotentialTransformations', 'transformer'),
+
+  firstUnannotatedTransformation: function() {
+    if (this.hasPotentialTransformations) { // nothing to do otherwise
+      var _trans = []; // The transformation
+      var inLinks = this.get('inLinks');
+      var outLinks = this.get('outLinks');
+      var color = null;
+      var inLength = inLinks.get('length');
+      var outLength = outLinks.get('length');
+      var i, j;
+      for (i=0; i<inLength; i++) { // Check each in-link
+        color = inLinks.objectAt(i).get('color');
+        for (j=0; j<outLength; j++) { // Check out-links to match
+          if (color != outLinks.objectAt(j).get('color')) { // Got one
+            if (this.sentences.get('length') < 1) {
+              _trans.pushObject(this);
+              _trans.pushObject(inLinks.objectAt(i));
+              _trans.pushObject(outLinks.objectAt(j));
+            } else if (inLinks.objectAt(i).get('sentences').lastIndexOf(this.get('sentences').firstObject()) < 0) {
+              // Any sentences the current in-link has aren't part of the same annotation
+              // Therefore this is un-annotated, return it
+              _trans.pushObject(this);
+              _trans.pushObject(inLinks.objectAt(i));
+              _trans.pushObject(outLinks.objectAt(j));
+            } else if (outLinks.objectAt(j).get('sentences').lastIndexOf(this.get('sentences').firstObject()) < 0) {
+              // The same, for the out-link
+              _trans.pushObject(this);
+              _trans.pushObject(inLinks.objectAt(i));
+              _trans.pushObject(outLinks.objectAt(j));
+            }
+          }
+          if (_trans.get('length') > 2) break;
+        }
+        if (_trans.get('length') > 2) break;
+      }
+      if (_trans.get('length') > 2) {
+        return _trans;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  },
 
   // This function doesn't calculate all transformations, or worry about which
   // transformations actually work. It just verifies that a transformation is
