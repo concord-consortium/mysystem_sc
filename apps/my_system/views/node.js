@@ -13,7 +13,7 @@
 */
 sc_require('MySystem.Link');
 
-MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
+MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView, SC.DropTarget,
 /** @scope MySystem.NodeView.prototype */ {
 
   layout: { top: 0, left: 0, width: 100, height: 120 },
@@ -100,7 +100,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   */
   terminalViewFor: function (terminalKey) {
     return this[terminalKey + 'Terminal'];
-  }
+  },
 
   /** 
   * implement action behavior of see sproutcore/desktop/view/button
@@ -109,4 +109,24 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   //     this._runAction(evt);
   // }
 
+	/**
+	* Stuff for DropTarget
+	*/
+	dragStarted: function(drag, evt) {},
+	dragEntered: function(drag, evt) {},
+	dragUpdated: function(drag, evt) {},
+	dragExited: function(drag, evt) {},
+	dragEnded: function(drag, evt) {},
+	computeDragOperations: function(drag, evt, ops) { 
+		if (drag.hasDataType('Boolean')) {
+			return SC.DRAG_LINK;
+		} else {
+			return SC.DRAG_NONE;
+		}
+	},
+	acceptDragOperation: function(drag, operation) { return true; },
+	performDragOperation: function(drag, operation) { 
+		this.content.set('transformer', true);
+		return operation; 
+	}
 });

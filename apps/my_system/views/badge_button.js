@@ -10,21 +10,21 @@ sc_require('core');
   @class
   
   @extends SC.View
-  @author Evin Grano
+  @author John Ridgway
   @version ALPHA
   @since ALPHA
 
 */
-MySystem.AddButtonView = SC.View.extend( 
+MySystem.BadgeButtonView = SC.View.extend( 
   {
   layout: { top: 0, left: 0, width: 100, height: 120 },
-  classNames: 'node'.w(),
+  classNames: ''.w(),
 
   displayProperties: 'content isSelected'.w(),
   content: null,
   isSelected: false,
 
-  childViews: 'icon label'.w(),
+  childViews: 'icon'.w(),
 
   render: function (context) {
     sc_super();
@@ -34,25 +34,19 @@ MySystem.AddButtonView = SC.View.extend(
   icon: SC.ImageView.design({
     classNames: 'image',
     useImageCache: true,
-    layout: { top: 20, width:50, height:70, centerX: 0},
-    valueBinding: '.parentView.image'
+    layout: { top: 20, width:68, height:68, centerX: 0},
+    value: sc_static('resources/badge.png')
   }),
 
-  label: SC.LabelView.design({
-    layout: { bottom: 5, centerX: 0, width: 100, height: 25 },
-    classNames: ['name'],
-    textAlign: SC.ALIGN_CENTER,    
-    valueBinding: '.parentView.title',
-    isEditable: NO
-  }),
-  
-  dragDataForType: function(drag, dataType) { return null; },
-  
   mouseDown: function(eventID) {
     SC.Logger.log("mouseDown called");
-    var self = this;
 		var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-		SC.Drag.addDropTarget(myCanvas);
+		var childViews = myCanvas.get('childViews');
+		var len = childViews.get('length');
+		for (var i = 0; i < len; i += 1) {
+			SC.Drag.addDropTarget(childViews.objectAt(i));
+		}
+    var self = this;
     var dragOpts = {
       event: eventID,
       source: self.get('parentView'),
@@ -60,8 +54,7 @@ MySystem.AddButtonView = SC.View.extend(
       ghost: NO,
       slideBack: NO,
       data: {
-        title: this.get('title') || 'title',
-        image: this.get('image') || 'image'
+        Boolean: true
       }
     };
     SC.Drag.start(dragOpts);
@@ -70,7 +63,10 @@ MySystem.AddButtonView = SC.View.extend(
 	mouseUp: function(evt) {
 		sc_super();
 		var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-		debugger;
-		SC.Drag.removeDropTarget(myCanvas);
+		var childViews = myCanvas.get('childViews');
+		var len = childViews.get('length');
+		for (var i = 0; i < len; i += 1) {
+			SC.Drag.removeDropTarget(childViews.objectAt(i));
+		}
 	}
 });
