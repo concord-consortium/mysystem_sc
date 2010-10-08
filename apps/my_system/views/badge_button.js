@@ -8,14 +8,14 @@ sc_require('core');
 /**
 
   @class
-  
+
   @extends SC.View
   @author John Ridgway
   @version ALPHA
   @since ALPHA
 
 */
-MySystem.BadgeButtonView = SC.View.extend( 
+MySystem.BadgeButtonView = SC.View.extend(
   {
   layout: { top: 0, left: 0, width: 100, height: 120 },
   classNames: ''.w(),
@@ -29,7 +29,7 @@ MySystem.BadgeButtonView = SC.View.extend(
   render: function (context) {
     sc_super();
     if (this.get('isSelected')) context.addClass('selected');
-  },  
+  },
 
   icon: SC.ImageView.design({
     classNames: 'image',
@@ -40,12 +40,12 @@ MySystem.BadgeButtonView = SC.View.extend(
 
   mouseDown: function(eventID) {
     SC.Logger.log("mouseDown called");
-		var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-		var childViews = myCanvas.get('childViews');
-		var len = childViews.get('length');
-		for (var i = 0; i < len; i += 1) {
-			SC.Drag.addDropTarget(childViews.objectAt(i));
-		}
+    var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
+    var childViews = myCanvas.get('childViews');
+    var len = childViews.get('length');
+    for (var i = 0; i < len; i += 1) {
+      SC.Drag.addDropTarget(childViews.objectAt(i));
+    }
     var self = this;
     var dragOpts = {
       event: eventID,
@@ -60,13 +60,13 @@ MySystem.BadgeButtonView = SC.View.extend(
     SC.Drag.start(dragOpts);
   },
 
-	mouseUp: function(evt) {
-		sc_super();
-		var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-		var childViews = myCanvas.get('childViews');
-		var len = childViews.get('length');
-		for (var i = 0; i < len; i += 1) {
-			SC.Drag.removeDropTarget(childViews.objectAt(i));
-		}
-	}
+  mouseUp: function(evt) {
+    sc_super();
+    var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
+    var childViews = myCanvas.get('childViews');
+    var len = childViews.get('length');
+    for (var i = 0; i < len; i += 1) {
+      SC.Drag.removeDropTarget(childViews.objectAt(i));
+    }
+  }
 });

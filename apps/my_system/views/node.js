@@ -109,24 +109,24 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView, SC.DropTarget,
   //     this._runAction(evt);
   // }
 
-	/**
-	* Stuff for DropTarget
-	*/
-	dragStarted: function(drag, evt) {},
-	dragEntered: function(drag, evt) {},
-	dragUpdated: function(drag, evt) {},
-	dragExited: function(drag, evt) {},
-	dragEnded: function(drag, evt) {},
-	computeDragOperations: function(drag, evt, ops) { 
-		if (drag.hasDataType('Boolean')) {
-			return SC.DRAG_LINK;
-		} else {
-			return SC.DRAG_NONE;
-		}
-	},
-	acceptDragOperation: function(drag, operation) { return true; },
-	performDragOperation: function(drag, operation) { 
-		this.content.set('transformer', true);
-		return operation; 
-	}
+  /**
+  * Stuff for DropTarget
+  */
+  dragStarted: function(drag, evt) {},
+  dragEntered: function(drag, evt) {},
+  dragUpdated: function(drag, evt) {},
+  dragExited: function(drag, evt) {},
+  dragEnded: function(drag, evt) {},
+  computeDragOperations: function(drag, evt, ops) {
+    if (drag.hasDataType('Boolean')) {
+      return SC.DRAG_LINK;
+    } else {
+      return SC.DRAG_NONE;
+    }
+  },
+  acceptDragOperation: function(drag, operation) { return true; },
+  performDragOperation: function(drag, operation) {
+    this.content.set('transformer', true);
+    return operation;
+  }
 });
