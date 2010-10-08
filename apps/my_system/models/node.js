@@ -209,6 +209,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     }
   },
 
+  // Controls the transformation icon in the view and its toolTip.
   transformationIcon: function() {
     if (this.get('transformer') || this.get('hasPotentialTransformations')) {
       if (this.get('transformationsAreAllAnnotated')) {

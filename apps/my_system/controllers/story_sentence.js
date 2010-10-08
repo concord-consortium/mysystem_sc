@@ -130,6 +130,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
   createSentence: function(node) {
     var sentence = this.addStorySentence();
     this.addLinksAndNodesToSentence([node], sentence);
+    // This actually adds ALL links for a node to the sentence
     this.addLinksAndNodesToSentence(node.get('links').map(function(link){return link.model;}), sentence);
   },
 
