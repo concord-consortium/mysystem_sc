@@ -34,6 +34,10 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     inverse: 'nodes', isMaster: NO
   }),
 
+  transformation: SC.Record.toMany('MySystem.Transformation', {
+    inverse: 'node', isMaster: YES
+  }),
+
   terminals: ['a', 'b'],
 
   // return a hash of editable attributes for the property editor
