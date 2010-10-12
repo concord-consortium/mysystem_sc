@@ -31,12 +31,12 @@ MySystem.Transformation = SC.Record.extend(
 /** @scope MySystem.Transformation.prototype */ {
 
   node: SC.Record.toOne("MySystem.Node", {
-    inverse: "transformation",
+    inverse: "transformations",
     isMaster: NO
   }),
   
   annotation: SC.Record.toOne("MySystem.StorySentence", {
-    inverse: "transformations",
+    inverse: "transformation",
     isMaster: YES
   }),
 
@@ -73,9 +73,9 @@ MySystem.Transformation = SC.Record.extend(
 
   isAnnotated: function() {
     if (this.annotation) {
-      return true;
+      return YES;
     } else {
-      return false;
+      return NO;
     }
   }.property("annotation").cacheable(),
 

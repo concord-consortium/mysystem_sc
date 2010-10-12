@@ -34,7 +34,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     inverse: 'nodes', isMaster: NO
   }),
 
-  transformation: SC.Record.toMany('MySystem.Transformation', {
+  transformations: SC.Record.toMany('MySystem.Transformation', {
     inverse: 'node', isMaster: YES
   }),
 
@@ -215,7 +215,8 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   // Controls the transformation icon in the view and its toolTip.
   transformationIcon: function() {
-    if (this.get('transformer') || this.get('hasPotentialTransformations')) {
+    var transformationCount = this.get('transformations').get('length');
+    if (transformationCount > 0) {
       if (this.get('transformationsAreAllAnnotated')) {
         this.set('toolTip', 'All transformations are annotated.');
         return sc_static('resources/gotTransformationIcon.png');
@@ -227,7 +228,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       this.set('toolTip', null);
       return sc_static('resources/noTransformationNeededIcon.gif');
     }
-  }.property('hasPotentialTransformations', 'transformer'),
+  }.property('.transformationsAreAllAnnotated').cacheable(),
 
   firstUnannotatedTransformation: function() {
     if (this.hasPotentialTransformations) { // nothing to do otherwise
@@ -281,7 +282,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     var inLinks = this.get('inLinks');
     var outLinks = this.get('outLinks');
     if ((inLinks.get('length') < 1) || (outLinks.get('length') < 1)) {
-      return false; // No transformation without both in-flow and out-flow
+      return NO; // No transformation without both in-flow and out-flow
     } else {
       var _hasTransformation = false;
       var color = null;
@@ -298,50 +299,23 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         }
         if (_hasTransformation) { break; } // If we found one, stop looking at in-links
       }
-      return _hasTransformation;
+      if (_hasTransformation) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }.property('.outlinks.[]', '.inLinks.[]'),
 
-  // This function does not actually check each possible transformation.
-  // Rather, it checks the node itself (if it's not annotated, none of the
-  // transformations are), then the links, because if one of them is not
-  // annotated, at least one potential transformation is not annotated.
-  // This may produce "false negatives" where all the real transformations
-  // are annotated, or "false positives" where the transformations aren't
-  // annotated but all the components are related to sentences for other
-  // reasons.
   transformationsAreAllAnnotated: function() {
-    if (this.get('hasPotentialTransformations')) {
-      var _annotated = true;
-      // Check node
-      if (this.get('sentences').get('length') < 1) {
-        _annotated = false;
-      } else {
-        var inLinks = this.get('inLinks');
-        var outLinks = this.get('outLinks');
-        var inLength = inLinks.get('length');
-        var outLength = outLinks.get('length');
-        var i;
-        for (i=0; i<inLength; i++) { // Check each in-link
-          if (inLinks.objectAt(i).get('sentences').get('length') < 1) {
-            _annotated = false;
-            break;
-          }
-        }
-        if (_annotated) { // Don't bother if we've already proved it false
-          for (i=0; i<outLength; i++) { // Check against each out-link
-            if (outLinks.objectAt(i).get('sentences').get('length') < 1) {
-              _annotated = false;
-              break;
-            }
-          }
-        }
+    var _areAnnotated = YES;
+    this.get('transformations').forEach( function (item, index, enumerable) {
+      if (!item.get('isAnnotated') == NO) {
+        _areAnnotated = NO;
       }
-      return _annotated;
-    } else {
-      return false;
-    }
-  }.property('hasPotentialTransformations', '.outLinks.[]', '.inLinks.[]')
+    });
+    return _areAnnotated;
+  }.property("transformations").cacheable()
 });
 
 MySystem.Node.GuidCounter = 100;
