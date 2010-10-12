@@ -11,7 +11,7 @@
 
   @extends SC.View
 */
-sc_require('MySystem.Link');
+sc_require('models/link');
 
 MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView, SC.DropTarget,
 /** @scope MySystem.NodeView.prototype */ {

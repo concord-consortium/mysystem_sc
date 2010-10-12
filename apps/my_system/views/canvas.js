@@ -10,8 +10,8 @@
 
   @extends SC.View
 */
-sc_require('MySystem.NodeView');
-sc_require('LinkIt.CanvasView');
+sc_require('views/node');
+// sc_require('LinkIt.CanvasView');
 sc_require('core');
 MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, { 
   allowMultipleSelection: YES,
