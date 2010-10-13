@@ -85,7 +85,7 @@ MySystem.Link = SC.Record.extend(
               { title: "Mechanical Energy", value: 'blue', enabled: YES }],
       itemTitleKey: 'title',
       itemValueKey: 'value',
-			itemIsEnabledKey: 'enabled',
+      itemIsEnabledKey: 'enabled',
       layoutDirection: SC.LAYOUT_VERTICAL
     }),
     //text: 
