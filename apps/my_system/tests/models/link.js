@@ -9,16 +9,16 @@ module("MySystem.Link");
 function isArray(testObject) {   
   return testObject && !testObject.propertyIsEnumerable('length') && typeof testObject === 'object' && typeof testObject.length === 'number';
 }
-var nodeA   = MySystem.store.find('MySystem.Node','1');
-var nodeB   = MySystem.store.find('MySystem.Node','3');
 
 test("New links should pass their own sanity checks", function() {
   expect(1);
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var linkHash = {
       guid: MySystem.Link.newGuid(),
       text: 'Test link for sanity check',
-      startNode: nodeA,
-      endNode: nodeB
+      startNode: node1,
+      endNode: node2
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   ok(newLink.isComplete, "The isComplete method should return true");
@@ -26,24 +26,24 @@ test("New links should pass their own sanity checks", function() {
 
 test("Links should return the nodes they're linked to", function() {
   expect(2);
-  var linkHash = {
-      guid: MySystem.Link.newGuid(),
-      text: 'Test link for node returning'
-    };
-  var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
-  newLink.set('startNode', nodeA);
-  newLink.set('endNode', nodeB);
-  equals(newLink.get('startNode'), nodeA, 'The link should return its start node');
-  equals(newLink.get('endNode'), nodeB, 'The link should return its end node');
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink = MySystem.store.createRecord(MySystem.Link, {'guid': MySystem.Link.newGuid(), 'text': 'Test link for node returning' });
+  newLink.set('startNode', node1);
+  newLink.set('endNode', node2);
+  equals(newLink.get('startNode'), node1, 'The link should return its start node');
+  equals(newLink.get('endNode'), node2, 'The link should return its end node');
 });
 
 test("Links should return LinkIt.Link objects when asked", function() {
   expect(4);
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var linkHash = {
       guid: MySystem.Link.newGuid(),
       text: 'Test link for LinkIt Links',
-      startNode: nodeA,
-      endNode: nodeB
+      startNode: node1,
+      endNode: node2
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var linkItLink = newLink.makeLinkItLink();
@@ -55,11 +55,13 @@ test("Links should return LinkIt.Link objects when asked", function() {
 
 test("Links should return an array of editable form fields when asked", function() {
   expect(2);
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var linkHash = {
       guid: MySystem.Link.newGuid(),
       text: 'Test link for form fields',
-      startNode: nodeA,
-      endNode: nodeB
+      startNode: node1,
+      endNode: node2
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var formFields = newLink.get('formFields');
@@ -78,11 +80,13 @@ test("We should be able to generate a new GUID", function() {
 
 test("Link color should be editable and persistent in the store", function() {
   expect(2);
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var linkHash = {
       guid: MySystem.Link.newGuid(),
       text: 'Test link for color change.',
-      startNode: nodeA,
-      endNode: nodeB
+      startNode: node1,
+      endNode: node2
     };
   var link1 = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var oldColor = link1.get('color');
@@ -94,11 +98,13 @@ test("Link color should be editable and persistent in the store", function() {
 
 test("tests connecting links to storySentences", function () {
   expect(3);
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var linkHash = {
       guid: MySystem.Link.newGuid(),
       text: 'Test link for StorySentence linking',
-      startNode: nodeA,
-      endNode: nodeB
+      startNode: node1,
+      endNode: node2
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   var sent = MySystem.store.find('MySystem.StorySentence', 'ss1');
