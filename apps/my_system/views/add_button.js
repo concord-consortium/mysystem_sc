@@ -51,8 +51,6 @@ MySystem.AddButtonView = SC.View.extend(
   mouseDown: function(eventID) {
     SC.Logger.log("mouseDown called");
     var self = this;
-    var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-    SC.Drag.addDropTarget(myCanvas);
     var dragOpts = {
       event: eventID,
       source: self.get('parentView'),
@@ -65,11 +63,5 @@ MySystem.AddButtonView = SC.View.extend(
       }
     };
     SC.Drag.start(dragOpts);
-  },
-
-  mouseUp: function(evt) {
-    sc_super();
-    var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-    SC.Drag.removeDropTarget(myCanvas);
   }
 });
