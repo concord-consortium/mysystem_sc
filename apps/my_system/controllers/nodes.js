@@ -34,10 +34,18 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
 
   selectFirstTransformation: function(node) {
     this.unselectAll();
-    var transformationParts = node.firstUnannotatedTransformation();
-    if (transformationParts) {
-      MySystem.nodesController.selectObjects(transformationParts);
+    var transformation = node.firstUnannotatedTransformation();
+    if (transformation) {
+      MySystem.nodesController.selectObject(node);
+      MySystem.nodesController.selectObjects(transformation.get('inLinks'), YES);
+      MySystem.nodesController.selectObjects(transformation.get('outLinks'), YES);
+      this.promptForTransformationAnnotation(transformation);
     }
+  },
+
+  promptForTransformationAnnotation: function(trans) {
+    SC.AlertPane.info("Annotate transformation", "You should add a sentence to the story to explain the energy transformation at this node.");
+    // TODO: Add a delegate to get the "closed" action here and open a new-sentence dialog
   },
 
   collectionViewDeleteContent: function (view, content, indices) {

@@ -228,53 +228,65 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       this.set('toolTip', null);
       return sc_static('resources/noTransformationNeededIcon.gif');
     }
-  }.property('.transformationsAreAllAnnotated').cacheable(),
+  }.property('.transformationsAreAllAnnotated', '.hasPotentialTransformations'),
 
   firstUnannotatedTransformation: function() {
-    if (this.hasPotentialTransformations) { // nothing to do otherwise
-      var _trans = []; // The transformation
-      var inLinks = this.get('inLinks');
-      var outLinks = this.get('outLinks');
-      var color = null;
-      var inLength = inLinks.get('length');
-      var outLength = outLinks.get('length');
-      var i, j;
-      for (i=0; i<inLength; i++) { // Check each in-link
-        color = inLinks.objectAt(i).get('color');
-        for (j=0; j<outLength; j++) { // Check out-links to match
-          if (color != outLinks.objectAt(j).get('color')) { // Got one
-            if (this.sentences.get('length') < 1) {
-              _trans.pushObject(this);
-              _trans.pushObject(inLinks.objectAt(i));
-              _trans.pushObject(outLinks.objectAt(j));
-            } else if (inLinks.objectAt(i).get('sentences').lastIndexOf(this.get('sentences').firstObject()) < 0) {
-              // Any sentences the current in-link has aren't part of the same annotation
-              // Therefore this is un-annotated, return it
-              _trans.pushObject(this);
-              _trans.pushObject(inLinks.objectAt(i));
-              _trans.pushObject(outLinks.objectAt(j));
-            } else if (outLinks.objectAt(j).get('sentences').lastIndexOf(this.get('sentences').firstObject()) < 0) {
-              // The same, for the out-link
-              _trans.pushObject(this);
-              _trans.pushObject(inLinks.objectAt(i));
-              _trans.pushObject(outLinks.objectAt(j));
-            }
-          }
-          if (_trans.get('length') > 2) break;
+    var transformations = this.get('transformations');
+    var transformationCount = transformations.get('length');
+    if (transformationCount > 0) {
+      var _firstUAT;
+      for (var i=0; i<transformationCount; i++) { // Need to be able to break;
+        if (transformations.objectAt(i).get('isAnnotated') == NO) {
+          _firstUAT = transformations.objectAt(i);
+          break;
         }
-        if (_trans.get('length') > 2) break;
       }
-      if (_trans.get('length') > 2) {
-        return _trans;
-      } else {
-        return null;
-      }
+      return _firstUAT; // Transformation or null
     } else {
       return null;
     }
   },
 
-  // This function doesn't calculate all transformations, or worry about which
+  // The user has created an implied transformation by having different energy flows
+  // (link colors) coming in and out of this node. Create any implicit transformations
+  // which don't already exist.
+  // This should only work if we're allowing users to create flows without pre-specifying
+  // the transformations.
+  createImplicitTransformation: function() {
+    if (this.get('hasPotentialTransformations')) {
+      var inLinks = this.get('inLinks');
+      var outLinks = this.get('outLinks');
+      var transformations = this.get('transformations');
+      inLinks.forEach( function (inLink, iterator) {
+        var inColor = inLink.get('color');
+        SC.Logger.log('Checking ' + inColor + ' in-links...'); // Color appears to be null?
+        outLinks.forEach( function (outLink, count) {
+          var outColor = outLink.get('color');
+          SC.Logger.log('Checking ' + outColor + ' out-links...');
+          if (outColor != inColor) {
+            SC.Logger.log('Found potential transformation!');
+            // Check to see if we already have that transformation
+            var isNew = true;
+            transformations.forEach( function (trans) {
+              if ((trans.get('inLinkColor') == inColor) && (trans.get('outLinkColor') == outColor)) {
+                // Yes, we already have that one
+                isNew = false;
+                SC.Logger.log('We already have that one.');
+              }
+            });
+            if (isNew) {
+              // Create the new transformation
+              var newGuid = MySystem.Transformation.newGuid();
+              SC.Logger.log('Trying to create new transformation with guid ' + newGuid + '...');
+              MySystem.store.createRecord(MySystem.Transformation, { 'guid': newGuid, 'node': this, 'inLinkColor': inColor, 'outLinkColor': outColor });
+            }
+          }
+        });
+      });
+    }
+  }.observes('hasPotentialTransformations'),
+
+  // This function doesn't calculate all possible transformations, or worry about which
   // transformations actually work. It just verifies that a transformation is
   // *possible*, that is, at least one inLink with a different color from at least
   // one outLink.
@@ -282,7 +294,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     var inLinks = this.get('inLinks');
     var outLinks = this.get('outLinks');
     if ((inLinks.get('length') < 1) || (outLinks.get('length') < 1)) {
-      return NO; // No transformation without both in-flow and out-flow
+      return false; // No transformation without both in-flow and out-flow
     } else {
       var _hasTransformation = false;
       var color = null;
@@ -299,11 +311,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         }
         if (_hasTransformation) { break; } // If we found one, stop looking at in-links
       }
-      if (_hasTransformation) {
-        return true;
-      } else {
-        return false;
-      }
+      return _hasTransformation;
     }
   }.property('.outlinks.[]', '.inLinks.[]'),
 
