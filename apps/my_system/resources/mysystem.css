@@ -81,8 +81,17 @@
   -webkit-box-shadow: 0px 4px 4px rgba(0,0,0,.1);
 }
 
-.propertyEditor>.sc-view {
+.property-editor>.sc-view {
   margin: 5px;
+}
+
+.property-editor .sc-checkbox-view {
+  width: 14px;
+}
+
+.property-editor .sc-checkbox-view.sel {
+  border: 1px solid #000;
+  background-color: #666;
 }
 
 .disabled .sc-button-label {
