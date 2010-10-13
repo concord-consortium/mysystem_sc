@@ -80,9 +80,9 @@ MySystem.Link = SC.Record.extend(
     Forms.FormView.row(MySystem.ImprovedRadioView, {
       fieldKey: "color",
       fieldLabel: "Color:",
-      items: [{ title: "Red", value: 'red', enabled: YES },
-              { title: "Green", value: 'green', enabled: YES },
-              { title: "Blue", value: 'blue', enabled: YES }],
+      items: [{ title: "Thermal Energy", value: 'red', enabled: YES },
+              { title: "Light Energy", value: 'green', enabled: YES },
+              { title: "Mechanical Energy", value: 'blue', enabled: YES }],
       itemTitleKey: 'title',
       itemValueKey: 'value',
 			itemIsEnabledKey: 'enabled',
