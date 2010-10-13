@@ -86,6 +86,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
       diagramPane.becomeFirstResponder();
     }
     theCanvas.selectObjects(sentence.get('links'), true);
+    theCanvas.get('classNames').push('sentence-linking');
     MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
     diagramPane.set('activeSentence', sentence);
   },
@@ -104,6 +105,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
     if (diagramPane.isPaneAttached) {
       diagramPane.remove();
     }
+    theCanvas.get('classNames').pop(); // TODO: This is brittle; if we've added another classname, it gets that instead of 'sentence-linking' which is what we want
     MySystem.nodesController.unselectAll();
     diagramPane.set('activeSentence', null);
     // Refresh the transformation "badges" on the nodes.
