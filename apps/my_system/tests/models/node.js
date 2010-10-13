@@ -17,13 +17,19 @@ test("test title from fixture", function() {
   equals(node.get('title'),fixturesTitle, "Its title should be '"+ fixturesTitle +"' ");
 });
 
-test("test inLinks and outLinks from fixtures", function() {
+test("test inLinks and outLinks", function() {
   expect(2);
-  var node   = MySystem.store.find('MySystem.Node',1);
-  var expectedOutLinks = 2;
-  var expectedInLinks = 0;
-  var foundOutlinks = node.get('outLinks').get('length');
-  var foundInLinks = node.get('inLinks').get('length');
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Link to test node' });
+  newLink.set("startNode", node1);
+  newLink.set("endNode", node2);
+  newLink.set("startTerminal","a");
+  newLink.set("endTerminal","b");
+  var expectedInLinks = 1;
+  var expectedOutLinks = 0;
+  var foundOutlinks = node2.get('outLinks').get('length');
+  var foundInLinks = node2.get('inLinks').get('length');
   equals(foundOutlinks, expectedOutLinks, "There should be "+ expectedOutLinks +" outlinks");
   equals(foundInLinks, expectedInLinks, "There should be "+ expectedInLinks +" inLinks");
 });
@@ -42,38 +48,55 @@ test("tests connecting nodes to storySentences", function () {
   equals(sent.get('diagramObjects').get('length'), sent.get('nodes').get('length') + sent.get('links').get('length'), "The sentence's diagramObjects should equal the sum of the links and nodes.");
 });
 
-test("test links computed param from fixtures", function() {
+test("test links computed param", function() {
   expect(1);
-  var node   = MySystem.store.find('MySystem.Node','1');
-  var foundOutlinks = node.get('outLinks').get('length');
-  var foundInLinks = node.get('inLinks').get('length');
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node3   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink1 = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'First test link' });
+  newLink1.set("startNode", node1);
+  newLink1.set("endNode", node2);
+  newLink1.set("startTerminal","a");
+  newLink1.set("endTerminal","b");
+  var newLink2 = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Second test link' });
+  newLink2.set("startNode", node2);
+  newLink2.set("endNode", node3);
+  newLink2.set("startTerminal","a");
+  newLink2.set("endTerminal","b");
+  var foundOutlinks = node2.get('outLinks').get('length');
+  var foundInLinks = node2.get('inLinks').get('length');
   var expectedLinks = foundOutlinks + foundInLinks;
-  var foundLinks = node.get('links').get('length');
+  var foundLinks = node2.get('links').get('length');
   equals(foundLinks, expectedLinks, "There should be "+ expectedLinks +" links");
 });
 
 
 test("test that computed 'links' are updated when inlinks or outlinks changes", function() {
-  expect(1);
-  var nodeA   = MySystem.store.find('MySystem.Node',1);
-  var nodeB   = MySystem.store.find('MySystem.Node',2);
-
-  var existingLinks = nodeA.get('links').get('length');
-  var expectedLinks = existingLinks + 1;  
-
-  var linkHash = {
-      guid: MySystem.Link.newGuid(),
-      text: 'third link'
-    };
-
-  var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
-  newLink.set("startNode", nodeA);
-  newLink.set("endNode", nodeB);
-  newLink.set("startTerminal","a");
-  newLink.set("endTerminal","b");
-
-  var foundLinks = nodeA.get('links').get('length');
+  expect(2);
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node3   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink1 = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'First test link' });
+  newLink1.set("startNode", node1);
+  newLink1.set("endNode", node2);
+  newLink1.set("startTerminal","a");
+  newLink1.set("endTerminal","b");
+  var newLink2 = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Second test link' });
+  newLink2.set("startNode", node2);
+  newLink2.set("endNode", node3);
+  newLink2.set("startTerminal","a");
+  newLink2.set("endTerminal","b");
+  var expectedLinks = 2;
+  var foundLinks = node2.get('links').get('length');
   equals(foundLinks, expectedLinks, "There should be "+ expectedLinks +" links");
+  var newLink3 = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Third test link' });
+  newLink3.set("startNode", node2);
+  newLink3.set("endNode", node1);
+  newLink3.set("startTerminal","a");
+  newLink3.set("endTerminal","b");
+  expectedLinks++;
+  foundLinks = node2.get('links').get('length');
+  equals(foundLinks, expectedLinks, "Then there should be " + expectedLinks + " links");
 });
 
 test("nodes should have a position attribute", function() {
