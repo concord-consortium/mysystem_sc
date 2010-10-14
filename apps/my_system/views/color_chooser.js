@@ -30,18 +30,18 @@ MySystem.ColorChooserView = SC.View.extend(
     sc_super();
     if (this.get('isSelected')) context.addClass('selected');
   },
-	
-	createChildViews: function() {
-		sc_super();
-		this.childViews[0].childViews[0].childViews[0].childViews[1].bind('value', this, 'content');
-	},
-	
+
+  createChildViews: function() {
+    sc_super();
+    this.childViews[0].childViews[0].childViews[0].childViews[1].bind('value', this, 'content');
+  },
+
   chooser: Forms.FormView.design({
-	  fields: "color".w(),
-    color: 
+    fields: "color".w(),
+    color:
     // Forms.FormView.row(SC.RadioView, {
     Forms.FormView.row(MySystem.ImprovedRadioView, {
-			value: null,
+      value: null,
       fieldKey: "color",
       fieldLabel: "Color:",
       items: [{ title: "Thermal Energy", value: 'red', enabled: YES },
@@ -50,7 +50,7 @@ MySystem.ColorChooserView = SC.View.extend(
       itemTitleKey: 'title',
       itemValueKey: 'value',
       itemIsEnabledKey: 'enabled',
-      layoutDirection: SC.LAYOUT_VERTICAL,
+      layoutDirection: SC.LAYOUT_VERTICAL
     })
   })
 
@@ -75,7 +75,7 @@ MySystem.ColorChooserView = SC.View.extend(
   //   };
   //   SC.Drag.start(dragOpts);
   // },
-  // 
+  //
   // mouseUp: function(evt) {
   //   sc_super();
   //   var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');

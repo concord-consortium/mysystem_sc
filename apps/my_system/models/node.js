@@ -182,7 +182,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
          link = MySystem.store.createRecord(MySystem.Link, tmpHash, guid);
          link.set("startNode",sn);
          link.set("endNode",en);
-				 link.set('color', MySystem.linkColorChooser.get('content'));
+         link.set('color', MySystem.linkColorChooser.get('content'));
        }
        else if (en === this) {
          // if we are the end-node let our peer start-node do the object creation ... 
@@ -203,7 +203,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       var endNode = model_link.get("endNode");
       // if we are the startNode then we are responsible for removing the link.
       if (startNode && startNode == this) {
-        SC.Logger.log("removing link %@", model_link);
+        // SC.Logger.log("removing link %@", model_link);
         startNode.get("outLinks").removeObject(model_link);
         startNode.get("inLinks").removeObject(model_link);
         endNode.get("outLinks").removeObject(model_link);
