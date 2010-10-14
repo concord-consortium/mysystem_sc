@@ -18,12 +18,29 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
 
   // Validate if links can originate from this terminal
   canDragLink: function() {
-    return YES;
+    // This block for novice mode
+    if (this.node.get('transformer')) {
+      // Transformers may generate any link type
+      return YES;
+    }
+    if (this.node.get('links').get('length') === 0) {
+      // There aren't any links yet, so the new link may establish the link type
+      return YES;
+    }
+    var proposedLinkColor = 'red'; // FIXME: placeholder until I can check selected color
+    if (this.node.get('linkColor') == proposedLinkColor) {
+      // The proposed link has the right color
+      return YES;
+    }
+    // TODO: Advanced mode
+    // else
+    return NO;
   }, 
 
   // Validate if the currently-being-created link may end at this terminal
-  // When does this get checked?
   canDropLink: function() {
+    // When does this get checked?
+    console.log('Checking if links may drop at this terminal');
     // This block for novice mode
     if (this.node.get('transformer')) {
       // Transformers can accept any link
