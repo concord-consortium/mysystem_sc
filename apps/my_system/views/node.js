@@ -12,6 +12,7 @@
   @extends SC.View
 */
 sc_require('models/link');
+sc_require('views/terminal');
 
 MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
 /** @scope MySystem.NodeView.prototype */ {
@@ -61,21 +62,18 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     isEditable: YES
   }),
 
-  aTerminal: SC.View.design(LinkIt.Terminal, {
-    layout: { left: 45, top: +5, width: 10, height: 10 },
-    classNames: 'input terminal'.w(),
+  aTerminal: MySystem.Terminal.design({
     nodeBinding: '.parentView*content',
-    terminal: 'a',
-    linkClass: 'MySystem.Link'
+    classNames: 'input terminal'.w(),
+    terminal: 'a'
     // direction: LinkIt.INPUT_TERMINAL
   }),
 
-  bTerminal: SC.View.design(LinkIt.Terminal, {
+  bTerminal: MySystem.Terminal.design({
     layout: { left: 45, bottom: +5, width: 10, height: 10 },
-    classNames: 'output terminal'.w(),
     nodeBinding: '.parentView*content',
-    terminal: 'b',
-    linkClass: 'MySystem.Link'
+    classNames: 'output terminal'.w(),
+    terminal: 'b'
     // direction: LinkIt.OUTPUT_TERMINAL
   }),
 
