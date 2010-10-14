@@ -16,6 +16,11 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
 
   linkClass: 'MySystem.Link',
 
+  // TODO: 14 October
+  // Need to wire this up to the link color creation widget to
+  // see if that fixes the inconsistencies in using these methods
+  // to validate linking.
+
   // Validate if links can originate from this terminal
   canDragLink: function() {
     // This block for novice mode
@@ -34,12 +39,12 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
     }
     // TODO: Advanced mode
     // else
+    console.log('No link creation here: ' + this.node.get('linkColor') + ' is not ' + proposedLinkColor);
     return NO;
   }, 
 
   // Validate if the currently-being-created link may end at this terminal
   canDropLink: function() {
-    // When does this get checked?
     console.log('Checking if links may drop at this terminal');
     // This block for novice mode
     if (this.node.get('transformer')) {
@@ -58,6 +63,11 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
     // else
     return NO;
     // TODO: Advanced mode
+  },
+
+  computeDragOperations: function(drag, evt) {
+    return this.canDropLink() ? SC.DRAG_LINK : SC.DRAG_NONE;
   }
+
 });
 
