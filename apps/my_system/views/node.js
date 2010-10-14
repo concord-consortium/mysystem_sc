@@ -13,7 +13,7 @@
 */
 sc_require('models/link');
 
-MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView, SC.DropTarget,
+MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
 /** @scope MySystem.NodeView.prototype */ {
 
   layout: { top: 0, left: 0, width: 100, height: 120 },
