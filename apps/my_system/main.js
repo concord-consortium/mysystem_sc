@@ -22,9 +22,10 @@ MySystem.main = function main() {
   // create multiple pages and panes.  
   MySystem.getPath('mainPage.mainPane').append() ;
 
+	SC.ExceptionHandler = MySystem.ExceptionHandler;
+
   // The following loads data from an old WireIt format layer data
   //MySystem.loadCanvas();
-  
   var nodes = MySystem.store.find(MySystem.Node);
   //Set the content property on the primary controller
   MySystem.nodesController.set('content', nodes);
