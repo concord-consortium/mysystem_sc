@@ -14,7 +14,7 @@ MySystem.Link.FIXTURES = [
     startTerminal: 'a',
     endNode: '2',
     endTerminal: 'b',
-    color: '#00ff00'
+    color: 'red'
   },
 
   { guid: 'link2',
@@ -23,7 +23,7 @@ MySystem.Link.FIXTURES = [
     startTerminal: 'a',
     endNode: '3',
     endTerminal: 'b',
-    color: '#ff0000'
+    color: 'red'
   }
 
 ];

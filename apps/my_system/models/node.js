@@ -213,6 +213,18 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     }
   },
 
+  // Returns the color of links this node can produce and/or accept.
+  // If "any", returns null (no links yet, or is a transformer)
+  linkColor: function() {
+    if (this.get('transformer')) {
+      return null;
+    }
+    if (this.get('links').get('length') === 0) {
+      return null;
+    }
+    return this.get('links').firstObject().get('model').get('color');
+  }.property('.outlinks.[]', '.inLinks.[]'),
+
   // Controls the transformation icon in the view and its toolTip.
   transformationIcon: function() {
     var transformationCount = this.get('transformations').get('length');

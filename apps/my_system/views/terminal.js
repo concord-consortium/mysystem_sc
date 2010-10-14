@@ -22,8 +22,25 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
   }, 
 
   // Validate if the currently-being-created link may end at this terminal
+  // When does this get checked?
   canDropLink: function() {
-    return YES;
+    // This block for novice mode
+    if (this.node.get('transformer')) {
+      // Transformers can accept any link
+      return YES;
+    }
+    if (this.node.get('links').get('length') === 0) {
+      // There aren't any links yet, so this establishes the energy type
+      return YES;
+    }
+    var inboundLinkColor = 'red'; // FIXME: placeholder to make things work
+    if (this.node.get('linkColor') == inboundLinkColor) { // TODO: inboundLinkColor really undefined
+      // The being-created link has the same color as all those currently in place
+      return YES;
+    }
+    // else
+    return NO;
+    // TODO: Advanced mode
   }
 });
 
