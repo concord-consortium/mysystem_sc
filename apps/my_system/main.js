@@ -14,6 +14,8 @@
 
 sc_require('lib/old_format_json_parser');
 
+MySystem.linkColorChooser = null;
+
 MySystem.main = function main() {
 
   // Step 1: Instantiate Your Views
@@ -33,6 +35,8 @@ MySystem.main = function main() {
   var storySentences = MySystem.store.find(storyQuery);
   MySystem.storySentenceController.set('content', storySentences);
 
+	MySystem.linkColorChooser = MySystem.mainPage.mainPane.childViews.objectAt(0).topLeftView.childViews.objectAt(5);
+	MySystem.linkColorChooser.set('content', 'red');
 };
 
 function main() { MySystem.main(); }

@@ -16,7 +16,7 @@ sc_require('core');
 
 MySystem.NodePaletteView = SC.View.extend({ // Node Palette (left)
   layout: { top: 0, bottom: 0, left: 15 },
-  childViews: 'addDecorator addClay addHand addBulb transformationBadge'.w(),
+  childViews: 'addDecorator addClay addHand addBulb transformationBadge linkColorChooser'.w(),
 
   addDecorator: SC.View.design({
     layout: { left: 20, right: 0, top: 0, height: 23, width: 80 },
@@ -49,5 +49,10 @@ MySystem.NodePaletteView = SC.View.extend({ // Node Palette (left)
     classNames: ['transformation-badge'],
     image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png',
     title: "Bulb"
+  }),
+
+  linkColorChooser: MySystem.ColorChooserView.design({
+    layout: { left: 10, right: 10, top: 553, width: 100, height: 120 },
+    classNames: ['color-chooser']
   })
 });

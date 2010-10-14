@@ -182,6 +182,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
          link = MySystem.store.createRecord(MySystem.Link, tmpHash, guid);
          link.set("startNode",sn);
          link.set("endNode",en);
+				 link.set('color', MySystem.linkColorChooser.get('content'));
        }
        else if (en === this) {
          // if we are the end-node let our peer start-node do the object creation ... 
