@@ -15,7 +15,7 @@ sc_require('views/node');
 sc_require('core');
 MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, { 
   allowMultipleSelection: YES,
-  isDropTarget: YES,
+  isDropTarget: NO, // we will add this as a drop target when we're dragging a new node
   computeDragOperations: function(drag, evt) { return SC.DRAG_COPY; },
   performDragOperation: function(drag, op) { 
     var image = drag.data.image;
