@@ -32,7 +32,7 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
       // There aren't any links yet, so the new link may establish the link type
       return YES;
     }
-    var proposedLinkColor = 'red'; // FIXME: placeholder until I can check selected color
+    var proposedLinkColor = MySystem.linkColorChooser.get('content');
     if (this.node.get('linkColor') == proposedLinkColor) {
       // The proposed link has the right color
       return YES;
@@ -55,7 +55,7 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
       // There aren't any links yet, so this establishes the energy type
       return YES;
     }
-    var inboundLinkColor = 'red'; // FIXME: placeholder to make things work
+    var inboundLinkColor = MySystem.linkColorChooser.get('content');
     if (this.node.get('linkColor') == inboundLinkColor) { // TODO: inboundLinkColor really undefined
       // The being-created link has the same color as all those currently in place
       return YES;
