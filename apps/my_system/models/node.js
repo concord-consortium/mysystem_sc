@@ -266,7 +266,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   // This should only work if we're allowing users to create flows without pre-specifying
   // the transformations.
   createImplicitTransformation: function() {
-    if (this.get('hasPotentialTransformations')) {
+    if (this.get('hasImpliedTransformations')) {
       var inLinks = this.get('inLinks');
       var outLinks = this.get('outLinks');
       var transformations = this.get('transformations');
@@ -297,13 +297,14 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         });
       });
     }
-  }.observes('hasPotentialTransformations'),
+  }.observes('hasImpliedTransformations'),
 
   // This function doesn't calculate all possible transformations, or worry about which
   // transformations actually work. It just verifies that a transformation is
   // *possible*, that is, at least one inLink with a different color from at least
   // one outLink.
-  hasPotentialTransformations: function() {
+  // N.B. Not sure this method actually has a use other than defining implied transformations.
+  hasImpliedTransformations: function() {
     var inLinks = this.get('inLinks');
     var outLinks = this.get('outLinks');
     if ((inLinks.get('length') < 1) || (outLinks.get('length') < 1)) {
