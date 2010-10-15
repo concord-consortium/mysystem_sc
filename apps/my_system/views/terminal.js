@@ -16,92 +16,87 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
 
   linkClass: 'MySystem.Link',
 
-  // TODO: 14 October
-  // Need to wire this up to the link color creation widget to
-  // see if that fixes the inconsistencies in using these methods
-  // to validate linking.
-
   // Validate if links can originate from this terminal
   canDragLink: function() {
-   	var proposedLinkColor = MySystem.linkColorChooser.get('content');
-		if (MySystem.studentMode === MySystem.NOVICE_STUDENT) {
-    	// This block for novice mode
-    	if (this.node.get('transformer')) {
-      	// Transformers may generate any link type
-      	return YES;
-    	}
-    	if (this.node.get('links').get('length') === 0) {
-      	// There aren't any links yet, so the new link may establish the link type
-      	return YES;
-    	}
-    	if (this.node.get('linkColor') == proposedLinkColor) {
-      	// The proposed link has the right color
-      	return YES;
-    	}
-    	console.log('No link creation here: ' + this.node.get('linkColor') + ' is not ' + proposedLinkColor);
-    	return NO;
-		} else if (MySystem.studentMode === MySystem.ADVANCED_STUDENT) {
-    	if (this.node.get('links').get('length') === 0) {
-      	// There aren't any links yet, so the new link may establish the link type
-      	return YES;
-    	}
-    	if (this.node.get('linkColor') == proposedLinkColor) {
-      	// The proposed link has the right color
-      	return YES;
-    	}
-			if (this.node.hasTransformationWithOutgoingColor(proposedLinkColor)) {
-				return YES;
-			}
-			if (this.node.hasIncomingLinksWithColor(proposedLinkColor)) {
-				return YES;
-			}
-    	console.log('No link creation here: ' + this.node.get('linkColor') + ' is not ' + proposedLinkColor);
-			return NO;
-		} else {
-			console.log("MySystem.studentMode invalid:" + MySystem.studentMode);
-			return NO;
-		}
+    var proposedLinkColor = MySystem.linkColorChooser.get('content');
+    if (MySystem.studentMode === MySystem.NOVICE_STUDENT) {
+      // This block for novice mode
+      if (this.node.get('transformer')) {
+        // Transformers may generate any link type
+        return YES;
+      }
+      if (this.node.get('links').get('length') === 0) {
+        // There aren't any links yet, so the new link may establish the link type
+        return YES;
+      }
+      if (this.node.get('linkColor') == proposedLinkColor) {
+        // The proposed link has the right color
+        return YES;
+      }
+      console.log('No link creation here: ' + this.node.get('linkColor') + ' is not ' + proposedLinkColor);
+      return NO;
+    } else if (MySystem.studentMode === MySystem.ADVANCED_STUDENT) {
+      if (this.node.get('links').get('length') === 0) {
+        // There aren't any links yet, so the new link may establish the link type
+        return YES;
+      }
+      if (this.node.get('linkColor') == proposedLinkColor) {
+        // The proposed link has the right color
+        return YES;
+      }
+      if (this.node.hasTransformationWithOutgoingColor(proposedLinkColor)) {
+        return YES;
+      }
+      if (this.node.hasIncomingLinksWithColor(proposedLinkColor)) {
+        return YES;
+      }
+      console.log('No link creation here: ' + this.node.get('linkColor') + ' is not ' + proposedLinkColor);
+      return NO;
+    } else {
+      console.log("MySystem.studentMode invalid:" + MySystem.studentMode);
+      return NO;
+    }
   }, 
 
   // Validate if the currently-being-created link may end at this terminal
   canDropLink: function() {
     console.log('Checking if links may drop at this terminal');
     var inboundLinkColor = MySystem.linkColorChooser.get('content');
-		if (MySystem.studentMode == MySystem.NOVICE_STUDENT) {
-    	// This block for novice mode
-    	if (this.node.get('transformer')) {
-      	// Transformers can accept any link
-      	return YES;
-    	}
-    	if (this.node.get('links').get('length') === 0) {
-      	// There aren't any links yet, so this establishes the energy type
-      	return YES;
-    	}
-    	if (this.node.get('linkColor') == inboundLinkColor) { // TODO: inboundLinkColor really undefined
-      	// The being-created link has the same color as all those currently in place
-      	return YES;
-    	}
-    	// else
-    	return NO;
-		} else if (MySystem.studentMode == MySystem.ADVANCED_STUDENT) {
-    	if (this.node.get('transformer')) {
-      	// Transformers can accept any link
-      	return YES;
-    	}
-    	if (this.node.get('links').get('length') === 0) {
-      	// There aren't any links yet, so this establishes the energy type
-      	return YES;
-    	}
-    	// if (this.node.get('linkColor') == inboundLinkColor) {
-    	//       	// The being-created link has the same color as all those currently in place
-    	//       	return YES;
-    	// }
-    	// else
-    	return YES;
-		} else {
-			console.log("Bad student mode: " + MySystem.studentMode);
-			return NO;
-		}
+    if (MySystem.studentMode == MySystem.NOVICE_STUDENT) {
+      // This block for novice mode
+      if (this.node.get('transformer')) {
+        // Transformers can accept any link
+        return YES;
+      }
+      if (this.node.get('links').get('length') === 0) {
+        // There aren't any links yet, so this establishes the energy type
+        return YES;
+      }
+      if (this.node.get('linkColor') == inboundLinkColor) {
+        // The being-created link has the same color as all those currently in place
+        return YES;
+      }
+      // else
+      return NO;
+    } else if (MySystem.studentMode == MySystem.ADVANCED_STUDENT) {
+      if (this.node.get('transformer')) {
+        // Transformers can accept any link
+        return YES;
+      }
+      if (this.node.get('links').get('length') === 0) {
+        // There aren't any links yet, so this establishes the energy type
+        return YES;
+      }
+      // if (this.node.get('linkColor') == inboundLinkColor) {
+      //        // The being-created link has the same color as all those currently in place
+      //        return YES;
+      // }
+      // else
+      return YES;
+    } else {
+      console.log("Bad student mode: " + MySystem.studentMode);
+      return NO;
+    }
   },
 
   computeDragOperations: function(drag, evt) {

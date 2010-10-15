@@ -39,8 +39,8 @@ MySystem.main = function main() {
   var storyQuery = SC.Query.local(MySystem.StorySentence, { orderBy: 'order' });
   var storySentences = MySystem.store.find(storyQuery);
   MySystem.storySentenceController.set('content', storySentences);
-	var transformations = MySystem.store.find(MySystem.Transformation);
-	
+  var transformations = MySystem.store.find(MySystem.Transformation);
+
   MySystem.linkColorChooser = MySystem.mainPage.mainPane.childViews.objectAt(0).topLeftView.childViews.objectAt(5);
   MySystem.linkColorChooser.set('content', 'red');
 };
@@ -48,15 +48,15 @@ MySystem.main = function main() {
 function main() { MySystem.main(); }
 
 MySystem.clearCanvas = function () {
-    var i;
-    var nodes = MySystem.store.find(MySystem.Node);
-    for (i = 0; i < nodes.get('length'); ++i) {
-        nodes.objectAt(i).destroy();
-    }
-    var links = MySystem.store.find(MySystem.Link);
-    for (i = 0; i < links.get('length'); ++i) {
-        links.objectAt(i).destroy();
-    }
+  var i;
+  var nodes = MySystem.store.find(MySystem.Node);
+  for (i = 0; i < nodes.get('length'); ++i) {
+      nodes.objectAt(i).destroy();
+  }
+  var links = MySystem.store.find(MySystem.Link);
+  for (i = 0; i < links.get('length'); ++i) {
+      links.objectAt(i).destroy();
+  }
 };
 
 // Load canvas data for student

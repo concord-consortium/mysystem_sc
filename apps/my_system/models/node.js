@@ -339,29 +339,29 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     return _areAnnotated;
   }.property("transformations").cacheable(),
 
-	hasTransformationWithOutgoingColor: function(color) {
-		var transformations = this.get('transformations');
-		var l = transformations.get('length');
-		for (var i = 0; i < l; i += 1) {
-			var transformation = transformations.objectAt(i);
-			if (transformation.get('outLinkColor') == color) {
-				return YES;
-			}
-		}
-		return NO;
-	},
-	
-	hasIncomingLinksWithColor: function(color) {
-		var links = this.get('inLinks');
-		var l = links.get('length');
-		for (var i = 0; i < l; i += 1) {
-			var link = links.objectAt(i);
-			if (link.get('color') == color) {
-				return YES;
-			}
-		}
-		return NO;
-	}
+  hasTransformationWithOutgoingColor: function(color) {
+    var transformations = this.get('transformations');
+    var l = transformations.get('length');
+    for (var i = 0; i < l; i += 1) {
+      var transformation = transformations.objectAt(i);
+      if (transformation.get('outLinkColor') == color) {
+        return YES;
+      }
+    }
+    return NO;
+  },
+
+  hasIncomingLinksWithColor: function(color) {
+    var links = this.get('inLinks');
+    var l = links.get('length');
+    for (var i = 0; i < l; i += 1) {
+      var link = links.objectAt(i);
+      if (link.get('color') == color) {
+        return YES;
+      }
+    }
+    return NO;
+  }
 });
 
 MySystem.Node.GuidCounter = 100;
