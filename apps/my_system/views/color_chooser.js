@@ -41,7 +41,7 @@ MySystem.ColorChooserView = SC.View.extend(
     color:
     // Forms.FormView.row(SC.RadioView, {
     Forms.FormView.row(MySystem.ImprovedRadioView, {
-		  layout: {width: 160, height: 120},
+      layout: {width: 160, height: 120},
       value: null,
       fieldKey: "color",
       fieldLabel: "Color:",

@@ -78,7 +78,7 @@ MySystem.Link = SC.Record.extend(
     // color: 
     // Forms.FormView.row(SC.RadioView, {
     Forms.FormView.row(MySystem.ImprovedRadioView, {
-			layout: {width: 160, height: 54},
+      layout: {width: 160, height: 54},
       fieldKey: "color",
       fieldLabel: "Color:",
       items: [{ title: "Thermal Energy", value: 'red', enabled: YES },
