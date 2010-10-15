@@ -14,7 +14,8 @@ MySystem.Node.FIXTURES = [
 		transformer: false, 
     inLinks: [],
     outLinks: ['link1', 'link2'],
-    position: { x: 160, y: 160 }
+    position: { x: 160, y: 160 },
+		transformations: ['trans1']
   },
   
   { guid: '2',

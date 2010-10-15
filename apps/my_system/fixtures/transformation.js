@@ -9,9 +9,9 @@ sc_require('models/transformation');
 MySystem.Transformation.FIXTURES = [
 
   { guid: 'trans1',
-    node: 1,
-    inLinkColor: '#ff0000',
-    outLinkColor: '#00ff00'
+    node: '1',
+    inLinkColor: 'red',
+    outLinkColor: 'green'
   }
   // All fixture records must have a unique primary key (default 'guid').  See 
   // the example below.

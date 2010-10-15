@@ -16,6 +16,11 @@ sc_require('lib/old_format_json_parser');
 
 MySystem.linkColorChooser = null;
 
+MySystem.NOVICE_STUDENT = 'novice';
+MySystem.ADVANCED_STUDENT = 'advanced';
+// MySystem.studentMode = MySystem.NOVICE_STUDENT;
+MySystem.studentMode = MySystem.ADVANCED_STUDENT;
+
 MySystem.main = function main() {
 
   // Step 1: Instantiate Your Views
@@ -34,7 +39,8 @@ MySystem.main = function main() {
   var storyQuery = SC.Query.local(MySystem.StorySentence, { orderBy: 'order' });
   var storySentences = MySystem.store.find(storyQuery);
   MySystem.storySentenceController.set('content', storySentences);
-
+	var transformations = MySystem.store.find(MySystem.Transformation);
+	
   MySystem.linkColorChooser = MySystem.mainPage.mainPane.childViews.objectAt(0).topLeftView.childViews.objectAt(5);
   MySystem.linkColorChooser.set('content', 'red');
 };
