@@ -17,7 +17,7 @@ sc_require('core');
 */
 MySystem.ColorChooserView = SC.View.extend(
   {
-  layout: { top: 0, left: 0, width: 100, height: 120 },
+  layout: { top: 0, left: 0, width: 120, height: 120 },
   classNames: ''.w(),
 
   displayProperties: 'content isSelected'.w(),
@@ -41,6 +41,7 @@ MySystem.ColorChooserView = SC.View.extend(
     color:
     // Forms.FormView.row(SC.RadioView, {
     Forms.FormView.row(MySystem.ImprovedRadioView, {
+		  layout: {width: 160, height: 120},
       value: null,
       fieldKey: "color",
       fieldLabel: "Color:",

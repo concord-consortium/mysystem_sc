@@ -19,7 +19,7 @@ MySystem.mainPage = SC.Page.design({
   mainPane: SC.MainPane.design({
     childViews: 'topView'.w(),
     topView: SC.SplitView.design({
-      defaultThickness: 120,
+      defaultThickness: 140,
       topLeftView: MySystem.NodePaletteView.design({ // Node Palette (left)
         layout: { top: 0, bottom: 0, left: 15 }
       }),

@@ -386,4 +386,4 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
   }
 
 });
-Forms.FormFieldView.registerSpecialization(MySystem.ImprovedRadioView, Forms.FormRadioView);
+// Forms.FormFieldView.registerSpecialization(MySystem.ImprovedRadioView, Forms.FormRadioView);
