@@ -136,14 +136,14 @@ MySystem.Link = SC.Record.extend(
   
   _textChanged: function() {
     this.invokeOnce(this._setLabel);
-    this.get('startNode').notifyPropertyChange('links');
-    this.get('endNode').notifyPropertyChange('links');
+    if (this.get('startNode')) this.get('startNode').notifyPropertyChange('links');
+    if (this.get('endNode')) this.get('endNode').notifyPropertyChange('links');
   }.observes('.text'),
   
   _colorChanged: function() {
     this.invokeOnce(this._setLinkStyle);
-    this.get('startNode').notifyPropertyChange('links');
-    this.get('endNode').notifyPropertyChange('links');
+    if (this.get('startNode')) this.get('startNode').notifyPropertyChange('links');
+    if (this.get('endNode')) this.get('endNode').notifyPropertyChange('links');
   }.observes('.color'),
   
   _setLabel: function() {

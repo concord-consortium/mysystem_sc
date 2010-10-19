@@ -116,6 +116,23 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   //    this.notifyPropertyChange('links');
   // }.observes('.outLinks.[]', '.inLinks.[]'),
 
+	// returns the intersection of two arrays, with null indicating a "universal" array
+	intersection: function(array1, array2) {
+		if (array1 === null) return array2;
+		if (array2 === null) return array1;
+		var result = [];
+		// Both non-null
+		for (var i = 0; i < array1.length; i += 1) {
+			var el1 = array1[i];
+			for (var j = 0; j < array2.length; j += 1) {
+				var el2 = array2[j];
+				if (el1 == el2) {
+					result.push(el1);
+				}
+			}
+		}
+		return result;
+	},
 
   // tell LinkIt whether the proposed link is valid
   canLink: function (link) {
@@ -132,6 +149,13 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     // Make sure we don't already have this link.
     if (this._hasLink(link)) return NO;
 
+		var outColors = sn.acceptableOutLinkColors();
+		var inColors = en.acceptableInLinkColors();
+		var acceptableColors = this.intersection(inColors, outColors);
+		if (acceptableColors !== null && acceptableColors == []) {
+			return NO;
+		}
+		
     if ( (st === 'input' && et === 'output') || (st === 'output' && et === 'input')) {
       return YES;
     }
@@ -182,7 +206,8 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
          link = MySystem.store.createRecord(MySystem.Link, tmpHash, guid);
          link.set("startNode",sn);
          link.set("endNode",en);
-         link.set('color', MySystem.linkColorChooser.get('content'));
+         // link.set('color', MySystem.linkColorChooser.get('content'));
+				 MySystem.canvasView.selectLink(link);
        }
        else if (en === this) {
          // if we are the end-node let our peer start-node do the object creation ... 
@@ -214,6 +239,58 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     }
   },
 
+	// Returns a list of acceptable colors for out-links, null if no restriction
+	acceptableOutLinkColors: function() {
+		if (MySystem.studentMode == MySystem.ADVANCED_STUDENT) {
+			return null;  // Advanced students can create any kind of link they want
+		} else if (MySystem.studentMode == MySystem.NOVICE_STUDENT) {
+	    if (this.get('transformer')) {
+	      return null;
+	    }
+	    if (this.get('inLinks').get('length') === 0) {
+	      return null;
+	    }
+			var colors = [];
+			var inLinks = this.get('inLinks');
+			var l = inLinks.get('length');
+			for (var i = 0; i < l; i += 1) {
+				var link = inLinks.objectAt(i);
+				colors.push(link.get('color'));
+			}
+			return colors;
+	    // return this.get('inLinks').map(function(link) { link.get('color'); });
+		} else {
+			console.log('Invalid student mode ' + MySystem.studentMode);
+			return null;
+		}
+	},
+	
+	// Returns a list of acceptable colors for in-links, null if no restriction
+	acceptableInLinkColors: function() {
+		if (MySystem.studentMode == MySystem.ADVANCED_STUDENT) {
+			return null;
+		} else if (MySystem.studentMode == MySystem.NOVICE_STUDENT) {
+			if (this.get('transformer')) {
+				return null;
+			}
+			if (this.get('outLinks').get('length') === 0) {
+				return null;
+			}
+			var colors = [];
+			var outLinks = this.get('outLinks');
+			var l = outLinks.get('length');
+			for (var i = 0; i < l; i += 1) {
+				var link = outLinks.objectAt(i);
+				colors.push(link.get('color'));
+			}
+			return colors;
+			// return this.get('outLinks').map(function(link) { link.get('color'); });
+		} else {
+			console.log('Invalid student mode ' + MySystem.studentMode);
+			return null;
+		}
+	},
+	
   // Returns the color of links this node can produce and/or accept.
   // If "any", returns null (no links yet, or is a transformer)
   linkColor: function() {

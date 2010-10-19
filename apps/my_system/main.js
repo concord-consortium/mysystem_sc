@@ -14,12 +14,13 @@
 
 sc_require('lib/old_format_json_parser');
 
-MySystem.linkColorChooser = null;
+// MySystem.linkColorChooser = null;
+MySystem.canvasView = null;
 
 MySystem.NOVICE_STUDENT = 'novice';
 MySystem.ADVANCED_STUDENT = 'advanced';
-// MySystem.studentMode = MySystem.NOVICE_STUDENT;
-MySystem.studentMode = MySystem.ADVANCED_STUDENT;
+MySystem.studentMode = MySystem.NOVICE_STUDENT;
+// MySystem.studentMode = MySystem.ADVANCED_STUDENT;
 
 MySystem.main = function main() {
 
@@ -41,8 +42,9 @@ MySystem.main = function main() {
   MySystem.storySentenceController.set('content', storySentences);
   var transformations = MySystem.store.find(MySystem.Transformation);
 
-  MySystem.linkColorChooser = MySystem.mainPage.mainPane.childViews.objectAt(0).topLeftView.childViews.objectAt(5);
-  MySystem.linkColorChooser.set('content', 'red');
+  // MySystem.linkColorChooser = MySystem.mainPage.mainPane.childViews.objectAt(0).topLeftView.childViews.objectAt(5);
+  // MySystem.linkColorChooser.set('content', 'red');
+  MySystem.canvasView = MySystem.mainPage.mainPane.topView.bottomRightView.bottomRightView;
 };
 
 function main() { MySystem.main(); }
