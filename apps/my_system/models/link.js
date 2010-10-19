@@ -17,11 +17,11 @@ MySystem.Link = SC.Record.extend(
 /** @scope MySystem.Link.prototype */ {
   color: SC.Record.attr(String),
   text: SC.Record.attr(String),
-  
+
   startNode: SC.Record.toOne('MySystem.Node', {
     inverse: 'outLinks'
   }),
-  
+
   endNode:  SC.Record.toOne('MySystem.Node', {
     inverse: 'inLinks'
   }),
@@ -68,10 +68,10 @@ MySystem.Link = SC.Record.extend(
     fontStyle: 'normal',
     backgroundColor: "#ffffff"
   },
-  
+
   startTerminal: SC.Record.attr(String),
   endTerminal: SC.Record.attr(String),
-  
+
   // return a hash of editable attributes for the property editor
   formFields: [
     // fields: "color text".w(),

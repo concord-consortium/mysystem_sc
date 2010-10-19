@@ -228,9 +228,9 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
     return YES;
   },
 
-	selectLink: function(link) {
-		 link.set('isSelected', true);
-		 this.set('linkSelection', link);
-		 this.set('selectedLinks', [link]);
-	}
+  selectLink: function(link) {
+     link.set('isSelected', true);
+     this.set('linkSelection', link);
+     this.set('selectedLinks', [link]);
+  }
 });

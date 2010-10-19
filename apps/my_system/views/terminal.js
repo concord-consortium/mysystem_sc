@@ -56,7 +56,7 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
     //   console.log("MySystem.studentMode invalid:" + MySystem.studentMode);
     //   return NO;
     // }
-		return YES;
+    return YES;
   }, 
 
   // Validate if the currently-being-created link may end at this terminal
@@ -98,7 +98,7 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
     //   console.log("Bad student mode: " + MySystem.studentMode);
     //   return NO;
     // }
-		return YES;
+    return YES;
   },
 
   computeDragOperations: function(drag, evt) {

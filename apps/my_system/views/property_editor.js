@@ -43,13 +43,13 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
       }
     }),
 
-		// returns the index of the first occurrence of element in array, -1 if it's not there
-		indexOf: function(element, array) {
-			for (var i = 0; i < array.length; i += 1) {
-				if (element == array[i]) return i;
-			}
-			return -1;
-		},
+    // returns the index of the first occurrence of element in array, -1 if it's not there
+    indexOf: function(element, array) {
+      for (var i = 0; i < array.length; i += 1) {
+        if (element == array[i]) return i;
+      }
+      return -1;
+    },
 
     update_everything: function() {
       var form = this.get('propertiesForm');
@@ -73,26 +73,26 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
         form.set('fields', baseObject.get('formFields'));
         if (baseObject.kindOf(MySystem.Link)) {
           var startNode = baseObject.get('startNode');
-					var endNode = baseObject.get('endNode');
-					var colors = startNode.intersection(startNode.acceptableOutLinkColors(), endNode.acceptableInLinkColors());
-					var radioButtons = form.get('_displayFields').objectAt(0).get('_displayFields').objectAt(0).get('field');
+          var endNode = baseObject.get('endNode');
+          var colors = startNode.intersection(startNode.acceptableOutLinkColors(), endNode.acceptableInLinkColors());
+          var radioButtons = form.get('_displayFields').objectAt(0).get('_displayFields').objectAt(0).get('field');
           // if (!startNode.get('transformer')) {
           //   // TODO: Figure out a more elegant way to do this
           //   form.get('_displayFields').objectAt(0).get('_displayFields').objectAt(0).get('field').set('isEnabled', false);
           // }
-					var items = radioButtons.get('items');
-					for (var i = 0; i < items.get('length'); i += 1) {
-						var item = items.objectAt(i);
-						if (colors === null) {
-							item.enabled = true;
-						} else {
-							if (this.indexOf(item.value, colors) >= 0) {
-								item.enabled = true;
-							} else {
-								item.enabled = false;
-							}
-						}
-					}
+          var items = radioButtons.get('items');
+          for (var i = 0; i < items.get('length'); i += 1) {
+            var item = items.objectAt(i);
+            if (colors === null) {
+              item.enabled = true;
+            } else {
+              if (this.indexOf(item.value, colors) >= 0) {
+                item.enabled = true;
+              } else {
+                item.enabled = false;
+              }
+            }
+          }
         }
       }
     }.observes('objectToEdit'),
@@ -108,13 +108,13 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
     },
 
     deleteBackward: function() {
-			MySystem.canvasView.deleteSelection();
+      MySystem.canvasView.deleteSelection();
       // this.get('objectToEdit').destroy();
       return YES;
     },
 
     deleteForward: function() {
-			MySystem.canvasView.deleteSelection();
+      MySystem.canvasView.deleteSelection();
       // this.get('objectToEdit').destroy();
       return YES;
     }
