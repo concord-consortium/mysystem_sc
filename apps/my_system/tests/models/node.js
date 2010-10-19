@@ -70,7 +70,6 @@ test("test links computed param", function() {
   equals(foundLinks, expectedLinks, "There should be "+ expectedLinks +" links");
 });
 
-
 test("test that computed 'links' are updated when inlinks or outlinks changes", function() {
   expect(2);
   var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
@@ -121,4 +120,70 @@ test("We should be able to generate a new GUID", function() {
   ok(MySystem.Node.newGuid(), "The newGuid function should return a defined value");
   equals(typeof newGuid, 'string', "The newGuid function should return strings");
   ok((newGuid2 != newGuid), 'The second newGuid should not be the same as the first');
+});
+
+test("inLinkColors and ouLinkColors should return arrays of link colors", function() {
+  expect(4);
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node3   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink1 = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'First test link', 'color': 'red' });
+  newLink1.set("startNode", node1);
+  newLink1.set("endNode", node2);
+  newLink1.set("startTerminal","a");
+  newLink1.set("endTerminal","b");
+  var newLink2 = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Second test link', 'color': 'green' });
+  newLink2.set("startNode", node1);
+  newLink2.set("endNode", node3);
+  newLink2.set("startTerminal","a");
+  newLink2.set("endTerminal","b");
+  equals(node2.get('inLinkColors').get('length'), 1, "There should be one color returned");
+  same(node2.get('inLinkColors'), ["red"], "It should be red");
+  equals(node1.get('outLinkColors').get('length'), 2, "There should be two colors returned");
+  same(node1.get('outLinkColors'), ["red", "green"], "They should be red and green");
+});
+
+test("Checking transformation colors should return arrays of link colors", function() {
+  expect(0);
+  var nodeGuid = MySystem.Node.newGuid();
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': nodeGuid, 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var trans1  = MySystem.store.createRecord(MySystem.Transformation, { 'guid': MySystem.Transformation.newGuid(), 'node': nodeGuid, 'inLinkColor': 'red', 'outLinkColor': 'green' });
+  var trans2  = MySystem.store.createRecord(MySystem.Transformation, { 'guid': MySystem.Transformation.newGuid(), 'node': nodeGuid, 'inLinkColor': 'red', 'outLinkColor': 'blue' });
+  // equals(node1.get('inLinkColorsWithTransformations').get('length'), 2, "There should be two colors returned");
+  // same(node1.get('inLinkColorsWithTransformations'), ["red", "red"], "They should both be red");
+  // equals(node1.get('outLinkColorsWithTransformations').get('length'), 2, "There should be two colors returned");
+  // same(node1.get('outLinkColorsWithTransformations'), ["green", "blue"], "They should be blue and green");
+});
+
+test("Checking for implied transformations", function() {
+  expect(1);
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node3   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink1 = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'First test link', 'color': 'red' });
+  newLink1.set("startNode", node1);
+  newLink1.set("endNode", node2);
+  newLink1.set("startTerminal","a");
+  newLink1.set("endTerminal","b");
+  var newLink2 = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Second test link', 'color': 'green' });
+  newLink2.set("startNode", node1);
+  newLink2.set("endNode", node3);
+  newLink2.set("startTerminal","a");
+  newLink2.set("endTerminal","b");
+  ok(!node1.get('hasImpliedTransformations'), 'There should not be implied transformations');
+  var newLink3 = MySystem.store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Third test link', 'color': 'red' });
+  newLink2.set("startNode", node3);
+  newLink2.set("endNode", node2);
+  newLink2.set("startTerminal","a");
+  newLink2.set("endTerminal","b");
+  // ok(node3.get('hasImpliedTransformations'), 'There should be an implied transformation');
+});
+
+test("Checking transformation annotations", function() {
+  expect(0);
+  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var trans1  = MySystem.store.createRecord(MySystem.Transformation, { 'guid': MySystem.Transformation.newGuid(), 'node': node1, 'inLinkColor': 'red', 'outLinkColor': 'green' });
+  // ok(!node1.get('transformationsAreAllAnnotated'), "The transformation is not annotated");
+  trans1.set('annotation', MySystem.store.createRecord(MySystem.StorySentence, { 'guid': MySystem.StorySentence.newGuid(), 'bodyText': 'lorem ipsum' }));
+  // ok(node1.get('transformationsAreAllAnnotated'), "The transformation is annotated");
 });

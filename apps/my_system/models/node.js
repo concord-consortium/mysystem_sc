@@ -226,23 +226,76 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     return this.get('links').firstObject().get('model').get('color');
   }.property('.outlinks.[]', '.inLinks.[]'),
 
+  // Returns an array of colors of all in-links to the node.
+  inLinkColors: function() {
+    return this.get('inLinks').getEach('color');
+  }.property('.inLinks.[]'),
+
+  // Returns an array of colors of all out-links from the node.
+  outLinkColors: function() {
+    return this.get('outLinks').getEach('color');
+  }.property('.inLinks.[]'),
+
+  // Returns an array of in-link colors which are in transformations for this node
+  inLinkColorsWithTransformations: function() {
+    return this.get('transformations').getEach('inLinkColor');
+  }.property('.transformations.[]'),
+
+  // Returns an array of out-link colors which are in transformations for this node
+  outLinkColorsWithTransformations: function() {
+    return this.get('transformations').getEach('outLinkColor');
+  }.property('.transformations.[]'),
+
+  // Checking first out links, then in links, this answers the question:
+  // is there at least one link not covered by a defined transformation?
+  allLinksHaveTransformations: function() {
+    var haveTransformations = true;
+    var transformationColors = this.get('outLinkColorsWithTransformations');
+    var linkColors = this.get('outLinkColors');
+    linkColors.forEach( function (item, index, enumerable) {
+      if (transformationColors.indexOf(item) < 0) {
+        haveTransformations = false;
+      }
+    });
+    if (haveTransformations) { // Still with us? OK, now check in-links
+      transformationColors = this.get('inLinkColorsWithTransformations');
+      linkColors = this.get('inLinkColors');
+      linkColors.forEach( function (item, index, enumerable) {
+        if (transformationColors.indexOf(item) < 0) {
+          haveTransformations = false;
+        }
+      });
+    }
+    if (haveTransformations) {
+      return YES;
+    } else {
+      return NO;
+    }
+  }.property(),
+
   // Controls the transformation icon in the view and its toolTip.
   transformationIcon: function() {
     var transformationCount = this.get('transformations').get('length');
     if (transformationCount > 0) {
-      if (this.get('transformationsAreAllAnnotated')) {
+      if (this.get('transformationsAreAllAnnotated') && this.get('allLinksHaveTransformations')) {
         this.set('toolTip', 'All transformations are annotated.');
         return sc_static('resources/gotTransformationIcon.png');
       } else {
-        this.set('toolTip', 'This node has at least one transformation which needs annotation.');
+        this.set('toolTip', 'This node has at least one unexplained link or transformation which needs explanation.');
         return sc_static('resources/transformationNeededIcon.png');
       }
-    } else { // There are no transformations
-      this.set('toolTip', null);
-      return sc_static('resources/noTransformationNeededIcon.gif');
+    } else { // There are no defined transformations
+      if (this.get('hasImpliedTransformations')) { // There's an implied transformation - un-annotated if we made it here
+        this.set('toolTip', 'This node has at least one unexplained link or transformation which needs explanation.');
+        return sc_static('resources/transformationNeededIcon.png');
+      } else {
+        this.set('toolTip', null);
+        return sc_static('resources/noTransformationNeededIcon.gif');
+      }
     }
-  }.property('.transformationsAreAllAnnotated', '.hasPotentialTransformations'),
+  }.property(),
 
+  /** Starting here - extraneous code from false trail of transformations which may be re-usable
   firstUnannotatedTransformation: function() {
     var transformations = this.get('transformations');
     var transformationCount = transformations.get('length');
@@ -298,6 +351,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       });
     }
   }.observes('hasImpliedTransformations'),
+  This is the end of the extra Transformation code **/
 
   // This function doesn't calculate all possible transformations, or worry about which
   // transformations actually work. It just verifies that a transformation is
@@ -308,9 +362,9 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     var inLinks = this.get('inLinks');
     var outLinks = this.get('outLinks');
     if ((inLinks.get('length') < 1) || (outLinks.get('length') < 1)) {
-      return false; // No transformation without both in-flow and out-flow
+      return NO; // No transformation without both in-flow and out-flow
     } else {
-      var _hasTransformation = false;
+      var _hasTransformation = NO;
       var color = null;
       var inLength = inLinks.get('length');
       var outLength = outLinks.get('length');
@@ -319,7 +373,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         color = inLinks.objectAt(i).get('color');
        for (j=0; j<outLength; j++) { // Check against each out-link
           if (color != outLinks.objectAt(j).get('color')) {
-            _hasTransformation = true; // Found one
+            _hasTransformation = YES; // Found one
             break; // stop looking at out-links
           }
         }
