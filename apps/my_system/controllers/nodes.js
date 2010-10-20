@@ -102,5 +102,22 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
       }
       propertyEditor.set('objectToEdit', null);
     }
-  }.observes('allSelected')
-}) ;
+  }.observes('allSelected'),
+
+  openTransformationBuilder: function(node) {
+    var transformationBuilder = MySystem.getPath('mainPage.transformationBuilderPane');
+    this.deselectObject(node);
+    if (!transformationBuilder.isPaneAttached) {
+      transformationBuilder.append();
+    }
+    transformationBuilder.set('node', node);
+  },
+
+  closeTransformationBuilder: function() {
+    var transformationBuilder = MySystem.getPath('mainPage.transformationBuilderPane');
+    if (transformationBuilder.isPaneAttached) {
+      transformationBuilder.remove();
+    }
+    transformationBuilder.set('node', null);
+  }
+});
