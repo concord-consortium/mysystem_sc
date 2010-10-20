@@ -42,6 +42,8 @@ MySystem.mainPage = SC.Page.design({
 
   propertyViewPane: MySystem.PropertyEditorPane.design({}),
 
-  sentenceLinkPane: MySystem.SentenceConnectPane.design({})
+  sentenceLinkPane: MySystem.SentenceConnectPane.design({}),
+
+  transformationBuilderPane: MySystem.TransformationBuilderPane.design({})
 
 });
