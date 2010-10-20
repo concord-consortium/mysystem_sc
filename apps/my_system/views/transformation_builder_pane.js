@@ -28,17 +28,30 @@ MySystem.TransformationBuilderPane = SC.PalettePane.extend(
   },
 
   contentView: SC.View.design({
-    childViews: "inColors connect outColors doneButton".w(),
-    inColors: SC.View.design({
-      layout: { top: 0, left: 0, width: 120, height: 350 }
+    childViews: "inLabel inColors connect outLabel outColors doneButton".w(),
+    // Maybe we want some instructions on top here?
+    inLabel: SC.LabelView.design({
+      layout: { top: 0, left: 0, width: 150, height: 20 },
+      displayValue: "Inbound energy flows"
+    }),
+    inColors: SC.ListView.design({
       // List of in-link colors for this node
+      layout: { top: 20, left: 0, width: 120, height: 330 },
+      contentBinding: ".parentView*node.inLinkColors",
+      exampleView: MySystem.EnergyColorView
     }),
     connect: SC.View.design({
       layout: { top: 0, left: 120, width: 260, height: 350 }
     }),
-    outColors: SC.View.design({
-      layout: { top: 0, left: 0, width: 120, height: 350 }
+    outLabel: SC.LabelView.design({
+      layout: { top: 0, right: 0, width: 150, height: 20 },
+      displayValue: "Outbound energy flows"
+    }),
+    outColors: SC.ListView.design({
       // List of out-link colors for this node
+      layout: { top: 20, right: 0, width: 120, height: 330 },
+      contentBinding: ".parentView*node.outLinkColors",
+      exampleView: MySystem.EnergyColorView
     }),
     doneButton: SC.ButtonView.design({
       acceptsFirstResponder: YES,
