@@ -114,6 +114,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
     });
   },
 
+  // Ensures there is only one active sentence-linking button at a time
   turnOffOtherButtons: function(buttonToLeaveOn) {
     var storyView = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.topLeftView.bottomRightView.sentencesView');
     var sentenceViews = storyView.get('contentView').get('childViews');
@@ -124,6 +125,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
     });
   },
 
+  // Finished connecting nodes and links to sentences
   doneButtonPushed: function() {
     this.closeDiagramConnectPane();
     this.turnOffOtherButtons(null);
