@@ -43,11 +43,6 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     }
   },
 
-  promptForTransformationAnnotation: function(trans) {
-    SC.AlertPane.info("Annotate transformation", "You should add a sentence to the story to explain the energy transformation at this node.");
-    // TODO: Add a delegate to get the "closed" action here and open a new-sentence dialog
-  },
-
   collectionViewDeleteContent: function (view, content, indices) {
     // destroy the records
     var recordsToDestroy = indices.map( function (idx) {
