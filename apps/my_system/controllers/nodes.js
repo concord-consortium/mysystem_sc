@@ -110,9 +110,11 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
 
   closeTransformationBuilder: function() {
     var transformationBuilder = MySystem.getPath('mainPage.transformationBuilderPane');
+    var node = transformationBuilder.get('node');
     if (transformationBuilder.isPaneAttached) {
       transformationBuilder.remove();
     }
     transformationBuilder.set('node', null);
+    this.selectObject(node);
   }
 });
