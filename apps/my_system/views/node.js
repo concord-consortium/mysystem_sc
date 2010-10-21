@@ -24,10 +24,6 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   content: null,
   isSelected: false,
 
-  // implement action behavior of see sproutcore/desktop/view/button
-  target: "MySystem.nodesController",
-  action: "showAlert",
-
   // childViews: 'icon label aTerminal bTerminal'.w(),
   childViews: 'icon label aTerminal bTerminal transformationIcon'.w(),
 
