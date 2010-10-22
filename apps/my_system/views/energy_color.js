@@ -2,7 +2,7 @@
 // Project:   MySystem.EnergyColorView
 // Copyright: ©2010 Concord Consortium
 // ==========================================================================
-/*globals MySystem */
+/*globals MySystem LinkIt */
 
 /** @class
 
@@ -11,16 +11,22 @@
 
   @extends SC.View
 */
-MySystem.EnergyColorView = SC.View.extend(
+MySystem.EnergyColorView = SC.View.extend(LinkIt.NodeView,
 /** @scope MySystem.EnergyColorView.prototype */ {
 
+  layout: { top: 0, left: 0, width: 80, height: 15 },
+  classnames: "energyType".w(),
+  displayProperties: "content isSelected".w(),
+  content: null,
+  isSelected: NO,
+  
   childViews: "color terminal".w(),
   color: SC.View.design({
-    layout: { height: 25 },
-    backgroundColorBinding: ".parentView.content"
+    layout: { height: 25, width: 80 },
+    backgroundColorBinding: ".parentView*content"
   }),
   terminal: MySystem.Terminal.design({
-    layout: { centerY: 0, centerX: 0 }
+    layout: { centerY: 0, centerX: 0, width: 10, height: 10 }
   })
 
 });

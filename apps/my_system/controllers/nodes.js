@@ -98,23 +98,4 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
       propertyEditor.set('objectToEdit', null);
     }
   }.observes('allSelected'),
-
-  openTransformationBuilder: function(node) {
-    var transformationBuilder = MySystem.getPath('mainPage.transformationBuilderPane');
-    this.deselectObject(node);
-    if (!transformationBuilder.isPaneAttached) {
-      transformationBuilder.append();
-    }
-    transformationBuilder.set('node', node);
-  },
-
-  closeTransformationBuilder: function() {
-    var transformationBuilder = MySystem.getPath('mainPage.transformationBuilderPane');
-    var node = transformationBuilder.get('node');
-    if (transformationBuilder.isPaneAttached) {
-      transformationBuilder.remove();
-    }
-    transformationBuilder.set('node', null);
-    this.selectObject(node);
-  }
 });

@@ -24,7 +24,6 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   content: null,
   isSelected: false,
 
-  // childViews: 'icon label aTerminal bTerminal'.w(),
   childViews: 'icon label aTerminal bTerminal transformationIcon'.w(),
 
   /** @private */
@@ -81,7 +80,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     toolTipBinding: '.parentView*content.toolTip',
     click: function(evt) {
       if (this.get('toolTip')) { // If tooltip is null, there's nothing to do
-        MySystem.nodesController.openTransformationBuilder(this.getPath('parentView.content'));
+        MySystem.transformationsController.openTransformationBuilder(this.getPath('.parentView*content'));
       }
       return YES;
     }
