@@ -47,6 +47,8 @@ MySystem.Transformation = SC.Record.extend(
   // N.B. the links themselves aren't directly associated with the transformation;
   // rather, they're associated "through" the node
 
+  _linkObject: null,
+
   // The in- and out-links are going to be the respective in- and out-links of the 
   // node which have the correct color for this transformation.
   inLinks: function() {
@@ -89,7 +91,15 @@ MySystem.Transformation = SC.Record.extend(
       _complete = NO;
     }
     return _complete;
-  }.property("node", ".inLinks.[]", ".outLinks.[]").cacheable()
+  }.property("node", ".inLinks.[]", ".outLinks.[]").cacheable(),
+
+  linkObject: function() {
+    if (_linkObject) {
+      return _linkObject;
+    } else {
+      
+    }
+  }
 }) ;
 
 MySystem.Transformation.GuidCounter = 0;

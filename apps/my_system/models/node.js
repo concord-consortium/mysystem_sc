@@ -315,29 +315,29 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   colorObjects: function() {
     var colors = [], height = 15;
-		var inLinkColors = this.uniqueColors(this.get('inLinkColors'));
+    var inLinkColors = this.uniqueColors(this.get('inLinkColors'));
     inLinkColors.forEach( function (item) {
-      colors.pushObject( MySystem.EnergyFlow.create( { 'color': item, 'side': 'in', 'position': { 'x': 10, 'y': height } } ) );
+      colors.pushObject( MySystem.EnergyFlow.create( { 'color': item, 'side': 'in', 'position': { 'x': 10, 'y': height }, 'node': this } ) );
       height = height + 25;
     });
     height = 15;
-		var outLinkColors = this.uniqueColors(this.get('outLinkColors'));
+    var outLinkColors = this.uniqueColors(this.get('outLinkColors'));
     outLinkColors.forEach( function (item) {
-      colors.pushObject( MySystem.EnergyFlow.create( { 'color': item, 'side': 'out', 'position': { 'x': 410, 'y': height } } ) );
+      colors.pushObject( MySystem.EnergyFlow.create( { 'color': item, 'side': 'out', 'position': { 'x': 410, 'y': height }, 'node': this } ) );
       height = height + 25;
     });
     return colors;
   }.property('.inLinkColors.[]', '.outLinkColors.[]'),
 
-	uniqueColors: function(colorArray) {
-		var outArray = [];
-		colorArray.forEach( function(color) {
-			if (outArray.indexOf(color) < 0) {
-				outArray.push(color);
-			}
-		});
-		return outArray;
-	},
+  uniqueColors: function(colorArray) {
+    var outArray = [];
+    colorArray.forEach( function(color) {
+      if (outArray.indexOf(color) < 0) {
+        outArray.push(color);
+      }
+    });
+    return outArray;
+  },
 
   // Returns an array of in-link colors which are in transformations for this node
   inLinkColorsWithTransformations: function() {

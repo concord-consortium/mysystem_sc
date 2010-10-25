@@ -26,7 +26,8 @@ MySystem.EnergyColorView = SC.View.extend(LinkIt.NodeView,
     backgroundColorBinding: ".parentView*content.color"
   }),
   terminal: MySystem.Terminal.design({
-    layout: { centerY: 0, centerX: 0, width: 10, height: 10 }
+    layout: { centerY: 0, centerX: 0, width: 10, height: 10 },
+    terminal: 'a'
   })
 
 });

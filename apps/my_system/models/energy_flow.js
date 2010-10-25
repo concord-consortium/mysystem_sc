@@ -18,6 +18,23 @@ MySystem.EnergyFlow = SC.Object.extend( LinkIt.Node,
 
   color: null,
   side: 'in',
-  position: {}
+  position: {},
+  node: null,
+  linksKey: 'transformations',
+  transformations: function() {
+    var nodeTrans = this.get('node').get('transformations');
+    var validLinks = [];
+    nodeTrans.forEach( function (item) {
+      if (item.get('isComplete') &&
+          ((item.get('side') == 'in') && (item.get('inLinkColor') == this.get('color')) ||
+          (item.get('side') == 'out') && (item.get('outLinkColor') == this.get('color')))) {
+        validLinks.pushObject(item.get('linkObject'));
+      }
+    });
+    return validLinks;
+  }
 
+  // createLink: function() {
+  //
+  // }
 }) ;
