@@ -22,8 +22,7 @@ MySystem.transformationsController = SC.ArrayController.create(
       transformationBuilder.append();
     }
     transformationBuilder.set('node', node);
-    // Looks like these objects need to use the LinkIt.Node mixin to be on the canvas
-    // this.set('content', node.get('colorObjects'));
+    this.set('content', node.get('colorObjects'));
   },
 
   closeTransformationBuilder: function() {

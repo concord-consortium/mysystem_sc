@@ -314,12 +314,15 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   }.property('.inLinks.[]'),
 
   colorObjects: function() {
-    var colors = [];
+    var colors = [], height = 15;
     this.get('inLinkColors').forEach( function (item) {
-      colors.pushObject( { 'color': item, 'side': 'in' } );
+      colors.pushObject( MySystem.EnergyFlow.create( { 'color': item, 'side': 'in', 'position': { 'x': 10, 'y': height } } ) );
+      height = height + 25;
     });
+    height = 15;
     this.get('outLinkColors').forEach( function (item) {
-      colors.pushObject( { 'color': item, 'side': 'out' } );
+      colors.pushObject( MySystem.EnergyFlow.create( { 'color': item, 'side': 'out', 'position': { 'x': 410, 'y': height } } ) );
+      height = height + 25;
     });
     return colors;
   }.property('.inLinkColors.[]', '.outLinkColors.[]'),
