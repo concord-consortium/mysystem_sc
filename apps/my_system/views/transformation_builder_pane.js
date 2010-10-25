@@ -42,7 +42,8 @@ MySystem.TransformationBuilderPane = SC.PalettePane.extend(
     }),
     connect: LinkIt.CanvasView.design({
       layout: { top: 20, left: 0, width: 500, height: 330 },
-      exampleView: MySystem.EnergyColorView
+      exampleView: MySystem.EnergyColorView,
+      contentBinding: SC.Binding.from('MySystem.transformationsController')
       // Need to get the colors on here: push to content
       // and transformations <=> links
     }),

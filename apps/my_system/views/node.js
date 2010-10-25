@@ -35,7 +35,6 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
       this.getPath('pane.rootResponder').sendAction(action, target, this, this.get('pane'));
     }
   },
-  
 
   render: function (context) {
     sc_super();
@@ -80,7 +79,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     toolTipBinding: '.parentView*content.toolTip',
     click: function(evt) {
       if (this.get('toolTip')) { // If tooltip is null, there's nothing to do
-        MySystem.transformationsController.openTransformationBuilder(this.getPath('.parentView*content'));
+        MySystem.transformationsController.openTransformationBuilder(this.get('parentView').get('content'));
       }
       return YES;
     }

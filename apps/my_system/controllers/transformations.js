@@ -22,6 +22,7 @@ MySystem.transformationsController = SC.ArrayController.create(
       transformationBuilder.append();
     }
     transformationBuilder.set('node', node);
+    this.set('content', node.get('colorObjects'));
   },
 
   closeTransformationBuilder: function() {

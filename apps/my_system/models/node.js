@@ -313,6 +313,17 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     return this.get('outLinks').getEach('color');
   }.property('.inLinks.[]'),
 
+  colorObjects: function() {
+    var colors = [];
+    this.get('inLinkColors').forEach( function (item) {
+      colors.pushObject( { 'color': item, 'side': 'in' } );
+    });
+    this.get('outLinkColors').forEach( function (item) {
+      colors.pushObject( { 'color': item, 'side': 'out' } );
+    });
+    return colors;
+  }.property('.inLinkColors.[]', '.outLinkColors.[]'),
+
   // Returns an array of in-link colors which are in transformations for this node
   inLinkColorsWithTransformations: function() {
     return this.get('transformations').getEach('inLinkColor');
@@ -496,4 +507,4 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 });
 
 MySystem.Node.GuidCounter = 100;
-MySystem.Node.newGuid = function() { return "Node" + MySystem.Node.GuidCounter++;};
+MySystem.Node.newGuid = function() { return "node" + MySystem.Node.GuidCounter++;};

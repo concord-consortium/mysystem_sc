@@ -97,5 +97,5 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
       }
       propertyEditor.set('objectToEdit', null);
     }
-  }.observes('allSelected'),
+  }.observes('allSelected')
 });
