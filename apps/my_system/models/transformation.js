@@ -32,7 +32,7 @@ MySystem.Transformation = SC.Record.extend(
 
   node: SC.Record.toOne("MySystem.Node", {
     inverse: "transformations",
-    isMaster: NO
+    isMaster: YES
   }),
   
   annotation: SC.Record.toOne("MySystem.StorySentence", {
@@ -54,8 +54,9 @@ MySystem.Transformation = SC.Record.extend(
   inLinks: function() {
     var _links = [];
     var node = this.get('node');
+		var trans = this;
     node.get('inLinks').forEach( function (item, index, enumerable) {
-      if (item.get('color') == this.inLinkColor) {
+      if (item.get('color') == trans.get('inLinkColor')) {
         _links.pushObject(item);
       }
     });
@@ -65,8 +66,9 @@ MySystem.Transformation = SC.Record.extend(
   outLinks: function() {
     var _links = [];
     var node = this.get('node');
+		var trans = this;
     node.get('outLinks').forEach( function (item, index, enumerable) {
-      if (item.get('color') == this.outLinkColor) {
+      if (item.get('color') == trans.get('outLinkColor')) {
         _links.pushObject(item);
       }
     });
@@ -99,8 +101,32 @@ MySystem.Transformation = SC.Record.extend(
     } else {
       
     }
+  },
+
+  makeLinkItLink: function() {
+	debugger;
+    var tempHash = {};
+    // this._setLabel();
+    // this._setLinkStyle();
+    tempHash.startNode = this.get('node').get('inColorMap')[this.get('inColor')];
+    tempHash.startTerminal = this.get('startTerminal');
+    tempHash.endNode = this.get('node').get('outColorMap')[this.get('outColor')];
+    tempHash.endTerminal = this.get('endTerminal');
+    tempHash.label = this.get('label');
+    tempHash.linkStyle = this.get('linkStyle');
+    tempHash.model = this; // reference back to this
+    return SC.Object.create( LinkIt.Link, tempHash);
   }
 }) ;
 
 MySystem.Transformation.GuidCounter = 0;
 MySystem.Transformation.newGuid = function() { return "trans" + MySystem.Transformation.GuidCounter++;};
+
+MySystem.Transformation.hashFromLinkItLink = function(linkItLink) {
+  var tempHash = {};
+  tempHash.startNode = linkItLink.get('startNode');
+  tempHash.startTerminal = linkItLink.get('startTerminal');
+  tempHash.endNode = linkItLink.get('endNode');
+  tempHash.endTerminal = linkItLink.get('endTerminal');
+  return tempHash;
+};

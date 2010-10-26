@@ -59,6 +59,9 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     })
   ],
 
+	inColorMap: [],
+	outColorMap: [],
+
   // We have to maintain this list of links. 
   // Its observed from our mixin: LinkIt.Node 
   // links: [],
@@ -136,12 +139,15 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   // tell LinkIt whether the proposed link is valid
   canLink: function (link) {
+	console.log(this+".canLink("+link+")");
     if (!link) return NO;
 
     var sn = link.get('startNode'), 
         st = link.get('startTerminal');
     var en = link.get('endNode'), 
         et = link.get('endTerminal');
+
+		if (!sn.instanceOf(MySystem.Node) || !en.instanceOf(MySystem.Node)) return NO;
 
     // Make sure we don't connect to ourselves.
     if (sn === en) return NO;
@@ -316,14 +322,23 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   colorObjects: function() {
     var colors = [], height = 15;
     var inLinkColors = this.uniqueColors(this.get('inLinkColors'));
+		var newNode = this;
+		console.log("colorObjects, newNode=" + newNode);
     inLinkColors.forEach( function (item) {
-      colors.pushObject( MySystem.EnergyFlow.create( { 'color': item, 'side': 'in', 'position': { 'x': 10, 'y': height }, 'node': this } ) );
+      var newColorNode = MySystem.EnergyFlow.create( { color: item, side: 'in', position: { x: 10, y: height }, node: newNode, guid: MySystem.EnergyFlow.newGuid() } );
+			console.log("colorObjects pushing " + newColorNode.get('node'));
+      colors.pushObject( newColorNode );
+			newNode.get('inColorMap')[item] = newColorNode;
       height = height + 25;
     });
     height = 15;
     var outLinkColors = this.uniqueColors(this.get('outLinkColors'));
+		newNode = this;
     outLinkColors.forEach( function (item) {
-      colors.pushObject( MySystem.EnergyFlow.create( { 'color': item, 'side': 'out', 'position': { 'x': 410, 'y': height }, 'node': this } ) );
+      var newOutNode = ( MySystem.EnergyFlow.create( { color: item, side: 'out', position: { x: 410, y: height }, node: newNode, guid: MySystem.EnergyFlow.newGuid() } ) );
+			console.log("colorObjects pushing " + newOutNode.get('node'));
+			colors.pushObject(newOutNode);
+			newNode.get('outColorMap')[item] = newOutNode;
       height = height + 25;
     });
     return colors;
