@@ -385,12 +385,12 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
         return sc_static('resources/gotTransformationIcon.png');
       } else {
         this.set('toolTip', 'This node has at least one unexplained link or transformation which needs explanation.');
-        return sc_static('resources/transformationNeededIcon.png');
+        return sc_static('resources/transformationNeededIcon.gif');
       }
     } else { // There are no defined transformations
       if (this.get('hasImpliedTransformations')) { // There's an implied transformation - un-annotated if we made it here
         this.set('toolTip', 'This node has at least one unexplained link or transformation which needs explanation.');
-        return sc_static('resources/transformationNeededIcon.png');
+        return sc_static('resources/transformationNeededIcon.gif');
       } else {
         this.set('toolTip', null);
         return sc_static('resources/noTransformationNeededIcon.gif');
