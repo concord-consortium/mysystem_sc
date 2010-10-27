@@ -22,20 +22,15 @@ MySystem.EnergyFlow = SC.Object.extend( LinkIt.Node,
   node: null,
   linksKey: 'transformations',
   transformations: function() {
-		debugger;
     var nodeTrans = this.get('node').get('transformations');
     var validLinks = [];
-		var energyFlow = this;
+    var energyFlow = this;
     nodeTrans.forEach( function (item) {
-			debugger;
-      if (item.get('isComplete') // &&
-      //           ((item.get('side') == 'in') && (item.get('inLinkColor') == energyFlow.get('color')) ||
-      //           (item.get('side') == 'out') && (item.get('outLinkColor') == energyFlow.get('color')))
-					) {
+      if ( item.get('isComplete') ) {
         validLinks.pushObject(item.get('linkObject'));
-				item.makeLinkItLink();
       }
     });
+    debugger;
     return validLinks;
   }.property('node.transformations'),
 
@@ -60,22 +55,22 @@ MySystem.EnergyFlow = SC.Object.extend( LinkIt.Node,
     }
     // add only completed links (both sides are mapped)
     if(sn && st && en && et) {
-console.log("didCreateLink creating new transformation");
+      // console.log("didCreateLink creating new transformation");
       var guid = MySystem.Transformation.newGuid();
       tmpHash.guid = guid;
 
       if (sn === this) {
-				console.log("didCreateLink actually creating new transformation");
-				debugger;
-         tmpHash.startNode = null;
-         tmpHash.endNode = null;
-         link = MySystem.store.createRecord(MySystem.Transformation, tmpHash, guid);
-         link.set("inLinkColor",sn.get('color'));
-         link.set("outLinkColor",en.get('color'));
-				link.set('node', this.get('node'));
+        // console.log("didCreateLink actually creating new transformation");
+        // debugger;
+        tmpHash.startNode = null;
+        tmpHash.endNode = null;
+        link = MySystem.store.createRecord(MySystem.Transformation, tmpHash, guid);
+        link.set("inLinkColor",sn.get('color'));
+        link.set("outLinkColor",en.get('color'));
+        link.set('node', this.get('node'));
          // link.set('color', MySystem.linkColorChooser.get('content'));
 //         MySystem.canvasView.selectLink(link);
-				this.propertyDidChange('transformations');
+        this.propertyDidChange('transformations');
        }
        else if (en === this) {
          // if we are the end-node let our peer start-node do the object creation ... 
@@ -110,4 +105,4 @@ console.log("didCreateLink creating new transformation");
 }) ;
 
 MySystem.EnergyFlow.GuidCounter = 100;
-MySystem.EnergyFlow.newGuid = function() { return "node" + MySystem.EnergyFlow.GuidCounter++;};
+MySystem.EnergyFlow.newGuid = function() { return "ef" + MySystem.EnergyFlow.GuidCounter++;};
