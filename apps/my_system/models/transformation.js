@@ -2,7 +2,7 @@
 // Project:   MySystem.Transformation
 // Copyright: ©2010 My Company, Inc.
 // ==========================================================================
-/*globals MySystem */
+/*globals MySystem LinkIt */
 
 /** @class
 
@@ -96,15 +96,15 @@ MySystem.Transformation = SC.Record.extend(
   }.property("node", ".inLinks.[]", ".outLinks.[]").cacheable(),
 
   linkObject: function() {
-    if (_linkObject) {
-      return _linkObject;
+    if (this.get('_linkObject')) {
+      return this.get('_linkObject');
     } else {
-      
+      return this.makeLinkItLink();
     }
-  },
+  }.property(),
 
   makeLinkItLink: function() {
-	debugger;
+  // debugger;
     var tempHash = {};
     // this._setLabel();
     // this._setLinkStyle();
