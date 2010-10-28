@@ -99,11 +99,9 @@ MySystem.Transformation = SC.Record.extend(
     var tempHash = {};
     // this._setLabel();
     // this._setLinkStyle();
-    // FIXME: Crockford says "eval is evil"
-    tempHash.startNode = eval("this.get('node').inColorMap." + this.get('inLinkColor'));
+    tempHash.startNode = this.get('node').inColorMap[this.get('inLinkColor')];
     tempHash.startTerminal = this.get('startTerminal');
-    // FIXME: Crockford says "eval is evil"
-    tempHash.endNode = eval("this.get('node').outColorMap." + this.get('outLinkColor'));
+    tempHash.endNode = this.get('node').outColorMap[this.get('outLinkColor')];
     tempHash.endTerminal = this.get('endTerminal');
     tempHash.label = ''; // this.get('label');
     tempHash.linkStyle = {}; // this.get('linkStyle');
