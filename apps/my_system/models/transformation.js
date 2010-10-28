@@ -54,7 +54,7 @@ MySystem.Transformation = SC.Record.extend(
   inLinks: function() {
     var _links = [];
     var node = this.get('node');
-		var trans = this;
+    var trans = this;
     node.get('inLinks').forEach( function (item, index, enumerable) {
       if (item.get('color') == trans.get('inLinkColor')) {
         _links.pushObject(item);
@@ -66,7 +66,7 @@ MySystem.Transformation = SC.Record.extend(
   outLinks: function() {
     var _links = [];
     var node = this.get('node');
-		var trans = this;
+    var trans = this;
     node.get('outLinks').forEach( function (item, index, enumerable) {
       if (item.get('color') == trans.get('outLinkColor')) {
         _links.pushObject(item);
@@ -95,25 +95,18 @@ MySystem.Transformation = SC.Record.extend(
     return _complete;
   }.property("node", ".inLinks.[]", ".outLinks.[]").cacheable(),
 
-  linkObject: function() {
-    if (this.get('_linkObject')) {
-      return this.get('_linkObject');
-    } else {
-      return this.makeLinkItLink();
-    }
-  }.property(),
-
   makeLinkItLink: function() {
-  // debugger;
     var tempHash = {};
     // this._setLabel();
     // this._setLinkStyle();
-    tempHash.startNode = this.get('node').get('inColorMap')[this.get('inColor')];
+    // FIXME: Crockford says "eval is evil"
+    tempHash.startNode = eval("this.get('node').inColorMap." + this.get('inLinkColor'));
     tempHash.startTerminal = this.get('startTerminal');
-    tempHash.endNode = this.get('node').get('outColorMap')[this.get('outColor')];
+    // FIXME: Crockford says "eval is evil"
+    tempHash.endNode = eval("this.get('node').outColorMap." + this.get('outLinkColor'));
     tempHash.endTerminal = this.get('endTerminal');
-    tempHash.label = this.get('label');
-    tempHash.linkStyle = this.get('linkStyle');
+    tempHash.label = ''; // this.get('label');
+    tempHash.linkStyle = {}; // this.get('linkStyle');
     tempHash.model = this; // reference back to this
     return SC.Object.create( LinkIt.Link, tempHash);
   }
