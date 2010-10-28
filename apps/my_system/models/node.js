@@ -139,7 +139,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   // tell LinkIt whether the proposed link is valid
   canLink: function (link) {
-  console.log(this+".canLink("+link+")");
+    // console.log(this+".canLink("+link+")");
     if (!link) return NO;
 
     var sn = link.get('startNode'), 

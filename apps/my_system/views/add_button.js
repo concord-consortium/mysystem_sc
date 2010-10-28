@@ -49,7 +49,7 @@ MySystem.AddButtonView = SC.View.extend(
   dragDataForType: function(drag, dataType) { return null; },
   
   mouseDown: function(eventID) {
-    SC.Logger.log("mouseDown called");
+    // SC.Logger.log("mouseDown called");
     var self = this;
     var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
     SC.Drag.addDropTarget(myCanvas);

@@ -39,7 +39,7 @@ MySystem.BadgeButtonView = SC.View.extend(
   }),
 
   mouseDown: function(eventID) {
-    SC.Logger.log("mouseDown called");
+    // SC.Logger.warn("mouseDown called");
     var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
     var childViews = myCanvas.get('childViews');
     var len = childViews.get('length');

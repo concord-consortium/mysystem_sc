@@ -27,7 +27,7 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
     var gX = drag.ghostOffset.x;
     var gY = drag.ghostOffset.y;
     //( title, image, xPos, yPos )
-    SC.Logger.log("drag performed");
+    // SC.Logger.log("drag performed");
     MySystem.nodesController.addNode(title, image, xpos - offsetX - gX, ypos - offsetY - gY);
     MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
     return SC.DRAG_COPY; 
@@ -44,13 +44,13 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
           cntx.clearRect(0, 0, frame.width, frame.height);
           this._drawLinks(cntx);
         } else {
-          LinkIt.log("Linkit.LayerView.render(): Canvas object context is not accessible.");
+          SC.Logger.warn("MySystem.CanvasView.render(): Canvas object context is not accessible.");
         }
       } else {
-        LinkIt.log("Linkit.LayerView.render(): Canvas element array length is zero.");
+        SC.Logger.warn("MySystem.CanvasView.render(): Canvas element array length is zero.");
       }
     } else {
-      LinkIt.log("Linkit.LayerView.render(): Canvas element is not accessible.");
+      SC.Logger.warn("MySystem.CanvasView.render(): Canvas element is not accessible.");
     }
     return sc_super();
   },
