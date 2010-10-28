@@ -14,11 +14,6 @@
 
 sc_require('lib/old_format_json_parser');
 
-// MySystem.linkColorChooser = null;
-MySystem.canvasView = null;
-
-MySystem.NOVICE_STUDENT = 'novice';
-MySystem.ADVANCED_STUDENT = 'advanced';
 MySystem.studentMode = MySystem.NOVICE_STUDENT;
 // MySystem.studentMode = MySystem.ADVANCED_STUDENT;
 
