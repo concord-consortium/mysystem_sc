@@ -126,3 +126,9 @@
 .sc-button-view.sel {
   border: 2px solid #aa3333;
 }
+
+/* Transformation builder */
+.energy-type .transformation-terminal {
+  border: 2px solid #333;
+  background-color: #ACEE75;
+}
