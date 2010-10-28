@@ -28,28 +28,28 @@ MySystem.NodePaletteView = SC.View.extend({ // Node Palette (left)
     layout: { left: 20, right: 10, top: 33, width: 100, height: 120 },
     classNames: ['add-clay'],
     title: "Clay",
-    image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/clay_red_tn.png'
+    image: sc_static('resources/clay_red_tn.png')
   }),
 
   addHand: MySystem.AddButtonView.design({
     layout: { left: 20, right: 10, top: 163, width: 100, height: 120 },
     classNames: ['add-hand'],
-    image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/hand_tn.png',
+    image: sc_static('resources/hand_tn.png'),
     title: "Hand"
   }),
 
   addBulb: MySystem.AddButtonView.design({
     layout: { left: 20, right: 10, top: 293, width: 100, height: 120 },
     classNames: ['add-bulb'],
-    image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png',
+    image: sc_static('resources/lightbulb_tn.png'),
     title: "Bulb"
   }),
 
   transformationBadge: MySystem.BadgeButtonView.design({
     layout: { left: 20, right: 10, top: 423, width: 100, height: 120 },
     classNames: ['transformation-badge'],
-    image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png',
-    title: "Bulb"
+    image: sc_static('resources/lightbulb_tn.png'),
+    title: ""
   })
 
   // linkColorChooser: MySystem.ColorChooserView.design({

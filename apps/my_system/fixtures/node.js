@@ -9,7 +9,7 @@ sc_require('models/node');
 MySystem.Node.FIXTURES = [
 
   { guid: '1',
-    image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/clay_red_tn.png',
+    image: sc_static('resources/clay_red_tn.png'),
     title: 'A Node',
     transformer: false,
     inLinks: [],
@@ -19,7 +19,7 @@ MySystem.Node.FIXTURES = [
   },
   
   { guid: '2',
-    image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/hand_tn.png',
+    image: sc_static('resources/hand_tn.png'),
     title: 'B Node',
     transformer: false,
     inLinks: ['link1'],
@@ -28,7 +28,7 @@ MySystem.Node.FIXTURES = [
   },
   
   { guid: '3',
-    image: 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png',
+    image: sc_static('resources/lightbulb_tn.png'),
     title: 'Third Node',
     transformer: false,
     inLinks: ['link2'],
