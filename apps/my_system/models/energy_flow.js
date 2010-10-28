@@ -25,14 +25,14 @@ MySystem.EnergyFlow = SC.Object.extend( LinkIt.Node,
     var nodeTrans = this.get('node').get('transformations');
     var validLinks = [];
     var energyFlow = this;
-    nodeTrans.forEach( function (item) {
-      if ( item.get('isComplete') ) {
-        validLinks.pushObject(item.get('linkObject'));
+    nodeTrans.forEach( function (transformation) {
+      if ( transformation.get('isComplete') ) {
+        validLinks.pushObject(transformation.makeLinkItLink());
       }
     });
-    debugger;
+    // debugger;
     return validLinks;
-  }.property('node.transformations'),
+  }.property('node.transformations', 'node.inColorMap', 'node.outColorMap'),
 
   // createLink: function() {
   //
@@ -55,20 +55,16 @@ MySystem.EnergyFlow = SC.Object.extend( LinkIt.Node,
     }
     // add only completed links (both sides are mapped)
     if(sn && st && en && et) {
-      // console.log("didCreateLink creating new transformation");
       var guid = MySystem.Transformation.newGuid();
       tmpHash.guid = guid;
 
       if (sn === this) {
-        // console.log("didCreateLink actually creating new transformation");
-        // debugger;
-        tmpHash.startNode = null;
-        tmpHash.endNode = null;
-        link = MySystem.store.createRecord(MySystem.Transformation, tmpHash, guid);
-        link.set("inLinkColor",sn.get('color'));
-        link.set("outLinkColor",en.get('color'));
+         tmpHash.startNode = null;
+         tmpHash.endNode = null;
+         link = MySystem.store.createRecord(MySystem.Transformation, tmpHash, guid);
+         link.set("inLinkColor",sn.get('color'));
+         link.set("outLinkColor",en.get('color'));
         link.set('node', this.get('node'));
-         // link.set('color', MySystem.linkColorChooser.get('content'));
 //         MySystem.canvasView.selectLink(link);
         this.propertyDidChange('transformations');
        }
@@ -101,7 +97,6 @@ MySystem.EnergyFlow = SC.Object.extend( LinkIt.Node,
       }
     }
   }
-
 }) ;
 
 MySystem.EnergyFlow.GuidCounter = 100;

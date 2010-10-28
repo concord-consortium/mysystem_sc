@@ -18,21 +18,23 @@ MySystem.transformationsController = SC.ArrayController.create(
   openTransformationBuilder: function(node) {
     MySystem.nodesController.deselectObject(node);
     var transformationBuilder = MySystem.getPath('mainPage.transformationBuilderPane');
+		var canvas = transformationBuilder.get('contentView').get('childViews').objectAt(2);
+    this.set('content', node.get('colorObjects'));
+    transformationBuilder.set('node', node);
     if (!transformationBuilder.isPaneAttached) {
       transformationBuilder.append();
     }
-    transformationBuilder.set('node', node);
-    this.set('content', node.get('colorObjects'));
   },
 
   closeTransformationBuilder: function() {
     var transformationBuilder = MySystem.getPath('mainPage.transformationBuilderPane');
+		var canvas = transformationBuilder.get('contentView').get('childViews').objectAt(2);
     var node = transformationBuilder.get('node');
     if (transformationBuilder.isPaneAttached) {
       transformationBuilder.remove();
     }
     transformationBuilder.set('node', null);
+		this.set('content', []);
     MySystem.nodesController.selectObject(node);
   }
-
 }) ;
