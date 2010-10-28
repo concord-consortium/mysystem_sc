@@ -14,8 +14,8 @@
 MySystem.EnergyColorView = SC.View.extend(LinkIt.NodeView,
 /** @scope MySystem.EnergyColorView.prototype */ {
 
-  layout: { top: 0, left: 0, width: 80, height: 15 },
-  classnames: "energyType".w(),
+  layout: { top: 0, left: 0, width: 40, height: 25 },
+  classNames: "energy-type".w(),
   displayProperties: "content isSelected".w(),
   content: null,
   isSelected: NO,
@@ -28,6 +28,7 @@ MySystem.EnergyColorView = SC.View.extend(LinkIt.NodeView,
   terminal: MySystem.Terminal.design({
     layout: { centerY: 0, centerX: 0, width: 10, height: 10 },
     nodeBinding: '.parentView*content',
+    classNames: "transformation-terminal".w(),
     terminal: 'a'
   }),
 

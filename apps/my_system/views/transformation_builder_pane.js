@@ -17,7 +17,7 @@ MySystem.TransformationBuilderPane = SC.PalettePane.extend(
 /** @scope MySystem.TransformationBuilderPane.prototype */ {
 
   isModal: YES,
-  classNames: 'transformationBuilder'.w(),
+  classNames: 'transformation-builder'.w(),
 
   // Node we're editing transformations for
   node: null,
@@ -44,23 +44,7 @@ MySystem.TransformationBuilderPane = SC.PalettePane.extend(
       layout: { top: 20, left: 0, width: 500, height: 330 },
       exampleView: MySystem.EnergyColorView,
       contentBinding: SC.Binding.from('MySystem.transformationsController')
-      // Need to get the colors on here: push to content
-      // and transformations <=> links
     }),
-    // inColors: SC.ListView.design({
-    //   // List of in-link colors for this node
-    //   layout: { top: 20, left: 0, width: 80, height: 330 },
-    //   // This should be linked to the node's inLinkColors property
-    //   content: "green purple red".w(), // ".parentView.parentView*node.inLinkColors",
-    //   exampleView: MySystem.EnergyColorView
-    // }),
-    // outColors: SC.ListView.design({
-    //   // List of out-link colors for this node
-    //   layout: { top: 20, right: 0, width: 80, height: 330 },
-    //   // This should be linked to the node's outLinkColors property
-    //   content: ["green", "blue"],
-    //   exampleView: MySystem.EnergyColorView
-    // }),
     annotateButton: SC.ButtonView.design({
       acceptsFirstResponder: YES,
       buttonBehavior: SC.PUSH_BEHAVIOR,
