@@ -12,6 +12,7 @@
   @extends SC.View
 */
 sc_require('views/energy_color');
+sc_require('views/transformation_canvas');
 
 MySystem.TransformationBuilderPane = SC.PalettePane.extend(
 /** @scope MySystem.TransformationBuilderPane.prototype */ {
@@ -40,7 +41,7 @@ MySystem.TransformationBuilderPane = SC.PalettePane.extend(
       layout: { top: 0, right: 0, width: 150, height: 20 },
       displayValue: "Outbound energy flows"
     }),
-    connect: LinkIt.CanvasView.design({
+    connect: MySystem.TransformationCanvas.design({
       layout: { top: 20, left: 0, width: 500, height: 330 },
       exampleView: MySystem.EnergyColorView,
       contentBinding: SC.Binding.from('MySystem.transformationsController')
