@@ -30,7 +30,6 @@ MySystem.EnergyFlow = SC.Object.extend( LinkIt.Node,
         validLinks.pushObject(transformation.makeLinkItLink());
       }
     });
-    // debugger;
     return validLinks;
   }.property('node.transformations', 'node.inColorMap', 'node.outColorMap'),
 
