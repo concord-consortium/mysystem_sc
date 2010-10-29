@@ -40,14 +40,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
   addStorySentence: function() {
     var sentence;
 
-    this.incrementOrderValues(0);
-
-    // Create a new sentence in the store
-    sentence = MySystem.store.createRecord(MySystem.StorySentence, {
-      "guid": MySystem.StorySentence.newGuid(),
-      "order": 0,
-      "bodyText": "Describe a new step in the story."
-    });
+		sentence = this.addStorySentenceNoEdit();
 
     // Select the sentence in the UI
     this.selectObject(sentence);
@@ -58,6 +51,21 @@ MySystem.storySentenceController = SC.ArrayController.create(
       var list = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.topLeftView.bottomRightView.sentencesView.contentView');
       var listItem = list.itemViewForContentIndex(contentIndex);
       listItem.get('sentenceText').beginEditing();
+    });
+
+    return sentence ;
+  },
+
+  addStorySentenceNoEdit: function() {
+    var sentence;
+
+    this.incrementOrderValues(0);
+
+    // Create a new sentence in the store
+    sentence = MySystem.store.createRecord(MySystem.StorySentence, {
+      "guid": MySystem.StorySentence.newGuid(),
+      "order": 0,
+      "bodyText": "Describe a new step in the story."
     });
 
     return sentence ;

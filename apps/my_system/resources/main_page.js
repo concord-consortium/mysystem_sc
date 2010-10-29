@@ -44,6 +44,7 @@ MySystem.mainPage = SC.Page.design({
 
   sentenceLinkPane: MySystem.SentenceConnectPane.design({}),
 
-  transformationBuilderPane: MySystem.TransformationBuilderPane.design({})
+  transformationBuilderPane: MySystem.TransformationBuilderPane.design({}),
 
+	transformationAnnotaterPane: MySystem.TransformationAnnotationPane.design({})
 });

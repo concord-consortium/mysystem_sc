@@ -15,6 +15,8 @@
 MySystem.transformationsController = SC.ArrayController.create(
 /** @scope MySystem.transformationsController.prototype */ {
 
+	selectedLinksBinding: "MySystem.transformationsCanvasView.selectedLinks",
+
   openTransformationBuilder: function(node) {
     MySystem.nodesController.deselectObject(node);
     var transformationBuilder = MySystem.getPath('mainPage.transformationBuilderPane');
@@ -36,5 +38,29 @@ MySystem.transformationsController = SC.ArrayController.create(
     transformationBuilder.set('node', null);
     this.set('content', []);
     MySystem.nodesController.selectObject(node);
-  }
+		canvas.linksDidChange();
+  },
+
+  openTransformationAnnotater: function(transformation) {
+    var transformationAnnotater = MySystem.getPath('mainPage.transformationAnnotaterPane');
+		transformationAnnotater.set('transformation', transformation);
+    if (!transformationAnnotater.isPaneAttached) {
+      transformationAnnotater.append();
+    }
+  },
+
+  closeTransformationAnnotater: function() {
+    var transformationAnnotater = MySystem.getPath('mainPage.transformationAnnotaterPane');
+    if (transformationAnnotater.isPaneAttached) {
+      transformationAnnotater.remove();
+    }
+  },
+
+	linkSelectionMonitor: function() {
+		if (this.get('selectedLinks').get('length') === 1) {
+			MySystem.getPath('mainPage.transformationBuilderPane.contentView.annotateButton').set('isEnabled', YES);
+		} else {
+			MySystem.getPath('mainPage.transformationBuilderPane.contentView.annotateButton').set('isEnabled', NO);
+		}
+	}.observes('selectedLinks')
 }) ;

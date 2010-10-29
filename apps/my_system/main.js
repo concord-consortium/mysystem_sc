@@ -14,8 +14,8 @@
 
 sc_require('lib/old_format_json_parser');
 
-MySystem.studentMode = MySystem.NOVICE_STUDENT;
-// MySystem.studentMode = MySystem.ADVANCED_STUDENT;
+// MySystem.studentMode = MySystem.NOVICE_STUDENT;
+MySystem.studentMode = MySystem.ADVANCED_STUDENT;
 
 MySystem.main = function main() {
 
@@ -40,6 +40,8 @@ MySystem.main = function main() {
   // MySystem.linkColorChooser = MySystem.mainPage.mainPane.childViews.objectAt(0).topLeftView.childViews.objectAt(5);
   // MySystem.linkColorChooser.set('content', 'red');
   MySystem.canvasView = MySystem.mainPage.mainPane.topView.bottomRightView.bottomRightView;
+	MySystem.transformationsCanvasView = MySystem.getPath('mainPage.transformationBuilderPane').get('childViews').objectAt(0).get('childViews').objectAt(2);
+	MySystem.transformationAnnotaterPane = MySystem.getPath('mainPage.transformationAnnotaterPane');
 };
 
 function main() { MySystem.main(); }
