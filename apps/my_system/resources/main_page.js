@@ -46,5 +46,5 @@ MySystem.mainPage = SC.Page.design({
 
   transformationBuilderPane: MySystem.TransformationBuilderPane.design({}),
 
-	transformationAnnotaterPane: MySystem.TransformationAnnotationPane.design({})
+  transformationAnnotaterPane: MySystem.TransformationAnnotationPane.design({})
 });
