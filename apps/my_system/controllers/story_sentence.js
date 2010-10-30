@@ -39,8 +39,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
 
   addStorySentence: function() {
     var sentence;
-
-		sentence = this.addStorySentenceNoEdit();
+    sentence = this.addStorySentenceNoEdit();
 
     // Select the sentence in the UI
     this.selectObject(sentence);

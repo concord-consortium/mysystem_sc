@@ -66,7 +66,7 @@ MySystem.EnergyFlow = SC.Object.extend( LinkIt.Node,
         link.set('node', this.get('node'));
 //         MySystem.canvasView.selectLink(link);
         this.propertyDidChange('transformations');
-				MySystem.transformationsCanvasView.selectObjects([inlink]);
+        MySystem.transformationsCanvasView.selectObjects([inlink]);
        }
        else if (en === this) {
          // if we are the end-node let our peer start-node do the object creation ... 

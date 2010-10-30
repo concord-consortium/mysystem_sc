@@ -7,7 +7,7 @@
 /** @class
 
   This pane allows a user to decorate transformations in the transformation
-	pane with explanations (StorySentences).
+  pane with explanations (StorySentences).
 
   @extends SC.View
 */
@@ -19,7 +19,7 @@ MySystem.TransformationAnnotationPane = SC.PalettePane.extend(
   isModal: YES,
   classNames: 'transformationAnnotation'.w(),
 
-  // Transformation we're editing a StorySentence for 
+  // Transformation we're editing a StorySentence for
   transformation: null,
 
   layout: {
@@ -39,10 +39,10 @@ MySystem.TransformationAnnotationPane = SC.PalettePane.extend(
     storySentenceField: SC.LabelView.design({
       layout: { top: 20, left: 5, right: 5, height: 20 },
       displayValueBinding: '.parentView.parentView*transformation.annotation.bodyText',
-			// displayValue: 'Enter your explanation here',
-			canEditContent: YES,
-			canDeleteContent: YES,
-			isEditable: YES
+      // displayValue: 'Enter your explanation here',
+      canEditContent: YES,
+      canDeleteContent: YES,
+      isEditable: YES
     }),
     doneButton: SC.ButtonView.design({
       acceptsFirstResponder: YES,
