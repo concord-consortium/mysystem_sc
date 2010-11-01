@@ -53,7 +53,7 @@ MySystem.TransformationBuilderPane = SC.PalettePane.extend(
       layout: { centerX: -80, width: 150, bottom: 10, height: 20 },
       title: "Annotate",
       toolTip: "Describe selected transformation",
-      // target: "",
+      target: "MySystem.transformationsController",
       action: "annotate",
       theme: "capsule",
       isEnabled: NO
@@ -69,19 +69,6 @@ MySystem.TransformationBuilderPane = SC.PalettePane.extend(
       action: "closeTransformationBuilder",
       theme: "capsule",
       isEnabled: YES
-    }),
-
-    annotate: function() {
-      var selectedTransformation = MySystem.transformationsController.selectedLinks.objectAt(0).model;
-      if (selectedTransformation.get('annotation') === null) {
-        selectedTransformation.set('annotation', MySystem.storySentenceController.addStorySentenceNoEdit());
-      }
-      MySystem.transformationsController.openTransformationAnnotater(selectedTransformation);
-
-      // Activate the editor once the UI repaints
-      this.invokeLater(function() {
-        MySystem.transformationAnnotaterPane.get('contentView').get('storySentenceField').beginEditing();
-      });
-    }
+    })
   })
 });

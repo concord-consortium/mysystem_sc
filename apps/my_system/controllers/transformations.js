@@ -57,10 +57,23 @@ MySystem.transformationsController = SC.ArrayController.create(
   },
 
   linkSelectionMonitor: function() {
-    if (this.get('selectedLinks').get('length') === 1) {
+    if (this.get('selectedLinks').get('length') > 0) {
       MySystem.getPath('mainPage.transformationBuilderPane.contentView.annotateButton').set('isEnabled', YES);
     } else {
       MySystem.getPath('mainPage.transformationBuilderPane.contentView.annotateButton').set('isEnabled', NO);
     }
-  }.observes('selectedLinks')
+  }.observes('selectedLinks'),
+
+  annotate: function() {
+    var selectedTransformation = this.get('selectedLinks').firstObject().model;
+    if (selectedTransformation.get('annotation') === null) {
+      selectedTransformation.set('annotation', MySystem.storySentenceController.addStorySentenceNoEdit());
+    }
+    this.openTransformationAnnotater(selectedTransformation);
+
+    // Activate the editor once the UI repaints
+    this.invokeLater(function() {
+      MySystem.transformationAnnotaterPane.get('contentView').get('storySentenceField').beginEditing();
+    });
+  }
 }) ;
