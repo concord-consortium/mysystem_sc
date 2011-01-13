@@ -335,7 +335,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     var outLinkColors = this.uniqueColors(this.get('outLinkColors'));
     newNode = this;
     outLinkColors.forEach( function (item) {
-      var newOutNode = ( MySystem.EnergyFlow.create( { color: item, side: 'out', position: { x: 450, y: height }, node: newNode, guid: MySystem.EnergyFlow.newGuid() } ) );
+      var newOutNode = MySystem.EnergyFlow.create( { color: item, side: 'out', position: { x: 450, y: height }, node: newNode, guid: MySystem.EnergyFlow.newGuid() } ) ;
       // console.log("colorObjects pushing " + newOutNode.get('node'));
       colors.pushObject(newOutNode);
       newNode.get('outColorMap')[item] = newOutNode;
