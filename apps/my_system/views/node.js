@@ -24,7 +24,7 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
   content: null,
   isSelected: false,
 
-  childViews: 'icon label aTerminal bTerminal transformationIcon'.w(),
+  childViews: 'icon label aTerminal bTerminal'.w(), //  transformationIcon
 
   /** @private */
   _runAction: function(evt) {
@@ -71,19 +71,20 @@ MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
     // direction: LinkIt.OUTPUT_TERMINAL
   }),
 
-  transformationIcon: SC.ImageView.design({
-    classNames: 'image',
-    useImageCache: true,
-    layout: {left: 5, bottom: +5, width: 20, height:20 },
-    valueBinding: '.parentView*content.transformationIcon',
-    toolTipBinding: '.parentView*content.toolTip',
-    click: function(evt) {
-      if (this.get('toolTip')) { // If tooltip is null, there's nothing to do
-        MySystem.transformationsController.openTransformationBuilder(this.get('parentView').get('content'));
-      }
-      return YES;
-    }
-  }),
+  /* Temporarily removed for Berkeley 0.1 release */
+  // transformationIcon: SC.ImageView.design({
+  //   classNames: 'image',
+  //   useImageCache: true,
+  //   layout: {left: 5, bottom: +5, width: 20, height:20 },
+  //   valueBinding: '.parentView*content.transformationIcon',
+  //   toolTipBinding: '.parentView*content.toolTip',
+  //   click: function(evt) {
+  //     if (this.get('toolTip')) { // If tooltip is null, there's nothing to do
+  //       MySystem.transformationsController.openTransformationBuilder(this.get('parentView').get('content'));
+  //     }
+  //     return YES;
+  //   }
+  // }),
 
   // ..........................................................
   // LINKIT Specific for the view

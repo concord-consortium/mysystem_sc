@@ -17,7 +17,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   image: SC.Record.attr(String),
   title: SC.Record.attr(String),
-  transformer: SC.Record.attr(Boolean),
+  transformer: SC.Record.attr(Boolean, {defaultValue: true }),
   toolTip: SC.Record.attr(String, { defaultValue: null }),
 
   outLinks: SC.Record.toMany('MySystem.Link',{
@@ -52,11 +52,12 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     Forms.FormView.row(SC.TextFieldView, {
       fieldKey: 'title',
       fieldLabel: 'Title:'
-    }),
-    Forms.FormView.row(SC.CheckboxView, {
-      fieldKey: 'transformer',
-      fieldLabel: 'Transformer?'
     })
+    /* Temporarily removed for Berkeley 0.1 release */
+    // Forms.FormView.row(SC.CheckboxView, {
+    //   fieldKey: 'transformer',
+    //   fieldLabel: 'Transformer?'
+    // })
   ],
 
   inColorMap: [],
@@ -147,6 +148,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     var en = link.get('endNode'), 
         et = link.get('endTerminal');
 
+    // Only accept links from nodes
     if (!sn.instanceOf(MySystem.Node) || !en.instanceOf(MySystem.Node)) return NO;
 
     // Make sure we don't connect to ourselves.
@@ -155,16 +157,18 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     // Make sure we don't already have this link.
     if (this._hasLink(link)) return NO;
 
-    var outColors = sn.acceptableOutLinkColors();
-    var inColors = en.acceptableInLinkColors();
-    var acceptableColors = this.intersection(inColors, outColors);
-    if (acceptableColors !== null && acceptableColors == []) {
-      return NO;
-    }
+    /* Temporarily removed for Berkeley 0.1 release */
+    // var outColors = sn.acceptableOutLinkColors();
+    // var inColors = en.acceptableInLinkColors();
+    // var acceptableColors = this.intersection(inColors, outColors);
+    // if (acceptableColors !== null && acceptableColors == []) {
+    //   return NO;
+    // }
 
-    if ( (st === 'input' && et === 'output') || (st === 'output' && et === 'input')) {
-      return YES;
-    }
+    // Input-to-output terminal matching
+    // if ( (st === 'input' && et === 'output') || (st === 'output' && et === 'input')) {
+    //   return YES;
+    // }
     return YES;
     // TODO under what other circumstances would we refuse a link?
     // return NO;

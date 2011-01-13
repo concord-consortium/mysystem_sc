@@ -17,7 +17,7 @@ sc_require('core');
 MySystem.NodePaletteView = SC.View.extend({ // Node Palette (left)
   layout: { top: 0, bottom: 0, left: 15 },
   // childViews: 'addDecorator addClay addHand addBulb transformationBadge linkColorChooser'.w(),
-  childViews: 'addDecorator addClay addHand addBulb transformationBadge'.w(),
+  childViews: 'addDecorator addClay addHand addBulb'.w(), 
 
   addDecorator: SC.View.design({
     layout: { left: 30, right: 0, top: 0, height: 23, width: 80 },
@@ -43,15 +43,16 @@ MySystem.NodePaletteView = SC.View.extend({ // Node Palette (left)
     classNames: ['add-bulb'],
     image: sc_static('resources/lightbulb_tn.png'),
     title: "Bulb"
-  }),
-
-  transformationBadge: MySystem.BadgeButtonView.design({
-    layout: { left: 20, right: 10, top: 423, width: 100, height: 120 },
-    classNames: ['transformation-badge'],
-    image: sc_static('resources/lightbulb_tn.png'),
-    title: ""
   })
 
+  /* Temporarily removed for Berkeley 0.1 release */
+  // transformationBadge: MySystem.BadgeButtonView.design({
+  //   layout: { left: 20, right: 10, top: 423, width: 100, height: 120 },
+  //   classNames: ['transformation-badge'],
+  //   image: sc_static('resources/lightbulb_tn.png'),
+  //   title: ""
+  // })
+  // 
   // linkColorChooser: MySystem.ColorChooserView.design({
   //   layout: { left: 0, right: 10, top: 553, width: 200, height: 120 },
   //   classNames: ['color-chooser']
