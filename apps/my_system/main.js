@@ -32,6 +32,9 @@ MySystem.main = function main() {
   var nodes = MySystem.store.find(MySystem.Node);
   //Set the content property on the primary controller
   MySystem.nodesController.set('content', nodes);
+  var activity = MySystem.store.find(MySystem.Activity, 'assign1');
+  MySystem.storyController.set('content', activity.get('assignmentText'));
+  
   var storyQuery = SC.Query.local(MySystem.StorySentence, { orderBy: 'order' });
   var storySentences = MySystem.store.find(storyQuery);
   MySystem.storySentenceController.set('content', storySentences);
