@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   MySystem.Node
-// Copyright: ©2010 My Company, Inc.
+// Copyright: ©2010 Concord Consortium
 // ==========================================================================
 /*globals MySystem LinkIt Forms */
 
