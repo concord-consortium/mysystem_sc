@@ -26,6 +26,8 @@ MySystem.EnergyType = SC.Record.extend(
     
     @property {String}
   */
-  color: SC.Record.attr(String, { isRequired: YES })
+  color: SC.Record.attr(String, { isRequired: YES }),
+  
+  isEnabled: SC.Record.attr(Boolean, { isRequired: YES, defaultValue: YES })
 
 }) ;

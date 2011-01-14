@@ -35,6 +35,10 @@ MySystem.main = function main() {
   var activity = MySystem.store.find(MySystem.Activity, 'assign1');
   MySystem.storyController.set('content', activity.get('assignmentText'));
   MySystem.nodePaletteController.set('content', activity.get('paletteItems'));
+  MySystem.energyTypes = [];
+  activity.get('energyTypes').forEach( function(et) {
+    MySystem.energyTypes.push({'label': et.get('label'), 'color': et.get('color'), 'isEnabled': et.get('isEnabled') } );
+  });
   
   var storyQuery = SC.Query.local(MySystem.StorySentence, { orderBy: 'order' });
   var storySentences = MySystem.store.find(storyQuery);
