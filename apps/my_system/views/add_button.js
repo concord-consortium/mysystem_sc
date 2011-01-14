@@ -17,32 +17,37 @@ sc_require('core');
 */
 MySystem.AddButtonView = SC.View.extend( 
   {
-  layout: { top: 0, left: 0, width: 100, height: 120 },
-  classNames: 'node'.w(),
+  layout: { top: 10, left: 20, right: 10, width: 100 },
+  padding: 10,
 
   displayProperties: 'content isSelected'.w(),
   content: null,
   isSelected: false,
 
-  childViews: 'icon label'.w(),
+  childViews: 'frame icon label'.w(),
 
   render: function (context) {
     sc_super();
     if (this.get('isSelected')) context.addClass('selected');
   },  
 
+  frame: SC.View.design({
+    classNames: 'node addbutton'.w(),
+    layout: { top: 12, bottom: 10, height: 122 }
+  }),
+
   icon: SC.ImageView.design({
     classNames: 'image',
     useImageCache: true,
-    layout: { top: 20, width:50, height:70, centerX: 0},
-    valueBinding: '.parentView.image'
+    layout: { top: 30, width:50, height:70, centerX: 0},
+    valueBinding: '.parentView.content.image'
   }),
 
   label: SC.LabelView.design({
     layout: { bottom: 5, centerX: 0, width: 100, height: 25 },
     classNames: ['name'],
     textAlign: SC.ALIGN_CENTER,    
-    valueBinding: '.parentView.title',
+    valueBinding: '.parentView.content.title',
     isEditable: NO
   }),
   

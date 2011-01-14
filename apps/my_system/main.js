@@ -34,6 +34,7 @@ MySystem.main = function main() {
   MySystem.nodesController.set('content', nodes);
   var activity = MySystem.store.find(MySystem.Activity, 'assign1');
   MySystem.storyController.set('content', activity.get('assignmentText'));
+  MySystem.nodePaletteController.set('content', activity.get('paletteItems'));
   
   var storyQuery = SC.Query.local(MySystem.StorySentence, { orderBy: 'order' });
   var storySentences = MySystem.store.find(storyQuery);
