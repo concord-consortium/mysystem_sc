@@ -35,7 +35,7 @@ MySystem.Link = SC.Record.extend(
       // LinkIt.HORIZONTAL_CURVED
       // LinkIt.VERTICAL_CURVED
       // LinkIt.STRAIGHT (default)
-  //   width (in pixels, 3 by default)
+  //   width (in pixels, 6 by default)
   //   color (HTML RGB color, '#ADD8E6' by default)
   //   cap, (an un-arrowed line end) one of:
       // LinkIt.ROUND (default)
@@ -48,7 +48,7 @@ MySystem.Link = SC.Record.extend(
   //   arrowLength (the length of the arrowhead, 5px by default)
   linkStyle: {
     lineStyle: LinkIt.VERTICAL_CURVED,
-    width: 3,
+    width: 6,
     color: '#00ff00',
     cap: LinkIt.ROUND,
     arrows: LinkIt.ARROW_END
