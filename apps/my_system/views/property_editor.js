@@ -71,29 +71,31 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
       form.removeAllChildren();
       // Append form rows
       form.set('fields', baseObject.get('formFields'));
-      if (baseObject.kindOf(MySystem.Link)) {
-        var startNode = baseObject.get('startNode');
-        var endNode = baseObject.get('endNode');
-        var colors = startNode.intersection(startNode.acceptableOutLinkColors(), endNode.acceptableInLinkColors());
-        var radioButtons = form.get('_displayFields').objectAt(0).get('_displayFields').objectAt(0).get('field');
+      /* Temporarily removed for Berkeley 0.1 release */
+      // if (baseObject.kindOf(MySystem.Link)) {
+        // var startNode = baseObject.get('startNode');
+        // var endNode = baseObject.get('endNode');
+        // var colors = startNode.intersection(startNode.acceptableOutLinkColors(), endNode.acceptableInLinkColors());
+        // FIXME: Need to work on values here
+        // var radioButtons = form.get('_displayFields').objectAt(0).get('_displayFields').objectAt(0).get('field');
         // if (!startNode.get('transformer')) {
         //   // TODO: Figure out a more elegant way to do this
         //   form.get('_displayFields').objectAt(0).get('_displayFields').objectAt(0).get('field').set('isEnabled', false);
         // }
-        var items = radioButtons.get('items');
-        for (var i = 0; i < items.get('length'); i += 1) {
-          var item = items.objectAt(i);
-          if (colors === null) {
-            item.enabled = true;
-          } else {
-            if (this.indexOf(item.value, colors) >= 0) {
-              item.enabled = true;
-            } else {
-              item.enabled = false;
-            }
-          }
-        }
-      }
+        // var items = radioButtons.get('items');
+        // for (var i = 0; i < items.get('length'); i += 1) {
+        //   var item = items.objectAt(i);
+        //   if (true) { // (colors === null) {
+        //     item.enabled = true;
+        //   } else {
+        //     if (this.indexOf(item.value, colors) >= 0) {
+        //       item.enabled = true;
+        //     } else {
+        //       item.enabled = false;
+        //     }
+        //   }
+        // }
+      // }
     }
   }.observes('objectToEdit'),
 
