@@ -32,6 +32,7 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
 
   propertiesForm: Forms.FormView.create({
     fields: "".w(),
+
     findField: function(key) {
       var rightField = null;
       this.fields.forEach( function (item, index, enumerable) {
@@ -41,6 +42,7 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
       });
       return rightField;
     }
+
   }),
 
   // returns the index of the first occurrence of element in array, -1 if it's not there

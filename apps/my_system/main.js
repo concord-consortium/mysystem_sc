@@ -29,20 +29,32 @@ MySystem.main = function main() {
 
   // The following loads data from an old WireIt format layer data
   //MySystem.loadCanvas();
-  var nodes = MySystem.store.find(MySystem.Node);
+  
   //Set the content property on the primary controller
+  var nodes = MySystem.store.find(MySystem.Node);
   MySystem.nodesController.set('content', nodes);
+
+  // Configured activity
   var activity = MySystem.store.find(MySystem.Activity, 'assign1');
+  
+  // Assignment "story"
   MySystem.storyController.set('content', activity.get('assignmentText'));
+  
+  // Items in the node selection palette
   MySystem.nodePaletteController.set('content', activity.get('paletteItems'));
+
+  // Energy types for the link properties editor
+  // MySystem.energyTypes = activity.get('energyTypes');
   MySystem.energyTypes = [];
   activity.get('energyTypes').forEach( function(et) {
     MySystem.energyTypes.push({'label': et.get('label'), 'color': et.get('color'), 'isEnabled': et.get('isEnabled') } );
   });
   
+  // User story
   var storyQuery = SC.Query.local(MySystem.StorySentence, { orderBy: 'order' });
   var storySentences = MySystem.store.find(storyQuery);
   MySystem.storySentenceController.set('content', storySentences);
+  
   var transformations = MySystem.store.find(MySystem.Transformation);
 
   // MySystem.linkColorChooser = MySystem.mainPage.mainPane.childViews.objectAt(0).topLeftView.childViews.objectAt(5);
