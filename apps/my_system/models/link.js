@@ -78,10 +78,10 @@ MySystem.Link = SC.Record.extend(
     // color: 
     // Forms.FormView.row(SC.RadioView, {
     Forms.FormView.row(MySystem.ImprovedRadioView, {
-      layout: {width: 160, height: 54},
+      layout: { width: 160, height: 85 }, // TODO: Hardwired height. Ugh.
       fieldKey: "color",
       fieldLabel: "Energy Type:",
-      items: MySystem.energyTypes,
+      itemsBinding: 'MySystem.energyTypes',
       itemTitleKey: 'label',
       itemValueKey: 'color',
       itemIsEnabledKey: 'isEnabled',

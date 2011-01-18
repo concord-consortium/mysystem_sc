@@ -238,24 +238,27 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
     else {
       // update the selection state on all of the DOM elements.  The options are
       // sel or mixed.  These are used to display the proper setting...
-      this.$input().forEach(function(input) {
-        
-        input = this.$(input);
-        idx = parseInt(input.val(),0);
-        item = (idx>=0) ? items[idx] : null;
+      if (items.length != this.$input().length) { // No inputs were rendered the first time
+        this.render(context, YES); // re-run firstTime to try and get the inputs
+      }
+      else {
+        this.$input().forEach(function(input) {
 
-        input.attr('disabled', (!item[2]) ? 'disabled' : null);
-        selectionState = this._getSelectionState(item, value, isArray, true);
+          input = this.$(input);
+          idx = parseInt(input.val(),0);
+          item = (idx>=0) ? items[idx] : null;
 
-        // set class of label
-        input.parent().setClass(selectionState);
-        
-        // avoid memory leaks
-        input =  idx = selectionState = null;
-      }, this);
-    
-    }
-    
+          input.attr('disabled', (!item[2]) ? 'disabled' : null);
+          selectionState = this._getSelectionState(item, value, isArray, true);
+
+          // set class of label
+          input.parent().setClass(selectionState);
+
+          // avoid memory leaks
+          input =  idx = selectionState = null;
+        }, this);
+      } // length comparison
+    } // firstTime check
   },
   
   /** @private - 
