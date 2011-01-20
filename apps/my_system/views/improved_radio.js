@@ -224,7 +224,7 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
         labelText = this.escapeHTML ? SC.RenderContext.escapeHTML(item[0]) : item[0];
 
         var checked = !isArray && value === item[1] ? 'checked="checked"' : '';
-        context.push('<label class="sc-radio-button ', selectionStateClassNames, '">');
+        context.push('<label class="sc-radio-button ', selectionStateClassNames, '" style="background-color: ', item[1], ';">');
         context.push('<input type="radio" value="', item[1], '" name="', name, '" ', disabled, ' ', checked, '/>');
         context.push('<span class="button"></span>');
         context.push('<span class="sc-button-label">', icon, labelText, '</span></label>');

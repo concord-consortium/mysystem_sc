@@ -124,6 +124,11 @@
   background-color: #666;
 }
 
+.property-editor label.sc-radio-button {
+  font-weight: bold;
+  color: #fff;
+}
+
 .disabled .sc-button-label {
   color: #666;
 }
