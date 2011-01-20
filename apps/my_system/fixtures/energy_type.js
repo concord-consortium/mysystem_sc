@@ -10,22 +10,27 @@ MySystem.EnergyType.FIXTURES = [
 
   { guid: 'et1',
     label: "infrared radiation",
-    color: "#490A3D"},
+    color: "#490A3D",
+    isEnabled: YES },
   
   { guid: 'et2',
     label: "thermal energy",
-    color: "#BD1550"},
+    color: "#BD1550",
+    isEnabled: YES},
     
   { guid: 'et3',
     label: "solar radiation",
-    color: "#E97F02"},
+    color: "#E97F02",
+    isEnabled: YES},
     
   { guid: 'et4',
     label: "kinetic energy",
-    color: "#F8CA00"},
+    color: "#F8CA00",
+    isEnabled: YES},
   
   { guid: 'et5',
     label: "light energy",
-    color: "#8A9B0F"}
+    color: "#8A9B0F",
+    isEnabled: YES}
 
 ];

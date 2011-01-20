@@ -157,7 +157,6 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
       if (loc) title = title.loc();
       ret.push([title, value, isEnabled, icon]) ;
     }
-    
     return ret; // done!
   }.property('items', 'itemTitleKey', 'itemValueKey', 'itemIsEnabledKey', 'localize', 'itemIconKey').cacheable(),
   
@@ -225,9 +224,8 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
         labelText = this.escapeHTML ? SC.RenderContext.escapeHTML(item[0]) : item[0];
 
         var checked = !isArray && value === item[1] ? 'checked="checked"' : '';
-
         context.push('<label class="sc-radio-button ', selectionStateClassNames, '">');
-        context.push('<input type="radio" value="', idx, '" name="', name, '" ', disabled, ' ', checked, '/>');
+        context.push('<input type="radio" value="', item[1], '" name="', name, '" ', disabled, ' ', checked, '/>');
         context.push('<span class="button"></span>');
         context.push('<span class="sc-button-label">', icon, labelText, '</span></label>');
       }
@@ -238,24 +236,30 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
     else {
       // update the selection state on all of the DOM elements.  The options are
       // sel or mixed.  These are used to display the proper setting...
-      this.$input().forEach(function(input) {
-        
-        input = this.$(input);
-        idx = parseInt(input.val(),0);
-        item = (idx>=0) ? items[idx] : null;
+      if (items.length != this.$input().length) { // No inputs were rendered the first time
+        this.render(context, YES); // re-run firstTime to try and get the inputs
+      }
+      else {
+        this.$input().forEach(function(input) {
 
-        input.attr('disabled', (!item[2]) ? 'disabled' : null);
-        selectionState = this._getSelectionState(item, value, isArray, true);
+          input = this.$(input);
+          items.forEach( function (thisOne) {
+            if (thisOne[1] == input) item = thisOne;
+          });
 
-        // set class of label
-        input.parent().setClass(selectionState);
-        
-        // avoid memory leaks
-        input =  idx = selectionState = null;
-      }, this);
-    
-    }
-    
+          if (item) {
+            input.attr('disabled', (!item[2]) ? 'disabled' : null);
+            selectionState = this._getSelectionState(item, value, isArray, true);
+
+            // set class of label
+            input.parent().setClass(selectionState);
+          }
+
+          // avoid memory leaks
+          input =  idx = selectionState = null;
+        }, this);
+      } // length comparison
+    } // firstTime check
   },
   
   /** @private - 
@@ -361,6 +365,7 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
     var target = evt.target;
     while (target) {
       if (target.className && target.className.indexOf('sc-radio-button') > -1) break;
+      var tv = target.value;
       target = target.parentNode;
     }
     if (!target) return NO;
@@ -368,6 +373,7 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
     target = this.$(target);
     target.addClass('active');
     this._activeRadioButton = target;
+    this.set('value', tv);
 
     this._field_isMouseDown = YES;
     return YES;

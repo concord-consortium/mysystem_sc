@@ -13,38 +13,13 @@
 */
 sc_require('core');
 
-
-MySystem.NodePaletteView = SC.View.extend({ // Node Palette (left)
+MySystem.NodePaletteView = SC.ListView.extend({ // Node Palette (left)
   layout: { top: 0, bottom: 0, left: 15 },
   // childViews: 'addDecorator addClay addHand addBulb transformationBadge linkColorChooser'.w(),
-  childViews: 'addDecorator addClay addHand addBulb'.w(), 
-
-  addDecorator: SC.View.design({
-    layout: { left: 30, right: 0, top: 0, height: 23, width: 80 },
-    classNames: ['add-decorator']
-  }),
-
-  addClay: MySystem.AddButtonView.design({
-    layout: { left: 20, right: 10, top: 33, width: 100, height: 120 },
-    classNames: ['add-clay'],
-    title: "Clay",
-    image: sc_static('resources/clay_red_tn.png')
-  }),
-
-  addHand: MySystem.AddButtonView.design({
-    layout: { left: 20, right: 10, top: 163, width: 100, height: 120 },
-    classNames: ['add-hand'],
-    image: sc_static('resources/hand_tn.png'),
-    title: "Hand"
-  }),
-
-  addBulb: MySystem.AddButtonView.design({
-    layout: { left: 20, right: 10, top: 293, width: 100, height: 120 },
-    classNames: ['add-bulb'],
-    image: sc_static('resources/lightbulb_tn.png'),
-    title: "Bulb"
-  })
-
+  contentBinding: 'MySystem.nodePaletteController.content',
+  exampleView: MySystem.AddButtonView,
+  rowHeight: 140
+    
   /* Temporarily removed for Berkeley 0.1 release */
   // transformationBadge: MySystem.BadgeButtonView.design({
   //   layout: { left: 20, right: 10, top: 423, width: 100, height: 120 },

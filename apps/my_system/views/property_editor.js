@@ -32,6 +32,7 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
 
   propertiesForm: Forms.FormView.create({
     fields: "".w(),
+
     findField: function(key) {
       var rightField = null;
       this.fields.forEach( function (item, index, enumerable) {
@@ -41,6 +42,7 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
       });
       return rightField;
     }
+
   }),
 
   // returns the index of the first occurrence of element in array, -1 if it's not there
@@ -72,9 +74,10 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
       // Append form rows
       form.set('fields', baseObject.get('formFields'));
       if (baseObject.kindOf(MySystem.Link)) {
-        var startNode = baseObject.get('startNode');
-        var endNode = baseObject.get('endNode');
-        var colors = startNode.intersection(startNode.acceptableOutLinkColors(), endNode.acceptableInLinkColors());
+        /* Color-selection code temporarily removed for Berkeley 0.1 release */
+        // var startNode = baseObject.get('startNode');
+        // var endNode = baseObject.get('endNode');
+        // var colors = startNode.intersection(startNode.acceptableOutLinkColors(), endNode.acceptableInLinkColors());
         var radioButtons = form.get('_displayFields').objectAt(0).get('_displayFields').objectAt(0).get('field');
         // if (!startNode.get('transformer')) {
         //   // TODO: Figure out a more elegant way to do this
@@ -83,15 +86,15 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
         var items = radioButtons.get('items');
         for (var i = 0; i < items.get('length'); i += 1) {
           var item = items.objectAt(i);
-          if (colors === null) {
+          // if (true) { // (colors === null) {
             item.enabled = true;
-          } else {
-            if (this.indexOf(item.value, colors) >= 0) {
-              item.enabled = true;
-            } else {
-              item.enabled = false;
-            }
-          }
+          // } else {
+          //   if (this.indexOf(item.value, colors) >= 0) {
+          //     item.enabled = true;
+          //   } else {
+          //     item.enabled = false;
+          //   }
+          // }
         }
       }
     }

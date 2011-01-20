@@ -22,7 +22,7 @@ MySystem.StoriesView = SC.SplitView.extend({
     backgroundColor: '#CCCCFF',
     tagName: "div",
     escapeHTML: NO,
-    value: "<p>Make a MySystem to explain to Gwen how energy from the sun and the things people do BOTH contribute to global climate.</p><ul><li>Where does energy come from?</li><li>How does energy move?</li><li>Where does energy go?</li><li>How does energy change?</li></ul>",
+    valueBinding: 'MySystem.storyController.content',
     canCollapse: YES
   }),
   dividerView: SC.SplitDividerView, // Divider for resizing up/down
