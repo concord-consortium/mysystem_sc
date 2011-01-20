@@ -157,7 +157,6 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
       if (loc) title = title.loc();
       ret.push([title, value, isEnabled, icon]) ;
     }
-    
     return ret; // done!
   }.property('items', 'itemTitleKey', 'itemValueKey', 'itemIsEnabledKey', 'localize', 'itemIconKey').cacheable(),
   
@@ -225,9 +224,8 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
         labelText = this.escapeHTML ? SC.RenderContext.escapeHTML(item[0]) : item[0];
 
         var checked = !isArray && value === item[1] ? 'checked="checked"' : '';
-
         context.push('<label class="sc-radio-button ', selectionStateClassNames, '">');
-        context.push('<input type="radio" value="', idx, '" name="', name, '" ', disabled, ' ', checked, '/>');
+        context.push('<input type="radio" value="', item[1], '" name="', name, '" ', disabled, ' ', checked, '/>');
         context.push('<span class="button"></span>');
         context.push('<span class="sc-button-label">', icon, labelText, '</span></label>');
       }
@@ -245,14 +243,17 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
         this.$input().forEach(function(input) {
 
           input = this.$(input);
-          idx = parseInt(input.val(),0);
-          item = (idx>=0) ? items[idx] : null;
+          items.forEach( function (thisOne) {
+            if (thisOne[1] == input) item = thisOne;
+          });
 
-          input.attr('disabled', (!item[2]) ? 'disabled' : null);
-          selectionState = this._getSelectionState(item, value, isArray, true);
+          if (item) {
+            input.attr('disabled', (!item[2]) ? 'disabled' : null);
+            selectionState = this._getSelectionState(item, value, isArray, true);
 
-          // set class of label
-          input.parent().setClass(selectionState);
+            // set class of label
+            input.parent().setClass(selectionState);
+          }
 
           // avoid memory leaks
           input =  idx = selectionState = null;
@@ -364,6 +365,7 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
     var target = evt.target;
     while (target) {
       if (target.className && target.className.indexOf('sc-radio-button') > -1) break;
+      var tv = target.value;
       target = target.parentNode;
     }
     if (!target) return NO;
@@ -371,6 +373,7 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
     target = this.$(target);
     target.addClass('active');
     this._activeRadioButton = target;
+    this.set('value', tv);
 
     this._field_isMouseDown = YES;
     return YES;

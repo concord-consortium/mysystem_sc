@@ -78,7 +78,6 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
         // var startNode = baseObject.get('startNode');
         // var endNode = baseObject.get('endNode');
         // var colors = startNode.intersection(startNode.acceptableOutLinkColors(), endNode.acceptableInLinkColors());
-        // FIXME: Need to work on values here
         var radioButtons = form.get('_displayFields').objectAt(0).get('_displayFields').objectAt(0).get('field');
         // if (!startNode.get('transformer')) {
         //   // TODO: Figure out a more elegant way to do this
