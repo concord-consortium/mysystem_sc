@@ -13,7 +13,10 @@ task :wise do
     %x[rezsquish squash --project_name=my_system --output_dir=vle/mysystem_sc]
 
     # add wrapper classes
-    %x[cp -r wise4/* vle/mysystem_sc]
+    %x[cp -r wise4/mysystem_sc/* vle/mysystem_sc/]
+
+    # rename the html file
+    %x[mv vle/mysystem_sc/00*.html vle/mysystem_sc/mysystem_sc.html]
 
   rescue LoadError
     puts "You need to install the resource squasher gem like so:"
