@@ -4,7 +4,9 @@
 # ===========================================================================
 
 # Add initial buildfile information here
-config :all, :required => [:forms, :sproutcore]
+config :all, 
+       :required => [:forms, :sproutcore],
+       :load_fixtures => true #
 
 # CORE FRAMEWORKS
 config :scui, :required => [:sproutcore, :'scui/drawing', :'scui/linkit']
