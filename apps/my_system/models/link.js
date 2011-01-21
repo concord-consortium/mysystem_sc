@@ -128,6 +128,7 @@ MySystem.Link = SC.Record.extend(
     tempHash.endTerminal = this.get('endTerminal');
     tempHash.label = this.get('label');
     tempHash.linkStyle = this.get('linkStyle');
+    tempHash.selectionWidth = this.get('linkStyle').width + 4;
     tempHash.model = this; // reference back to this
     return SC.Object.create( LinkIt.Link, tempHash);
   },
