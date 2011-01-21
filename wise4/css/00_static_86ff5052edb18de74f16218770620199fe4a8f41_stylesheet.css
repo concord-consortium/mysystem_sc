@@ -1,0 +1,15 @@
+.terminal{border:2px solid rgba(255,255,255,0);opacity:.5;-moz-box-shadow:0 0 2px rgba(0,0,0,.75);-webkit-box-shadow:0 0 2px rgba(0,0,0,.75);-moz-border-radius:7px;-webkit-border-radius:7px;}
+.input{background-color:#faa;}.output{background-color:#afa;}.terminal:hover{opacity:1;}
+.invite{opacity:1;border:2px solid rgba(255,255,0,128);}.accept{background-color:green;border:2px solid rgba(255,255,0,255);}
+.node{border:1px solid rgba(0,0,0,.2);-moz-border-radius:5px;-webkit-border-radius:5px;-moz-box-shadow:0 4px 4px rgba(0,0,0,.1);-webkit-box-shadow:0 4px 4px rgba(0,0,0,.1);}
+.node_content{border:2px solid rgba(112,255,255,0);background-color:#aaa;opacity:.3;-moz-border-radius:3px;-webkit-border-radius:3px;-moz-box-shadow:0 4px 2px rgba(0,0,0,.75);-webkit-box-shadow:0 4px 2px rgba(0,0,0,.75);}
+.node.addbutton{margin:0 10px 10px 20px;width:100px;}.node.selected{-moz-box-shadow:0 5px 5px rgba(0,0,0,.25);-webkit-box-shadow:0 5px 5px rgba(0,0,0,.25);}
+.sentence-linking .node{border:1px dotted #ccc;-moz-box-shadow:0 2px 2px rgba(80,80,80,.1);-webkit-box-shadow:0 2px 2px rgba(80,80,80,.1);}
+.sentence-linking .node .sc-view{opacity:.5;}.sentence-linking .node.selected{border:1px solid rgba(0,0,0,.2);}
+.sentence-linking .node.selected .sc-view{opacity:1;}.sentence-linking .node.selected .sc-view.terminal{opacity:.5;}
+.property-editor{border:1px solid rgba(0,0,0,.2);background-color:#aaa;-moz-border-radius:5px;-webkit-border-radius:5px;-moz-box-shadow:0 4px 4px rgba(0,0,0,.1);-webkit-box-shadow:0 4px 4px rgba(0,0,0,.1);}
+.property-editor>.sc-view{margin:5px;}.sentence-connect-pane{border:1px solid rgba(0,0,0,.2);background-color:#aaa;-moz-border-radius:5px;-webkit-border-radius:5px;-moz-box-shadow:0 4px 4px rgba(0,0,0,.1);-webkit-box-shadow:0 4px 4px rgba(0,0,0,.1);}
+.property-editor>.sc-view{margin:5px;}.property-editor .sc-checkbox-view{width:14px;}
+.property-editor .sc-checkbox-view.sel{border:1px solid #000;background-color:#666;}
+.property-editor label.sc-radio-button{font-weight:bold;color:#fff;}.disabled .sc-button-label{color:#666;}
+.sc-button-view.sel{border:2px solid #a33;}.energy-type .transformation-terminal{border:2px solid #333;background-color:#ACEE75;}
