@@ -72,6 +72,13 @@ kill -s 2 %1
 
 exit $EXIT_STATUS
 
+### Building as WISE4 step ###
+
+1. install the resource_squasher `gem intall ./resource_squasher-0.0.1.gem`
+2. run the default rake task `rake` (invokes sc-build and wise4 squash)
+3. open wise4/00_*.html
+
+
 ### More information: ###
 
 * [Current feature](http://bit.ly/bhGHKR) being worked on.
