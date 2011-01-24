@@ -4,7 +4,18 @@
 // ==========================================================================
 /*globals MySystem module test ok equals same stop start */
 
-module("MySystem.Link");
+var node1, node2;
+
+module("MySystem.Link", {
+  setup: function () {
+    node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+    node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  },
+  
+  teardown: function () {
+    
+  }
+});
 
 function isArray(testObject) {   
   return testObject && !testObject.propertyIsEnumerable('length') && typeof testObject === 'object' && typeof testObject.length === 'number';
@@ -12,8 +23,6 @@ function isArray(testObject) {
 
 test("New links should pass their own sanity checks", function() {
   expect(1);
-  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var linkHash = {
       guid: MySystem.Link.newGuid(),
       text: 'Test link for sanity check',
@@ -26,8 +35,6 @@ test("New links should pass their own sanity checks", function() {
 
 test("Links should return the nodes they're linked to", function() {
   expect(2);
-  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var newLink = MySystem.store.createRecord(MySystem.Link, {'guid': MySystem.Link.newGuid(), 'text': 'Test link for node returning' });
   newLink.set('startNode', node1);
   newLink.set('endNode', node2);
@@ -37,8 +44,6 @@ test("Links should return the nodes they're linked to", function() {
 
 test("Links should return LinkIt.Link objects when asked", function() {
   expect(4);
-  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var linkHash = {
       guid: MySystem.Link.newGuid(),
       text: 'Test link for LinkIt Links',
@@ -55,8 +60,6 @@ test("Links should return LinkIt.Link objects when asked", function() {
 
 test("Links should return an array of editable form fields when asked", function() {
   expect(2);
-  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var linkHash = {
       guid: MySystem.Link.newGuid(),
       text: 'Test link for form fields',
@@ -80,8 +83,6 @@ test("We should be able to generate a new GUID", function() {
 
 test("Link color should be editable and persistent in the store", function() {
   expect(2);
-  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var linkHash = {
       guid: MySystem.Link.newGuid(),
       text: 'Test link for color change.',
@@ -98,8 +99,6 @@ test("Link color should be editable and persistent in the store", function() {
 
 test("tests connecting links to storySentences", function () {
   expect(3);
-  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var linkHash = {
       guid: MySystem.Link.newGuid(),
       text: 'Test link for StorySentence linking',
