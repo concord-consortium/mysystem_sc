@@ -91,7 +91,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
     var allLinks = MySystem.store.find(MySystem.Link);
     // Un-dim all links
     allLinks.forEach( function (link) {
-      link.unDimColor();
+      link.set('isDimmed', NO);
     });
     
     // Clear selections
@@ -106,7 +106,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
     theCanvas.get('classNames').push('sentence-linking');
     // Dim links
     allLinks.forEach( function (link) {
-      if (sentenceLinks.indexOf(link) < 0) link.dimColor();
+      if (sentenceLinks.indexOf(link) < 0) link.set('isDimmed', YES);
     });
     MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
     diagramPane.set('activeSentence', sentence);
@@ -130,7 +130,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
     theCanvas.get('classNames').pop(); // TODO: This is brittle; if we've added another classname, it gets that instead of 'sentence-linking' which is what we want
     // Un-dim all links
     allLinks.forEach( function (link) {
-      link.unDimColor();
+      link.set('isDimmed', NO);
     });
     MySystem.nodesController.unselectAll();
     diagramPane.set('activeSentence', null);

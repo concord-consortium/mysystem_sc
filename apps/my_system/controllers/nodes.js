@@ -19,6 +19,22 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     var links  = this.get('selectedLinks');
     var resultSet = this.get('selection').clone();
     resultSet = resultSet.addObjects(links.map(function(link){return link.get('model');}));
+    // Check dimming
+    if (MySystem.getPath('mainPage.sentenceLinkPane').isPaneAttached) {
+      if (resultSet.get('length') === 0) {
+        var allLinks = MySystem.store.find(MySystem.Link);
+        allLinks.forEach( function (link) {
+          link.set('isDimmed', YES);
+        });
+      }
+      else {
+        resultSet.forEach( function (item) {
+          if (item.kindOf(MySystem.Link)) {
+            item.set('isDimmed', NO);
+          }
+        });
+      }
+    }
     return resultSet;
   }.property('selectedLinks','selectedLinks.[]','selection').cacheable(),
   

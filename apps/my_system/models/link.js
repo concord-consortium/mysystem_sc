@@ -170,7 +170,7 @@ MySystem.Link = SC.Record.extend(
   },
   
   dimColor: function() { // If we're selecting links in some states, we want un-selected links to be dimmed.
-    if (this.get('isDimmed') == NO) {
+    if (this.get('isDimmed') === YES) {
       var oldColor, newColor, channels;
       oldColor = this.get('color');
       newColor = {};
@@ -197,7 +197,6 @@ MySystem.Link = SC.Record.extend(
         newColor.a = newColor.a * 0.2;
         // set new color
         this.set("color", "rgba(" + newColor.r.toString() + ", " + newColor.g.toString() + ", " + newColor.b.toString() + ", " + newColor.a.toString() + ")");
-        this.set('isDimmed', YES);
         return YES;
       }
       else {
@@ -205,14 +204,10 @@ MySystem.Link = SC.Record.extend(
         return NO;
       }
     }
-    else {
-      // console.info("Link %s is already dimmed", this.get('id'));
-      return YES;
-    }
-  },
+  }.observes('isDimmed'),
   
   unDimColor: function() { // Leaving a dimmed state, restore alpha.
-    if (this.get('isDimmed') == YES) {
+    if (!this.get('isDimmed')) {
       var oldColor, newColor, channels;
       oldColor = this.get('color');
       newColor = {};
@@ -242,7 +237,6 @@ MySystem.Link = SC.Record.extend(
 
         // set new color
         this.set("color", "rgba(" + newColor.r.toString() + ", " + newColor.g.toString() + ", " + newColor.b.toString() + ", " + newColor.a.toString() + ")");
-        this.set('isDimmed', NO);
         return YES;
       }
       else {
@@ -250,15 +244,16 @@ MySystem.Link = SC.Record.extend(
         return NO;
       }
     }
-    else {
-      // console.info("Link %s is not dimmed", this.get('id'));
-      return YES;
+  }.observes('isDimmed'),
+  
+  fixSelectionDimming: function() {
+    if (this.get('isSelected') && this.get('isDimmed')) {
+      this.set('isDimmed', NO);
     }
   }
 }) ;
 MySystem.Link.GuidCounter = 100;
 MySystem.Link.newGuid = function() { return "link" + MySystem.Link.GuidCounter++;};
-
 MySystem.Link.hashFromLinkItLink = function(linkItLink) {
   var tempHash = {};
   tempHash.startNode = linkItLink.get('startNode');
