@@ -10,7 +10,7 @@ desc "build a wise-4 step from the standard sprout-core build"
 task :wise do
   begin
     require 'resource_squasher'
-    # clean and build release
+    # clean and build the release
     %x[sc-build -rc #{@sc_project_name}]
 
     # remove the old build directory
@@ -22,7 +22,7 @@ task :wise do
     %x[cp -r #{@template_directory}/* #{@output_directory}]
 
     # rename the html file
-    %x[mv #{@template_directory}/00*.html #{@output_directory}/#{@wise_setp_name}.html]
+    %x[mv #{@output_directory}/00*.html #{@output_directory}/#{@wise_setp_name}.html]
 
   rescue LoadError
     puts "You need to install the resource squasher gem like so:"
