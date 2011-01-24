@@ -116,3 +116,22 @@ test("tests connecting links to storySentences", function () {
   equals(newLink.get('sentences').get('length'), expectedLinkConnections, "There should be " + expectedLinkConnections + " sentence(s) associated with the node.");
   equals(sent.get('diagramObjects').get('length'), sent.get('nodes').get('length') + sent.get('links').get('length'), "The sentence's diagramObjects should equal the sum of the links and nodes.");
 });
+
+test("Dimmed links should have alpha values < 1 in the color definition", function () {
+  expect(5);
+  var linkHash = {
+      guid: MySystem.Link.newGuid(),
+      text: 'Test link for color dimming',
+      startNode: node1,
+      endNode: node2,
+      color: '#336699'
+    };
+  var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
+  equals ( newLink.get('isDimmed'), NO, "The isDimmed property starts as NO");
+  newLink.dimColor();
+  equals ( newLink.get('color'), "rgba(51, 102, 153, 0.2)", "The dimmed-link color definition should match the RGBA definition with 0.5 alpha.");
+  equals ( newLink.get('isDimmed'), YES, "The isDimmed property should be set to YES");
+  newLink.unDimColor();
+  equals ( newLink.get('color'), "rgba(51, 102, 153, 1)", "The undimmed-link color definition should match the RGBA definition with 1.0 alpha.");
+  equals ( newLink.get('isDimmed'), NO, "The isDimmed property is back to NO");
+});

@@ -93,6 +93,8 @@ MySystem.Link = SC.Record.extend(
       fieldLabel: "Label:"
     })
   ],
+  
+  isDimmed: NO,
 
   init: function () {
     sc_super();
@@ -165,6 +167,93 @@ MySystem.Link = SC.Record.extend(
       arrows: this.get('linkStyle').arrows
     };
     this.set("linkStyle", newLinkStyle);
+  },
+  
+  dimColor: function() { // If we're selecting links in some states, we want un-selected links to be dimmed.
+    if (this.get('isDimmed') == NO) {
+      var oldColor, newColor, channels;
+      oldColor = this.get('color');
+      newColor = {};
+      // array of color definition objects
+      var color_defs = MySystem.Link.COLOR_DEFS;
+      // search through the definitions to find a match
+      // reformat color string so we can manipulate it
+      for (var i = 0; i < color_defs.length; i++) {
+          var re = color_defs[i].re;
+          var processor = color_defs[i].process;
+          var bits = re.exec(oldColor);
+          if (bits) {
+            channels = processor(bits);
+            newColor.r = channels[0];
+            newColor.g = channels[1];
+            newColor.b = channels[2];
+            newColor.a = (channels[3] ? channels[3] : 1.0);
+            newColor.ok = true;
+          }
+      }
+
+      if (newColor.r !== undefined) {
+        // dial down alpha
+        newColor.a = newColor.a * 0.2;
+        // set new color
+        this.set("color", "rgba(" + newColor.r.toString() + ", " + newColor.g.toString() + ", " + newColor.b.toString() + ", " + newColor.a.toString() + ")");
+        this.set('isDimmed', YES);
+        return YES;
+      }
+      else {
+        console.log("No matching color pattern found.");
+        return NO;
+      }
+    }
+    else {
+      console.info("Link %s is already dimmed", this.get('id'));
+      return YES;
+    }
+  },
+  
+  unDimColor: function() { // Leaving a dimmed state, restore alpha.
+    if (this.get('isDimmed') == YES) {
+      var oldColor, newColor, channels;
+      oldColor = this.get('color');
+      newColor = {};
+      // array of color definition objects
+      var color_defs = MySystem.Link.COLOR_DEFS;
+
+      // search through the definitions to find a match
+      // reformat color string so we can manipulate it
+      for (var i = 0; i < color_defs.length; i++) {
+          var re = color_defs[i].re;
+          var processor = color_defs[i].process;
+          var bits = re.exec(oldColor);
+          if (bits) {
+            channels = processor(bits);
+            newColor.r = channels[0];
+            newColor.g = channels[1];
+            newColor.b = channels[2];
+            newColor.a = (channels[3] ? channels[3] : 1.0);
+            newColor.ok = true;
+          }
+      }
+
+      if (newColor.r !== undefined) {
+        // reset alpha
+        newColor.a = newColor.a * 5;
+        if (newColor.a > 1.0) newColor.a = 1.0;
+
+        // set new color
+        this.set("color", "rgba(" + newColor.r.toString() + ", " + newColor.g.toString() + ", " + newColor.b.toString() + ", " + newColor.a.toString() + ")");
+        this.set('isDimmed', NO);
+        return YES;
+      }
+      else {
+        console.log("No matching color pattern found.");
+        return NO;
+      }
+    }
+    else {
+      console.info("Link %s is not dimmed", this.get('id'));
+      return YES;
+    }
   }
 }) ;
 MySystem.Link.GuidCounter = 100;
@@ -179,3 +268,51 @@ MySystem.Link.hashFromLinkItLink = function(linkItLink) {
   tempHash.label = SC.clone(linkItLink.get('label'));
   return tempHash;
 };
+
+MySystem.Link.COLOR_DEFS = [
+    {
+      're': /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/,
+      'example': ['rgb(123, 234, 45)', 'rgb(255,234,245)'],
+      'process': function (bits){
+        return [
+          parseInt(bits[1], 10),
+          parseInt(bits[2], 10),
+          parseInt(bits[3], 10)
+        ];
+      }
+    },
+    {
+      're': /^\#?(\w{2})(\w{2})(\w{2})$/,
+      'example': ['#00ff00', '336699'],
+      'process': function (bits){
+        return [
+          parseInt(bits[1], 16),
+          parseInt(bits[2], 16),
+          parseInt(bits[3], 16)
+        ];
+      }
+    },
+    {
+      're': /^\#?(\w{1})(\w{1})(\w{1})$/,
+      'example': ['#fb0', 'f0f'],
+      'process': function (bits){
+        return [
+          parseInt(bits[1] + bits[1], 16),
+          parseInt(bits[2] + bits[2], 16),
+          parseInt(bits[3] + bits[3], 16)
+        ];
+      }
+    },
+    {
+      're': /^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*([\d.]+)\)$/,
+      'example': ['rgba(123, 234, 45, 1.0)', 'rgb(255,234,245,0.3333333)'],
+      'process': function (bits){
+        return [
+          parseInt(bits[1], 10),
+          parseInt(bits[2], 10),
+          parseInt(bits[3], 10),
+          parseInt(bits[4], 10)
+        ];
+      }
+    }
+];
