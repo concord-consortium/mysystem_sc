@@ -1,3 +1,9 @@
+#TODO: Use thore for this instead of RAKE and use erb templates?
+
+@sc_project_name    = "my_system"
+@wise_setp_name     = "mysystem_sc"
+@template_directory = "wise4/#{@wise_setp_name}"
+@output_directory   = "vle/#{@wise_setp_name}"
 
 task :default => [:wise]
 desc "build a wise-4 step from the standard sprout-core build"
@@ -5,18 +11,18 @@ task :wise do
   begin
     require 'resource_squasher'
     # clean and build release
-    %x[sc-build -rc my_system]
+    %x[sc-build -rc #{@sc_project_name}]
 
     # remove the old build directory
-    %x[rm -rf wise4]
+    %x[rm -rf #{@output_directory}]
     # compact and rewrite application for wise4
-    %x[rezsquish squash --project_name=my_system --output_dir=vle/mysystem_sc]
+    %x[rezsquish squash --project_name=#{@sc_project_name} --output_dir=#{@output_directory}]
 
     # add wrapper classes
-    %x[cp -r wise4/mysystem_sc/* vle/mysystem_sc/]
+    %x[cp -r #{@template_directory}/* #{@output_directory}]
 
     # rename the html file
-    %x[mv vle/mysystem_sc/00*.html vle/mysystem_sc/mysystem_sc.html]
+    %x[mv #{@template_directory}/00*.html #{@output_directory}/#{@wise_setp_name}.html]
 
   rescue LoadError
     puts "You need to install the resource squasher gem like so:"
@@ -24,8 +30,4 @@ task :wise do
   end
 
 end
-
-# builds mysystem for wise-4 TODO: Make this a rake task or something.
-# The sc-build tool is pretty opaque to me after reading the source for 20 min.
-
 
