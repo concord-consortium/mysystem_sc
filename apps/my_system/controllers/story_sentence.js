@@ -84,16 +84,30 @@ MySystem.storySentenceController = SC.ArrayController.create(
 
   // Open the SentenceConnectPane
   addDiagramConnectPane: function (sentence) {
+    // FIXME: This should be a state change...
     var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
     var theCanvas = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.bottomRightView');
+    var sentenceLinks = sentence.get('links');
+    var allLinks = MySystem.store.find(MySystem.Link);
+    // Un-dim all links
+    allLinks.forEach( function (link) {
+      link.unDimColor();
+    });
+    
+    // Clear selections
     MySystem.nodesController.unselectAll();
     theCanvas.selectObjects([]);
     if (!diagramPane.isPaneAttached) {
       diagramPane.append();
       diagramPane.becomeFirstResponder();
     }
-    theCanvas.selectObjects(sentence.get('links'), true);
+    
+    theCanvas.selectObjects(sentenceLinks, true);
     theCanvas.get('classNames').push('sentence-linking');
+    // Dim links
+    allLinks.forEach( function (link) {
+      if (sentenceLinks.indexOf(link) < 0) link.dimColor();
+    });
     MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
     diagramPane.set('activeSentence', sentence);
   },
@@ -103,6 +117,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
     var theCanvas = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.bottomRightView');
     var diagramObjects = diagramPane.get('selectedObjects');
     var activeSentence = diagramPane.get('activeSentence');
+    var allLinks = MySystem.store.find(MySystem.Link);
     if (activeSentence) {
       // Remove previously associated nodes and links
       activeSentence.get('nodes').removeObjects(activeSentence.get('nodes'));
@@ -113,6 +128,10 @@ MySystem.storySentenceController = SC.ArrayController.create(
       diagramPane.remove();
     }
     theCanvas.get('classNames').pop(); // TODO: This is brittle; if we've added another classname, it gets that instead of 'sentence-linking' which is what we want
+    // Un-dim all links
+    allLinks.forEach( function (link) {
+      link.unDimColor();
+    });
     MySystem.nodesController.unselectAll();
     diagramPane.set('activeSentence', null);
     // Refresh the transformation "badges" on the nodes.

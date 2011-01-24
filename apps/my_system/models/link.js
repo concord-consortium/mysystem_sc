@@ -206,7 +206,7 @@ MySystem.Link = SC.Record.extend(
       }
     }
     else {
-      console.info("Link %s is already dimmed", this.get('id'));
+      // console.info("Link %s is already dimmed", this.get('id'));
       return YES;
     }
   },
@@ -251,7 +251,7 @@ MySystem.Link = SC.Record.extend(
       }
     }
     else {
-      console.info("Link %s is not dimmed", this.get('id'));
+      // console.info("Link %s is not dimmed", this.get('id'));
       return YES;
     }
   }

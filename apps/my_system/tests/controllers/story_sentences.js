@@ -5,6 +5,7 @@
 /*globals MySystem module test ok equals same stop start */
 
 module("MySystem.storySentencesController");
+
 var contains = function(array, search) {
   for (var i = 0; i < array.get('length'); i += 1) {
     var element = array.objectAt(i);
@@ -16,19 +17,10 @@ var contains = function(array, search) {
 };
 
 // TODO: Replace with real unit test for MySystem.storySentencesController
-test("test description", function() {
-  var expected = "test";
-  var result   = "test";
-  equals(result, expected, "test should equal test");
-});
 
 test("Data loading", function() {
-  expect(4);
-  // Tests that nodes get loaded from the store
-  var nodes = MySystem.store.find(MySystem.Node);
-  MySystem.nodesController.set('content', nodes);
-  ok(nodes.get('length') > 0, "There should be nodes in the store");
-  equals(MySystem.nodesController.get('content').get('length'), nodes.get('length'), "Controller should have as many Nodes as the store");
+  expect(2);
+  // Tests that sentences get loaded from the store
   var sentences = MySystem.store.find(MySystem.StorySentence);
   ok(sentences.get('length') > 0, "There should be sentences in the store");
   MySystem.storySentenceController.set('content', sentences);
