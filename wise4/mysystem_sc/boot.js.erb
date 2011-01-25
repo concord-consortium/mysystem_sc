@@ -50,7 +50,7 @@ SC.browser = (function() {
 
 SC.bundleDidLoad = function(bundle) {
   var info = this.BUNDLE_INFO[bundle] ;
-  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  if (!info) { info = this.BUNDLE_INFO[bundle] = {} ; }
   info.loaded = true ;
 };
 
@@ -63,48 +63,37 @@ SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded.";
 
 SC.setupBodyClassNames = function() {
   var el = document.body ;
-  if (!el) return ;
+  if (!el) { return ; }
   var browser, platform, shadows, borderRad, classNames, style;
   browser = SC.browser.current ;
   platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
   style = document.documentElement.style;
-  shadows = (style.MozBoxShadow !== undefined) || 
-                (style.webkitBoxShadow !== undefined) ||
-                (style.oBoxShadow !== undefined) ||
-                (style.boxShadow !== undefined);
+  shadows =   ( style.MozBoxShadow !== undefined) ||
+              ( style.webkitBoxShadow !== undefined) ||
+              ( style.oBoxShadow !== undefined) ||
+              ( style.boxShadow !== undefined);
   
-  borderRad = (style.MozBorderRadius !== undefined) || 
-              (style.webkitBorderRadius !== undefined) ||
-              (style.oBorderRadius !== undefined) ||
-              (style.borderRadius !== undefined);
+  borderRad = ( style.MozBorderRadius !== undefined) ||
+              ( style.webkitBorderRadius !== undefined) ||
+              ( style.oBorderRadius !== undefined) ||
+              ( style.borderRadius !== undefined);
   
   classNames = el.className ? el.className.split(' ') : [] ;
-  if(shadows) classNames.push('box-shadow');
-  if(borderRad) classNames.push('border-rad');
+  if(shadows)                         { classNames.push('box-shadow');}
+  if(borderRad)                       { classNames.push('border-rad'); }
   classNames.push(browser) ;
   classNames.push(platform) ;
-  if (parseInt(SC.browser.msie,0)==7) classNames.push('ie7') ;
-  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
-  if ('createTouch' in document) classNames.push('touch');
+  if (parseInt(SC.browser.msie,0)==7) { classNames.push('ie7') ; }
+  if (SC.browser.mobileSafari)        { classNames.push('mobile-safari') ; }
+  if ('createTouch' in document)      { classNames.push('touch'); }
   el.className = classNames.join(' ') ;
 } ;
 
 /* >>>>>>>>>> BEGIN bundle_loaded.js */
-; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
 
-</script>
-<script type="text/javascript">SC.buildMode = "production";</script>
+if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) { SC.bundleDidLoad('sproutcore/bootstrap'); }
 
-     <link href="css/00_my_system_svle/node/mysystem_sc/js/00_my_system_javascript-packed.jstylesheet-packed.css" rel="stylesheet" type="text/css" />
-  <link href="css/00_my_system_stylesheet.css" rel="stylesheet" type="text/css" />
-  <link href="css/01_my_system_stylesheet.css" rel="stylesheet" type="text/css" />
-  <link href="css/02_my_system_stylesheet.css" rel="stylesheet" type="text/css" />
-   
-    
-  </head>
-    
-  <body class="linkit-theme focus">  
-<script type="text/javascript">
+
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2010 Sprout Systems, Inc. and contributors.
@@ -114,7 +103,7 @@ SC.setupBodyClassNames = function() {
 
 // sc_resource('setup_body_class_names'); // publish into inline format
 
-if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+if (SC.setupBodyClassNames) {SC.setupBodyClassNames() ;}
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
 	eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/boot.js');

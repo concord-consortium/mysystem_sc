@@ -1,15 +1,15 @@
 /**
- * Sets the MySystemNode type as an object of this view
+ * Sets the MySystemSCNode type as an object of this view
  * 
  * @author patrick lawler
  */
-View.prototype.MySystemNode = {};
-View.prototype.MySystemNode.commonComponents = ['Prompt', 'LinkTo'];
+View.prototype.MySystemSCNode = {};
+View.prototype.MySystemSCNode.commonComponents = ['Prompt', 'LinkTo'];
 	
 /**
  * Sets the view and content and then builds the page
  */
-View.prototype.MySystemNode.generatePage = function(view){
+View.prototype.MySystemSCNode.generatePage = function(view){
 	this.view = view;
 	this.content = this.view.activeContent.getContentJSON();
 	
@@ -20,14 +20,14 @@ View.prototype.MySystemNode.generatePage = function(view){
  * Get the array of common components which is an array with
  * string elements being the name of the common component
  */
-View.prototype.MySystemNode.getCommonComponents = function() {
+View.prototype.MySystemSCNode.getCommonComponents = function() {
 	return this.commonComponents;
 };
 
 /**
  * Builds the html elements needed to author a my system node
  */
-View.prototype.MySystemNode.buildPage = function(){
+View.prototype.MySystemSCNode.buildPage = function(){
 	var parent = document.getElementById('dynamicParent');
 	
 	/* remove any old elements */
@@ -55,14 +55,14 @@ View.prototype.MySystemNode.buildPage = function(){
 	this.generateModules();
 };
 
-View.prototype.MySystemNode.populatePrompt = function() {
+View.prototype.MySystemSCNode.populatePrompt = function() {
 	$('#promptInput').val(this.content.prompt);
 };
 
 /**
  * Updates the html with the user entered prompt
  */
-View.prototype.MySystemNode.updatePrompt = function(){
+View.prototype.MySystemSCNode.updatePrompt = function(){
 	this.content.prompt = document.getElementById('promptInput').value;
 	
 	/* fire source updated event */
@@ -72,7 +72,7 @@ View.prototype.MySystemNode.updatePrompt = function(){
 /**
  * Generates the modules creation elements
  */
-View.prototype.MySystemNode.generateModules = function(){
+View.prototype.MySystemSCNode.generateModules = function(){
 	var parent = document.getElementById('modulesDiv');
 	
 	//remove old elements first
@@ -124,7 +124,7 @@ View.prototype.MySystemNode.generateModules = function(){
  * Updates a module's, at the given index, filed of the given name
  * with the given value.
  */
-View.prototype.MySystemNode.fieldUpdated = function(name,ndx){
+View.prototype.MySystemSCNode.fieldUpdated = function(name,ndx){
 	this.content.modules[ndx][name] = document.getElementById(name + 'Input_' + ndx).value;
 	
 	/* for now, the icon is the same as the image */
@@ -139,7 +139,7 @@ View.prototype.MySystemNode.fieldUpdated = function(name,ndx){
 /**
  * Removes a module from the modules
  */
-View.prototype.MySystemNode.removeMod = function(ndx){
+View.prototype.MySystemSCNode.removeMod = function(ndx){
 	this.content.modules.splice(ndx, 1);
 	this.generateModules();
 	
@@ -150,7 +150,7 @@ View.prototype.MySystemNode.removeMod = function(ndx){
 /**
  * Creates a new dummy module object and adds it to the mods array
  */
-View.prototype.MySystemNode.addNew = function(){
+View.prototype.MySystemSCNode.addNew = function(){
 	this.content.modules.push({name:'', icon:'', image:'', xtype:'MySystemContainer', etype:'source', fields:{efficiency:'1'}});
 	this.generateModules();
 	
@@ -161,7 +161,7 @@ View.prototype.MySystemNode.addNew = function(){
 /**
  * Updates this content object when requested, usually when preview is to be refreshed
  */
-View.prototype.MySystemNode.updateContent = function(){
+View.prototype.MySystemSCNode.updateContent = function(){
 	/* update content object */
 	this.view.activeContent.setContent(this.content);
 };

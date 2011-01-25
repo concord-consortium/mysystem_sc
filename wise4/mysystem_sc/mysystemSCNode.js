@@ -12,7 +12,7 @@ MySystemSCNode.prototype                = new Node();
 MySystemSCNode.prototype.constructor    = MySystemSCNode;
 MySystemSCNode.prototype.parent         = Node.prototype;
 
-MySystemSCNode.authoringToolName        = "My System";
+MySystemSCNode.authoringToolName        = "My System (sproutcore)";
 MySystemSCNode.authoringToolDescription = "Students work on a diagram where they can add images and connect them with lines";
 
 
