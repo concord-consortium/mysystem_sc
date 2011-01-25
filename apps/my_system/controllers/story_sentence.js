@@ -151,12 +151,6 @@ MySystem.storySentenceController = SC.ArrayController.create(
     });
   },
 
-  // Finished connecting nodes and links to sentences
-  doneButtonPushed: function() {
-    this.closeDiagramConnectPane();
-    this.turnOffOtherButtons(null);
-  },
-
   createSentence: function(node) {
     var sentence = this.addStorySentence();
     this.addLinksAndNodesToSentence([node], sentence);

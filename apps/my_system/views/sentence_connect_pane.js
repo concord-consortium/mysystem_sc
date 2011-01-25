@@ -39,7 +39,7 @@ MySystem.SentenceConnectPane = SC.PalettePane.design(
       title: "Done",
       toolTip: "Click to link and close this window",
       target: "MySystem.storySentenceController",
-      action: "doneButtonPushed",
+      action: "turnOffOtherButtons",
       theme: "capsule",
       isEnabled: YES
     })
