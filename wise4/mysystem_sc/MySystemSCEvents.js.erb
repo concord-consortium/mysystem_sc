@@ -1,27 +1,28 @@
-// vim:expandtab
-/**
- * The MySystemSCDispatcher catches events specific to authoring individual
- * my system steps and delegates them to the appropriate functions for
- * this view.
+
+/*
+ * This handles events and calls the appropriate function to handle
+ * the event.
  */
 View.prototype.MySystemSCDispatcher = function(type,args,obj){
-  if(type=='MySystemPromptChanged'){
-    obj.MySystemNode.updatePrompt();
-  } else if(type=='MySystemFieldUpdated'){
-    obj.MySystemNode.fieldUpdated(args[0], args[1]);
-  } else if(type=='MySystemRemoveMod'){
-    obj.MySystemNode.removeMod(args[0]);
-  } else if(type=='MySystemAddNew'){
-    obj.MySystemNode.addNew();
-  };
+	/*
+	 * check to see if the event name matches 
+	 */ 
+	if(type == 'MySystemSCUpdatePrompt') {
+		/*
+		 * the event name matches so we will call the function that
+		 * handles that event
+		 */
+		// obj.TemplateNode.updatePrompt();
+	}
 };
 
-//this list of events
+/*
+ * this is a list of events that can be fired. when the event is fired,
+ * the dispatcher function above will be called and then call the
+ * appropriate function to handle the event.
+ */
 var events = [
-  'MySystemPromptChanged',
-  'MySystemFieldUpdated',
-  'MySystemRemoveMod',
-  'MySystemAddNew'
+	'MySystemSCUpdatePrompt'
 ];
 
 /*
@@ -29,10 +30,11 @@ var events = [
  * and call the dispatcher function when the event is fired
  */
 for(var x=0; x<events.length; x++) {
-  componentloader.addEvent(events[x], 'MySystemSCDispatcher');
-};
+	componentloader.addEvent(events[x], 'MySystemSCDispatcher');
+}
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
-  eventManager.fire('scriptLoaded', 'vle/node/MySystem/MySystemSCEvents.js');
-};
+	eventManager.fire('scriptLoaded', 'vle/node/MySystemSC/MySystemSCEvents.js');
+}
+

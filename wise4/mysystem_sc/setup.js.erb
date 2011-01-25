@@ -1,9 +1,8 @@
 //   vim:expandtab
 
 var coreScripts = [
-  // ERB enerated Content:
-  <%= js_files %>
-
+  'vle/node/mysystem_sc/MySystemSCNode.js',
+  'vle/node/mysystem_sc/MySystemSCEvents.js'
 ];
 
 var studentVLEScripts = [
@@ -17,13 +16,13 @@ var studentVLEScripts = [
 ];
 
 // TODO: This doesn't work.
-<%#var authorScripts = [%>
-  <%#'vle/node/mysystem_sc/authorview_mysystem.js'%>
-<%#];%>
+var authorScripts = [
+  'vle/node/mysystem_sc/MySystemSCAuthorView.js'
+];
 
-<%#var gradingScripts = [%>
+var gradingScripts = [
   <%#'vle/node/mysystem_sc/MySystemSCState.js'%>
-<%#];%>
+];
 
 var dependencies = [
   {child:"vle/node/mysystem_sc/MySystemSCNode.js", parent:["vle/node/Node.js"]}
@@ -38,9 +37,9 @@ var css = [
 ];
 
 scriptloader.addScriptToComponent('core', coreScripts);
-<%#scriptloader.addScriptToComponent('mysystem_sc', studentVLEScripts);%>
-<%#scriptloader.addScriptToComponent('author', authorScripts);%>
-<%#scriptloader.addScriptToComponent('studentwork', gradingScripts);%>
+scriptloader.addScriptToComponent('mysystem_sc', studentVLEScripts);
+scriptloader.addScriptToComponent('author', authorScripts);
+scriptloader.addScriptToComponent('studentwork', gradingScripts);
 scriptloader.addDependencies(dependencies);
 scriptloader.addCssToComponent('mysystem_sc', css);
 
