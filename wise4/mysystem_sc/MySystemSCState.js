@@ -1,4 +1,4 @@
-function MYSYSTEMSTATE(state, timestamp) {
+function MySystemSCState(state, timestamp) {
 	this.type = "mysystem";
 	this.data = state;
 	
@@ -13,7 +13,7 @@ function MYSYSTEMSTATE(state, timestamp) {
  * Gets the xml format for the student data
  * @return an xml string with the student data
  */
-MYSYSTEMSTATE.prototype.getDataXML = function() {
+MySystemSCState.prototype.getDataXML = function() {
 	var dataXML = "<data>" + this.data + "</data>";
 	dataXML += "<timestamp>" + this.timestamp + "</timestamp>";
 	return dataXML;
@@ -22,9 +22,9 @@ MYSYSTEMSTATE.prototype.getDataXML = function() {
 /**
  * Creates a state object from an xml object
  * @param stateXML an xml object
- * @return an MYSYSTEMSTATE object
+ * @return an MySystemSCState object
  */
-MYSYSTEMSTATE.prototype.parseDataXML = function(stateXML) {
+MySystemSCState.prototype.parseDataXML = function(stateXML) {
 	//obtain the data element
 	var dataElement = stateXML.getElementsByTagName("data")[0];
 	
@@ -37,8 +37,8 @@ MYSYSTEMSTATE.prototype.parseDataXML = function(stateXML) {
 		var data = dataElement.textContent;
 		var timestamp = timestampElement.textContent;
 		
-		//create an MYSYSTEMSTATE
-		var state = new MYSYSTEMSTATE(data, timestamp);
+		//create an MySystemSCState
+		var state = new MySystemSCState(data, timestamp);
 		return state;
 	} else {
 		return null;
@@ -46,31 +46,31 @@ MYSYSTEMSTATE.prototype.parseDataXML = function(stateXML) {
 }
 
 /**
- * Takes in a state JSON object and returns an MYSYSTEMSTATE object
+ * Takes in a state JSON object and returns an MySystemSCState object
  * @param stateJSONObj a state JSON object
- * @return a MYSYSTEMSTATE object
+ * @return a MySystemSCState object
  */
-MYSYSTEMSTATE.prototype.parseDataJSONObj = function(stateJSONObj) {
-	//create a new MYSYSTEMSTATE object
-	var mysystemState = new MYSYSTEMSTATE();
+MySystemSCState.prototype.parseDataJSONObj = function(stateJSONObj) {
+	//create a new MySystemSCState object
+	var MySystemSCState = new MySystemSCState();
 	
-	//set the attributes of the MYSYSTEMSTATE object
-	mysystemState.data = stateJSONObj.data;
-	mysystemState.timestamp = stateJSONObj.timestamp;
+	//set the attributes of the MySystemSCState object
+	MySystemSCState.data = stateJSONObj.data;
+	MySystemSCState.timestamp = stateJSONObj.timestamp;
 	
-	//return the MYSYSTEMSTATE object
-	return mysystemState;
+	//return the MySystemSCState object
+	return MySystemSCState;
 }
 
 /**
  * Get the student work.
  * @return the student's work
  */
-MYSYSTEMSTATE.prototype.getStudentWork = function() {
+MySystemSCState.prototype.getStudentWork = function() {
 	return this.data;
 }
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
-	eventManager.fire('scriptLoaded', 'vle/node/mysystem/mysystemstate.js');
+	eventManager.fire('scriptLoaded', 'vle/node/mysystem/MySystemSCState.js');
 };
