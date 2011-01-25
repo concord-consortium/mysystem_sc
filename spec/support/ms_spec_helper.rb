@@ -38,7 +38,7 @@ $commands = {
   }
 }
 
-Spec::Matchers.define :have_node_item_view_support do |sig|
+RSpec::Matchers.define :have_node_item_view_support do |sig|
   match do |obj|
     obj.respond_to? :has_node_item_view_support
   end
