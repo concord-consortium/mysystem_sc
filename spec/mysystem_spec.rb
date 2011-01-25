@@ -12,7 +12,7 @@ describe "MySystem" do
     @node_1 = @canvas.nodes[1]
     @node_2 = @canvas.nodes[2]
     @palette = @test['palette']
-    @add_bulb = @palette.addBulb
+    @add_bulb = @palette.childViews[2]
   end
 
   after(:all) do
@@ -33,7 +33,7 @@ describe "MySystem" do
   end
   
   it "will have at least one add-node button in the palette" do
-    @palette.childViews.count.should be >1 # Label view at top shouldn't count
+    @palette.childViews.count.should be >0 
   end
 
   it "will have at least 3 nodes loaded from the fixtures" do
@@ -127,10 +127,10 @@ describe "MySystem" do
   end
 
   it "will appropriately adjust the location of the new node" do
-    @canvas.nodes[3].position.x.should be 300 # position is from origin, not from parent view
-    @canvas.nodes[3].position.y.should be 200
-    @canvas.nodes[3].layout.top.should be 73 # layout is in parent view: 200 minus the 127 of the story view
-    @canvas.nodes[3].layout.left.should be 173 # 300 minus the 127 of the palette view
+    @canvas.nodes[3].position.x.should == 300 # position is from origin, not from parent view
+    @canvas.nodes[3].position.y.should == 200
+    @canvas.nodes[3].layout.top.should == 73 # layout is in parent view: 200 minus the 127 of the story view
+    @canvas.nodes[3].layout.left.should == 173 # 300 minus the 127 of the palette view
   end
 
   it "will select a node, which will be deselected on creation of a new node" do
