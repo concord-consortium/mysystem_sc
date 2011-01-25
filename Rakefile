@@ -3,6 +3,7 @@ require 'erb'
 
 @tomcat_dir         = ENV['CATALINA_HOME']
 @sc_project_name    = "my_system"
+@project_title      = "My System"
 @wise_step_name     = "mysystem_sc"
 @template_directory = "wise4/#{@wise_step_name}"
 @output_directory   = "vle/node/#{@wise_step_name}"
@@ -30,10 +31,11 @@ end
 
 desc "add script loader callback to javascript files"
 task :inject_javascript do
-  javascript = %q[if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', 'vle/node/mysystem/authorview_mysystem.js');};]
   javascript_files = Dir.glob(File.join(@output_directory,'js','*.js'))
   javascript_files.each do |file|
     File.open(file,'a') do |f|
+      f.puts # lets add a newline
+      javascript = "if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', '#{file}');};"
       f.puts javascript
     end
   end
@@ -50,7 +52,8 @@ task :repackage => [:clean] do
     %x[rezsquish squash --project_name=#{@sc_project_name} --output_dir=#{@output_directory}]
 
     # rename the html file
-    %x[mv #{@output_directory}/00*.html #{@output_directory}/#{@wise_step_name}.html]
+    # Now we use the <stepname>.html.erb template for this
+    #%x[mv #{@output_directory}/00*.html #{@output_directory}/#{@wise_step_name}.html]
 
   rescue LoadError
     puts "You need to install the resource squasher gem like so:"
@@ -64,10 +67,12 @@ task :copy_templates do
   templates = Dir.glob(File.join(@template_directory, "**", "*#{@template_suffix}"))
   js        = Dir.glob(File.join(@output_directory,"js","*.js"))
 
-  js_files = js.map do |j|
+  js_files = ["'vle/node/#{@wise_step_name}/boot.js'"]
+  js_files += js.map do |j|
     filename = j.gsub("vle/#{@wise_step_name}/","vle/node/#{@wise_step_name}/")
     "'#{filename}'"
   end
+
   js_files = js_files.join(",\n\t")
 
   css       = Dir.glob(File.join(@output_directory,"css","*.css"))

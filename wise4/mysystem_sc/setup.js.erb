@@ -2,13 +2,8 @@
 
 var coreScripts = [
   // ERB enerated Content:
-  <%= js_files %>,
+  <%= js_files %>
 
-  /*
-   * the following are needed here for showallwork 
-   */
-  'vle/node/mysystem_sc/mysystem_complete.js',
-  'vle/node/mysystem_sc/mysystem_print.js'
 ];
 
 var studentVLEScripts = [
@@ -22,13 +17,13 @@ var studentVLEScripts = [
 ];
 
 // TODO: This doesn't work.
-var authorScripts = [
-  'vle/node/mysystem_sc/authorview_mysystem.js'
-];
+<%#var authorScripts = [%>
+  <%#'vle/node/mysystem_sc/authorview_mysystem.js'%>
+<%#];%>
 
-var gradingScripts = [
-  'vle/node/mysystem_sc/MySystemSCState.js'
-];
+<%#var gradingScripts = [%>
+  <%#'vle/node/mysystem_sc/MySystemSCState.js'%>
+<%#];%>
 
 var dependencies = [
   {child:"vle/node/mysystem_sc/MySystemSCNode.js", parent:["vle/node/Node.js"]}
@@ -43,11 +38,11 @@ var css = [
 ];
 
 scriptloader.addScriptToComponent('core', coreScripts);
-scriptloader.addScriptToComponent('mysystem', studentVLEScripts);
-scriptloader.addScriptToComponent('author', authorScripts);
-scriptloader.addScriptToComponent('studentwork', gradingScripts);
+<%#scriptloader.addScriptToComponent('mysystem_sc', studentVLEScripts);%>
+<%#scriptloader.addScriptToComponent('author', authorScripts);%>
+<%#scriptloader.addScriptToComponent('studentwork', gradingScripts);%>
 scriptloader.addDependencies(dependencies);
-scriptloader.addCssToComponent('mysystem', css);
+scriptloader.addCssToComponent('mysystem_sc', css);
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
