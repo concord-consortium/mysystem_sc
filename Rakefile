@@ -1,33 +1,91 @@
-#TODO: Use thore for this instead of RAKE and use erb templates?
 
+require 'erb'
+
+@tomcat_dir         = ENV['CATALINA_HOME']
 @sc_project_name    = "my_system"
-@wise_setp_name     = "mysystem_sc"
-@template_directory = "wise4/#{@wise_setp_name}"
-@output_directory   = "vle/#{@wise_setp_name}"
+@wise_step_name     = "mysystem_sc"
+@template_directory = "wise4/#{@wise_step_name}"
+@output_directory   = "vle/node/#{@wise_step_name}"
+@template_suffix    = ".erb"
 
 task :default => [:wise]
-desc "build a wise-4 step from the standard sprout-core build"
-task :wise do
+
+desc "do everythign for a wise4 deployment"
+task :wise => [:repackage, :inject_javascript, :copy_templates, :copy_files] 
+
+desc "copy the files to the apache dir"
+task :copy_files do
+  dest_dir = "#{@tomcat_dir}/webapps/vlewrapper/vle/node/#{@wise_step_name}" 
+  src_dir = @output_directory
+  %x[ rm -rf #{dest_dir}]
+  %x[ cp -r #{src_dir} #{dest_dir}]
+end
+
+  
+desc "clean the output directory"
+task :clean do
+    # remove the old build directory
+    %x[rm -rf #{@output_directory}]
+end
+
+desc "add script loader callback to javascript files"
+task :inject_javascript do
+  javascript = %q[if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', 'vle/node/mysystem/authorview_mysystem.js');};]
+  javascript_files = Dir.glob(File.join(@output_directory,'js','*.js'))
+  javascript_files.each do |file|
+    File.open(file,'a') do |f|
+      f.puts javascript
+    end
+  end
+end
+
+desc "build wise-4 files from standard sprout-core build"
+task :repackage => [:clean] do
   begin
     require 'resource_squasher'
     # clean and build the release
     %x[sc-build -rc #{@sc_project_name}]
 
-    # remove the old build directory
-    %x[rm -rf #{@output_directory}]
     # compact and rewrite application for wise4
     %x[rezsquish squash --project_name=#{@sc_project_name} --output_dir=#{@output_directory}]
 
-    # add wrapper classes
-    %x[cp -r #{@template_directory}/* #{@output_directory}]
-
     # rename the html file
-    %x[mv #{@output_directory}/00*.html #{@output_directory}/#{@wise_setp_name}.html]
+    %x[mv #{@output_directory}/00*.html #{@output_directory}/#{@wise_step_name}.html]
 
   rescue LoadError
     puts "You need to install the resource squasher gem like so:"
     puts "  gem install ./resource_squasher-0.0.1.gem"
   end
-
 end
+
+
+desc  "Copy vle wrapper classes using template files with variable substition"
+task :copy_templates do
+  templates = Dir.glob(File.join(@template_directory, "**", "*#{@template_suffix}"))
+  js        = Dir.glob(File.join(@output_directory,"js","*.js"))
+
+  js_files = js.map do |j|
+    filename = j.gsub("vle/#{@wise_step_name}/","vle/node/#{@wise_step_name}/")
+    "'#{filename}'"
+  end
+  js_files = js_files.join(",\n\t")
+
+  css       = Dir.glob(File.join(@output_directory,"css","*.css"))
+  css_files = css.map do |j|
+    filename = j.gsub("vle/#{@wise_step_name}/","vle/node/#{@wise_step_name}/")
+    "'#{filename}'"
+  end
+  css_files = css_files.join(",\n\t")
+
+  templates.each do |filename|
+    content = ERB.new(::File.read(filename)).result(binding)
+    resultname = File.basename(filename).gsub(/#{@template_suffix}$/,'')
+    resultpath = File.join(@output_directory, resultname)
+    File.open(resultpath,'w') do |f|
+      f.write(content)
+      puts "translated #{filename} to #{resultpath}"
+    end
+  end
+end
+
 
