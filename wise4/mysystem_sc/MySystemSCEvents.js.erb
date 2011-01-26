@@ -1,28 +1,27 @@
 
-/*
- * This handles events and calls the appropriate function to handle
- * the event.
+/**
+ * The MySystemSCDispatcher catches events specific to authoring individual
+ * my system steps and delegates them to the appropriate functions for
+ * this view.
  */
 View.prototype.MySystemSCDispatcher = function(type,args,obj){
-	/*
-	 * check to see if the event name matches 
-	 */ 
-	if(type == 'MySystemSCUpdatePrompt') {
-		/*
-		 * the event name matches so we will call the function that
-		 * handles that event
-		 */
-		// obj.TemplateNode.updatePrompt();
-	}
+	if(type=='MySystemSCPromptChanged'){
+		obj.MySystemNode.updatePrompt();
+	} else if(type=='MySystemSCFieldUpdated'){
+		obj.MySystemNode.fieldUpdated(args[0], args[1]);
+	} else if(type=='MySystemSCRemoveMod'){
+		obj.MySystemNode.removeMod(args[0]);
+	} else if(type=='MySystemSCAddNew'){
+		obj.MySystemNode.addNew();
+	};
 };
 
-/*
- * this is a list of events that can be fired. when the event is fired,
- * the dispatcher function above will be called and then call the
- * appropriate function to handle the event.
- */
+//this list of events
 var events = [
-	'MySystemSCUpdatePrompt'
+	'MySystemSCPromptChanged',
+	'MySystemSCFieldUpdated',
+	'MySystemSCRemoveMod',
+	'MySystemSCAddNew'
 ];
 
 /*
@@ -35,6 +34,7 @@ for(var x=0; x<events.length; x++) {
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
-	eventManager.fire('scriptLoaded', 'vle/node/MySystemSC/MySystemSCEvents.js');
-}
+	eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/MySystemSCEvents.js');
+};
+
 

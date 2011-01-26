@@ -1,54 +1,79 @@
-/*
- */
-
-/**
- * This is the constructor for the state object that will be used to represent the
- * student work. An instance of this object will be created each time the student
- * submits an answer.
- * 
- * note: you can change the variables in this constructor, the response variable
- * is just used as an example. you can add any variables that will help you 
- * represent the student's work for your step type.
- */
-function MySystemSCState(response) {
-	//the text response the student wrote
-	this.response = "";
-
-	if(response !== null) {
-		//set the response
-		this.response = response;
+function MySystemSCState(state, timestamp) {
+	<%#this.type = "mysystem_sc";%>
+	this.type = "mysystem";
+	this.data = state;
+	
+	if(timestamp === null) {
+		this.timestamp = new Date().getTime();
+	} else {
+		this.timestamp = timestamp;
 	}
-};
+}
 
 /**
- * This function is used to reload previous work the student submitted for the step.
- * The student work is retrieved and then this function is called to parse the student
- * work so that we can display the previous answer the student submitted.
- * note: you can change the variables in the stateJSONObj, the response 
- * variable is just used as an example. you can add any variables that will  
- * help you represent the student's work for your type of step.
- * 
- * @param stateJSONObj a JSONObject representing the student work
+ * Gets the xml format for the student data
+ * @return an xml string with the student data
+ */
+MySystemSCState.prototype.getDataXML = function() {
+	var dataXML = "<data>" + this.data + "</data>";
+	dataXML += "<timestamp>" + this.timestamp + "</timestamp>";
+	return dataXML;
+}
+
+/**
+ * Creates a state object from an xml object
+ * @param stateXML an xml object
+ * @return an MySystemSCState object
+ */
+MySystemSCState.prototype.parseDataXML = function(stateXML) {
+	//obtain the data element
+	var dataElement = stateXML.getElementsByTagName("data")[0];
+	
+	//obtain the timestamp element
+	var timestampElement = stateXML.getElementsByTagName("timestamp")[0];
+	
+	//check if both elements exist
+	if(dataElement !== null && timestampElement !== null) {
+		//obtain the values for the data and timestamp
+		var data = dataElement.textContent;
+		var timestamp = timestampElement.textContent;
+		
+		//create an MySystemSCState
+		var state = new MySystemSCState(data, timestamp);
+		return state;
+	} else {
+		return null;
+	}
+}
+
+/**
+ * Takes in a state JSON object and returns an MySystemSCState object
+ * @param stateJSONObj a state JSON object
  * @return a MySystemSCState object
  */
 MySystemSCState.prototype.parseDataJSONObj = function(stateJSONObj) {
-	var response = stateJSONObj.response;
-	var sensorState = new MySystemSCState(response);
-	return sensorState;
-};
+	//create a new MySystemSCState object
+	var mysystem_scState = new MySystemSCState();
+	
+	//set the attributes of the MySystemSCState object
+	mysystem_scState.data = stateJSONObj.data;
+	mysystem_scState.timestamp = stateJSONObj.timestamp;
+	
+	//return the MySystemSCState object
+	return mysystem_scState;
+}
 
 /**
- * Get the student work for display purposes such as in the grading tool.
- * 
- * TODO: rename MySystemSCState
- * 
- * @return the student work
+ * Get the student work.
+ * @return the student's work
  */
 MySystemSCState.prototype.getStudentWork = function() {
-	return this.response;
-};
+	return this.data;
+}
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
 	eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/MySystemSCState.js');
 }
+
+
