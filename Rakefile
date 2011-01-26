@@ -11,7 +11,7 @@ require 'erb'
 
 task :default => [:wise]
 
-desc "do everythign for a wise4 deployment"
+desc "package sproutcore for for a wise4 deployment"
 task :wise => [:repackage, :inject_javascript, :copy_templates, :copy_files] 
 
 desc "copy the files to the apache dir"
@@ -57,7 +57,7 @@ task :repackage => [:clean] do
 
   rescue LoadError
     puts "You need to install the resource squasher gem like so:"
-    puts "  gem install ./resource_squasher-0.0.1.gem"
+    puts "  gem install ./resource_squasher-0.0.2.gem"
   end
 end
 
