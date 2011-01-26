@@ -76,7 +76,13 @@ exit $EXIT_STATUS
 
 1. install the resource_squasher `gem intall ./resource_squasher-0.0.1.gem`
 2. run the default rake task `rake` (invokes sc-build and wise4 squash)
-3. open wise4/00_*.html
+3. open wise4/00_*.html -- you should be able to preview the static
+   files.
+4. TODO: There is still some work to be done here: here is where we are:
+
+
+* wise4 integration demo: http://www.screencast.com/t/1FhY2Nb0
+* about the rake tasks: http://screencast.com/t/lCxysMoEaT
 
 
 ### More information: ###
