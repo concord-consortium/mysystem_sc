@@ -89,7 +89,7 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
       "guid":guid
     }, guid);
 
-    return YES;
+    return node;
   },
 
   propertyWindowSelection: function() {

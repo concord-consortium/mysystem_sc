@@ -24,8 +24,9 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
     var ypos = drag.location.y;
     var offsetX = this.parentView.get('frame').x;
     var offsetY = this.get('frame').y;
-    MySystem.nodesController.addNode(title, image, xpos - offsetX - drag.data.clickX, ypos - offsetY - drag.data.clickY);
+    var node = MySystem.nodesController.addNode(title, image, xpos - offsetX - drag.data.clickX, ypos - offsetY - drag.data.clickY);
     MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
+    MySystem.nodesController.selectObject(node);
     return SC.DRAG_COPY; 
   },
   didCreateLayer: function () {
