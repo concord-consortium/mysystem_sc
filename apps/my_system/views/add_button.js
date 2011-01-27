@@ -58,15 +58,21 @@ MySystem.AddButtonView = SC.View.extend(
     var self = this;
     var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
     SC.Drag.addDropTarget(myCanvas);
+    
+    // Figure ghost offset
+    var localOffsetX = eventID.clientX - 20; // Hardwired left margin is in CSS (ugh)
+    var localOffsetY = eventID.clientY - this.layout.top - 10; // 10 for CSS margin
+
     var dragOpts = {
       event: eventID,
       source: self,
-      dragView: self,
       ghost: NO,
       slideBack: NO,
       data: {
         title: this.get('content').get('title') || 'title',
-        image: this.get('content').get('image') || 'image'
+        image: this.get('content').get('image') || 'image',
+        clickX: localOffsetX,
+        clickY: localOffsetY
       }
     };
     SC.Drag.start(dragOpts);
