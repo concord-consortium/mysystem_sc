@@ -60,13 +60,13 @@ MySystem.AddButtonView = SC.View.extend(
     SC.Drag.addDropTarget(myCanvas);
     var dragOpts = {
       event: eventID,
-      source: self.get('parentView'),
+      source: self,
       dragView: self,
       ghost: NO,
       slideBack: NO,
       data: {
-        title: this.get('title') || 'title',
-        image: this.get('image') || 'image'
+        title: this.get('content').get('title') || 'title',
+        image: this.get('content').get('image') || 'image'
       }
     };
     SC.Drag.start(dragOpts);
