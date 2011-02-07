@@ -62,6 +62,8 @@ MySystem.main = function main() {
   MySystem.canvasView = MySystem.mainPage.mainPane.topView.bottomRightView.bottomRightView;
   MySystem.transformationsCanvasView = MySystem.getPath('mainPage.transformationBuilderPane').get('childViews').objectAt(0).get('childViews').objectAt(2);
   MySystem.transformationAnnotaterPane = MySystem.getPath('mainPage.transformationAnnotaterPane');
+  
+  MySystem.statechart.initStatechart();
 };
 
 function main() { MySystem.main(); }

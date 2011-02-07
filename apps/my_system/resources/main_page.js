@@ -17,6 +17,7 @@ MySystem.mainPage = SC.Page.design({
   // Add childViews to this pane for views to display immediately on page 
   // load.
   mainPane: SC.MainPane.design({
+    defaultResponder: 'MySystem.statechart',
     childViews: 'topView'.w(),
     topView: SC.SplitView.design({
       defaultThickness: 140,
@@ -40,9 +41,13 @@ MySystem.mainPage = SC.Page.design({
     })
   }),
 
-  propertyViewPane: MySystem.PropertyEditorPane.design({}),
+  propertyViewPane: MySystem.PropertyEditorPane.design({
+    defaultResponder: 'MyApp.statechart'
+  }),
 
-  sentenceLinkPane: MySystem.SentenceConnectPane.design({}),
+  sentenceLinkPane: MySystem.SentenceConnectPane.design({
+    defaultResponder: 'MyApp.statechart'
+  }),
 
   transformationBuilderPane: MySystem.TransformationBuilderPane.design({}),
 
