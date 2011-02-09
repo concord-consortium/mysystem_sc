@@ -39,10 +39,10 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   }.property('selectedLinks','selectedLinks.[]','selection').cacheable(),
   
   unselectAll: function() {
-    var theCanvas = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.bottomRightView');
-    if (theCanvas.get('selectedLinks')) {
-      theCanvas.set('selectedLinks', []);
-      theCanvas.linksDidChange();
+    // De-select links
+    if (this.selectedLinks) {
+      this.set('selectedLinks', []);
+      MySystem.canvasView.linksDidChange();
     }
     var baseSet = this.get('selection').clone();
     this.deselectObjects(baseSet);
@@ -74,7 +74,7 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
       return null ; // No change to selection
     }
     else {
-      return sel ;
+      return sel ; // Accept new selected set
     }
   },
 
