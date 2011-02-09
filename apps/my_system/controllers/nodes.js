@@ -19,22 +19,25 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     var links  = this.get('selectedLinks');
     var resultSet = this.get('selection').clone();
     resultSet = resultSet.addObjects(links.map(function(link){return link.get('model');}));
-    // Check dimming
-    if (MySystem.getPath('mainPage.sentenceLinkPane').isPaneAttached) {
-      if (resultSet.get('length') === 0) {
-        var allLinks = MySystem.store.find(MySystem.Link);
-        allLinks.forEach( function (link) {
-          link.set('isDimmed', YES);
-        });
+
+    // TODO: Following chunk should get refactored out
+      // Check dimming
+      if (MySystem.getPath('mainPage.sentenceLinkPane').isPaneAttached) {
+        if (resultSet.get('length') === 0) {
+          var allLinks = MySystem.store.find(MySystem.Link);
+          allLinks.forEach( function (link) {
+            link.set('isDimmed', YES);
+          });
+        }
+        else {
+          resultSet.forEach( function (item) {
+            if (item.kindOf(MySystem.Link)) {
+              item.set('isDimmed', NO);
+            }
+          });
+        }
       }
-      else {
-        resultSet.forEach( function (item) {
-          if (item.kindOf(MySystem.Link)) {
-            item.set('isDimmed', NO);
-          }
-        });
-      }
-    }
+
     return resultSet;
   }.property('selectedLinks','selectedLinks.[]','selection').cacheable(),
   
@@ -44,21 +47,24 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
       this.set('selectedLinks', []);
       MySystem.canvasView.linksDidChange();
     }
+    
+    // De-select nodes
     var baseSet = this.get('selection').clone();
     this.deselectObjects(baseSet);
   },
 
-  selectFirstTransformation: function(node) {
-    this.unselectAll();
-    var transformation = node.firstUnannotatedTransformation();
-    if (transformation) {
-      MySystem.nodesController.selectObject(node);
-      MySystem.nodesController.selectObjects(transformation.get('inLinks'), YES);
-      MySystem.nodesController.selectObjects(transformation.get('outLinks'), YES);
-      this.promptForTransformationAnnotation(transformation);
-    }
-  },
-
+  /* We'll need to refactor this when we get back to transformations */
+  // selectFirstTransformation: function(node) {
+  //   this.unselectAll();
+  //   var transformation = node.firstUnannotatedTransformation();
+  //   if (transformation) {
+  //     MySystem.nodesController.selectObject(node);
+  //     MySystem.nodesController.selectObjects(transformation.get('inLinks'), YES);
+  //     MySystem.nodesController.selectObjects(transformation.get('outLinks'), YES);
+  //     this.promptForTransformationAnnotation(transformation);
+  //   }
+  // },
+  
   collectionViewDeleteContent: function (view, content, indices) {
     // destroy the records
     var recordsToDestroy = indices.map( function (idx) {
