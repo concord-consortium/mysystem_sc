@@ -56,6 +56,15 @@ MySystem.statechart = Ki.Statechart.create({
       /**
         When a link is selected, we transition to the link-editing state.
       */
+      diagramSelectionChanged: function (args) {
+        var selection = MySystem.nodesController.get('allSelected');
+        if ((selection.get('length') == 1) && selection.firstObject().get('linkStyle')) {
+          this.gotoState('DIAGRAM_OBJECT_EDITING');
+        }
+        return YES;
+      },
+      
+      
       linkSelected: function () {
         this.gotoState('DIAGRAM_OBJECT_EDITING');
       },
@@ -87,14 +96,12 @@ MySystem.statechart = Ki.Statechart.create({
         console.log("Leaving state %s", this.get('name'));
       },
       
-      selectionChanged: function (newSelection) {
-        if (newSelection.get('length') > 1) {
+      diagramSelectionChanged: function (args) {
+        var newSelection = MySystem.nodesController.get('allSelected');
+        if (newSelection.get('length') !== 1) {
           this.gotoState('DIAGRAM_EDITING');
         }
-        else if (newSelection.get('length') < 1) {
-          this.gotoState('DIAGRAM_EDITING');
-        }
-        else if (!newSelection.firstObject().kindOf(MySystem.Link)) {
+        else if (!newSelection.firstObject().get('linkStyle')) {
           this.gotoState('DIAGRAM_EDITING');
         }
         else {
