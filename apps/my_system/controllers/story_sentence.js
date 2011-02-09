@@ -15,6 +15,8 @@ MySystem.storySentenceController = SC.ArrayController.create(
 /** @scope MySystem.storySentencesController.prototype */ {
 
   allowsMultipleSelection: NO,
+  
+  editingSentence: null,
 
   collectionViewDeleteContent: function(view, content, indexes) {
     // Destroy the records
@@ -58,7 +60,7 @@ MySystem.storySentenceController = SC.ArrayController.create(
   addStorySentenceNoEdit: function() {
     var sentence;
 
-    this.incrementOrderValues(0);
+    this._incrementOrderValues(0);
 
     // Create a new sentence in the store
     sentence = MySystem.store.createRecord(MySystem.StorySentence, {
@@ -70,87 +72,8 @@ MySystem.storySentenceController = SC.ArrayController.create(
     return sentence ;
   },
 
-  addLinksAndNodesToSentence: function (linksAndNodes, sentence) {
-    linksAndNodes.forEach( function (item, index, enumerable) {
-      if (item.instanceOf(MySystem.Link)) {
-        sentence.get('links').pushObject(item);
-      } else if (item.instanceOf(MySystem.Node)) {
-        sentence.get('nodes').pushObject(item);
-      } else {
-        SC.Logger.log('Bad item type ' + item);
-      }
-    });
-  },
-
-  // Open the SentenceConnectPane
-  addDiagramConnectPane: function (sentence) {
-    // FIXME: This should be a state change...
-    var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
-    var theCanvas = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.bottomRightView');
-    var sentenceLinks = sentence.get('links');
-    var allLinks = MySystem.store.find(MySystem.Link);
-    // Un-dim all links
-    allLinks.forEach( function (link) {
-      link.set('isDimmed', NO);
-    });
-    
-    // Clear selections
-    MySystem.nodesController.unselectAll();
-    theCanvas.selectObjects([]);
-    if (!diagramPane.isPaneAttached) {
-      diagramPane.append();
-      diagramPane.becomeFirstResponder();
-    }
-    
-    theCanvas.selectObjects(sentenceLinks, true);
-    theCanvas.get('classNames').push('sentence-linking');
-    // Dim links
-    allLinks.forEach( function (link) {
-      if (sentenceLinks.indexOf(link) < 0) link.set('isDimmed', YES);
-    });
-    MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
-    diagramPane.set('activeSentence', sentence);
-  },
-
-  closeDiagramConnectPane: function () {
-    var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
-    var theCanvas = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.bottomRightView');
-    var diagramObjects = diagramPane.get('selectedObjects');
-    var activeSentence = diagramPane.get('activeSentence');
-    var allLinks = MySystem.store.find(MySystem.Link);
-    if (activeSentence) {
-      // Remove previously associated nodes and links
-      activeSentence.get('nodes').removeObjects(activeSentence.get('nodes'));
-      activeSentence.get('links').removeObjects(activeSentence.get('links'));
-      this.addLinksAndNodesToSentence(diagramObjects, activeSentence);
-    }
-    if (diagramPane.isPaneAttached) {
-      diagramPane.remove();
-    }
-    theCanvas.get('classNames').pop(); // TODO: This is brittle; if we've added another classname, it gets that instead of 'sentence-linking' which is what we want
-    // Un-dim all links
-    allLinks.forEach( function (link) {
-      link.set('isDimmed', NO);
-    });
-    MySystem.nodesController.unselectAll();
-    diagramPane.set('activeSentence', null);
-    // Refresh the transformation "badges" on the nodes.
-    MySystem.get('nodesController').get('content').forEach(function(node) {
-      node.notifyPropertyChange('transformationIcon');
-    });
-  },
-
-  // Ensures there is only one active sentence-linking button at a time
-  turnOffOtherButtons: function(buttonToLeaveOn) {
-    var storyView = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.topLeftView.bottomRightView.sentencesView');
-    var sentenceViews = storyView.get('contentView').get('childViews');
-    sentenceViews.forEach( function (sentenceView) {
-      if (sentenceView.get('linkButton') != buttonToLeaveOn) {
-          sentenceView.get('linkButton').set('value', NO);
-      }
-    });
-  },
-
+  // TODO: This function was created for the transformation editor, to facilitate explaining transformations.
+  // As that gets transferred to statecharts, this will go to that relevant state.
   createSentence: function(node) {
     var sentence = this.addStorySentence();
     this.addLinksAndNodesToSentence([node], sentence);
@@ -158,7 +81,8 @@ MySystem.storySentenceController = SC.ArrayController.create(
     this.addLinksAndNodesToSentence(node.get('links').map(function(link){return link.model;}), sentence);
   },
 
-  incrementOrderValues: function(startAt) {
+  // Utility function for managing the list order.
+  _incrementOrderValues: function(startAt) {
     this.content.forEach( function (item, index, enumerable) {
       if (item.get('order') >= startAt) {
         item.set('order', item.get('order') + 1);

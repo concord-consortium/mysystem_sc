@@ -17,10 +17,6 @@ MySystem.SentenceConnectPane = SC.PalettePane.design(
 /** @scope MySystem.SentenceConnectPane.prototype */ {
   layout: { top: 150, right: 5, width: 150, height: 150 },
   classNames: 'sentence-connect-pane'.w(),
-  // The sentence which is currently being linked to.
-  activeSentence: null,
-  // The selected objects in the diagram
-  selectedObjectsBinding: 'MySystem.nodesController.allSelected',
   contentView: SC.View.design({
     childViews: "labelView doneButton".w(),
     labelView: SC.LabelView.design({
@@ -28,7 +24,7 @@ MySystem.SentenceConnectPane = SC.PalettePane.design(
       value: "Select the nodes and links your sentence describes, then click the 'Done' button.",
       canEditContent: YES,
       canDeleteContent: YES,
-      isEditable: YES,
+      isEditable: NO,
       isEnabled: YES
     }),
     doneButton: SC.ButtonView.design({

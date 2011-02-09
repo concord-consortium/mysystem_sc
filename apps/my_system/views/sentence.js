@@ -33,8 +33,9 @@ MySystem.SentenceView = SC.View.extend(
     // target: MySystem.storySentenceController,
     pushButton: function() {
       if (this.value) { 
-        MySystem.storySentenceController.turnOffOtherButtons(this);
-        MySystem.storySentenceController.addDiagramConnectPane(this.content);
+        MySystem.statechart.sendEvent('sentenceDiagramConnect', { 'sentence': this.content });
+        // MySystem.storySentenceController.turnOffOtherButtons(this);
+        // MySystem.storySentenceController.addDiagramConnectPane(this.content);
       }
     }.observes('value'),
     unPushButton: function() {

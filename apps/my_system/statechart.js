@@ -64,26 +64,35 @@ MySystem.statechart = Ki.Statechart.create({
         return YES;
       },
       
-      
-      linkSelected: function () {
-        this.gotoState('DIAGRAM_OBJECT_EDITING');
-      },
-      
       /**
         When a sentence is double-clicked, we transition to the sentence-editing state.
+        
+        This state turns out to be superfluous.
       */
       editSentence: function () {
         this.gotoState('SENTENCE_EDITING');
+        return YES;
       },
       
       /**
         When the sentence-linking pane is triggered, we transition to the sentence-linking state.
       */
-      sentenceLinking: function () {
+      sentenceDiagramConnect: function (args) {
+        MySystem.storySentenceController.set('editingSentence', args.sentence);
         this.gotoState('SENTENCE_OBJECT_LINKING');
+        return YES;
       }
     }),
     
+    /**
+      DIAGRAM_OBJECT_EDITING: a state to handle the editing of properties of specific diagram objects.
+      
+      At the current time, that only means links (node titles can be edited in place) because link colors
+      need the property editor pane for color selection. 
+      
+      The state opens the property editor pane and sets it up, then tears it down and returns to the 
+      DIAGRAM_EDITING state when the object being edited is no longer selected.
+    */
     DIAGRAM_OBJECT_EDITING: Ki.State.design({
       
       setUpPropertyPane: function () {
@@ -130,6 +139,14 @@ MySystem.statechart = Ki.Statechart.create({
       }
     }),
     
+    /** 
+      SENTENCE_EDITING: the edit-in-place state of the user story sentences.
+      
+      This state is intended to isolate events sent to the sentences' edit-in-place editor
+      from being passed down the chain to e.g. the diagram. At the current time it seems
+      to be superfluous because simply having the statechart as first responder seems to
+      have solved that problem.
+    */
     SENTENCE_EDITING: Ki.State.design({
       
       commitEdits: function () {
@@ -146,8 +163,12 @@ MySystem.statechart = Ki.Statechart.create({
       
     }),
     
+    /**
+      
+    */
     SENTENCE_OBJECT_LINKING: Ki.State.design({
       
+      // TODO: Use this or remove it
       sentenceLinkButton: function (sentence) {
         if (sentence == this.current_sentence) {
           this.gotoState('DIAGRAM_EDITING');
@@ -158,25 +179,143 @@ MySystem.statechart = Ki.Statechart.create({
         }
       },
       
+      /**
+        TODO: Document this
+      */
+      dimAll: function () {
+        MySystem.nodesController.unselectAll();
+
+        // Dim all nodes via CSS
+        MySystem.canvasView.get('classNames').push('sentence-linking');
+        
+        // Dim all links
+        var allLinks = MySystem.store.find('MySystem.Link');
+        allLinks.forEach( function (link) {
+          link.set('isDimmed', YES);
+        });
+        return YES;
+      },
+      
+      /**
+        TODO: Document this
+      */
+      updateHighlighting: function (sentence) {
+        var selectedLinks = MySystem.nodesController.get('selectedLinks');
+        
+        // Un-dim links
+        selectedLinks.forEach( function (link) {
+          link.set('isDimmed', NO);
+        });
+        
+        // Nodes are un-dimmed by virtue of selection CSS
+        return YES;
+      },
+      
+      /**
+        TODO: Document this
+      */
+      diagramSelectionChanged: function () {
+        // Update items linked to sentence
+        var selection = MySystem.nodesController.get('allSelected');
+        var sentence = MySystem.storySentenceController.get('editingSentence');
+        
+        // Remove existing links
+        sentence.get('links').removeObjects(sentence.get('links'));
+        // Remove existing nodes
+        sentence.get('nodes').removeObjects(sentence.get('nodes'));
+        
+        selection.forEach( function (item) {
+          if (item.instanceOf(MySystem.Link)) {
+            sentence.get('links').pushObject(item);
+          } else if (item.instanceOf(MySystem.Node)) {
+            sentence.get('nodes').pushObject(item);
+          } else {
+            SC.Logger.log('Bad item type ' + item);
+          }
+        });
+        
+        // Update highlighting
+        this.updateHighlighting();
+        return YES;
+      },
+      
+      /**
+        TODO: Document this
+      */
+      setUpSentenceLinkPane: function (sentence) {
+        var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
+        var sentenceLinks = sentence.get('links');
+        if (!diagramPane.isPaneAttached) {
+          diagramPane.append();
+          diagramPane.becomeFirstResponder();
+        }
+        MySystem.canvasView.selectObjects(sentenceLinks, true);
+        MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
+      },
+      
+      /**
+        TODO: Document this
+      */
+      tearDownSentenceLinkPane: function () {
+        var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
+        if (diagramPane.isPaneAttached) {
+          diagramPane.remove();
+        }
+        MySystem.nodesController.unselectAll();
+      },
+      
+      // TODO: Use this or remove it
       closeButton: function () {
-        // save current sentence object links
+        // Turn off all buttons
         this.gotoState('DIAGRAM_EDITING');
       },
       
+      // Ensures there is only one active sentence-linking button at a time
+      turnOffOtherButtons: function (buttonToLeaveOn) {
+        console.log("Turn off other buttons!");
+        var storyView = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.topLeftView.bottomRightView.sentencesView');
+        var sentenceViews = storyView.get('contentView').get('childViews');
+        sentenceViews.forEach( function (sentenceView) {
+          if (sentenceView.get('linkButton') != buttonToLeaveOn) {
+              sentenceView.get('linkButton').set('value', NO);
+          }
+        });
+        return YES;
+      },
+
       enterState: function () {
         console.log("Entering state %s", this.get('name'));
-        // Set up sentence and linked diagram objects
-        // Open linking pane
-        // Change diagram classnames
-        // Change diagram highlighting
+        var sentence = MySystem.storySentenceController.get('editingSentence');
+        
+        // Clear previous state selections
+        MySystem.nodesController.unselectAll();
+
+        // Dim links
+        this.dimAll();
+
+        // Attach the pane and select appropriate nodes and links
+        this.setUpSentenceLinkPane(sentence);
+        
+        // Make sure all selected stuff is un-dimmed
+        this.updateHighlighting();
+
       },
       
       exitState: function () {
         console.log("Leaving state %s", this.get('name'));
+        var allLinks = MySystem.store.find(MySystem.Link);
+
         // Close linking pane
-        // Clean up sentence, linked diagram objects
-        // Restore diagram highlighting
+        this.tearDownSentenceLinkPane();
+
+        // Un-dim all links
+        allLinks.forEach( function (link) {
+          link.set('isDimmed', NO);
+        });
+
         // Restore diagram classnames
+        MySystem.canvasView.get('classNames').pop(); // TODO: This is brittle; if we've added another classname, it gets that instead of 'sentence-linking' which is what we want
+
       }
       
     })
