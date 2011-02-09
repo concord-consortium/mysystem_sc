@@ -34,6 +34,25 @@ MySystem.statechart = Ki.Statechart.create({
         console.log("Leaving state %s", this.get('name'));
       },
       
+      addNode: function (attr) {
+        var node;
+        var guid = MySystem.Node.newGuid();
+        
+        // Create a new node in store
+        node = MySystem.store.createRecord(MySystem.Node, { 
+          "title": attr.title, 
+          "image": attr.image, 
+          "position": { x: attr.x, y: attr.y },
+          "guid": guid
+        }, guid);
+        
+        // De-select other diagram objects and select the new node
+        MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
+        MySystem.nodesController.selectObject(node);
+
+        return YES;
+      },
+      
       /**
         When a link is selected, we transition to the link-editing state.
       */

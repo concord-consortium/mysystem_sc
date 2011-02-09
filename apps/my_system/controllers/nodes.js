@@ -78,20 +78,6 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     }
   },
 
-  addNode: function ( title, image, xPos, yPos ) {
-    var node;
-    var guid = MySystem.Node.newGuid();
-    // Create a new node in store
-    node = MySystem.store.createRecord(MySystem.Node, { 
-      "title": title, 
-      "image": image, 
-      "position": { x: xPos, y: yPos },
-      "guid":guid
-    }, guid);
-
-    return node;
-  },
-
   propertyWindowSelection: function() {
     var selection = MySystem.nodesController.get('allSelected');
     var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');

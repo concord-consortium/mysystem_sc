@@ -18,15 +18,22 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
   isDropTarget: NO, // we will add this as a drop target when we're dragging a new node
   computeDragOperations: function(drag, evt) { return SC.DRAG_COPY; },
   performDragOperation: function(drag, op) { 
-    var image = drag.data.image;
-    var title = drag.data.title;
-    var xpos = drag.location.x;
-    var ypos = drag.location.y;
-    var offsetX = this.parentView.get('frame').x;
-    var offsetY = this.get('frame').y;
-    var node = MySystem.nodesController.addNode(title, image, xpos - offsetX - drag.data.clickX, ypos - offsetY - drag.data.clickY);
-    MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
-    MySystem.nodesController.selectObject(node);
+    // Figure the new node's x and y locations
+    var newNodeX = drag.location.x - this.parentView.get('frame').x - drag.data.clickX;
+    var newNodeY = drag.location.y - this.get('frame').y - drag.data.clickY;
+    
+    // Build the data hash
+    var newNodeAttributes = {
+      'title': drag.data.title,
+      'image': drag.data.image,
+      'x': newNodeX,
+      'y': newNodeY
+    };
+    
+    // Create the node
+    MySystem.statechart.sendEvent('addNode', newNodeAttributes);
+
+    // De-select other diagram objects and select 
     return SC.DRAG_COPY; 
   },
   didCreateLayer: function () {
