@@ -86,14 +86,33 @@ MySystem.statechart = Ki.Statechart.create({
     
     DIAGRAM_OBJECT_EDITING: Ki.State.design({
       
+      setUpPropertyPane: function () {
+        var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');
+        var selectedObject = MySystem.nodesController.get('allSelected').firstObject();
+        if (!propertyEditor.isPaneAttached) {
+          propertyEditor.append();
+        }
+        propertyEditor.set('objectToEdit', selectedObject);
+      },
+      
+      tearDownPropertyPane: function () {
+        var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');
+        if (propertyEditor.isPaneAttached) {
+          propertyEditor.remove();
+        }
+        propertyEditor.set('objectToEdit', null);
+      },
+
       enterState: function () {
         console.log("Entering state %s", this.get('name'));
         // Set up the property editor pane and attach it
+        this.setUpPropertyPane();
       },
       
       exitState: function () {
-        // Detatch property editor pane and clean it up
         console.log("Leaving state %s", this.get('name'));
+        // Detatch property editor pane and clean it up
+        this.tearDownPropertyPane();
       },
       
       diagramSelectionChanged: function (args) {
@@ -106,6 +125,7 @@ MySystem.statechart = Ki.Statechart.create({
         }
         else {
           // Update the property editor pane
+          this.setUpPropertyPane();
         }
       }
     }),
