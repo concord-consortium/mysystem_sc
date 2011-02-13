@@ -29,18 +29,11 @@ MySystem.SentenceView = SC.View.extend(
     buttonBehavior: SC.TOGGLE_BEHAVIOR,
     icon: sc_static('resources/icon_link.gif'),
     toolTip: "Link this sentence with part of the diagram",
-    // action: 'linkButtonPushed',
-    // target: MySystem.storySentenceController,
+    
     pushButton: function() {
       if (this.value) { 
         MySystem.statechart.sendEvent('sentenceDiagramConnect', { 'sentence': this.content });
-        // MySystem.storySentenceController.turnOffOtherButtons(this);
-        // MySystem.storySentenceController.addDiagramConnectPane(this.content);
-      }
-    }.observes('value'),
-    unPushButton: function() {
-      if (!this.value) { 
-        MySystem.storySentenceController.closeDiagramConnectPane();
+        this.set('value', NO);
       }
     }.observes('value')
   })

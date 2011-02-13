@@ -168,15 +168,25 @@ MySystem.statechart = Ki.Statechart.create({
     */
     SENTENCE_OBJECT_LINKING: Ki.State.design({
       
-      // TODO: Use this or remove it
-      sentenceLinkButton: function (sentence) {
-        if (sentence == this.current_sentence) {
-          this.gotoState('DIAGRAM_EDITING');
-        }
-        else {
-          // save current sentence object links
+      /**
+        TODO: Document this
+      */
+      sentenceDiagramConnect: function (args) {
           // re-set-up linking with new sentence
-        }
+          var sentence = args.sentence; // MySystem.storySentenceController.get('editingSentence');
+          
+          // Clear previous state selections
+          MySystem.nodesController.unselectAll();
+          
+          // Dim links
+          this.dimAll();
+
+          // Set up the sentence linking pane
+          this.setUpSentenceLinkPane(sentence);
+          
+          // Adjust link highlights
+          this.updateHighlighting(sentence);
+          return YES;
       },
       
       /**
@@ -243,8 +253,13 @@ MySystem.statechart = Ki.Statechart.create({
         TODO: Document this
       */
       setUpSentenceLinkPane: function (sentence) {
+        // Setting up the sentence link pane
         var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
-        var sentenceLinks = sentence.get('links');
+        if (sentence === null) {
+          sentence = MySystem.storySentenceController.get('editingSentence');
+        }
+        console.log("Sentence being linked is %s", sentence.get('id'));
+        var sentenceLinks = sentence.get('links'); 
         if (!diagramPane.isPaneAttached) {
           diagramPane.append();
           diagramPane.becomeFirstResponder();
@@ -270,19 +285,6 @@ MySystem.statechart = Ki.Statechart.create({
         this.gotoState('DIAGRAM_EDITING');
       },
       
-      // Ensures there is only one active sentence-linking button at a time
-      turnOffOtherButtons: function (buttonToLeaveOn) {
-        console.log("Turn off other buttons!");
-        var storyView = MySystem.mainPage.getPath('mainPane.topView.bottomRightView.topLeftView.bottomRightView.sentencesView');
-        var sentenceViews = storyView.get('contentView').get('childViews');
-        sentenceViews.forEach( function (sentenceView) {
-          if (sentenceView.get('linkButton') != buttonToLeaveOn) {
-              sentenceView.get('linkButton').set('value', NO);
-          }
-        });
-        return YES;
-      },
-
       enterState: function () {
         console.log("Entering state %s", this.get('name'));
         var sentence = MySystem.storySentenceController.get('editingSentence');
