@@ -79,7 +79,7 @@ MySystem.statechart = Ki.Statechart.create({
       */
       sentenceDiagramConnect: function (args) {
         MySystem.storySentenceController.set('editingSentence', args.sentence);
-        this.gotoState('SENTENCE_OBJECT_LINKING');
+        this.gotoState('SENTENCE_OBJECT_LINKING_SETUP');
         return YES;
       }
     }),
@@ -164,7 +164,83 @@ MySystem.statechart = Ki.Statechart.create({
     }),
     
     /**
+      SENTENCE_OBJECT_LINKING_SETUP: A transient state setting up SENTENCE_OBJECT_LINKING. 
       
+      This state is needed in order to properly update the diagram selections without changing
+      associations as would happen in the SENTENCE_OBJECT_LINKING state.
+    */
+    SENTENCE_OBJECT_LINKING_SETUP: Ki.State.design({
+      
+      diagramSelectionChanged: function () {
+        return YES; // handle the event, but do nothing
+      },
+      
+      /**
+        TODO: Document this
+      */
+      dimAll: function () {
+        MySystem.nodesController.unselectAll();
+
+        // Dim all nodes via CSS
+        if (MySystem.canvasView.get('classNames').indexOf('sentence-linking') < 0) {
+          MySystem.canvasView.get('classNames').push('sentence-linking');
+        }
+        
+        // Dim all links
+        var allLinks = MySystem.store.find('MySystem.Link');
+        allLinks.forEach( function (link) {
+          link.set('isDimmed', YES);
+        });
+        return YES;
+      },
+      
+      /**
+        TODO: Document this
+      */
+      setUpSentenceLinkPane: function (sentence) {
+        // Setting up the sentence link pane
+        var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
+        if (sentence === null) {
+          sentence = MySystem.storySentenceController.get('editingSentence');
+        }
+        console.log("Now editing linked nodes and links for %s", sentence.get('id'));
+        var sentenceLinks = sentence.get('links'); 
+        if (!diagramPane.isPaneAttached) {
+          diagramPane.append();
+          diagramPane.becomeFirstResponder();
+        }
+        MySystem.canvasView.selectObjects(sentenceLinks, true);
+        MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
+      },
+      
+      enterState: function () {
+        console.log("Entering state %s", this.get('name'));
+        
+        var sentence = MySystem.storySentenceController.get('editingSentence');
+        
+        // Clear previous state selections
+        MySystem.nodesController.unselectAll();
+
+        // Dim links
+        this.dimAll();
+
+        this.setUpSentenceLinkPane(sentence);
+        
+        this.gotoState('SENTENCE_OBJECT_LINKING');
+      },
+      
+      exitState: function () {
+        console.log("Leaving state %s", this.get('name'));
+        
+      }
+    }),
+    
+    /**
+      SENTENCE_OBJECT_LINKING: Designating which components of the diagram are associated with
+      which sentences in the user story.
+      
+      In this state, the diagram should not be modifiable. When a node or link is selected, it is
+      associated with the currently operative sentence; when it is de-selected it is also de-associated.
     */
     SENTENCE_OBJECT_LINKING: Ki.State.design({
       
@@ -172,28 +248,11 @@ MySystem.statechart = Ki.Statechart.create({
         TODO: Document this
       */
       sentenceDiagramConnect: function (args) {
-          // re-set-up linking with new sentence
-          var sentence = args.sentence; // MySystem.storySentenceController.get('editingSentence');
-          
-          // Clear previous state selections
-          MySystem.nodesController.unselectAll();
-          // TODO: This turns out to be problematic, because in unselecting everything, we actually
-          // trigger the diagramSelectionChanged event, and that wipes out all our saved data on the 
-          // previous sentence before moving to the next one. Probably the best way to handle this 
-          // is to kick out to transient state to handle the conversion (i.e. de-select and re-dim
-          // everything in that state) before coming back to this state.
-          
-          // Dim links
-          this.dimAll();
-          
-          // Set up the sentence linking pane
-          this.setUpSentenceLinkPane(sentence);
-          
-          // Adjust link highlights
-          this.updateHighlighting(sentence);
-          return YES;
+        MySystem.storySentenceController.set('editingSentence', args.sentence);
+        this.gotoState('SENTENCE_OBJECT_LINKING_SETUP');
+        return YES;
       },
-      
+
       /**
         TODO: Document this
       */
@@ -233,8 +292,7 @@ MySystem.statechart = Ki.Statechart.create({
         // Update items linked to sentence
         var selection = MySystem.nodesController.get('allSelected');
         var sentence = MySystem.storySentenceController.get('editingSentence');
-        console.log("Updating linked items for %s which had %d", sentence.get('id'), (sentence.get('links').get('length') + sentence.get('nodes').get('length')));
-        
+
         // Remove existing links
         sentence.get('links').removeObjects(sentence.get('links'));
         // Remove existing nodes
@@ -249,30 +307,10 @@ MySystem.statechart = Ki.Statechart.create({
             SC.Logger.log('Bad item type ' + item);
           }
         });
-        console.log("and now has %d", (sentence.get('links').get('length') + sentence.get('nodes').get('length')));
         
         // Update highlighting
         this.updateHighlighting();
         return YES;
-      },
-      
-      /**
-        TODO: Document this
-      */
-      setUpSentenceLinkPane: function (sentence) {
-        // Setting up the sentence link pane
-        var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
-        if (sentence === null) {
-          sentence = MySystem.storySentenceController.get('editingSentence');
-        }
-        console.log("Now editing linked nodes and links for %s", sentence.get('id'));
-        var sentenceLinks = sentence.get('links'); 
-        if (!diagramPane.isPaneAttached) {
-          diagramPane.append();
-          diagramPane.becomeFirstResponder();
-        }
-        MySystem.canvasView.selectObjects(sentenceLinks, true);
-        MySystem.nodesController.selectObjects(sentence.get('nodes'), true);
       },
       
       /**
@@ -286,25 +324,16 @@ MySystem.statechart = Ki.Statechart.create({
         MySystem.nodesController.unselectAll();
       },
       
-      // TODO: Use this or remove it
+      // TODO: Document this
       closeButton: function () {
         console.log("Got the closeButton event");
+        MySystem.storySentenceController.set('editingSentence', null);
         this.gotoState('DIAGRAM_EDITING');
         return YES;
       },
       
       enterState: function () {
         console.log("Entering state %s", this.get('name'));
-        var sentence = MySystem.storySentenceController.get('editingSentence');
-        
-        // Clear previous state selections
-        MySystem.nodesController.unselectAll();
-
-        // Dim links
-        this.dimAll();
-
-        // Attach the pane and select appropriate nodes and links
-        this.setUpSentenceLinkPane(sentence);
         
         // Make sure all selected stuff is un-dimmed
         this.updateHighlighting();
@@ -322,9 +351,17 @@ MySystem.statechart = Ki.Statechart.create({
         allLinks.forEach( function (link) {
           link.set('isDimmed', NO);
         });
+        MySystem.nodesController.unselectAll();
 
         // Restore diagram classnames
-        MySystem.canvasView.get('classNames').pop(); // TODO: This is brittle; if we've added another classname, it gets that instead of 'sentence-linking' which is what we want
+        if (MySystem.canvasView.get('classNames').indexOf('sentence-linking') === MySystem.canvasView.get('classNames').get('length')-1) {
+          MySystem.canvasView.get('classNames').pop();
+        }
+        else if (MySystem.canvasView.get('classNames').indexOf('sentence-linking') > -1) {
+          console.log("Removing class name at %d", MySystem.canvasView.get('classNames').indexOf('sentence-linking'));
+          // remove "sentence-linking"
+          MySystem.canvasView.get('classNames').splice(MySystem.canvasView.get('classNames').indexOf('sentence-linking'));
+        }
 
       }
       
