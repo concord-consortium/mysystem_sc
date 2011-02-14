@@ -13,9 +13,11 @@
 
   @extends SC.PalettePane
 */
-MySystem.SentenceConnectPane = SC.PalettePane.design(
+MySystem.SentenceConnectPane = SC.PalettePane.create(
 /** @scope MySystem.SentenceConnectPane.prototype */ {
+  defaultResponder: 'MySystem.statechart',
   layout: { top: 150, right: 5, width: 150, height: 150 },
+
   classNames: 'sentence-connect-pane'.w(),
   contentView: SC.View.design({
     childViews: "labelView doneButton".w(),
@@ -28,14 +30,12 @@ MySystem.SentenceConnectPane = SC.PalettePane.design(
       isEnabled: YES
     }),
     doneButton: SC.ButtonView.design({
-      acceptsFirstResponder: YES,
       buttonBehavior: SC.PUSH_BEHAVIOR,
       layout: { left: 10, right: 10, bottom: 10, height:20 },
-      // icon: sc_static('resources/icon_link.gif'),
       title: "Done",
       toolTip: "Click to link and close this window",
-      target: "MySystem.storySentenceController",
-      action: "turnOffOtherButtons",
+      // target: "MySystem.storySentenceController",
+      action: "closeButton",
       theme: "capsule",
       isEnabled: YES
     })

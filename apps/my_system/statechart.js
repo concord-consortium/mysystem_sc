@@ -175,12 +175,12 @@ MySystem.statechart = Ki.Statechart.create({
           // re-set-up linking with new sentence
           var sentence = args.sentence; // MySystem.storySentenceController.get('editingSentence');
           
-          // Clear previous state selections
-          MySystem.nodesController.unselectAll();
-          
-          // Dim links
-          this.dimAll();
-
+          // // Clear previous state selections
+          // MySystem.nodesController.unselectAll();
+          // 
+          // // Dim links
+          // this.dimAll();
+          // 
           // Set up the sentence linking pane
           this.setUpSentenceLinkPane(sentence);
           
@@ -228,6 +228,7 @@ MySystem.statechart = Ki.Statechart.create({
         // Update items linked to sentence
         var selection = MySystem.nodesController.get('allSelected');
         var sentence = MySystem.storySentenceController.get('editingSentence');
+        console.log("Updating linked items for %s which had %d", sentence.get('id'), (sentence.get('links').get('length') + sentence.get('nodes').get('length')));
         
         // Remove existing links
         sentence.get('links').removeObjects(sentence.get('links'));
@@ -243,6 +244,7 @@ MySystem.statechart = Ki.Statechart.create({
             SC.Logger.log('Bad item type ' + item);
           }
         });
+        console.log("and now has %d", (sentence.get('links').get('length') + sentence.get('nodes').get('length')));
         
         // Update highlighting
         this.updateHighlighting();
@@ -258,7 +260,7 @@ MySystem.statechart = Ki.Statechart.create({
         if (sentence === null) {
           sentence = MySystem.storySentenceController.get('editingSentence');
         }
-        console.log("Sentence being linked is %s", sentence.get('id'));
+        console.log("Now editing linked nodes and links for %s", sentence.get('id'));
         var sentenceLinks = sentence.get('links'); 
         if (!diagramPane.isPaneAttached) {
           diagramPane.append();
@@ -281,8 +283,9 @@ MySystem.statechart = Ki.Statechart.create({
       
       // TODO: Use this or remove it
       closeButton: function () {
-        // Turn off all buttons
+        console.log("Got the closeButton event");
         this.gotoState('DIAGRAM_EDITING');
+        return YES;
       },
       
       enterState: function () {

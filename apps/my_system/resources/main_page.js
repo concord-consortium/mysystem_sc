@@ -42,12 +42,10 @@ MySystem.mainPage = SC.Page.design({
   }),
 
   propertyViewPane: MySystem.PropertyEditorPane.design({
-    defaultResponder: 'MyApp.statechart'
+    defaultResponder: 'MySystem.statechart'
   }),
 
-  sentenceLinkPane: MySystem.SentenceConnectPane.design({
-    defaultResponder: 'MyApp.statechart'
-  }),
+  sentenceLinkPane: MySystem.SentenceConnectPane,
 
   transformationBuilderPane: MySystem.TransformationBuilderPane.design({}),
 
