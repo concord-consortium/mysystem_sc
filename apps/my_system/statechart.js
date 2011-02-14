@@ -175,12 +175,17 @@ MySystem.statechart = Ki.Statechart.create({
           // re-set-up linking with new sentence
           var sentence = args.sentence; // MySystem.storySentenceController.get('editingSentence');
           
-          // // Clear previous state selections
-          // MySystem.nodesController.unselectAll();
-          // 
-          // // Dim links
-          // this.dimAll();
-          // 
+          // Clear previous state selections
+          MySystem.nodesController.unselectAll();
+          // TODO: This turns out to be problematic, because in unselecting everything, we actually
+          // trigger the diagramSelectionChanged event, and that wipes out all our saved data on the 
+          // previous sentence before moving to the next one. Probably the best way to handle this 
+          // is to kick out to transient state to handle the conversion (i.e. de-select and re-dim
+          // everything in that state) before coming back to this state.
+          
+          // Dim links
+          this.dimAll();
+          
           // Set up the sentence linking pane
           this.setUpSentenceLinkPane(sentence);
           
