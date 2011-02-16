@@ -41,9 +41,7 @@ MySystem.mainPage = SC.Page.design({
     })
   }),
 
-  propertyViewPane: MySystem.PropertyEditorPane.design({
-    defaultResponder: 'MySystem.statechart'
-  }),
+  propertyViewPane: MySystem.PropertyEditorPane,
 
   sentenceLinkPane: MySystem.SentenceConnectPane,
 

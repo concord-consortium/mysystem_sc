@@ -7,27 +7,19 @@
 
 /** @class
 
-  (Document Your View Here)
+  This pane shows the attributes of a diagram object as a form, allowing them to be edited if they can't
+  be easily edited in place.
 
-  @extends SC.Pane
+  @extends SC.PalettePane
 */
 sc_require('core');
 
-MySystem.PropertyEditorPane = SC.PalettePane.extend(
-{
-  acceptsFirstResponder: YES,
-  layout: {
-      top: 150,
-      right: 5,
-      width: 250,
-      height: 240
-  },
+MySystem.PropertyEditorPane = SC.PalettePane.create({
+  defaultResponder: 'MySystem.statechart',
+  layout: { top: 150, right: 5, width: 250, height: 240 },
   classNames: 'property-editor'.w(),
-
   displayProperties: 'objectToEdit isSelected'.w(),
   objectToEdit: null,
-  isSelected: false,
-
   childViews: ''.w(),
 
   propertiesForm: Forms.FormView.create({
@@ -104,21 +96,5 @@ MySystem.PropertyEditorPane = SC.PalettePane.extend(
     var field = target;
     var newValue = field.get('value');
     this.get('objectToEdit').set(key, newValue);
-  },
-
-  keyDown: function(evt) {
-    return this.interpretKeyEvents(evt) ? YES : NO;
-  },
-
-  deleteBackward: function() {
-    MySystem.canvasView.deleteSelection();
-    // this.get('objectToEdit').destroy();
-    return YES;
-  },
-
-  deleteForward: function() {
-    MySystem.canvasView.deleteSelection();
-    // this.get('objectToEdit').destroy();
-    return YES;
   }
 });
