@@ -37,7 +37,9 @@ MySystem.PropertyEditorPane = SC.PalettePane.create({
 
   }),
 
-  // returns the index of the first occurrence of element in array, -1 if it's not there
+  /**
+    returns the index of the first occurrence of element in array, -1 if it's not there
+  */
   indexOf: function(element, array) {
     for (var i = 0; i < array.length; i += 1) {
       if (element == array[i]) return i;
@@ -45,6 +47,9 @@ MySystem.PropertyEditorPane = SC.PalettePane.create({
     return -1;
   },
 
+  /**
+    Update the pane to reflect the current state of the object being edited.
+  */
   update_everything: function() {
     var form = this.get('propertiesForm');
     var baseObject = this.get('objectToEdit');
@@ -92,6 +97,9 @@ MySystem.PropertyEditorPane = SC.PalettePane.create({
     }
   }.observes('objectToEdit'),
 
+  /**
+    When a form field is changed, this updates the underlying object to reflect the new value.
+  */
   fieldChanged: function(target, key, value, revision) {// note value will always be null
     var field = target;
     var newValue = field.get('value');
