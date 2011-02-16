@@ -1,19 +1,26 @@
 // ==========================================================================
 // Project:   MySystem.DIAGRAM_OBJECT_EDITING
-// Copyright: ©2010 Concord Consortium
+// Copyright: ©2011 Concord Consortium
 // @author    Parker Morse <pmorse@cantinaconsulting.com>
 // ==========================================================================
 /*globals MySystem Ki */
 
 /** 
 
-  The statechart describes the states of the systems and how they change in reaction
-  to user events. Put another way, the statechart describes the user interface of the
-  application.
+  A state to handle the editing of properties of specific diagram objects.
+
+  At the current time, that only means links (node titles can be edited in place) because link colors
+  need the property editor pane for color selection. 
+
+  The state opens the property editor pane and sets it up, then tears it down and returns to the 
+  DIAGRAM_EDITING state when the object being edited is no longer selected.
 
 */
 MySystem.DIAGRAM_OBJECT_EDITING = Ki.State.design({
   
+  /**
+    Set up the property pane attributes and attach it.
+  */
   setUpPropertyPane: function () {
     var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');
     var selectedObject = MySystem.nodesController.get('allSelected').firstObject();
@@ -23,6 +30,9 @@ MySystem.DIAGRAM_OBJECT_EDITING = Ki.State.design({
     propertyEditor.set('objectToEdit', selectedObject);
   },
   
+  /**
+    Re-set the property pane attributes and remove it from the page.
+  */
   tearDownPropertyPane: function () {
     var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');
     if (propertyEditor.isPaneAttached) {
@@ -43,7 +53,10 @@ MySystem.DIAGRAM_OBJECT_EDITING = Ki.State.design({
     this.tearDownPropertyPane();
   },
   
-  diagramSelectionChanged: function (args) {
+  /**
+    Deal with diagram selection update events.
+  */
+  diagramSelectionChanged: function () {
     var newSelection = MySystem.nodesController.get('allSelected');
     if (newSelection.get('length') !== 1) {
       this.gotoState('DIAGRAM_EDITING');

@@ -1,21 +1,29 @@
 // ==========================================================================
 // Project:   MySystem.SENTENCE_OBJECT_LINKING
-// Copyright: ©2010 Concord Consortium
+// Copyright: ©2011 Concord Consortium
 // @author    Parker Morse <pmorse@cantinaconsulting.com>
 // ==========================================================================
 /*globals MySystem Ki */
 
 /** 
 
-  The statechart describes the states of the systems and how they change in reaction
-  to user events. Put another way, the statechart describes the user interface of the
-  application.
+  In this state, the user may designate which components of the diagram are associated with
+  which sentences in the user story.
+
+  In this state, the diagram should not be modifiable. When a node or link is selected, it is
+  associated with the currently operative sentence; when it is de-selected it is also de-associated.
 
 */
 MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
   
   /**
-    TODO: Document this
+    Taking a sentence argument, adjusts the sentence being edited in the controller, then 
+    moves state to SENTENCE_OBJECT_LINKING_SETUP to manage the transition to the new sentence.
+    
+    @param args
+    
+    @param {MySystem.StorySentence} args.sentence
+      The new sentence which is to be linked with diagram objects.
   */
   sentenceDiagramConnect: function (args) {
     MySystem.storySentenceController.set('editingSentence', args.sentence);
@@ -24,7 +32,8 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
   },
 
   /**
-    TODO: Document this
+    Adds a class to the canvas view which changes the CSS for nodes (thus dimming un-selected ones),
+    de-selects all nodes and links, and sets the isDimmed property on all links to YES.
   */
   dimAll: function () {
     MySystem.nodesController.unselectAll();
@@ -41,9 +50,10 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
   },
   
   /**
-    TODO: Document this
+    Updates the dimmed/not dimmed settings of all links on the diagram
+    depending on their selected state.
   */
-  updateHighlighting: function (sentence) {
+  updateHighlighting: function () {
     var allLinks = MySystem.store.find('MySystem.Link');
     var selectedLinks = MySystem.nodesController.get('selectedLinks');
     
@@ -61,10 +71,11 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
   },
   
   /**
-    TODO: Document this
+    If the set of selected diagram objects has changed, this event is sent to the 
+    statechart. Here we update the nodes and links associated with the currently-active
+    sentence to match the set of selected nodes and links.
   */
   diagramSelectionChanged: function () {
-    // Update items linked to sentence
     var selection = MySystem.nodesController.get('allSelected');
     var sentence = MySystem.storySentenceController.get('editingSentence');
 
@@ -89,17 +100,21 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
   },
   
   /**
-    TODO: Document this
+    Remove the linking pane and remove all selections from the diagram.
   */
   tearDownSentenceLinkPane: function () {
     var diagramPane = MySystem.getPath('mainPage.sentenceLinkPane');
     if (diagramPane.isPaneAttached) {
       diagramPane.remove();
     }
+    // De-select nodes
     MySystem.nodesController.unselectAll();
+    // TODO: Need to de-select links, too.
   },
   
-  // TODO: Document this
+  /** 
+    In response to the "close" button click, set the active sentence to null and return to diagram editing.
+  */
   closeButton: function () {
     console.log("Got the closeButton event");
     MySystem.storySentenceController.set('editingSentence', null);
@@ -126,14 +141,12 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
     allLinks.forEach( function (link) {
       link.set('isDimmed', NO);
     });
-    MySystem.nodesController.unselectAll();
 
     // Restore diagram classnames
     if (MySystem.canvasView.get('classNames').indexOf('sentence-linking') === MySystem.canvasView.get('classNames').get('length')-1) {
       MySystem.canvasView.get('classNames').pop();
     }
     else if (MySystem.canvasView.get('classNames').indexOf('sentence-linking') > -1) {
-      console.log("Removing class name at %d", MySystem.canvasView.get('classNames').indexOf('sentence-linking'));
       // remove "sentence-linking"
       MySystem.canvasView.get('classNames').splice(MySystem.canvasView.get('classNames').indexOf('sentence-linking'));
     }

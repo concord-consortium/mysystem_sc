@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   MySystem.statechart
-// Copyright: ©2010 Concord Consortium
+// Copyright: ©2011 Concord Consortium
 // @author    Parker Morse <pmorse@cantinaconsulting.com>
 // ==========================================================================
 /*globals MySystem Ki */
@@ -25,6 +25,7 @@ MySystem.statechart = Ki.Statechart.create({
       manipulate the diagram.
     */
     DIAGRAM_EDITING: Ki.State.plugin('MySystem.DIAGRAM_EDITING'),    
+    
     /**
       DIAGRAM_OBJECT_EDITING: a state to handle the editing of properties of specific diagram objects.
       

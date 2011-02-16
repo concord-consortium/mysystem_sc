@@ -1,15 +1,14 @@
 // ==========================================================================
 // Project:   MySystem.DIAGRAM_EDITING
-// Copyright: ©2010 Concord Consortium
+// Copyright: ©2011 Concord Consortium
 // @author    Parker Morse <pmorse@cantinaconsulting.com>
 // ==========================================================================
 /*globals MySystem Ki */
 
 /** 
 
-  The statechart describes the states of the systems and how they change in reaction
-  to user events. Put another way, the statechart describes the user interface of the
-  application.
+  The main state; this is where users can create and delete nodes and links and 
+  manipulate the diagram.
 
 */
 MySystem.DIAGRAM_EDITING = Ki.State.design({
@@ -22,6 +21,21 @@ MySystem.DIAGRAM_EDITING = Ki.State.design({
     console.log("Leaving state %s", this.get('name'));
   },
   
+  /**
+    Adds a node to the store and diagram, then de-selects other diagram objects 
+    and selects the new node.
+    
+    @param attr
+    
+    @param {String} attr.title
+      The title of the new node.
+    @param {String} attr.image
+      The URL/URI of the image to be used in the new node
+    @param {Integer} attr.x
+      The x-coordinate of the location of the new node on the canvas.
+    @param {Integer} attr.y
+      The y-coordinate of the location of the new node on the canvas.
+  */
   addNode: function (attr) {
     var node;
     var guid = MySystem.Node.newGuid();
@@ -44,7 +58,7 @@ MySystem.DIAGRAM_EDITING = Ki.State.design({
   /**
     When a link is selected, we transition to the link-editing state.
   */
-  diagramSelectionChanged: function (args) {
+  diagramSelectionChanged: function () {
     var selection = MySystem.nodesController.get('allSelected');
     if ((selection.get('length') == 1) && selection.firstObject().get('linkStyle')) {
       this.gotoState('DIAGRAM_OBJECT_EDITING');
@@ -55,7 +69,7 @@ MySystem.DIAGRAM_EDITING = Ki.State.design({
   /**
     When a sentence is double-clicked, we transition to the sentence-editing state.
     
-    This state turns out to be superfluous.
+    (That state turns out to be superfluous.)
   */
   editSentence: function () {
     this.gotoState('SENTENCE_EDITING');
