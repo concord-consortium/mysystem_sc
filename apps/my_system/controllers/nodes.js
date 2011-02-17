@@ -16,7 +16,7 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   selectedLinksBinding: "MySystem.canvasView.selectedLinks",
 
   allSelected: function() {
-    var links  = this.get('selectedLinks');
+    var links  = MySystem.canvasView.get('selectedLinks');
     var resultSet = this.get('selection').clone();
     resultSet = resultSet.addObjects(links.map(function(link){return link.get('model');}));
 
