@@ -43,7 +43,7 @@ After Lebowski is installed in your current rvm gemset, time to test!
 
 ### Running SproutCore QUnit tests with capybara-testrunner ###
 1. From the top-level mysystem_sc directory:
-rvm gemset import
+`rvm gemset import`
 
 1. don't abort on first error
 `set +e`
@@ -54,28 +54,21 @@ rvm gemset import
 3. remove old reports
 `rm reports/*.xml`
 
-4. $SC_SERVER_PORT is usually 4020. That environment variable is used so multiple ci server (such as Husdon) job instances don't use the same port
-<pre>
-sc-server --port=$SC_SERVER_PORT --host=0.0.0.0 &
-sleep 1
-</pre>
+4. `$SC_SERVER_PORT` is usually 4020. That environment variable is used so multiple ci server (such as Husdon) job instances don't use the same port
+`sc-server --port=$SC_SERVER_PORT --host=0.0.0.0 & sleep 1`
 
 5. Go into the capybara-testrunner directory and run the tests
-<pre>
-pushd capybara-testrunner
+`pushd capybara-testrunner
 ruby -rubygems run-tests.rb -p $SC_SERVER_PORT -i -h -t apps -o ../reports
-EXIT_STATUS=$?
-</pre>
+EXIT_STATUS=$?`
 
 6. Leave the capybara-testrunner directory
 `popd`
 
 7. send a control-c to sc-server
-<pre>
-kill -s 2 %1`
+`kill -s 2 %1
 
-exit $EXIT_STATUS
-</pre>
+exit $EXIT_STATUS`
 
 ### Building as WISE4 step ###
 
