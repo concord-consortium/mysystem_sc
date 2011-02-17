@@ -128,10 +128,10 @@ test("Dimmed links should have alpha values < 1 in the color definition", functi
     };
   var newLink = MySystem.store.createRecord(MySystem.Link, linkHash, linkHash.guid);
   equals ( newLink.get('isDimmed'), NO, "The isDimmed property starts as NO");
-  newLink.dimColor();
-  equals ( newLink.get('color'), "rgba(51, 102, 153, 0.2)", "The dimmed-link color definition should match the RGBA definition with 0.5 alpha.");
+  newLink.set('isDimmed', YES);
   equals ( newLink.get('isDimmed'), YES, "The isDimmed property should be set to YES");
-  newLink.unDimColor();
+  equals ( newLink.get('color'), "rgba(51, 102, 153, 0.2)", "The dimmed-link color definition should match the RGBA definition with less-than-one alpha.");
+  newLink.set('isDimmed', NO);
   equals ( newLink.get('color'), "rgba(51, 102, 153, 1)", "The undimmed-link color definition should match the RGBA definition with 1.0 alpha.");
   equals ( newLink.get('isDimmed'), NO, "The isDimmed property is back to NO");
 });
