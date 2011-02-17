@@ -37,15 +37,15 @@ MySystem.PropertyEditorPane = SC.PalettePane.create({
 
   }),
 
-  deleteButton: SC.ButtonView.create({
-    buttonBehavior: SC.PUSH_BEHAVIOR,
-    layout: { left: 10, right: 10, bottom: 10, height:20 },
-    title: "Delete",
-    toolTip: "Click to delete the selected object and close this window",
-    target: 'MySystem.nodesController',
-    action: "deleteObject",
-    theme: "capsule"
-  }),
+  // deleteButton: SC.ButtonView.create({
+  //   buttonBehavior: SC.PUSH_BEHAVIOR,
+  //   layout: { left: 10, right: 10, bottom: 10, height:20 },
+  //   title: "Delete",
+  //   toolTip: "Click to delete the selected object and close this window",
+  //   target: 'MySystem.nodesController',
+  //   action: "deleteObject",
+  //   theme: "capsule"
+  // }),
   
   /**
     returns the index of the first occurrence of element in array, -1 if it's not there
@@ -105,9 +105,9 @@ MySystem.PropertyEditorPane = SC.PalettePane.create({
           // }
         }
       }
-      if (deleteButton.parentView === null) {
-        this.appendChild(deleteButton);
-      }
+      // if (deleteButton.parentView === null) {
+      //   this.appendChild(deleteButton);
+      // }
     }
   }.observes('objectToEdit'),
 
