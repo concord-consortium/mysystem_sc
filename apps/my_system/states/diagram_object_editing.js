@@ -31,6 +31,15 @@ MySystem.DIAGRAM_OBJECT_EDITING = Ki.State.design({
   },
   
   /**
+    Delete the object being edited.
+  */
+  deleteObject: function () {
+    var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');
+    propertyEditor.get('objectToEdit').destroy();
+    return YES;
+  },
+  
+  /**
     Re-set the property pane attributes and remove it from the page.
   */
   tearDownPropertyPane: function () {
@@ -68,5 +77,6 @@ MySystem.DIAGRAM_OBJECT_EDITING = Ki.State.design({
       // Update the property editor pane
       this.setUpPropertyPane();
     }
+    return YES;
   }
 });
