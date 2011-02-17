@@ -42,35 +42,40 @@ After Lebowski is installed in your current rvm gemset, time to test!
 
 
 ### Running SproutCore QUnit tests with capybara-testrunner ###
-# From the top-level mysystem_sc directory:
+1. From the top-level mysystem_sc directory:
 rvm gemset import
 
-# don't abort on first error
-set +e
+1. don't abort on first error
+`set +e`
 
-# remove cached files:
-rm -rf tmp
+2. remove cached files:
+`rm -rf tmp`
 
-# remove old reports
-rm reports/*.xml
+3. remove old reports
+`rm reports/*.xml`
 
-# $SC_SERVER_PORT is usually 4020. That environment variable is used so 
-# multiple ci server (such as Husdon) job instances don't use the same port
+4. $SC_SERVER_PORT is usually 4020. That environment variable is used so multiple ci server (such as Husdon) job instances don't use the same port
+<pre>
 sc-server --port=$SC_SERVER_PORT --host=0.0.0.0 &
 sleep 1
+</pre>
 
-# Go into the capybara-testrunner directory and run the tests
+5. Go into the capybara-testrunner directory and run the tests
+<pre>
 pushd capybara-testrunner
 ruby -rubygems run-tests.rb -p $SC_SERVER_PORT -i -h -t apps -o ../reports
 EXIT_STATUS=$?
+</pre>
 
-# Leave the capybara-testrunner directory
-popd
+6. Leave the capybara-testrunner directory
+`popd`
 
-# send a control-c to sc-server
-kill -s 2 %1
+7. send a control-c to sc-server
+<pre>
+kill -s 2 %1`
 
 exit $EXIT_STATUS
+</pre>
 
 ### Building as WISE4 step ###
 
@@ -91,13 +96,16 @@ exit $EXIT_STATUS
 * DEMO: <http://mysystem_sc.dev.concord.org/>
 * GITHUB <https://github.com/concord-consortium/mysystem_sc/>
 * CI server at: <http://hudson.dev.concord.org/hudson/job/MySystem_SproutCore/>
+* To understand user interaction with the application, understand the Ki statechart system (see link below).
+* Build JSDoc documentation using `sc-docs`.
 
 Related projects:
 
-* LinkIt <http://github.com/etgryphon/linkit-demo/>
-* SCUI <http://github.com/etgryphon/sproutcore-ui/>
 * SproutCore <http://github.com/sproutit/sproutcore/>
+* SCUI <http://github.com/etgryphon/sproutcore-ui/>
+* LinkIt <http://github.com/etgryphon/linkit-demo/>
 * Lebowski <http://github.com/FrozenCanuck/Lebowski>
+* Ki <http://github.com/FrozenCanuck/Ki>
 * Previous mysystem effort: <http://github.com/knowuh/mysystem/>
 
 
