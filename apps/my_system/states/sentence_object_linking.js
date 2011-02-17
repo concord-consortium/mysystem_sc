@@ -44,6 +44,7 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
     // Dim all links
     var allLinks = MySystem.store.find('MySystem.Link');
     allLinks.forEach( function (link) {
+      console.log("Dimming link %s", link.get('id'));
       link.set('isDimmed', YES);
     });
     return YES;
@@ -54,16 +55,22 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
     depending on their selected state.
   */
   updateHighlighting: function () {
+    var isLink = function (x) {
+      // returns true if x is a MySystem.Link
+      return x.kindOf(MySystem.Link);
+    };
     var allLinks = MySystem.store.find('MySystem.Link');
-    var selectedLinks = MySystem.nodesController.get('selectedLinks');
+    var selectedLinks = MySystem.nodesController.get('allSelected').filter(isLink);
     
-    // Update link dimming
-    // TODO: Need to dim newly un-selected links, but this crashes the app.
-    // allLinks.forEach( function (link) {
-    //   link.set('isDimmed', YES);
-    // });
-    selectedLinks.forEach( function (link) {
+    allLinks.forEach( function (link) {
+      if (selectedLinks.indexOf(link) > -1) {
+        console.log("Un-dimming link %s", link.get('id'));
         link.set('isDimmed', NO);
+      }
+      else {
+        console.log("Dimming link %s", link.get('id'));
+        link.set('isDimmed', YES);
+      }
     });
     
     // Nodes are un-dimmed by virtue of selection CSS
