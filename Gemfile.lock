@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/knowuh/resource_squasher.git
+  revision: a79d33fa99dc967074e6a3a90cbe4b42ec452aa6
+  specs:
+    resource_squasher (0.0.2)
+      bundler
+      rake
+      thor
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -82,6 +91,7 @@ DEPENDENCIES
   lebowski
   rack
   rake
+  resource_squasher!
   rubyzip
   sproutcore (~> 1.4.5)
   thin (> 1.2.7)

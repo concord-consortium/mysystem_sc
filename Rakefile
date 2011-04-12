@@ -56,8 +56,9 @@ task :repackage => [:clean] do
     #%x[mv #{@output_directory}/00*.html #{@output_directory}/#{@wise_step_name}.html]
 
   rescue LoadError
-    puts "You need to install the resource squasher gem like so:"
-    puts "  gem install ./resource_squasher-0.0.2.gem"
+    puts "ensure that you are using bundler, and that resource_squasher gem is"
+    puts "defined in your Gemfil. Then do 'bundle install'"
+    puts "Invoke rake using 'bundle exec rake'"
   end
 end
 

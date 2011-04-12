@@ -14,6 +14,10 @@ gem "capybara"
 gem "ci_reporter"
 gem "rake"
 gem "rack"
+git "git://github.com/knowuh/resource_squasher.git" do
+  gem "resource_squasher"
+end
+
 
 # dont need to specify deps here:
 #gem "daemons", "~> 1.1.0"
@@ -41,6 +45,5 @@ gem "rack"
 
 #gem "thin", "~> 1.2.7"
 
-#git "git://github.com/ghazel/ar-extensions.git" do
   #gem "ar-extensions",        "~> 0.9.3"
 #end
