@@ -21,7 +21,7 @@ var authorScripts = [
 ];
 
 var gradingScripts = [
-  <%#'vle/node/mysystem_sc/MySystemSCState.js'%>
+  'vle/node/mysystem_sc/MySystemSCState.js'
 ];
 
 var dependencies = [
@@ -36,12 +36,29 @@ var css = [
   <%= css_files %>
 ];
 
+var nodeClasses = [
+  {nodeClass:'display', nodeClassText:'MySystemSC'}
+];
+
+componentloader.addNodeClasses('MySystemSCNode', nodeClasses);
+
+var nodeTemplateParams = [
+  {
+    nodeTemplateFilePath:'node/template/templateMySystemSC.my',
+    nodeExtension:'my'
+  }
+];
+
+componentloader.addNodeTemplateParams('MySystemSCNode', nodeTemplateParams);
+
+
 scriptloader.addScriptToComponent('core', coreScripts);
 scriptloader.addScriptToComponent('mysystem_sc', studentVLEScripts);
 scriptloader.addScriptToComponent('author', authorScripts);
 scriptloader.addScriptToComponent('studentwork', gradingScripts);
 scriptloader.addDependencies(dependencies);
 scriptloader.addCssToComponent('mysystem_sc', css);
+
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){

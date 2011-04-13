@@ -1,10 +1,10 @@
 
-MySystemNodeSC.prototype = new Node();
-MySystemNodeSC.prototype.constructor = MySystemNodeSC;
-MySystemNodeSC.prototype.parent = Node.prototype;
-MySystemNodeSC.authoringToolName = "My System";
-MySystemNodeSC.authoringToolDescription = "Students work on a diagram where they can add images and connect them with lines";
-function MySystemNodeSC(nodeType, view) {
+MySystemSCNode.prototype = new Node();
+MySystemSCNode.prototype.constructor = MySystemSCNode;
+MySystemSCNode.prototype.parent = Node.prototype;
+MySystemSCNode.authoringToolName = "My System 2";
+MySystemSCNode.authoringToolDescription = "Students work on a diagram where they can add images and connect them with lines";
+function MySystemSCNode(nodeType, view) {
 	this.view = view;
 	this.type = nodeType;
 	this.content = null;
@@ -21,7 +21,7 @@ function MySystemNodeSC(nodeType, view) {
  * @return a string containing the prompt. (the string may be an
  * html string)
  */
-MySystemNodeSC.prototype.getPrompt = function() {
+MySystemSCNode.prototype.getPrompt = function() {
 	var prompt = "";
 	
 	if(this.content != null) {
@@ -38,12 +38,12 @@ MySystemNodeSC.prototype.getPrompt = function() {
 	return prompt;
 };
 
-MySystemNodeSC.prototype.updateJSONContentPath = function(base, contentString){
+MySystemSCNode.prototype.updateJSONContentPath = function(base, contentString){
 	var rExp = new RegExp(this.filename);
 	this.content.replace(rExp, base + '/' + this.filename);
 };
 
-MySystemNodeSC.prototype.parseDataJSONObj = function(stateJSONObj) {
+MySystemSCNode.prototype.parseDataJSONObj = function(stateJSONObj) {
 	return MYSYSTEMSTATE.prototype.parseDataJSONObj(stateJSONObj);
 };
 
@@ -51,7 +51,7 @@ MySystemNodeSC.prototype.parseDataJSONObj = function(stateJSONObj) {
  * This is called when the node is exited
  * @return
  */
-MySystemNodeSC.prototype.onExit = function() {
+MySystemSCNode.prototype.onExit = function() {
 	//check if the content panel has been set
 	if(this.contentPanel) {
 		try {
@@ -83,14 +83,14 @@ MySystemNodeSC.prototype.onExit = function() {
 	}
 };
 
-MySystemNodeSC.prototype.getHTMLContentTemplate = function() {
+MySystemSCNode.prototype.getHTMLContentTemplate = function() {
 	return createContent('node/mysystem_sc/MySystemSC.html');
 };
 
-NodeFactory.addNode('MySystemNodeSC', MySystemNodeSC);
+NodeFactory.addNode('MySystemSCNode', MySystemSCNode);
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){
-	eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/MySystemNodeSC.js');
+	eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/MySystemSCNode.js');
 };
 
