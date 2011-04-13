@@ -87,10 +87,6 @@ DEPENDENCIES
   ci_reporter
   daemon_controller
   lebowski
-  rack
   rake
   resource_squasher!
-  rubyzip
   sproutcore (~> 1.4.5)
-  thin (> 1.2.7)
-  thor

@@ -19,7 +19,7 @@
 4. git submodule update
 5. bundle install
 6. bundle exec sc-server
-
+7. if you get an error about 'iconv' see this [rvm page](http://rvm.beginrescueend.com/packages/iconv/)
 
 ### Lebowski testing: ###
 
@@ -63,7 +63,7 @@ exit $EXIT_STATUS`
 ### Building as WISE4 step ###
 
 1. install the resource_squasher `gem intall ./resource_squasher-0.0.1.gem`
-2. run the default rake task `rake` (invokes sc-build and wise4 squash)
+2. run the default rake task `bundle exec rake` (invokes sc-build and wise4 squash)
 3. open wise4/00_*.html -- you should be able to preview the static
    files.
 4. TODO: There is still some work to be done here: here is where we are:
