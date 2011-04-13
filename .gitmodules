@@ -18,3 +18,6 @@
 [submodule "frameworks/ki"]
 	path = frameworks/ki
 	url = git://github.com/FrozenCanuck/Ki.git
+[submodule "frameworks/jasmine-sproutcore"]
+	path = frameworks/jasmine-sproutcore
+	url = git://github.com/concord-consortium/jasmine-sproutcore.git
