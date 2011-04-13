@@ -1,7 +1,9 @@
 # ===========================================================================
 # Project:   MySystem Sproutcore implementation
-# Copyright: ©2010 Concord Consortium
+# Copyright: ©2011 Concord Consortium
 # ===========================================================================
+
+require File.expand_path('../frameworks/jasmine-sproutcore/builders/jasmine_builder', __FILE__)
 
 # Add initial buildfile information here
 config :all, 
@@ -32,3 +34,9 @@ config :my_system,
   :required => [:sproutcore, :scui, :forms, :ki],
   :theme    => :standard_theme
 
+namespace :build do
+  desc "builds a jasmine unit test"
+  build_task :test do
+    Jasmine::Builder::Test.build ENTRY, DST_PATH
+  end
+end
