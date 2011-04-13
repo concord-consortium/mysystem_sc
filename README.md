@@ -17,28 +17,18 @@
 2. cd mysystem_sc
 3. git submodule init
 4. git submodule update
-5. sc-server
+5. bundle install
+6. bundle exec sc-server
 
 
 ### Lebowski testing: ###
 
-TODO: we should script lebowski testing...
+TODO: Looks like lebowski tests might be wedged.
 
-0. use the rvm gemset for mysystem, or make a new one for lebowski.
-1. Install prerequisit gems:
-  1. gem install rspec
-  2. gem install selenium
-  3. gem install hoe
-2. clone lebowski repo & build:
-  1. git clone http://github.com/FrozenCanuck/Lebowski.git
-  2. rake install_gem
-  3. (if you are using rvm, DONT let sudo install run, hit <C-t> to stop rake task, and run this:
-    <code>gem install --local pkg/lebowski-0.1.1.gem </code>
-
-After Lebowski is installed in your current rvm gemset, time to test!
-
+0. the Gemfile stipulates dependencies on lebowski
 1. cd to your sproutcore directory: <code> cd /path/to/mysystem_sc </code>
-2. run the test! <code>lebowski-spec spec/mysystem_spec.rb</code> (where mysystem_spec.rb is your test)
+2. run the test! <code>bundle exec lebowski-spec spec/mysystem_spec.rb</code> (where mysystem_spec.rb is your test)
+
 
 
 ### Running SproutCore QUnit tests with capybara-testrunner ###
