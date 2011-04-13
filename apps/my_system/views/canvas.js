@@ -217,8 +217,11 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
       globalFrame = pv ? pv.convertFrameToView(frame, null) : frame;
       canvasX = evt.pageX - globalFrame.x;
       canvasY = evt.pageY - globalFrame.y;
+      
+      // if the click was on a link, set this.linkSelection to the selected link and set the link's 'isSelected' to YES
       this._selectLink( {x: canvasX, y: canvasY}, multiSelect );
 
+      // otherwise, if the click was on a node, set dragData
       itemView = this.itemViewForEvent(evt);
       if (itemView) {
         this._dragData = SC.clone(itemView.get('layout'));
