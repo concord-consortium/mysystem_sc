@@ -49,6 +49,7 @@ task :repackage => [:clean] do
     %x[sc-build -rc #{@sc_project_name}]
 
     # compact and rewrite application for wise4
+    puts "rezsquish squash --project_name=#{@sc_project_name} --output_dir=#{@output_directory}"
     %x[rezsquish squash --project_name=#{@sc_project_name} --output_dir=#{@output_directory}]
 
     # rename the html file
