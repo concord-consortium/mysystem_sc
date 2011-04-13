@@ -1,7 +1,6 @@
 source :gemcutter
 
 gem "sproutcore", "~> 1.4.5"
-gem "iconv"
 gem "thin",  "> 1.2.7"
 gem "thor" 
 gem "rubyzip"

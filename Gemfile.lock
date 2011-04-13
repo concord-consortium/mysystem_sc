@@ -36,7 +36,6 @@ GEM
     extlib (0.9.15)
     ffi (1.0.7)
       rake (>= 0.8.7)
-    iconv (0.1)
     json_pure (1.4.6)
     lebowski (0.3.2)
       rspec (~> 2.1.0)
@@ -87,7 +86,6 @@ DEPENDENCIES
   capybara
   ci_reporter
   daemon_controller
-  iconv
   lebowski
   rack
   rake
