@@ -6,12 +6,11 @@
 
 module("MySystem.PropertyEditorPane");
 
-var propEdit = MySystem.PropertyEditorPane.create();
+var propEdit = MySystem.PropertyEditorPane;
 
 test("Edit pane was created", function() {
-  expect(3);
+  expect(2);
   ok(propEdit !== null, "propEdit should not be null");
-  ok(propEdit.kindOf(MySystem.PropertyEditorPane), "propEdit should be a PropertyEditorPane");
   equals(propEdit.get('childViews').get('length'), 0, "propEdit should have no children");
 });
 
