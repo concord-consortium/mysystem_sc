@@ -1,0 +1,186 @@
+Models in MySystem
+as of commit 7e40ab0983bce9aa57e180f5053bf5c0bacb252b
+Richard Klancer <rpk@pobox.com> April 14, 2011
+------------------------------------------------------
+
+Activity
+
+  paletteItems      toMany PaletteItem
+  assignmentText    String
+  energyTypes       toMany EnergyType
+  
+
+EnergyType
+
+  label             String              default: 'Energy Flow'
+  color             String
+  isEnabled         Boolean             default: YES
+  
+
+Link
+
+  does not mix in LinkIt.Link
+  
+  color             String
+  text              String
+  startNode         toOne Node as 'outLinks'
+  endNode           toOne Node as 'inLinks'
+  sentences         toMany StorySentence as 'links'
+  
+  startTerminal     String
+  endTerminal       String  
+  
+  formFields        transient Array of 2 Forms.FormRowView classes
+  linkStyle         transient Object
+  label             transient Object
+  isDimmed          transient Boolean
+  
+  init()
+  
+  isComplete()
+  makeLinkItLink()
+  _textChanged()    observes '.text'
+  _colorChanged()   observes '.color'
+  _setLabel()
+  _setLinkStyle()
+  dimColor()        observes 'isDimmed'
+  unDimColor()      observes 'isDimmed'
+  
+  class properties
+  
+    GuidCounter
+    newGuid()
+    hashFromLinkItLink()
+    
+
+Node
+
+  does mix in LinkIt.Node
+
+  image             String
+  title             String
+  transformer       Boolean             default: true
+  toolTip           String              default: null
+  
+  outLinks          toMany Link as 'startNode'
+  inLinks           toMany Link as 'endNode'
+  sentences         toMany StorySentence as 'nodes'
+  transformations   toMany Transformation as 'node'
+
+  terminals         transient Array ['a', 'b']
+  formFields        transient Array of FormRowViews
+  inColorMap        transient Array []
+  outColorMap       transient Array []
+  links             computed property of '.inlinks.[]', '.outlinks.[]'   ???
+  
+  init()
+  destroy()
+  
+  intersection()
+  canLink()
+  _hasLink()
+  didCreateLink()
+  willDeleteLink()
+  acceptableOutLinkColors()
+  acceptableInLinkColors()
+  
+  linkColor         computed property of '.outLinks.[]', '.inLinks.[]'
+  inLinkColors      computed property of '.inLinks.[]'
+  outLinkColors     computed property of '.inLinks.[]' (mistake?)
+  colorObjects      computed property of '.outLinks.[]', '.inLinks.[]'
+  uniqueColors()
+  
+  inLinkColorsWithTransformations     computed property of '.transformations.[]'
+  outLinkColorsWithTransformations    computed property of '.transformations.[]'
+  allLinksHaveTransformations         computed property
+  transformationIcon                  computed property
+  hasImpliedTransformations           computed property of '.outLinks.[]', '.inLinks.[]'
+  transformationsAreAllAnnotated      computed property of 'transformations'
+  
+  hasTransformationWithOutgoingColor()
+  hasIncomingLinksWithColor()
+  
+  mixed in from LinkIt.Node
+  
+    isNode                  transient YES
+    terminals               transient null
+    linksKey                transient 'links'
+    positionKey             transient 'position'
+    _invalidationDelegate   transient null
+    _invalidationAction     transient null
+    
+    initMixin()
+    canLink()
+    canDeleteLink()
+    registerInvalidationDelegate()
+    didCreateLink()
+    willDeleteLink()
+    createLink()
+    deleteLink()
+    _linksDidChange
+
+  class properties
+  
+    GuidCounter
+    newGuid()
+
+
+PaletteItem
+
+  image             String
+  title             String
+  
+
+Story
+
+  storyHtml         String  
+  formFields        transient Array of FormRowViews
+  
+
+StorySentence
+
+  order             Number
+  bodyText          String
+  nodes             toMany Node as 'sentences'
+  links             toMany Link as 'sentences'
+  transformation    toOne Transformation as 'annotation'
+  
+  diagramObjects()  observes '.nodes.[]', '.links.[]'
+
+  class properties
+  
+    GuidCounter
+    newGuid()
+    
+
+StudentState
+
+  content           String
+  timestamp         Number
+  
+  formFields        Array []
+
+
+Transformation
+
+  node              toOne Node as 'transformations'
+  annotation        toOne StorySentence as 'transformation'
+  
+  inLinkColor       String
+  outLinkColor      String
+  
+  _linkObject       transient
+  
+  inLinks           computed property
+  outLinks          computed property
+  
+  isAnnotated       computed property of 'annotation'
+  isComplete        computed property of 'node', '.inLinks.[]', '.outLinks.[]'
+  
+  makeLinkItLink()
+  
+  class properties
+  
+    GuidCounter
+    newGuid()
+    hashFromLinkItLink()
