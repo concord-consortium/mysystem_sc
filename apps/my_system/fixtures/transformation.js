@@ -13,7 +13,5 @@ MySystem.Transformation.FIXTURES = [
   //   inLinkColor: 'red',
   //   outLinkColor: 'green'
   // }
-  // All fixture records must have a unique primary key (default 'guid').  See 
-  // the example below.
 
 ];

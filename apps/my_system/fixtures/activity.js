@@ -8,9 +8,6 @@ sc_require('models/activity');
 
 MySystem.Activity.FIXTURES = [
 
-  // All fixture records must have a unique primary key (default 'guid').  See 
-  // the example below.
-
   { guid: 'assign1',
     paletteItems: [ 'pi1', 'pi2', 'pi3' ],
     assignmentText: "<p>Make a system diagram to explain how energy from the sun and the things people do BOTH contribute to global climate.</p><ul><li>Where does energy come from?</li><li>How does energy move?</li><li>Where does energy go?</li><li>How does energy change?</li></ul>",

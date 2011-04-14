@@ -3,7 +3,16 @@
 // Copyright: ©2010 Concord Consortium
 // @author    Richard Klancer <rpk@pobox.com>
 // ==========================================================================
-/*globals Smartgraphs */
+/*globals MySystem */
+
+
+/** NOTE:
+
+ This has been taken essentially unmodified Smartgraphs codebase. It is here as an example to build on, but does not
+ serve any function in MySystem right now.
+
+*/
+
 
 /** @class
 

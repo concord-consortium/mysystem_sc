@@ -13,5 +13,4 @@
 MySystem.storyController = SC.ObjectController.create(
 /** @scope MySystem.story.prototype */ {
 
-  // TODO: Add your own code here.
 }) ;

@@ -13,6 +13,4 @@
 MySystem.nodePaletteController = SC.ArrayController.create(
 /** @scope MySystem.nodePaletteController.prototype */ {
 
-  // TODO: Add your own code here.
-
 }) ;
