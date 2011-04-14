@@ -93,7 +93,7 @@ MySystem.Transformation = SC.Record.extend(
       _complete = NO;
     }
     return _complete;
-  }.property("node", ".inLinks.[]", ".outLinks.[]").cacheable(),
+  }.property("node", ".inLinks.[]", ".outLinks.[]").cacheable(),        // FIXME this is not valid SC!
 
   makeLinkItLink: function() {
     var tempHash = {};

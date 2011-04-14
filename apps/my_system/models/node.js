@@ -92,9 +92,10 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
     // this.set('links', _links);
     return _links;
-  }.property('.outlinks.[]', '.inLinks.[]'),
+  }.property('.outlinks.[]', '.inLinks.[]'),    // FIXME this is not valid (at least in this version of SproutCore)
   // The cacheable property was removed because that broke link drawing when we added
   // in transformations.
+
 
 
   init: function () {
@@ -311,17 +312,17 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       return null;
     }
     return this.get('links').firstObject().get('model').get('color');
-  }.property('.outlinks.[]', '.inLinks.[]'),
+  }.property('.outlinks.[]', '.inLinks.[]'),          // FIXME this is not valid SC!
 
   // Returns an array of colors of all in-links to the node.
   inLinkColors: function() {
     return this.get('inLinks').getEach('color');
-  }.property('.inLinks.[]'),
+  }.property('.inLinks.[]'),                          // FIXME this is not valid SC!
 
   // Returns an array of colors of all out-links from the node.
   outLinkColors: function() {
     return this.get('outLinks').getEach('color');
-  }.property('.inLinks.[]'),
+  }.property('.inLinks.[]'),                         // FIXME this is not valid SC! (plus it should be 'outlinks' not 'inlinks', yes?
 
   colorObjects: function() {
     var colors = [], height = 15;
@@ -346,7 +347,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       height = height + 25;
     });
     return colors;
-  }.property('.inLinkColors.[]', '.outLinkColors.[]'),
+  }.property('.inLinkColors.[]', '.outLinkColors.[]'),      // FIXME this is not valid SC!
 
   uniqueColors: function(colorArray) {
     var outArray = [];
