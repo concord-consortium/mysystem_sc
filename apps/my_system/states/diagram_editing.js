@@ -42,10 +42,10 @@ MySystem.DIAGRAM_EDITING = Ki.State.design({
     
     // Create a new node in store
     node = MySystem.store.createRecord(MySystem.Node, { 
-      "title": attr.title, 
-      "image": attr.image, 
-      "position": { x: attr.x, y: attr.y },
-      "guid": guid
+      title:    attr.title, 
+      image:    attr.image, 
+      position: { x: attr.x, y: attr.y },
+      guid:     guid
     }, guid);
     
     // De-select other diagram objects and select the new node
