@@ -169,6 +169,7 @@ MySystem.Link = SC.Record.extend(
     this.set("linkStyle", newLinkStyle);
   },
   
+  // FIXME color should be a computed property of some kind
   dimColor: function() { // If we're selecting links in some states, we want un-selected links to be dimmed.
     if (this.get('isDimmed') === YES) {
       var oldColor, newColor, channels;
@@ -235,8 +236,12 @@ MySystem.Link = SC.Record.extend(
         newColor.a = newColor.a * 5;
         if (newColor.a > 1.0) newColor.a = 1.0;
 
-        // set new color
-        this.set("color", "rgba(" + newColor.r.toString() + ", " + newColor.g.toString() + ", " + newColor.b.toString() + ", " + newColor.a.toString() + ")");
+        // temporary fix for the fact that this observer can fire after the underlying record is destroyed, throwing an error
+        // FIXME however, 'color' ought to be a computed property and should not rely on an observer to be changed.
+        if (!this.get('isDestroyed')) {
+          // set new color
+          this.set("color", "rgba(" + newColor.r.toString() + ", " + newColor.g.toString() + ", " + newColor.b.toString() + ", " + newColor.a.toString() + ")");
+        }
         return YES;
       }
       else {
