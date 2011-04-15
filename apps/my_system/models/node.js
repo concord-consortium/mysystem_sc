@@ -30,6 +30,8 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     isMaster: YES
   }),
   
+  position: SC.Record.attr(Object),
+  
   sentences: SC.Record.toMany('MySystem.StorySentence', {
     inverse: 'nodes', isMaster: NO
   }),
