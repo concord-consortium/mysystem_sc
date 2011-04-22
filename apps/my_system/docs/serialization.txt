@@ -1,0 +1,35 @@
+1. cascade the fixtures data source behind a custom data source
+2. let the custom data source handle nodes, links, stories, and storySentences. (How to configure this?)
+3. custom data source reads/writes to a js object
+4. the js object gets serialized to a string which is put into a hidden div
+5. the js object is unserialized on app load
+6. also the js object is unserialized whenever (a callback to be defined) is called.
+
+
+* main app's createDataStore() (?) method returns a new store that has a cascaded data source
+
+* the store should notify the custom data source when records of the relevant types are created, read, updated, deleted
+ 
+* the definition of "the relevant types" should be settable
+
+* the store should return records corresponding provided starting data
+
+* the starting data should be a fresh *copy* every time the store is created (no corruption from prev tests)
+
+* the store should write hashes of the relevant records to the js data object
+
+   - when a record is created, a corresponding object should be created in the data object
+      
+   - when a record is updated, the corresponding object should be updated in the data object
+      
+   - when a record is deleted, the corresponding object should marked as "deleted" from the data object
+
+    
+* when the js object is updated by the app, it should be serialized to the dom element
+
+* then the app loads, it should unserialize the dom element to the js object and mark it as having new data
+
+* when the js object is marked as having new data, the app should update the relevant models.
+
+* whenever the (callback to be defined) is called, it should unserialize the data and use that to set the js object's contents.
+
