@@ -1,0 +1,22 @@
+* we probably want vle node to push json into the mysystem-sc dom and read data from the dom
+* Whenever vle node pushes data into the dom, it should call a mysystem-sc callback. It should check if the callback is defined; if it's not defined, it should just write to the dom. It can assume that mysystem will always read from the dom at startup.
+--
+
+
+when we create a WISE4 node for MySystem, we need to create the appropriate html and js, using the WISE4 node template as a guide ( http://code.google.com/p/wise4/wiki/HowToCreateANewWise4Step )
+
+(1) Rename and modify TEMPLATESTATE in templatesate.js to MYSYSTEMSTATE. This object will the store the json state of the node/step in its 'response' property. (When the step wants to save the state of the MySystem diagram, it will create a *new* MYSYSTEMSTATE object, set it's 'response' property to the response, and push the new MYSYSTEMSTATE instance to the top of its 'states' array)
+
+(2) Rename and modify TEMPLATE in template.js to MYSYSTEM. This object's 'save' method should take care of getting the JSON from MySystem, constructing a new MYSYSTEMSTATE object to contain that JSON (actually, data hash), and firing the 'pushStudentWork' with the new MYSYSTEMSTATE object so the VLE saves the data.
+
+(3) implement the render method in the MYSYSTEM object. Like the provided TEMPLATE.prototype.render, it should write the latest state to the dom, in this case so the MySystem SC app can access it.
+
+
+
+Note: accessing the iframe context:
+
+Suppose you have an open response step open in WISE4. Then, at the console, window.frames['topifrm'].frames['topifrm'].OPENRESPONSE refers to the OPENRESPONSE "class" definition from vle/nodes/openresponse/openresponse.js
+
+What we probably want is to define a (namespaced?) method in this iframe context which returns the json for the latest MySystem state. Behave just like a 
+
+Let WISE4 handle serializing that state.
