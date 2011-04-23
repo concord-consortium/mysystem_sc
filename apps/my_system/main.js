@@ -19,10 +19,29 @@ MySystem.studentMode = MySystem.ADVANCED_STUDENT;
 
 MySystem.main = function main() {
 
-  // Step 1: Instantiate Your Views
-  // The default code here will make the mainPane for your application visible
-  // on screen.  If you app gets any level of complexity, you will probably 
-  // create multiple pages and panes.  
+  MySystem.dataSource = SC.CascadeDataSource.create({
+    dataSources: ['studentStateDataSource', 'fixturesDataSource'],
+    
+    studentStateDataSource: MySystem.MergedHashDataSource.create({
+      handledRecordTypes: [MySystem.Link, MySystem.Node, MySystem.Story, MySystem.StorySentence]
+    }),
+    
+    fixturesDataSource: SC.FixturesDataSource.create({
+      // Patch. CascadeDataSource's commitRecords naively has each data source attempt to commit the same records.
+      // (This results in an internal inconsistency error on record creation, because the fixturesDataSource tries to 
+      // create the same record that the studentStateDataSource has just created, and whose storeKey is therefore in
+      // the wrong state -- READY instead of BUSY)
+      commitRecords: function () { return YES; }
+    })
+  });
+  
+  // load initial student data into the studentStateDataSource
+  MySystem.dataSource.studentStateDataSource.set('dataHash', MySystem.initialStudentState);
+
+  MySystem.store = SC.Store.create({
+    commitRecordsAutomatically: YES
+  }).from(MySystem.dataSource);
+
   MySystem.getPath('mainPage.mainPane').append() ;
 
   SC.ExceptionHandler = MySystem.ExceptionHandler;
