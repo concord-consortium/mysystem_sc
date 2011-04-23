@@ -2,8 +2,10 @@
 
 // Quick hand-test of whether nodes can be serialized and unserialized. Not meant to be permanent. 
 // Richard Klancer <rpk@pobox.com> 4-15-2011
+// updated 4-21-2011 to generate json in the format needed by MergedHashesDataSource
 
 var stateAsJsonString;
+var stateForNewDataSource;
 
 
 function saveState() {
@@ -75,4 +77,30 @@ function restoreState() {
   });
 
   SC.run();
+}
+
+function saveStateForNewDataSource() {
+  var store = MySystem.store,
+      jsObjects;
+  
+  function hashesFor(records) {
+    var ret = {},
+        i, len, rec;
+        
+    for(i = 0, len = records.get('length'); i < len; i++) {
+      rec = records.objectAt(i);
+      ret[rec.get('id')] = store.readDataHash(rec.get('storeKey'));
+    }
+
+    return ret;
+  }
+  
+  jsObjects = {
+    "MySystem.Link":           hashesFor(store.find(MySystem.Link)),
+    "MySystem.Node":           hashesFor(store.find(MySystem.Node)),
+    "MySystem.Story":          hashesFor(store.find(MySystem.Story)),
+    "MySystem.StorySentence":  hashesFor(store.find(MySystem.StorySentence))
+  };
+  
+  stateForNewDataSource = JSON.stringify(jsObjects, null, 2);
 }
