@@ -23,7 +23,12 @@ MySystem.main = function main() {
     dataSources: ['studentStateDataSource', 'fixturesDataSource'],
     
     studentStateDataSource: MySystem.MergedHashDataSource.create({
-      handledRecordTypes: [MySystem.Link, MySystem.Node, MySystem.Story, MySystem.StorySentence]
+      handledRecordTypes: [MySystem.Link, MySystem.Node, MySystem.Story, MySystem.StorySentence],
+
+      // write the updated student-state data to the DOM whenever it changes
+      dataStoreDidUpdateDataHash: function () {
+        SC.$('#my_system_state').text( JSON.stringify(this.get('dataHash'), null, 2) );
+      }
     }),
     
     fixturesDataSource: SC.FixturesDataSource.create({
@@ -44,8 +49,8 @@ MySystem.main = function main() {
     }
   }).from(MySystem.dataSource);
 
-  // load the initial data
-  MySystem.store.setStudentStateDataHash(MySystem.initialStudentState);
+  // load the initial data from the DOM
+  MySystem.store.setStudentStateDataHash( JSON.parse(SC.$('#my_system_state').text()) );
     
   MySystem.getPath('mainPage.mainPane').append();
 
