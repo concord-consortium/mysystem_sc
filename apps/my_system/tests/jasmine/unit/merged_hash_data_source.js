@@ -340,7 +340,8 @@ describe("MergedHashDataSource", function () {
                 "preexistingRecord": preexistingRecordHash
               }
             };
-            spyOn(store, 'dataSourceDidComplete');            
+            spyOn(store, 'dataSourceDidComplete');
+            spyOn(dataSource, 'dataStoreDidUpdateDataHash'); 
           });
               
           itShouldSaveTheDataHash = function () {
@@ -359,6 +360,10 @@ describe("MergedHashDataSource", function () {
 
             it("should call store.dataSourceDidComplete with the storeKey", function () {
               expect(store.dataSourceDidComplete).toHaveBeenCalledWith(12345);
+            });
+            
+            it("should call its dataStoreDidUpdateDataHash method", function () {
+              expect(dataSource.dataStoreDidUpdateDataHash).toHaveBeenCalled();
             });
             
             it("shoud return YES", function () {
@@ -488,6 +493,7 @@ describe("MergedHashDataSource", function () {
             spyOn(store, 'recordTypeFor').andReturn(handledRecordType1);
             spyOn(store, 'idFor').andReturn('recordToDelete');
             spyOn(store, 'dataSourceDidDestroy');
+            spyOn(dataSource, 'dataStoreDidUpdateDataHash');
             
             returnValue = dataSource.destroyRecord(store, 23456);
             updatedDataHash = dataSource.get('dataHash');
@@ -516,6 +522,10 @@ describe("MergedHashDataSource", function () {
           it("should call store.dataSourceDidDestroy with the passed storeKey", function () {
             expect(store.dataSourceDidDestroy).toHaveBeenCalledWith(23456);
           });
+          
+          it("should call its dataStoreDidUpdateDataHash method", function () {
+            expect(dataSource.dataStoreDidUpdateDataHash).toHaveBeenCalled();
+          });      
           
           it("should return YES", function () {
             expect( returnValue ).toEqual(YES);

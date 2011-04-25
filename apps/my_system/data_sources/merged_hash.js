@@ -30,7 +30,8 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
   dataHash: function () {
     return this._dataHash;
   }.property(),
-  
+
+ 
   init: function () {
     sc_super();
     
@@ -46,7 +47,8 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     }
     
     this._dataHash = dataHash;
-  },  
+    this.notifyPropertyChange('dataHash');    
+  },
   
   /**
     Returns YES if we manage the passed recordType, NO otherwise.
@@ -57,6 +59,12 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     return this.get('handledRecordTypes').indexOf(recordType) >= 0;
   },
 
+  /**
+    Override this at will. Called by createRecord, updateRecord, destroyRecord to indicate that the dataHash value has
+    changed because of a change to the underlying record in the store.
+  */
+  dataStoreDidUpdateDataHash: function () {},
+  
   // ..........................................................
   // QUERY SUPPORT
   // 
@@ -140,6 +148,8 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     // save a deep copy of the record's data hash
     recordsById[store.idFor(storeKey)] = SC.copy(store.readDataHash(storeKey), YES);
     store.dataSourceDidComplete(storeKey);
+    this.dataStoreDidUpdateDataHash();
+    this.notifyPropertyChange('dataHash');
     return YES;
   },
   
@@ -162,6 +172,8 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     
     delete dataHash[recordType.toString()][store.idFor(storeKey)];
     store.dataSourceDidDestroy(storeKey);
+    this.dataStoreDidUpdateDataHash();
+    this.notifyPropertyChange('dataHash');    
     return YES;
   },
   
@@ -214,6 +226,7 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     }
     
     this._dataHash = newDataHashCopy;
+    this.notifyPropertyChange('dataHash');    
   }
   
 });
