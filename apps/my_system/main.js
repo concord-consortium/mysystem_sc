@@ -34,15 +34,20 @@ MySystem.main = function main() {
       commitRecords: function () { return YES; }
     })
   });
-  
-  // load initial student data into the studentStateDataSource
-  MySystem.dataSource.studentStateDataSource.set('dataHash', MySystem.initialStudentState);
 
+  // the store passes student state data to the student state data source
   MySystem.store = SC.Store.create({
-    commitRecordsAutomatically: YES
+    commitRecordsAutomatically: YES,
+    
+    setStudentStateDataHash: function (hash) {
+      this.dataSource.studentStateDataSource.setDataHash(this, hash);
+    }
   }).from(MySystem.dataSource);
 
-  MySystem.getPath('mainPage.mainPane').append() ;
+  // load the initial data
+  MySystem.store.setStudentStateDataHash(MySystem.initialStudentState);
+    
+  MySystem.getPath('mainPage.mainPane').append();
 
   SC.ExceptionHandler = MySystem.ExceptionHandler;
 
