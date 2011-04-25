@@ -572,10 +572,12 @@ describe("MergedHashDataSource", function () {
           
           describe("when the new datahash contains an id of the same record type already found in the old datahash", function () {
             
+            var newRecordHash = { nestedField: { key: "value" } };
+            
             beforeEach( function () {
               newDataHash = {
                 "MyApp.HandledRecordType1": {
-                  "id only in new datahash": { key: "value" }
+                  "id only in new datahash": newRecordHash
                 }
               };
               dataSource.setDataHash(store, newDataHash);
@@ -583,7 +585,19 @@ describe("MergedHashDataSource", function () {
                             
             it("should call pushRetrieve with the new record", function () {
               expect(store.pushRetrieve).toHaveBeenCalled();
-              expect(store.pushRetrieve.mostRecentCall.args).toEqual([handledRecordType1, "id only in new datahash", { key: "value" }]);
+              expect(store.pushRetrieve.mostRecentCall.args).toEqual([handledRecordType1, "id only in new datahash", newRecordHash ]);
+            });
+            
+            describe("the hash passed to pushRetrieve", function () {
+              
+              it("should be a deep copy of the passed-in hash", function () {
+                var nestedFieldPassedToRetrieve = store.pushRetrieve.mostRecentCall.args[2]['nestedField'],
+                    nestedFieldPassedIn = newRecordHash['nestedField'];
+
+                expect(nestedFieldPassedToRetrieve).toEqual(nestedFieldPassedIn);
+                expect(nestedFieldPassedToRetrieve).not.toBe(nestedFieldPassedIn);
+                
+              });
             });
           });
           
