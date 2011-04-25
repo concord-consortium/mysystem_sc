@@ -161,6 +161,57 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     delete dataHash[recordType.toString()][store.idFor(storeKey)];
     store.dataSourceDidDestroy(storeKey);
     return YES;
+  },
+  
+  getRecordTypeFromName: function (recordTypeName) {
+    return SC.objectForPropertyPath(recordTypeName);
+  },
+  
+  /**
+    Set the merged hash to the new value passed. Calls pushRetrieve() and pushDestroy() on the store to and, change, or
+    remove records to reflect the difference between the current data hash and the new data hash.
+  */
+  setDataHash: function (store, newDataHash) {
+    var oldDataHash = this.get('dataHash'),
+        newDataHashCopy = {},
+        recordTypeName,
+        recordType,
+        id;
+    
+    // destroys
+    for (recordTypeName in oldDataHash) {
+      if (!oldDataHash.hasOwnProperty(recordTypeName)) continue;
+
+      recordType = this.getRecordTypeFromName(recordTypeName);
+    
+      for (id in oldDataHash[recordTypeName]) {
+        if (!oldDataHash[recordTypeName].hasOwnProperty(id)) continue;
+          
+        if (!newDataHash[recordTypeName] || !newDataHash[recordTypeName][id]) {
+          store.pushDestroy(recordType, id);
+        }
+      }
+    }
+    
+    // updates/creates
+    for (recordTypeName in newDataHash) {
+      if (!newDataHash.hasOwnProperty(recordTypeName)) continue;
+      
+      recordType = this.getRecordTypeFromName(recordTypeName);
+      
+      if (!this.handlesType(recordType)) continue;
+      
+      newDataHashCopy[recordTypeName] = {};
+      
+      for (id in newDataHash[recordTypeName]) {
+        if (!newDataHash[recordTypeName].hasOwnProperty(id)) continue;
+        
+        store.pushRetrieve(recordType, id, SC.copy(newDataHash[recordTypeName][id], YES));
+        newDataHashCopy[recordTypeName][id] = SC.copy(newDataHash[recordTypeName][id], YES);
+      }
+    }
+    
+    this.set('dataHash', newDataHashCopy);
   }
   
-}) ;
+});

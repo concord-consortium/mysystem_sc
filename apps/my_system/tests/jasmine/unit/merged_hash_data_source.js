@@ -55,6 +55,13 @@ describe("MergedHashDataSource", function () {
       dataSource = MySystem.MergedHashDataSource.create({
         handledRecordTypes: [handledRecordType1, handledRecordType2]
       });
+      
+      spyOn(dataSource, 'getRecordTypeFromName').andCallFake(function (recordTypeName) {
+        if (recordTypeName === "MyApp.HandledRecordType1") return handledRecordType1;
+        if (recordTypeName === "MyApp.HandledRecordType2") return handledRecordType2;
+        if (recordTypeName === "MyApp.NotHandledRecordType") return notHandledRecordType;
+        throw "record type not understood: " + recordTypeName;
+      });
     });
 
     describe("the initial value of the dataHash property", function () {
@@ -509,7 +516,194 @@ describe("MergedHashDataSource", function () {
     });
 
     describe("setDataHash method", function () {
+      
+      var store,
+          newDataHash;
+      
+      beforeEach( function () {
+        store = SC.Object.create({
+          pushRetrieve: function () {},
+          pushDestroy: function () {}
+        });
+        spyOn(store, 'pushRetrieve');
+        spyOn(store, 'pushDestroy');
+      });
+      
+      describe("when the passed hash contains records of a record type the data source does not handle", function () {
+        
+        beforeEach( function () {
+          newDataHash = {
+            "MyApp.HandledRecordType1": {
+              "id of record of handled type": { key: "value" }
+            },
+            "MyApp.NotHandledRecordType": {
+              "id of record of not-handled type": { key: "value" }
+            }
+          };
+          
+          dataSource.setDataHash(store, newDataHash);
+        });
+        
+        it("should call pushRetrieve only for the records of the type it does handle", function () {
+          expect(store.pushRetrieve.callCount).toEqual(1);
+          expect(store.pushRetrieve.mostRecentCall.args).toEqual([handledRecordType1, "id of record of handled type", { key: "value" } ]);
+        });
+        
+        it("should copy only the handled record type to its dataHash", function () {
+          expect(dataSource.get('dataHash')).toEqual({
+            "MyApp.HandledRecordType1": newDataHash["MyApp.HandledRecordType1"]
+          });
+        });
+      });
+      
+      describe("when the passed hash contains only records of types the data source does handle", function () {
+      
+        var oldDataHash;
+        
+        describe("for those (record type, id) pairs in the passed hash that are not currently in the data source's dataHash", function () {
+          
+          beforeEach( function () {
+            oldDataHash = {
+              "MyApp.HandledRecordType1": {
+              }
+            };
+            dataSource.dataHash = oldDataHash;
+          });
+          
+          describe("when the new datahash contains an id of the same record type already found in the old datahash", function () {
+            
+            beforeEach( function () {
+              newDataHash = {
+                "MyApp.HandledRecordType1": {
+                  "id only in new datahash": { key: "value" }
+                }
+              };
+              dataSource.setDataHash(store, newDataHash);
+            });
+                            
+            it("should call pushRetrieve with the new record", function () {
+              expect(store.pushRetrieve).toHaveBeenCalled();
+              expect(store.pushRetrieve.mostRecentCall.args).toEqual([handledRecordType1, "id only in new datahash", { key: "value" }]);
+            });
+          });
+          
+          describe("when the new datahash contains a record type not found in the old datahash", function () {
+            
+            beforeEach( function () {
+              newDataHash =  {
+                "MyApp.HandledRecordType2": {
+                  "id and record type only in new datahash": { key: "value" }
+                }
+              };
+              dataSource.setDataHash(store, newDataHash);
+            });
+            
+            it("should call pushRetrieve with the new record", function () {
+              expect(store.pushRetrieve).toHaveBeenCalled();
+              expect(store.pushRetrieve.mostRecentCall.args).toEqual([handledRecordType2, "id and record type only in new datahash", { key: "value"}]);
+            });
+          });
+        });
+        
+        describe("for those (record type, id) pairs in the passed hash that are already in the data source's dataHash", function () {
+
+          beforeEach( function () {
+            oldDataHash = {
+              "MyApp.HandledRecordType1": {
+                "id in both old and new datahashes": { key: "old value" } 
+              }
+            };
+            newDataHash = {
+              "MyApp.HandledRecordType1": {
+                "id in both old and new datahashes": { key: "new value" } 
+              }
+            };
+            dataSource.dataHash = oldDataHash;
+            dataSource.setDataHash(store, newDataHash);
+          });
+          
+          it("should call pushRetrieve with the new record", function () {
+            expect(store.pushRetrieve).toHaveBeenCalled();
+            expect(store.pushRetrieve.mostRecentCall.args).toEqual([handledRecordType1, "id in both old and new datahashes", { key: "new value" }]);
+          });
+        });
+        
+        describe("for those (record type, id) pairs currently in the data source's dataHash and are not found in the passed hash", function () {
+          
+          describe("when new record hash contains the same record types as in the old datahash", function () {
+            
+            beforeEach( function () {
+              oldDataHash = {
+                "MyApp.HandledRecordType1": {
+                  "id in old and new datahashes": { key: "value" },
+                  "id only in old datahash": { key: "value to be destroyed" }
+                }
+              };
+              newDataHash = {
+                "MyApp.HandledRecordType1": {
+                  "id in old and new datahashes": { key: "value" }
+                }
+              };
+              dataSource.dataHash = oldDataHash;
+              dataSource.setDataHash(store, newDataHash);
+            });
+          
+            it("should call pushDestroy on the now-gone record", function () {
+              expect(store.pushDestroy).toHaveBeenCalled();
+              expect(store.pushDestroy.mostRecentCall.args).toEqual([handledRecordType1,  "id only in old datahash"]);
+            });
+          });
+
+          describe("when the new record hash is missing a record type found in the old datahash", function () {
+
+            beforeEach( function () {
+              oldDataHash = {
+                "MyApp.HandledRecordType1": {
+                  "id in old and new datahashes": { key: "value" }
+                },
+                "MyApp.HandledRecordType2": {
+                  "id and record type only in old datahash": { key: "value to be destroyed" }
+                }
+              };
+              newDataHash = {
+                "MyApp.HandledRecordType1": {
+                  "id in old and new datahashes": { key: "value" }
+                }
+              };
+              dataSource.dataHash = oldDataHash;
+              dataSource.setDataHash(store, newDataHash);
+            });
+
+            it("should call pushDestroy on the now-gone record", function () {
+              expect(store.pushDestroy).toHaveBeenCalled();
+              expect(store.pushDestroy.mostRecentCall.args).toEqual([handledRecordType2,  "id and record type only in old datahash"]);
+            });
+          });
+        });
+        
+        describe("the new value of the dataHash property", function () {
+          
+          beforeEach( function () {
+            newDataHash = {
+              "MyApp.HandledRecordType1": {
+                "new id 1": { key: { nestedKey: "value" } }
+              },
+              "MyApp.HandledRecordType2": {
+                "new id 2": { key: { nestedKey: "value" } }
+              }
+            };
+            dataSource.dataHash = {};
+            dataSource.setDataHash(store, newDataHash);
+          });
+          
+          it("should be a deep copy of the passed data hash", function () {
+            var dataHashProperty = dataSource.get('dataHash');
+            
+            expect(dataHashProperty).toEqual(newDataHash);
+            expect(dataHashProperty["MyApp.HandledRecordType1"]["new id 1"]["key"]).not.toBe(newDataHash["MyApp.HandledRecordType1"]["new id 1"]["key"]);
+          });
+        });
+      });
     });
-    
   });
 });
