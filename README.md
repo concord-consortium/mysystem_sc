@@ -21,6 +21,11 @@
 6. bundle exec sc-server
 7. if you get an error about 'iconv' see this [rvm page](http://rvm.beginrescueend.com/packages/iconv/)
 
+
+### Initial student data
+
+The app saves the "student data" state (i.e., the nodes, links, and stories) into a div with id my_system_state, which is defined in apps/my_system/lib/index.rhtml. To update the default initial student state, serialize the dataHash property of the studentStateDataSource, escape the serialized JSON it for inclusion in an html document, and put it inside the my_system_state div in that element.
+
 ### Lebowski testing: ###
 
 TODO: Looks like lebowski tests might be wedged.
@@ -59,6 +64,7 @@ EXIT_STATUS=$?`
 `kill -s 2 %1
 
 exit $EXIT_STATUS`
+
 
 ### Building as WISE4 step ###
 
