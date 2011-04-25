@@ -25,9 +25,11 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
   /**
     @property
     
-    The dataHash stores the serialized records we manage.
+    The dataHash stores the serialized records we manage. Read-only.
   */
-  dataHash: null,
+  dataHash: function () {
+    return this._dataHash;
+  }.property(),
   
   init: function () {
     sc_super();
@@ -43,7 +45,7 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
       dataHash[recordType.toString()] = {};
     }
     
-    this.set('dataHash', dataHash);
+    this._dataHash = dataHash;
   },  
   
   /**
@@ -211,7 +213,7 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
       }
     }
     
-    this.set('dataHash', newDataHashCopy);
+    this._dataHash = newDataHashCopy;
   }
   
 });

@@ -99,6 +99,15 @@ describe("MergedHashDataSource", function () {
       });
     });
   
+    describe('the dataHash property', function () {
+      
+      it("should be read-only", function () {
+        expect(dataSource.get('dataHash')).not.toEqual({});
+        dataSource.set('dataHash', {});
+        expect(dataSource.get('dataHash')).not.toEqual({});
+      });
+    });
+    
     describe("methods called by the data store", function () {
       
       var store;
@@ -139,7 +148,7 @@ describe("MergedHashDataSource", function () {
               returnValue;
 
           beforeEach( function () {
-            dataSource.dataHash = {
+            dataSource._dataHash = {
               "MyApp.HandledRecordType1": {
                 "firstRecord": firstRecordHash,
                 "secondRecord": secondRecordHash
@@ -235,7 +244,7 @@ describe("MergedHashDataSource", function () {
               returnValue;
 
           beforeEach( function () {
-            dataSource.dataHash = {
+            dataSource._dataHash = {
               "MyApp.HandledRecordType1": {
                 "recordIdInHash": recordHash
               }
@@ -326,7 +335,7 @@ describe("MergedHashDataSource", function () {
               itShouldSaveTheDataHash;
                     
           beforeEach( function () {
-            dataSource.dataHash = {
+            dataSource._dataHash = {
               "MyApp.HandledRecordType1": {
                 "preexistingRecord": preexistingRecordHash
               }
@@ -466,7 +475,7 @@ describe("MergedHashDataSource", function () {
               returnValue;
           
           beforeEach( function () {
-            dataSource.dataHash = {
+            dataSource._dataHash = {
               "MyApp.HandledRecordType1": {
                 "recordToKeep": recordToKeepHash,
                 "recordToDelete": { key: 'value' }
@@ -567,7 +576,7 @@ describe("MergedHashDataSource", function () {
               "MyApp.HandledRecordType1": {
               }
             };
-            dataSource.dataHash = oldDataHash;
+            dataSource._dataHash = oldDataHash;
           });
           
           describe("when the new datahash contains an id of the same record type already found in the old datahash", function () {
@@ -632,7 +641,7 @@ describe("MergedHashDataSource", function () {
                 "id in both old and new datahashes": { key: "new value" } 
               }
             };
-            dataSource.dataHash = oldDataHash;
+            dataSource._dataHash = oldDataHash;
             dataSource.setDataHash(store, newDataHash);
           });
           
@@ -658,7 +667,7 @@ describe("MergedHashDataSource", function () {
                   "id in old and new datahashes": { key: "value" }
                 }
               };
-              dataSource.dataHash = oldDataHash;
+              dataSource._dataHash = oldDataHash;
               dataSource.setDataHash(store, newDataHash);
             });
           
@@ -684,7 +693,7 @@ describe("MergedHashDataSource", function () {
                   "id in old and new datahashes": { key: "value" }
                 }
               };
-              dataSource.dataHash = oldDataHash;
+              dataSource._dataHash = oldDataHash;
               dataSource.setDataHash(store, newDataHash);
             });
 
@@ -706,7 +715,7 @@ describe("MergedHashDataSource", function () {
                 "new id 2": { key: { nestedKey: "value" } }
               }
             };
-            dataSource.dataHash = {};
+            dataSource._dataHash = {};
             dataSource.setDataHash(store, newDataHash);
           });
           
