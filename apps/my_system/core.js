@@ -21,6 +21,16 @@ MySystem = SC.Application.create(
   canvasView: null,
 
   NOVICE_STUDENT: 'novice',
-  ADVANCED_STUDENT: 'advanced'
+  ADVANCED_STUDENT: 'advanced',
+  
+  /**
+    Callback provided so that external applications, like WISE4, can let MySystem know to read the student state from 
+    the DOM element used for inter-iframe communication with MySystem.
+  */
+  updateFromDOM: function () {
+    SC.run( function () {
+      MySystem.store.setStudentStateDataHash( JSON.parse(SC.$('#my_system_state').text()) );
+    });
+  }
 
 }) ;

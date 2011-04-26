@@ -49,8 +49,8 @@ MySystem.main = function main() {
     }
   }).from(MySystem.dataSource);
 
-  // load the initial data from the DOM
-  MySystem.store.setStudentStateDataHash( JSON.parse(SC.$('#my_system_state').text()) );
+  // load the initial data from the DOM (see core.js)
+  MySystem.updateFromDOM();
     
   MySystem.getPath('mainPage.mainPane').append();
 
