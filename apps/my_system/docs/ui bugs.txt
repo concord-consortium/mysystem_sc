@@ -1,0 +1,59 @@
+1. The link shape is "weird" - the forced s-shape induces acute angles and situations where the arrowhead pointing "to" a node seems to be pointing straight "out" of the node. This is confusing.
+
+2. The icon choices are a little strange. What's a loosely clenched hand supposed to mean?
+
+3. Moving the vertical divider on the left moves the icons out of their containing divs.
+
+4. You can't delete a link using the delete button.
+
+5. You can't select multiple items using 'rubber band' selection. You have to know about command-select to even get started.
+
+6. Selected nodes & links become unselected when you click one of the selected nodes/links in order to adjust its position. (This shouldn't happen.)
+
+7. You can't drag a link to "pull" the nodes it's connected to.
+
+8. The drop target for links is small and finicky -- several times I've thought I was about to make a link, but nothing happened.
+
+9. Double clicking a link doesn't bring up a text editor to edit the label.
+
+10. Link labels should probably be in a single, readable color, not the link color.
+
+11. When you being to edit a link's label text using the property pane, the input area mysteriously shrinks to the size of the input when you being typing.
+
+12. The "energy type" label in the property pane is too crowded.
+
+13. See the previously-noted bug in PT: clicking directly on the radio button changes the link type, but clicking the label of the radio button doesn't change the link type (even though it updates the radio button selection.)
+
+14. When a link is clicked on & the property pane is open, the link type in the menu isn't updated to reflect the newly chosen link.
+
+15. The right edge of the "label" text input box is crowded against the edge of the property pane.
+
+16. It's not obvious how to dismiss the property editor pane -- you want a big X
+
+17. Clicking the "link" icon in the story editor if the property pane is open.
+
+18. There is confusing reuse of the link concept between the story editor "linking" sentences to nodes/links and "links" between nodes.
+
+19. "Link" icons in the story editor are extraneous anyway -- why not allow editing the nodes/links linked to a sentence just whenever you have selected the sentence?
+
+20. You should be able to single click a story sentence to highlight it and its linked entities; double click should edit.
+
+21. When you have clicked the "link" icon to link entities to the story sentence, you should be in multi-select mode by default (you shouldn't need to command-click)
+
+22. The "add sentence to story" button should be better set off against its gray background.
+
+23. The overall prompt ("Make a system diagram...") should be more prominent and in a larger font.
+
+24. Story sentences should wrap -- they get cut off if they're reasonably long.
+
+25. There should be an insertion-point indicator when you drag sentences.
+
+26. Actually, I can't seem to drag a sentence to the end of the list.
+
+27. The opacity changes that set of selected nodes & links in story-linking mode are too subtle. Reuse the same highlights used when you select nodes the rest of the time (i.e., the blue glow). Maybe add opacity change on top of that.
+
+28. Text editing is laggy -- we might want a timer that waits until you've finished typing for a while before committing changes.
+
+29. Default link color scheme, especially when displayed in this order, suggests an unwarranted progression from infrared -> thermal -> solar -> kinetic
+
+30. It's not obvious how to delete a sentence -- an [X] box over a sentence on hover would be nice.
