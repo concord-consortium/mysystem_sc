@@ -76,6 +76,32 @@ MySystem.statechart = Ki.Statechart.create({
       In this state, the diagram should not be modifiable. When a node or link is selected, it is
       associated with the currently operative sentence; when it is de-selected it is also de-associated.
     */
-    SENTENCE_OBJECT_LINKING: Ki.State.plugin('MySystem.SENTENCE_OBJECT_LINKING')
+    SENTENCE_OBJECT_LINKING: Ki.State.plugin('MySystem.SENTENCE_OBJECT_LINKING'),
+    
+    
+    /**
+      Simple demo of how we might check the diagram against constraints. Counts the number of 'clay' nodes and displays
+      a warning if there are > 2 clay nodes.
+
+      @author Richard Klancer, 4-27-2011
+    */
+    checkDiagramAgainstConstraints: function () {      
+      var nodes = MySystem.store.find(MySystem.Node),
+          n = 0;
+
+      // FIXME soon. Notice that there is no semantically meaningful field indicating what physical object this node
+      // represents. We have to check the image URL (!) to figure it out.
+      nodes.forEach( function (node) {
+        if (/clay/.test(node.get('image'))) n++;
+      });
+
+      if (n > 2) {
+        SC.AlertPane.warn("You may have too many clay nodes in your diagram.");
+      }
+      else {
+        SC.AlertPane.info("Your diagram has no obvious problems.");
+      }
+    }
+    
   })
 });

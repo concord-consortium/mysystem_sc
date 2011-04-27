@@ -36,7 +36,8 @@ MySystem.StoriesView = SC.SplitView.extend({
     checkButtonView: SC.ButtonView.design({
       layout: { right: 15, bottom: 10, height: 20, width: 80 },
       title: 'Check',
-      toolTip: 'Check your diagram'
+      toolTip: 'Check your diagram',
+      action: 'checkDiagramAgainstConstraints'
     })
     
   }),
