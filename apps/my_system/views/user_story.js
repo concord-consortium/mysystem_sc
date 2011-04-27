@@ -14,29 +14,13 @@
 sc_require('views/sentence');
 
 MySystem.UserStoryView = SC.View.extend({
-  childViews: 'toolbar sentencesView'.w(),
-  toolbar: SC.ToolbarView.design({
-    layout: { top: 0, left: 0, right: 0, height: 30 },
-    childViews: 'addButton'.w(),
-    anchorLocation: SC.ANCHOR_TOP,
-    addButton: SC.ButtonView.design({
-      layout: { centerY: 0, height: 20, width: 150, left: 10 },
-      title: "Add sentence to story",
-      target: "MySystem.storySentenceController",
-      action: "addStorySentence",
-      toolTip: "Add a sentence to the story"
-    })
-    // showButton: SC.ButtonView.design({
-    //   layout: { centerY: 0, height: 20, width: 180, left: 170 },
-    //   title: "Connect sentence to diagram",
-    //   isEnabled: NO,
-    //   toolTip: "Select a sentence and click here to connect it to the diagram"
-    // })
-  }),
+  childViews: 'sentencesView addButtonView'.w(),
+
+  backgroundColor: '#eeefff',
+        
   sentencesView: SC.ScrollView.design({
     hasHorizontalScroller: NO,
-    layout: { top: 30, bottom: 0, left: 0, right: 0 },
-    backgroundColor: 'white',
+    layout: { top: 5, right: 5, bottom: 30, left: 5 },
     contentView: SC.ListView.design({
       contentBinding: 'MySystem.storySentenceController.arrangedObjects',
       selectionBinding: 'MySystem.storySentenceController.selection',
@@ -47,5 +31,13 @@ MySystem.UserStoryView = SC.View.extend({
       canDeleteContent: YES,
       canReorderContent: YES
     })
+  }),
+  
+  addButtonView: SC.ButtonView.design({
+    layout: { bottom: 10, right: 15, height: 20, width: 150 },
+    title: "Add sentence to story",
+    target: "MySystem.storySentenceController",
+    action: "addStorySentence",
+    toolTip: "Add a sentence to the story"
   })
 });

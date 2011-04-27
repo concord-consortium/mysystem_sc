@@ -26,7 +26,7 @@ MySystem.mainPage = SC.Page.design({
       }),
       dividerView: SC.SplitDividerView, // Divider for resizing right/left
       bottomRightView: SC.SplitView.design({ // Rest of app (right)
-        defaultThickness: 130,
+        defaultThickness: 150,
         layoutDirection: SC.LAYOUT_VERTICAL,
         topLeftView: MySystem.StoriesView, // Story section
         dividerView: SC.SplitDividerView, // Divider for resizing up/down
