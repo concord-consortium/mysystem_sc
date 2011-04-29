@@ -1,66 +1,51 @@
-//   vim:expandtab
+/*globals scriptloader componentloader eventManager */
 
 var coreScripts = [
-  'vle/node/mysystem_sc/MySystemSCNode.js',
-  'vle/node/mysystem_sc/MySystemSCEvents.js'
+	'vle/node/mysystem_sc/Mysystem_scNode.js',
+	'vle/node/mysystem_sc/mysystem_scEvents.js'
 ];
 
 var studentVLEScripts = [
-  // ERB Generated Content:
-  <%= js_files %>,
-
-  //TODO: Sproutcore also uses jquery ...
-  'vle/jquery/js/jquery-1.4.2.min.js',
-  'vle/jquery/js/jquery-ui-1.8.custom.min.js',
-  'vle/jquery/js/jsonplugin.js'
+	'vle/node/mysystem_sc/mysystem_sc.js',
+	'vle/node/mysystem_sc/mysystem_scstate.js'
 ];
 
-// TODO: This doesn't work.
 var authorScripts = [
-  'vle/node/mysystem_sc/MySystemSCAuthorView.js'
+	'vle/node/mysystem_sc/authorview_mysystem_sc.js'
 ];
 
 var gradingScripts = [
-  'vle/node/mysystem_sc/MySystemSCState.js'
+	'vle/node/mysystem_sc/mysystem_scstate.js'
 ];
 
 var dependencies = [
-  {child:"vle/node/mysystem_sc/MySystemSCNode.js", parent:["vle/node/Node.js"]}
-];
-
-var css = [
-  // for example
-  // 'vle/node/mysystem_sc/css/mysystem.css'
-
-  // ERB Generated Content:
-  <%= css_files %>
+	{child:"vle/node/mysystem_sc/Mysystem_scNode.js", parent:["vle/node/Node.js"]}
 ];
 
 var nodeClasses = [
-  {nodeClass:'display', nodeClassText:'MySystemSC'}
+	{nodeClass:'display', nodeClassText:'Mysystem_sc'}
 ];
-
-componentloader.addNodeClasses('MySystemSCNode', nodeClasses);
-
-var nodeTemplateParams = [
-  {
-    nodeTemplateFilePath:'node/template/templateMySystemSC.my',
-    nodeExtension:'my'
-  }
-];
-
-componentloader.addNodeTemplateParams('MySystemSCNode', nodeTemplateParams);
-
 
 scriptloader.addScriptToComponent('core', coreScripts);
+
 scriptloader.addScriptToComponent('mysystem_sc', studentVLEScripts);
+
 scriptloader.addScriptToComponent('author', authorScripts);
 scriptloader.addScriptToComponent('studentwork', gradingScripts);
 scriptloader.addDependencies(dependencies);
-scriptloader.addCssToComponent('mysystem_sc', css);
 
+componentloader.addNodeClasses('Mysystem_scNode', nodeClasses);
+
+var nodeTemplateParams = [
+	{
+		nodeTemplateFilePath:'node/mysystem_sc/mysystem_scTemplate.my',
+		nodeExtension:'my'
+	}
+];
+
+componentloader.addNodeTemplateParams('Mysystem_scNode', nodeTemplateParams);
 
 //used to notify scriptloader that this script has finished loading
-if(typeof eventManager != 'undefined'){
-  eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/setup.js');
-};
+if (typeof eventManager != 'undefined') {
+	eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/setup.js');
+}
