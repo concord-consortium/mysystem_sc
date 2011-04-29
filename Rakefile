@@ -69,7 +69,7 @@ task :copy_templates do
   templates = Dir.glob(File.join(@template_directory, "**", "*#{@template_suffix}"))
   js        = Dir.glob(File.join(@output_directory,"js","*.js"))
 
-  js_files = ["'vle/node/#{@wise_step_name}/boot.js'"]
+  js_files = []
   js_files += js.map do |j|
     filename = j.gsub("vle/#{@wise_step_name}/","vle/node/#{@wise_step_name}/")
     "'#{filename}'"
