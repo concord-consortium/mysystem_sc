@@ -15,7 +15,7 @@
  */
 
 TemplateNode.prototype = new Node(); //TODO: rename TemplateNode
-TemplateNode.prototype.constructor = TemplateNode; //TODO: rename TemplateNode
+TemplateNode.prototype.constructor = TemplateNode; //TODO: rename both occurrences of TemplateNode
 TemplateNode.prototype.parentNode = Node.prototype; //TODO: rename TemplateNode
 
 /*
@@ -150,6 +150,7 @@ TemplateNode.prototype.onExit = function() {
  * @param childDivIdPrefix (optional) a string that will be prepended to all the 
  * div ids use this to prevent DOM conflicts such as when the show all work div
  * uses the same ids as the show flagged work div
+ * @param workgroupId the id of the workgroup this work belongs to
  * 
  * TODO: rename TemplateNode
  * Note: you may need to add code to this function if the student
@@ -157,7 +158,7 @@ TemplateNode.prototype.onExit = function() {
  * look at SensorNode.renderGradingView() as an example of a step that
  * requires additional processing
  */
-TemplateNode.prototype.renderGradingView = function(divId, nodeVisit, childDivIdPrefix) {
+TemplateNode.prototype.renderGradingView = function(divId, nodeVisit, childDivIdPrefix, workgroupId) {
 	/*
 	 * Get the latest student state object for this step
 	 * TODO: rename templateState to reflect your new step type
