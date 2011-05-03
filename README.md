@@ -68,21 +68,20 @@ exit $EXIT_STATUS`
 
 ### Building as WISE4 step ###
 
-1. install the resource_squasher `gem intall ./resource_squasher-0.0.1.gem`
-2. run the default rake task `bundle exec rake` (invokes sc-build and wise4 squash)
-3. open wise4/00_*.html -- you should be able to preview the static
-   files.
-4. TODO: There is still some work to be done here: here is where we are:
 
+0. Install WISE4. See http://code.google.com/p/wise4/wiki/StableWISEDeploymentModel for the gory details. Check with the wise4-dev google group http://groups.google.com/group/wise4-dev if you run into problems.
+1. Make sure $CATALINA_HOME is points to the directory where Tomcat is installed.
+2. run the default rake task: `bundle exec rake` (This will invoke sc-build and resource_squasher from http://github.com/knowuh/resource_squasher and create the 
+3. run the 'copy_files' rake task: `bundle exec rake copy_files`. This will copy the MySystem files to $CATALINA_HOME/webapps/vlewrapper/vle/node/mysystem_sc/
+4. Startup the WISE4 server: `cd $CATALINA_HOME; bin/startup.sh`
+5. Verify that you can visit the MySystem app directly: http://localhost:8080/vlewrapper/vle/mysystem_sc/mysystem_sc.html
+6. Login as a teacher and attempt to create a project with MySystem as an active step.
 
-* wise4 integration demo: http://www.screencast.com/t/1FhY2Nb0
-* about the rake tasks: http://screencast.com/t/lCxysMoEaT
-
+The files put into $CATALINA_HOME/webapps/vlewrapper/vle/node/mysystem_sc are derived from the files in this repository in the folders wise4/mysystem_sc and apps/my_system/lib/index.rhtml via the default Rake task. See the Rakefile in the root of this repo. These template files created in accordance with the directions at http://code.google.com/p/wise4/wiki/HowToCreateANewWise4Step as of 5/2/2011
 
 ### More information: ###
 
-* [Current feature](http://bit.ly/bhGHKR) being worked on.
-* DEMO: <http://mysystem_sc.dev.concord.org/>
+* Slightly outdated demo: <http://mysystem_sc.dev.concord.org/>
 * GITHUB <https://github.com/concord-consortium/mysystem_sc/>
 * CI server at: <http://hudson.dev.concord.org/hudson/job/MySystem_SproutCore/>
 * To understand user interaction with the application, understand the Ki statechart system (see link below).
