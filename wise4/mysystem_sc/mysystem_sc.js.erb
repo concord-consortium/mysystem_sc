@@ -1,4 +1,4 @@
-/*globals MYSYSTEM_SCSTATE eventManager */
+/*globals MYSYSTEM_SCSTATE eventManager SC MySystem */
 
 /**
  * This is the constructor for the object that will perform the logic for
@@ -10,7 +10,7 @@ function MYSYSTEM_SC(node, view) {
 	this.view = view;
 	this.content = node.getContent().getContentJSON();
 	
-	if(node.studentWork !== null) {
+	if (node.studentWork !== null) {
 		this.states = node.studentWork; 
 	} 
 	else {
@@ -33,7 +33,7 @@ MYSYSTEM_SC.prototype.render = function () {
 	// load any previous responses the student submitted for this step
 	var latestState = this.getLatestState();
 	
-	if(latestState !== null) {
+	if (latestState !== null) {
 		/*
 		 * get the response from the latest state. the response variable is
 		 * just provided as an example. you may use whatever variables you
@@ -41,8 +41,13 @@ MYSYSTEM_SC.prototype.render = function () {
 		 */
 		var latestResponse = latestState.response;
 		
-		// push the previous student work into the DOM
-		document.getElementById('my_system_state').value = latestResponse; 
+		// push the previous student work into the DOM. Can't assume SC has inited yet (hence, can't use SC.$())
+		document.getElementById('my_system_state').textContent = latestResponse;
+		
+		// and tell MySystem to load the data from the DOM element, if it has started up.
+		if (MySystem && MySystem.updateFromDOM) {
+		  MySystem.updateFromDOM();
+		}
 	}
 };
 
@@ -71,8 +76,11 @@ MYSYSTEM_SC.prototype.getLatestState = function () {
  * the .html file for this step (look at template.html).
  */
 MYSYSTEM_SC.prototype.save = function () {
+  // abort if for any reason we can't use SC.CoreQuery, so that we don't accidentally save null data
+  if (!SC || !SC.$) return;
+
 	// get the answer the student wrote
-	var response = document.getElementById('my_system_state').value;
+	var response = SC.$('#my_system_state').text();
 	
 	/*
 	 * create the student state that will store the new work the student
