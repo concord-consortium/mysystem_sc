@@ -4,6 +4,15 @@ Mysystem_scNode.prototype = new Node();
 Mysystem_scNode.prototype.constructor = Mysystem_scNode;
 Mysystem_scNode.prototype.parentNode = Node.prototype;
 
+
+/**
+  Monkey patch for Node.injectBaseRef()
+*/
+Mysystem_scNode.prototype.injectBaseRef = function () {
+  this.ContentBaseUrl = window.location.protocol + '//' + window.location.host + '/vlewrapper/vle/node/mysystem_sc/';
+  return Node.prototype.injectBaseRef.apply(this, arguments);
+};
+
 /*
  * the name that displays in the authoring tool when the author creates a new step
  * 
