@@ -34,6 +34,12 @@ Mysystem_scNode.authoringToolDescription = "A system diagramming tool for descri
  */
 function Mysystem_scNode(nodeType, view) {
 	this.view = view;
+	
+	// patch this.view.injectVleUrl (which attempts to rewrite relative urls found in our html) to make it a no-op
+	this.view.injectVleUrl = function (text) {
+    return text;
+  };
+  
 	this.type = nodeType;
 	this.prevWorkNodeIds = [];
 }
