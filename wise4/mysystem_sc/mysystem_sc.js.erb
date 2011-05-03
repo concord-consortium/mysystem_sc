@@ -83,12 +83,8 @@ MYSYSTEM_SC.prototype.save = function () {
   var response = SC.$('#my_system_state').text();
   
   /*
-   * create the student state that will store the new work the student
+   * create a student state object that will store the new work the student
    * just submitted
-   * 
-   * TODO:  copy and modify the file below
-   * 
-   * vlewrapper/WebContent/vle/node/template/templatestate.js
    */
   var state = new MYSYSTEM_SCSTATE(response);
   

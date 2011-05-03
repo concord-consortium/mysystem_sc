@@ -4,9 +4,38 @@ Mysystem_scNode.prototype = new Node();
 Mysystem_scNode.prototype.constructor = Mysystem_scNode;
 Mysystem_scNode.prototype.parentNode = Node.prototype;
 
-
 /**
-  Monkey patch for Node.injectBaseRef()
+  Monkey patch Node.injectBaseRef()
+  
+  In order to display mysystem_sc.html, WISE4 loads its contents via synchronous xhr and inserts those contents into
+  iframe#ifrm inside vle.html after performing some "surgery" on the text content of mysystem_sc.html.
+  
+  (This is how WISE4 displays the html of any step.)
+  
+  Because iframe's contents are set by dynamically inserting text into a pre-existing iframe, rather than by setting
+  the 'src' attribute of the iframe and allowing the browser to update the iframe itself, one crucial piece of
+  information that the browser does not have when interpreting the iframe's content is its origin URL.
+  
+  Therefore one of the "surgical" steps performed by WISE4 is to call this.injectBaseRef() on the html contents. This 
+  method inserts a <base> element into the document's <head>. The <base> element causes relative urls inside 
+  mysystem_sc.html to be calculated relative to the value of the <base> element's 'href' attribute.
+  
+  (Note that the href of a <base> element must be an absolute url, with hostname, or else it is ignored.)
+  
+  However, by default, injectBaseRef() inserts an href value something like 'http://localhost:8080/curriculum/8'
+  
+  In order for the relative paths in the SproutCore version of MySystem to resolve correctly, we need the href value to
+  be "http://<host>/vlewrapper/vle/node/mysystem_sc/" instead.
+  
+  This monkey patch works by setting the 'ContentBaseUrl' of this Node object. This property is normally undefined for
+  mysystem_sc, but injectBaseRef() will check that property first for the href value to use.
+  
+  Note that inserting a <base> element inside the precompiled version of mysystem_sc.html will cause injectBaseRef
+  to skip inserting a <base> element. Since <base> elements must be absolute URLs, this would be inadvisable unless
+  we also update the server to dynamically insert the correct hostname into the <base> element.
+  
+  @author Richard Klancer <rpk@pobox.com>
+  5/3/2011
 */
 Mysystem_scNode.prototype.injectBaseRef = function () {
   this.ContentBaseUrl = window.location.protocol + '//' + window.location.host + '/vlewrapper/vle/node/mysystem_sc/';
@@ -15,19 +44,12 @@ Mysystem_scNode.prototype.injectBaseRef = function () {
 
 /*
  * the name that displays in the authoring tool when the author creates a new step
- * 
- * TODO: rename Mysystem_scNode
- * TODO: rename Template to whatever you would like this step to be displayed as in
- * the authoring tool when the author creates a new step
  */
-Mysystem_scNode.authoringToolName = "MySystem System Diagram";
-
+Mysystem_scNode.authoringToolName        = "MySystem System Diagram";
 Mysystem_scNode.authoringToolDescription = "A system diagramming tool for describing energy flows through a system";
 
 /**
  * This is the constructor for the Node
- * 
- * TODO: rename Mysystem_scNode
  * 
  * @param nodeType
  * @param view
@@ -133,6 +155,8 @@ Mysystem_scNode.prototype.onExit = function () {
  * data for your step is complex or requires additional processing.
  * look at SensorNode.renderGradingView() as an example of a step that
  * requires additional processing
+ *
+ * TODO
  */
 Mysystem_scNode.prototype.renderGradingView = function (divId, nodeVisit, childDivIdPrefix, workgroupId) {
   /*
