@@ -45,7 +45,7 @@ MYSYSTEM_SC.prototype.render = function () {
     document.getElementById('my_system_state').textContent = latestResponse;
     
     // and tell MySystem to load the data from the DOM element, if it has started up.
-    if (MySystem && MySystem.updateFromDOM) {
+    if (window['MySystem'] && MySystem.updateFromDOM) {
       MySystem.updateFromDOM();
     }
   }
