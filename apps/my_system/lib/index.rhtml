@@ -54,7 +54,14 @@
       };
 
       /**
-        Called by WISE4 when it wants the MySystem app to save the diagram state
+        Called by WISE4 when we leave the step
+      */
+      window.onExit = function () {
+        save();
+      };
+      
+      /**
+        Called (in a WISE4 context) when we want the MySystem app to save the diagram state
       */
       window.save = function () {
         system.save();
