@@ -75,7 +75,8 @@ exit $EXIT_STATUS`
 3. run the 'copy_files' rake task: `bundle exec rake copy_files`. This will copy the MySystem files to $CATALINA_HOME/webapps/vlewrapper/vle/node/mysystem_sc/
 4. Startup the WISE4 server: `cd $CATALINA_HOME; bin/startup.sh`
 5. Verify that you can visit the MySystem app directly: http://localhost:8080/vlewrapper/vle/mysystem_sc/mysystem_sc.html
-6. Login as a teacher and attempt to create a project with MySystem as an active step.
+6. Login to http://localhost:8080/webapp/ as a teacher and attempt to create a project with MySystem as an active step. Then create a 'project run' based on that project. 
+7. Login to http://localhost:8080/webapp/ as a student in the class you specified when creating the project run. Verify that you can start the project with the MySystem step. Manipulate the MySystem system diagram and leave the activity. Verify that your manipulation is reloaded when you login and visit the MySystem step again.
 
 The files put into $CATALINA_HOME/webapps/vlewrapper/vle/node/mysystem_sc are derived from the files in this repository in the folders wise4/mysystem_sc and apps/my_system/lib/index.rhtml via the default Rake task. See the Rakefile in the root of this repo. These template files created in accordance with the directions at http://code.google.com/p/wise4/wiki/HowToCreateANewWise4Step as of 5/2/2011
 
