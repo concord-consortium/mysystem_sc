@@ -10,13 +10,13 @@
  * represent the student's work for your step type.
  */
 function MYSYSTEM_SCSTATE(response) {
-	// html-quoted json representing the student's response
-	this.response = "";
+  // html-quoted json representing the student's response
+  this.response = "";
 
-	if (response !== null) {
-		//set the response
-		this.response = response;
-	}
+  if (response !== null) {
+    //set the response
+    this.response = response;
+  }
 }
 
 /**
@@ -32,14 +32,14 @@ function MYSYSTEM_SCSTATE(response) {
  * @return a MYSYSTEM_SCSTATE object
  */
 MYSYSTEM_SCSTATE.prototype.parseDataJSONObj = function (stateJSONObj) {
-	// obtain the student work from the JSONObject
-	var response = stateJSONObj.response;
-	
-	/*
-	 * create a state object with the student work
-	 */
-	var state = new MYSYSTEM_SCSTATE(response);
-	return state;
+  // obtain the student work from the JSONObject
+  var response = stateJSONObj.response;
+  
+  /*
+   * create a state object with the student work
+   */
+  var state = new MYSYSTEM_SCSTATE(response);
+  return state;
 };
 
 /**
@@ -48,10 +48,10 @@ MYSYSTEM_SCSTATE.prototype.parseDataJSONObj = function (stateJSONObj) {
  * @return the student work
  */
 MYSYSTEM_SCSTATE.prototype.getStudentWork = function () {
-	return this.response;
+  return this.response;
 };
 
 // used to notify scriptloader that this script has finished loading
 if (typeof eventManager != 'undefined') {
-	eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/mysystem_scstate.js');
+  eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/mysystem_scstate.js');
 }

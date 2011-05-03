@@ -33,15 +33,15 @@ Mysystem_scNode.authoringToolDescription = "A system diagramming tool for descri
  * @param view
  */
 function Mysystem_scNode(nodeType, view) {
-	this.view = view;
-	
-	// patch this.view.injectVleUrl (which attempts to rewrite relative urls found in our html) to make it a no-op
-	this.view.injectVleUrl = function (text) {
+  this.view = view;
+  
+  // patch this.view.injectVleUrl (which attempts to rewrite relative urls found in our html) to make it a no-op
+  this.view.injectVleUrl = function (text) {
     return text;
   };
   
-	this.type = nodeType;
-	this.prevWorkNodeIds = [];
+  this.type = nodeType;
+  this.prevWorkNodeIds = [];
 }
 
 /**
@@ -53,7 +53,7 @@ function Mysystem_scNode(nodeType, view) {
  * @return a new state object
  */
 Mysystem_scNode.prototype.parseDataJSONObj = function (stateJSONObj) {
-	return MYSYSTEM_SCSTATE.prototype.parseDataJSONObj(stateJSONObj);
+  return MYSYSTEM_SCSTATE.prototype.parseDataJSONObj(stateJSONObj);
 };
 
 /**
@@ -77,7 +77,7 @@ Mysystem_scNode.prototype.parseDataJSONObj = function (stateJSONObj) {
  * @return translated student work
  */
 Mysystem_scNode.prototype.translateStudentWork = function (studentWork) {
-	return studentWork;
+  return studentWork;
 };
 
 /**
@@ -87,34 +87,34 @@ Mysystem_scNode.prototype.translateStudentWork = function (studentWork) {
  * Note: In most cases you will not have to change anything here.
  */
 Mysystem_scNode.prototype.onExit = function () {
-	//check if the content panel has been set
-	if (this.contentPanel) {
-		try {
-			/*
-			 * check if the onExit function has been implemented or if we
-			 * can access attributes of this.contentPanel. if the user
-			 * is currently at an outside link, this.contentPanel.onExit
-			 * will throw an exception because we aren't permitted
-			 * to access attributes of pages outside the context of our
-			 * server.
-			 */
-			if (this.contentPanel.onExit) {
-				try {
-					// run the on exit cleanup
-					this.contentPanel.onExit();					
-				} catch (err1) {
-					// error when onExit() was called, e.g. mysystem editor undefined
-				}
-			}	
-		} catch (err2) {
-			/*
-			 * an exception was thrown because this.contentPanel is an
-			 * outside link. we will need to go back in the history
-			 * and then trying to render the original node.
-			 */
-			history.back();
-		}
-	}
+  //check if the content panel has been set
+  if (this.contentPanel) {
+    try {
+      /*
+       * check if the onExit function has been implemented or if we
+       * can access attributes of this.contentPanel. if the user
+       * is currently at an outside link, this.contentPanel.onExit
+       * will throw an exception because we aren't permitted
+       * to access attributes of pages outside the context of our
+       * server.
+       */
+      if (this.contentPanel.onExit) {
+        try {
+          // run the on exit cleanup
+          this.contentPanel.onExit();         
+        } catch (err1) {
+          // error when onExit() was called, e.g. mysystem editor undefined
+        }
+      } 
+    } catch (err2) {
+      /*
+       * an exception was thrown because this.contentPanel is an
+       * outside link. we will need to go back in the history
+       * and then trying to render the original node.
+       */
+      history.back();
+    }
+  }
 };
 
 /**
@@ -135,17 +135,17 @@ Mysystem_scNode.prototype.onExit = function () {
  * requires additional processing
  */
 Mysystem_scNode.prototype.renderGradingView = function (divId, nodeVisit, childDivIdPrefix, workgroupId) {
-	/*
-	 * Get the latest student state object for this step
-	 * 
-	 * e.g. if you are creating a quiz step you would change it to quizState
-	 */
-	var diagramState = nodeVisit.getLatestWork();
+  /*
+   * Get the latest student state object for this step
+   * 
+   * e.g. if you are creating a quiz step you would change it to quizState
+   */
+  var diagramState = nodeVisit.getLatestWork();
 
-	var studentWork = diagramState.getStudentWork();
-	
-	// put the student work into the div
-	$('#' + divId).html(studentWork);
+  var studentWork = diagramState.getStudentWork();
+  
+  // put the student work into the div
+  $('#' + divId).html(studentWork);
 };
 
 /**
@@ -156,7 +156,7 @@ Mysystem_scNode.prototype.renderGradingView = function (divId, nodeVisit, childD
  * html for this step type
  */
 Mysystem_scNode.prototype.getHTMLContentTemplate = function () {
-	return createContent('node/mysystem_sc/mysystem_sc.html');
+  return createContent('node/mysystem_sc/mysystem_sc.html');
 };
 
 /*
@@ -166,5 +166,5 @@ NodeFactory.addNode('Mysystem_scNode', Mysystem_scNode);
 
 //used to notify scriptloader that this script has finished loading
 if (typeof eventManager !== 'undefined'){
-	eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/Mysystem_scNode.js');
+  eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/Mysystem_scNode.js');
 }
