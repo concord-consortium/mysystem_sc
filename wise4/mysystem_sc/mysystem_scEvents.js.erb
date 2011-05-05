@@ -5,21 +5,21 @@
  * the event.
  */
 View.prototype.mysystem_scDispatcher = function(type,args,obj){
-  /*
-   * check to see if the event name matches 
-   * 
-   * TODO: rename templateUpdatePrompt
-   * wait until you implement the authoring before you rename this
-   */ 
-  if(type === 'templateUpdatePrompt') {
-    /*
-     * the event name matches so we will call the function that
-     * handles that event
-     * 
-     * TODO: rename TemplateNode
-     * wait until you implement the authoring before you rename this 
-     */
-    obj.TemplateNode.updatePrompt();
+  if(type === 'mysystemPromptChanged'){
+    console.log('mysystemPromptChanged');
+    obj.Mysystem_scNode.addNew();
+  }
+  if(type === 'mysystemSCFieldUpdated'){
+    console.log('mysystemSCFieldUpdated'); 
+    obj.Mysystem_scNode.fieldUpdated(args[0], args[1]);
+  }
+  if(type === 'mysystemSCRemoveMod'){ 
+    console.log('mysystemSCRemoveMod');    
+    obj.Mysystem_scNode.removeMod(args[0]);
+  }
+  if(type === 'mysystemSCAddNew')    { 
+    console.log('mysystemSCAddNew');
+    obj.Mysystem_scNode.addNew();
   }
 };
 
@@ -33,6 +33,10 @@ var events = [
    * TODO: rename templateUpdatePrompt
    * wait until you implement the authoring before you rename this
    */
+  'mysystemSCFieldUpdated', //",["name","' + a + '"])'});
+  'mysystemSCFieldUpdated',  //,["image","' + a + '"])'});
+  'mysystemSCRemoveMod',     //"' + a + '")'});
+  'mysystemSCAddNew',
   'templateUpdatePrompt'
 ];
 
