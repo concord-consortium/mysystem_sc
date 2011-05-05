@@ -22,6 +22,7 @@
 7. if you get an error about 'iconv' see this [rvm page](http://rvm.beginrescueend.com/packages/iconv/)
 
 
+
 ### Initial student data
 
 The app saves the "student data" state (i.e., the nodes, links, and stories) into a div with id my_system_state, which is defined in apps/my_system/lib/index.rhtml. To update the default initial student state, serialize the dataHash property of the studentStateDataSource, escape the serialized JSON it for inclusion in an html document, and put it inside the my_system_state div in that element.
@@ -69,13 +70,13 @@ exit $EXIT_STATUS`
 ### Building as WISE4 step ###
 
 
-0. Install WISE4. See http://code.google.com/p/wise4/wiki/StableWISEDeploymentModel for the gory details. Check with the wise4-dev google group http://groups.google.com/group/wise4-dev if you run into problems.
+0. Install WISE4. See [the docs](http://code.google.com/p/wise4/wiki/StableWISEDeploymentModel) for the gory details. [Check with the wise4-dev google group  ]( http://groups.google.com/group/wise4-dev ) if you run into problems.
 1. Make sure $CATALINA_HOME is points to the directory where Tomcat is installed.
 2. run the default rake task: `bundle exec rake` (This will invoke sc-build and rezsquish from http://github.com/knowuh/resource_squasher to create a WISE4 compatible mysystem_sc "node" in folder vle/node/mysystem_sc)
 3. run the 'copy_files' rake task: `bundle exec rake copy_files`. This will copy the MySystem files to $CATALINA_HOME/webapps/vlewrapper/vle/node/mysystem_sc/
 4. Startup the WISE4 server: `cd $CATALINA_HOME; bin/startup.sh`
 5. Verify that you can visit the MySystem app directly: http://localhost:8080/vlewrapper/vle/node/mysystem_sc/mysystem_sc.html
-6. Login to http://localhost:8080/webapp/ as a teacher and create a project with MySystem as an active step. Then create a 'project run' based on that project and remember the signup code.
+6. Login at [http://localhost:8080/webapp/](http://localhost:8080/webapp/) as a teacher and create a project with MySystem as an active step. Then create a 'project run' based on that project and remember the signup code.
 7. Login to http://localhost:8080/webapp/ as a student and enter the signup code you saved. Click on "Run Project" to run the project that includes the MySystem step. Manipulate the MySystem system diagram and leave the step by signing off or switching to another step (if you created one.) Close the browser page and login again to verify that your manipulation was persisted to WISE4.
 
 The files put into $CATALINA_HOME/webapps/vlewrapper/vle/node/mysystem_sc are derived from the files in this repository in the folders wise4/mysystem_sc and apps/my_system/lib/index.rhtml via the default Rake task. See the Rakefile in the root of this repo. These template files created in accordance with the directions at http://code.google.com/p/wise4/wiki/HowToCreateANewWise4Step as of 5/2/2011
