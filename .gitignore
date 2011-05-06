@@ -3,3 +3,4 @@ tmp/*
 build_folder/*
 reports/*.xml
 vle/*
+debug/snapshot_demo/app
