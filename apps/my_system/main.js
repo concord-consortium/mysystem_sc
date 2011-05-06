@@ -65,15 +65,8 @@ MySystem.main = function main() {
 
   // Configured activity
   var activity = MySystem.store.find(MySystem.Activity, 'assign1');
+  MySystem.activityController.set('content',activity);
   
-  // Assignment "story"
-  MySystem.storyController.set('content', activity.get('assignmentText'));
-  
-  // Items in the node selection palette
-  MySystem.nodePaletteController.set('content', activity.get('paletteItems'));
-
-  // Energy types for the link properties editor
-  // MySystem.energyTypes = activity.get('energyTypes');
   MySystem.energyTypes = [];
   activity.get('energyTypes').forEach( function(et) {
     MySystem.energyTypes.push({'label': et.get('label'), 'color': et.get('color'), 'isEnabled': et.get('isEnabled') } );

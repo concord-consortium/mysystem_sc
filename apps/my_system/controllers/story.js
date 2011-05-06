@@ -12,5 +12,5 @@
 */
 MySystem.storyController = SC.ObjectController.create(
 /** @scope MySystem.story.prototype */ {
-
+  contentBinding: "MySystem.activityController.assignmentText"
 }) ;
