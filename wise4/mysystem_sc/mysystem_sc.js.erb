@@ -9,7 +9,12 @@ function MYSYSTEM_SC(node, view) {
   this.node = node;
   this.view = view;
   this.content = node.getContent().getContentJSON();
-  
+  // TODO: This is a bit hackety, pulling a MySytem-ref out of the inner-frame
+  this.MySystem = frames[0].MySystem;
+  if (this.content && this.MySystem) {
+    var activity = this.MySystem.Activity.fromWiseStepDef(this.content);
+    this.MySystem.activityController.set('content',activity);
+  }
   if (node.studentWork !== null) {
     this.states = node.studentWork; 
   } 
