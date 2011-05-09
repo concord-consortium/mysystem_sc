@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My System wrapper </title>
+  <script type="text/javascript">
+    (function () {
+
+      var system;
+
+      /**
+        Called back when ... some part of this thing loads.
+      */
+      window.loadContentAfterScriptsLoad = function (node) {
+        system = new MYSYSTEM_SC(node, node.view);
+        debugger;
+        system.render();
+      };
+
+      /**
+        Will load the relevant scripts via xhr (?)
+      */  
+      window.loadContent = function (node) {
+        scriptloader.loadScripts('mysystem_sc', document, node.id, eventManager);
+      };
+
+      /**
+        Called by WISE4 when we leave the step
+      */
+      window.onExit = function () {
+        save();
+      };
+      
+      /**
+        Called (in a WISE4 context) when we want the MySystem app to save the diagram state
+      */
+      window.save = function () {
+        system.save();
+      };
+
+    }());
+  </script>
+  
+</head>
+<body>
+  <iframe 
+    id = 'ifrm'
+    name = 'ifrm'
+    width="100%"
+    height="650"
+    style="height: 650px; display: block;"
+    src="node/mysystem_sc/inner_frame.html">
+  </iframe>
+</body>
+</html>
+

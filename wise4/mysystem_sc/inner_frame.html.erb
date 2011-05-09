@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="apple-touch-icon" href="images/00_my_system_sproutcore-logo.png" />
+	  <link rel="apple-touch-startup-image" media="screen and (orientation:portrait)" href="images/00_my_system_sproutcore-startup-portrait.png" /> 
+	  <link rel="apple-touch-startup-image" media="screen and (orientation:landscape)" href="images/00_my_system_sproutcore-startup-landscape.png" />
+	  <link rel="shortcut icon" href="" type="image/x-icon" />
+    
+    <title>My System</title>
+  <script type="text/javascript">
+/* >>>>>>>>>> BEGIN source/core.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2010 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
+
+/* >>>>>>>>>> BEGIN source/system/browser.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2010 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
+var SC = SC || { BUNDLE_INFO: {}, LAZY_INSTANTIATION: {} };
+
+SC.browser = (function() {
+  var userAgent = navigator.userAgent.toLowerCase(),
+      version = (userAgent.match( /.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/ ) || [])[1] ;
+
+  var browser = {
+    version: version,
+    safari: (/webkit/).test( userAgent ) ? version : 0,
+    opera: (/opera/).test( userAgent ) ? version : 0,
+    msie: (/msie/).test( userAgent ) && !(/opera/).test( userAgent ) ? version : 0,
+    mozilla: (/mozilla/).test( userAgent ) && !(/(compatible|webkit)/).test( userAgent ) ? version : 0,
+    mobileSafari: (/apple.*mobile.*safari/).test(userAgent) ? version : 0,
+    chrome: (/chrome/).test( userAgent ) ? version : 0,
+    windows: !!(/(windows)/).test(userAgent),
+    mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
+    language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
+  };
+  
+    browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
+  return browser ;
+})();
+
+/* >>>>>>>>>> BEGIN source/system/loader.js */
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2010 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
+// sc_require("system/browser");
+
+SC.bundleDidLoad = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  if (!info) info = this.BUNDLE_INFO[bundle] = {} ;
+  info.loaded = true ;
+};
+
+SC.bundleIsLoaded = function(bundle) {
+  var info = this.BUNDLE_INFO[bundle] ;
+  return info ? !!info.loaded : false ;
+};
+
+SC.loadBundle = function() { throw "SC.loadBundle(): SproutCore is not loaded."; };
+
+SC.setupBodyClassNames = function() {
+  var el = document.body ;
+  if (!el) return ;
+  var browser, platform, shadows, borderRad, classNames, style;
+  browser = SC.browser.current ;
+  platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
+  style = document.documentElement.style;
+  shadows = (style.MozBoxShadow !== undefined) || 
+                (style.webkitBoxShadow !== undefined) ||
+                (style.oBoxShadow !== undefined) ||
+                (style.boxShadow !== undefined);
+  
+  borderRad = (style.MozBorderRadius !== undefined) || 
+              (style.webkitBorderRadius !== undefined) ||
+              (style.oBorderRadius !== undefined) ||
+              (style.borderRadius !== undefined);
+  
+  classNames = el.className ? el.className.split(' ') : [] ;
+  if(shadows) classNames.push('box-shadow');
+  if(borderRad) classNames.push('border-rad');
+  classNames.push(browser) ;
+  classNames.push(platform) ;
+  if (parseInt(SC.browser.msie,0)==7) classNames.push('ie7') ;
+  if (SC.browser.mobileSafari) classNames.push('mobile-safari') ;
+  if ('createTouch' in document) classNames.push('touch');
+  el.className = classNames.join(' ') ;
+} ;
+
+/* >>>>>>>>>> BEGIN bundle_loaded.js */
+; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
+
+</script>
+<script type="text/javascript">SC.buildMode = "production";</script>
+
+  
+  
+     <link href="css/00_my_system_stylesheet-packed.css" rel="stylesheet" type="text/css" />
+  <link href="css/00_my_system_stylesheet.css" rel="stylesheet" type="text/css" />
+  <link href="css/01_my_system_stylesheet.css" rel="stylesheet" type="text/css" />
+  <link href="css/02_my_system_stylesheet.css" rel="stylesheet" type="text/css" />
+   
+    
+  </head>
+    
+  <body class="linkit-theme focus">  
+<script type="text/javascript">
+// ==========================================================================
+// Project:   SproutCore - JavaScript Application Framework
+// Copyright: ©2006-2011 Strobe Inc. and contributors.
+//            Portions ©2008-2010 Apple Inc. All rights reserved.
+// License:   Licensed under MIT license (see license.js)
+// ==========================================================================
+
+// sc_resource('setup_body_class_names'); // publish into inline format
+
+if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
+
+</script>
+
+
+
+<div id="loading">
+<p class="loading">Loading...<p>
+
+
+</div>
+<div id="my_system_state" style="display:none; visibility: hidden;">
+  {
+    &quot;MySystem.Link&quot;: {
+      &quot;link1&quot;: {
+        &quot;guid&quot;: &quot;link1&quot;,
+        &quot;text&quot;: &quot;First link&quot;,
+        &quot;startNode&quot;: &quot;1&quot;,
+        &quot;startTerminal&quot;: &quot;a&quot;,
+        &quot;endNode&quot;: &quot;2&quot;,
+        &quot;endTerminal&quot;: &quot;b&quot;,
+        &quot;color&quot;: &quot;#FF0000&quot;
+      },
+      &quot;link2&quot;: {
+        &quot;guid&quot;: &quot;link2&quot;,
+        &quot;text&quot;: &quot;Second link&quot;,
+        &quot;startNode&quot;: &quot;1&quot;,
+        &quot;startTerminal&quot;: &quot;a&quot;,
+        &quot;endNode&quot;: &quot;3&quot;,
+        &quot;endTerminal&quot;: &quot;b&quot;,
+        &quot;color&quot;: &quot;#FF0000&quot;
+      }
+    },
+    &quot;MySystem.Node&quot;: {
+      &quot;1&quot;: {
+        &quot;guid&quot;: &quot;1&quot;,
+        &quot;image&quot;: &quot;images/00_my_system_clay_red_tn.png&quot;,
+        &quot;title&quot;: &quot;A Node&quot;,
+        &quot;transformer&quot;: false,
+        &quot;inLinks&quot;: [],
+        &quot;outLinks&quot;: [
+          &quot;link1&quot;,
+          &quot;link2&quot;
+        ],
+        &quot;position&quot;: {
+          &quot;x&quot;: 160,
+          &quot;y&quot;: 160
+        },
+        &quot;transformations&quot;: [
+          &quot;trans1&quot;
+        ]
+      },
+      &quot;2&quot;: {
+        &quot;guid&quot;: &quot;2&quot;,
+        &quot;image&quot;: &quot;images/00_my_system_hand_tn.png&quot;,
+        &quot;title&quot;: &quot;B Node&quot;,
+        &quot;transformer&quot;: false,
+        &quot;inLinks&quot;: [
+          &quot;link1&quot;
+        ],
+        &quot;outLinks&quot;: [],
+        &quot;position&quot;: {
+          &quot;x&quot;: 310,
+          &quot;y&quot;: 10
+        }
+      },
+      &quot;3&quot;: {
+        &quot;guid&quot;: &quot;3&quot;,
+        &quot;image&quot;: &quot;images/00_my_system_lightbulb_tn.png&quot;,
+        &quot;title&quot;: &quot;Third Node&quot;,
+        &quot;transformer&quot;: false,
+        &quot;inLinks&quot;: [
+          &quot;link2&quot;
+        ],
+        &quot;outLinks&quot;: [],
+        &quot;position&quot;: {
+          &quot;x&quot;: 10,
+          &quot;y&quot;: 10
+        }
+      }
+    },
+    &quot;MySystem.Story&quot;: {
+      &quot;1&quot;: {
+        &quot;guid&quot;: 1,
+        &quot;storyHtml&quot;: &quot;&lt;p&gt;Make a system diagram to help explain how &lt;i&gt;both&lt;/i&gt; the sun and people's actions affect the Earth's climate.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Where does energy come from?&lt;/li&gt;&lt;li&gt;How does energy move?&lt;/li&gt;&lt;li&gt;Where does energy go?&lt;/li&gt;&lt;li&gt;How does energy change?&lt;/li&gt;&lt;/ul&gt;&quot;
+      }
+    },
+    &quot;MySystem.StorySentence&quot;: {
+      &quot;ss1&quot;: {
+        &quot;guid&quot;: &quot;ss1&quot;,
+        &quot;order&quot;: 1,
+        &quot;bodyText&quot;: &quot;First...&quot;
+      },
+      &quot;ss2&quot;: {
+        &quot;guid&quot;: &quot;ss2&quot;,
+        &quot;order&quot;: 2,
+        &quot;bodyText&quot;: &quot;Then...&quot;
+      },
+      &quot;ss3&quot;: {
+        &quot;guid&quot;: &quot;ss3&quot;,
+        &quot;order&quot;: 3,
+        &quot;bodyText&quot;: &quot;Finally...&quot;
+      }
+    }
+  }
+</div>
+  <script type="text/javascript" src="js/00_my_system_javascript-packed.js"></script>
+  <script type="text/javascript" src="js/00_my_system_javascript.js"></script>
+  <script type="text/javascript" src="js/01_my_system_javascript.js"></script>
+  <script type="text/javascript" src="js/02_my_system_javascript.js"></script>
+  <script type="text/javascript" src="js/03_my_system_javascript.js"></script>
+<script type="text/javascript">String.preferredLanguage = "en";</script>
+	</body>
+</html>
