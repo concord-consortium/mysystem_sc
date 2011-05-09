@@ -21,19 +21,21 @@ MySystem.main = function main() {
 
   MySystem.dataSource = SC.CascadeDataSource.create({
     dataSources: ['studentStateDataSource', 'fixturesDataSource'],
-    
+
     studentStateDataSource: MySystem.MergedHashDataSource.create({
       handledRecordTypes: [MySystem.Link, MySystem.Node, MySystem.Story, MySystem.StorySentence],
 
       // write the updated student-state data to the DOM whenever it changes
+      // New: Write the updated student-state data to a variable whenever it changes.
       dataStoreDidUpdateDataHash: function () {
-        SC.$('#my_system_state').text( JSON.stringify(this.get('dataHash'), null, 2) );
+        var textRep = JSON.stringify(this.get('dataHash'), null, 2);
+        SC.$('#my_system_state').text(textRep);
       }
     }),
-    
+
     fixturesDataSource: SC.FixturesDataSource.create({
       // Patch. CascadeDataSource's commitRecords naively has each data source attempt to commit the same records.
-      // (This results in an internal inconsistency error on record creation, because the fixturesDataSource tries to 
+      // (This results in an internal inconsistency error on record creation, because the fixturesDataSource tries to
       // create the same record that the studentStateDataSource has just created, and whose storeKey is therefore in
       // the wrong state -- READY instead of BUSY)
       commitRecords: function () { return YES; }
@@ -43,22 +45,26 @@ MySystem.main = function main() {
   // the store passes student state data to the student state data source
   MySystem.store = SC.Store.create({
     commitRecordsAutomatically: YES,
-    
+
     setStudentStateDataHash: function (hash) {
       this.dataSource.studentStateDataSource.setDataHash(this, hash);
+    },
+    getStudentStateDataHash: function() {
+      var dataHash = this.dataSource.studentStateDataSource.dataHash();
+      return JSON.stringify(dataHash,null,2);
     }
   }).from(MySystem.dataSource);
 
   // load the initial data from the DOM (see core.js)
   MySystem.updateFromDOM();
-    
+
   MySystem.getPath('mainPage.mainPane').append();
 
   SC.ExceptionHandler = MySystem.ExceptionHandler;
 
   // The following loads data from an old WireIt format layer data
   //MySystem.loadCanvas();
-  
+
   //Set the content property on the primary controller
   var nodes = MySystem.store.find(MySystem.Node);
   MySystem.nodesController.set('content', nodes);
@@ -66,17 +72,17 @@ MySystem.main = function main() {
   // Configured activity
   var activity = MySystem.store.find(MySystem.Activity, 'assign1');
   MySystem.activityController.set('content',activity);
-  
+
   MySystem.energyTypes = [];
   activity.get('energyTypes').forEach( function(et) {
     MySystem.energyTypes.push({'label': et.get('label'), 'color': et.get('color'), 'isEnabled': et.get('isEnabled') } );
   });
-  
+
   // User story
   var storyQuery = SC.Query.local(MySystem.StorySentence, { orderBy: 'order' });
   var storySentences = MySystem.store.find(storyQuery);
   MySystem.storySentenceController.set('content', storySentences);
-  
+
   var transformations = MySystem.store.find(MySystem.Transformation);
 
   // MySystem.linkColorChooser = MySystem.mainPage.mainPane.childViews.objectAt(0).topLeftView.childViews.objectAt(5);
@@ -84,7 +90,7 @@ MySystem.main = function main() {
   MySystem.canvasView = MySystem.mainPage.mainPane.topView.bottomRightView.bottomRightView;
   MySystem.transformationsCanvasView = MySystem.getPath('mainPage.transformationBuilderPane').get('childViews').objectAt(0).get('childViews').objectAt(2);
   MySystem.transformationAnnotaterPane = MySystem.getPath('mainPage.transformationAnnotaterPane');
-  
+
   MySystem.statechart.initStatechart();
 };
 

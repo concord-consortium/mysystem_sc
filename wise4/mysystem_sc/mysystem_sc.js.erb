@@ -45,14 +45,7 @@ MYSYSTEM_SC.prototype.render = function () {
      * would like from the state object (look at templatestate.js)
      */
     var latestResponse = latestState.response;
-    
-    // push the previous student work into the DOM. Can't assume SC has inited yet (hence, can't use SC.$())
-    document.getElementById('my_system_state').textContent = latestResponse;
-    
-    // and tell MySystem to load the data from the DOM element, if it has started up.
-    if (window['MySystem'] && MySystem.updateFromDOM) {
-      MySystem.updateFromDOM();
-    }
+    this.MySystem.setStudentDataHash(latestResponse); 
   }
 };
 
@@ -82,11 +75,12 @@ MYSYSTEM_SC.prototype.getLatestState = function () {
  */
 MYSYSTEM_SC.prototype.save = function () {
   // abort if for any reason we can't use SC.CoreQuery, so that we don't accidentally save null data
-  if (!SC || !SC.$) return;
+  // if (!SC || !SC.$) return;
 
   // get the answer the student wrote
-  var response = SC.$('#my_system_state').text();
-  
+  // var response = SC.$('#my_system_state').text();
+  // var response = frames[0].document.getElementById('my_system_state');
+  var response = this.MySystem.getStudentDataHash();
   /*
    * create a student state object that will store the new work the student
    * just submitted

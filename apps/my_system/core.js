@@ -19,7 +19,6 @@ MySystem = SC.Application.create(
   // TODO: Add global constants or singleton objects needed by your app here.
   // MySystem.linkColorChooser = null;
   canvasView: null,
-
   NOVICE_STUDENT: 'novice',
   ADVANCED_STUDENT: 'advanced',
   
@@ -29,8 +28,18 @@ MySystem = SC.Application.create(
   */
   updateFromDOM: function () {
     SC.run( function () {
-      MySystem.store.setStudentStateDataHash( JSON.parse(SC.$('#my_system_state').text()) );
+      var data = SC.$('#my_system_state').text();
+      MySystem.store.setStudentStateDataHash( JSON.parse(data ));
     });
-  }
+  },
 
+  setStudentDataHash: function (data) {
+    SC.run( function () {
+      MySystem.store.setStudentStateDataHash(JSON.parse(data));
+    });
+  },
+
+  getStudentDataHash: function() {
+    return MySystem.store.getStudentDataHash();
+  }
 }) ;
