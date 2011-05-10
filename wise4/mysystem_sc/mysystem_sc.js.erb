@@ -9,17 +9,16 @@ function MYSYSTEM_SC(node, view) {
   this.node = node;
   this.view = view;
   this.content = node.getContent().getContentJSON();
+
   // TODO: This is a bit hackety, pulling a MySytem-ref out of the inner-frame
   this.MySystem = frames[0].MySystem;
-  if (this.content && this.MySystem) {
-    var activity = this.MySystem.Activity.fromWiseStepDef(this.content);
-    this.MySystem.activityController.set('content',activity);
-  }
+  this.domIO = frames[0].document.getElementById('my_system_state');
+
   if (node.studentWork !== null) {
     this.states = node.studentWork; 
   } 
   else {
-    this.states = [];  
+    this.states = [];
   }
 }
 
@@ -30,12 +29,6 @@ function MYSYSTEM_SC(node, view) {
  * step, if any.
  */
 MYSYSTEM_SC.prototype.render = function () {
-
-  // display any prompts to the student
-  // example:
-  // document.getElementById('promptDiv').innerHTML = this.content.prompt;
-  
-  // load any previous responses the student submitted for this step
   var latestState = this.getLatestState();
   
   if (latestState !== null) {
@@ -68,18 +61,8 @@ MYSYSTEM_SC.prototype.getLatestState = function () {
 /**
  * This function retrieves the student work from the html ui, creates a state
  * object to represent the student work, and then saves the student work.
- * 
- * note: you do not have to use 'studentResponseTextArea', they are just 
- * provided as examples. you may create your own html ui elements in
- * the .html file for this step (look at template.html).
  */
 MYSYSTEM_SC.prototype.save = function () {
-  // abort if for any reason we can't use SC.CoreQuery, so that we don't accidentally save null data
-  // if (!SC || !SC.$) return;
-
-  // get the answer the student wrote
-  // var response = SC.$('#my_system_state').text();
-  // var response = frames[0].document.getElementById('my_system_state');
   var response = this.MySystem.getStudentDataHash();
   /*
    * create a student state object that will store the new work the student

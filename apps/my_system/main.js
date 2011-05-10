@@ -62,9 +62,6 @@ MySystem.main = function main() {
 
   SC.ExceptionHandler = MySystem.ExceptionHandler;
 
-  // The following loads data from an old WireIt format layer data
-  //MySystem.loadCanvas();
-
   //Set the content property on the primary controller
   var nodes = MySystem.store.find(MySystem.Node);
   MySystem.nodesController.set('content', nodes);
