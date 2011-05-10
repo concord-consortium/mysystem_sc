@@ -38,7 +38,10 @@ MYSYSTEM_SC.prototype.render = function () {
      * would like from the state object (look at templatestate.js)
      */
     var latestResponse = latestState.response;
-    this.MySystem.setStudentDataHash(latestResponse); 
+    this.domIO.textContent = latestResponse;
+  }
+  if (this.content && this.MySystem) {
+    this.MySystem.loadWiseConfig(this.content,latestResponse);
   }
 };
 
@@ -63,7 +66,8 @@ MYSYSTEM_SC.prototype.getLatestState = function () {
  * object to represent the student work, and then saves the student work.
  */
 MYSYSTEM_SC.prototype.save = function () {
-  var response = this.MySystem.getStudentDataHash();
+  // We use a simple dom element for our data passing
+  var response =this.domIO.textContent;
   /*
    * create a student state object that will store the new work the student
    * just submitted

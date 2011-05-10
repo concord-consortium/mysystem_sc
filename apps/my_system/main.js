@@ -113,3 +113,12 @@ MySystem.loadCanvas = function () {
   var json = JSON.parse(state.get('content'));
   MySystem.parseOldFormatJson(json);
 };
+
+MySystem.loadWiseConfig = function(authoredContent,latestResponse) {
+  SC.run( function() {
+    var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
+    MySystem.activityController.set('content',activity);
+    MySystem.updateFromDOM();
+  });
+};
+
