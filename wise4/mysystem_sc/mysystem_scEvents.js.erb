@@ -7,19 +7,31 @@
 View.prototype.mysystem_scDispatcher = function(type,args,obj){
   if(type === 'mysystemPromptChanged'){
     console.log('mysystemPromptChanged');
-    obj.Mysystem_scNode.addNew();
+    //  obj.Mysystem_scNode.AddNewModule();
   }
   if(type === 'mysystemSCFieldUpdated'){
-    console.log('mysystemSCFieldUpdated'); 
+    console.log('mysystemSCFieldUpdated');
     obj.Mysystem_scNode.fieldUpdated(args[0], args[1]);
   }
-  if(type === 'mysystemSCRemoveMod'){ 
-    console.log('mysystemSCRemoveMod');    
+  if(type === 'mysystemSCRemoveMod'){
+    console.log('mysystemSCRemoveMod');
     obj.Mysystem_scNode.removeMod(args[0]);
   }
-  if(type === 'mysystemSCAddNew')    { 
-    console.log('mysystemSCAddNew');
-    obj.Mysystem_scNode.addNew();
+  if(type === 'mysystemSCAddNewModule'){
+    console.log('mysystemSCAddNewModule');
+    obj.Mysystem_scNode.AddNewModule();
+  }
+  if(type === 'mysystemSCAddNewEnergyType'){
+    console.log('mysystemSCAddNewEnergyType');
+    obj.Mysystem_scNode.AddNewEnergyType();
+  }
+  if(type === 'mysystemSCEnergyFieldUpdated'){
+    console.log('mysystemSCEnergyFieldUpdated');
+    obj.Mysystem_scNode.fieldEnergyUpdated(args[0], args[1]);
+  }
+  if(type === 'mysystemSCRemoveEtype'){
+    console.log('mysystemSCRemoveEtype');
+    obj.Mysystem_scNode.removeEtype(args[0]);
   }
 };
 
@@ -34,9 +46,11 @@ var events = [
    * wait until you implement the authoring before you rename this
    */
   'mysystemSCFieldUpdated', //",["name","' + a + '"])'});
-  'mysystemSCFieldUpdated',  //,["image","' + a + '"])'});
+  'mysystemSCEnergyFieldUpdated',
   'mysystemSCRemoveMod',     //"' + a + '")'});
-  'mysystemSCAddNew',
+  'mysystemSCRemoveEtype',
+  'mysystemSCAddNewModule',
+  'mysystemSCAddNewEnergyType',
   'templateUpdatePrompt'
 ];
 
@@ -52,3 +66,5 @@ for (var x=0; x<events.length; x++) {
 if (typeof eventManager != 'undefined') {
   eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/mysystem_scEvents.js');
 }
+
+
