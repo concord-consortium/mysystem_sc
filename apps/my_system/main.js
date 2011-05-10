@@ -118,6 +118,11 @@ MySystem.loadWiseConfig = function(authoredContent,latestResponse) {
   SC.run( function() {
     var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
     MySystem.activityController.set('content',activity);
+    MySystem.energyTypes = [];
+    activity.get('energyTypes').forEach( function(et) {
+      // TODO: This should be handled with an observer on the activity controller...
+      MySystem.energyTypes.push({'label': et.get('label'), 'color': et.get('color'), 'isEnabled': et.get('isEnabled') } );
+    });
     MySystem.updateFromDOM();
   });
 };

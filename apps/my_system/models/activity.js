@@ -55,26 +55,41 @@ MySystem.Activity.newGuid = function(type) { return type + MySystem.Activity.Gui
       }
 */
 MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
-    var actguid = MySystem.Activity.newGuid("actvitiy");
-    var modules = wiseStepDef["modules"];
-    var paletteItem = null;
-    var activity = MySystem.store.createRecord(
-      MySystem.Activity, {
-      assignmentText: wiseStepDef["prompt"],
-      guid: MySystem.Activity.newGuid("activity")
-    });
-    var size = modules.length;
-    var i = 0;
-    for (i=0; i < size; i++) {
-      module = modules[i];
-      paletteItem = MySystem.store.createRecord(
-        MySystem.PaletteItem, {
-          title: module["name"],
-          image: module["image"]},
-          MySystem.Activity.newGuid("palette_item")
-      );
-      activity.get('paletteItems').pushObject(paletteItem);
-    };
-    return activity;
+  var actguid = MySystem.Activity.newGuid("actvitiy");
+  var modules = wiseStepDef["modules"];
+  var paletteItem = null;
+  var activity = MySystem.store.createRecord(
+    MySystem.Activity, {
+    assignmentText: wiseStepDef["prompt"],
+    guid: MySystem.Activity.newGuid("activity")
+  });
+  var size = modules.length;
+  var i = 0;
+  for (i=0; i < size; i++) {
+    module = modules[i];
+    paletteItem = MySystem.store.createRecord(
+      MySystem.PaletteItem, {
+        title: module["name"],
+        image: module["image"]},
+        MySystem.Activity.newGuid("palette_item")
+    );
+    activity.get('paletteItems').pushObject(paletteItem);
+  };
+  var energy_types = wiseStepDef["energy_types"];
+  size = energy_types.length;
+  var type = '';
+  var newEnergyType = null;
+  for (i=0; i < size; i++) {
+    type = energy_types[i];
+    newEnergyType = MySystem.store.createRecord(
+      MySystem.EnergyType, {
+        label: type["label"],
+        color: type["color"],
+        isEnabled: YES},
+        MySystem.Activity.newGuid("energyType")
+    );
+    activity.get('energyTypes').pushObject(newEnergyType);
+  };
+  return activity;
 }
 
