@@ -39,7 +39,7 @@ function clearState() {
       asString = rec.toString();
       try {
         SC.run( function () { rec.destroy(); });
-        console.log("destroyed: %s", asString);
+        SC.Logger.log("destroyed: %s", asString);
       }
       catch (e) {
         console.error('error caught: %s', e.toString ? e.toString() : e);

@@ -51,13 +51,13 @@ MySystem.DIAGRAM_OBJECT_EDITING = Ki.State.design({
   },
 
   enterState: function () {
-    console.log("Entering state %s", this.get('name'));
+    SC.Logger.log("Entering state %s", this.get('name'));
     // Set up the property editor pane and attach it
     this.setUpPropertyPane();
   },
   
   exitState: function () {
-    console.log("Leaving state %s", this.get('name'));
+    SC.Logger.log("Leaving state %s", this.get('name'));
     // Detatch property editor pane and clean it up
     this.tearDownPropertyPane();
   },

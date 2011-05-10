@@ -60,7 +60,7 @@ MySystem.SENTENCE_OBJECT_LINKING_SETUP = Ki.State.design({
     if (sentence === null) {
       sentence = MySystem.storySentenceController.get('editingSentence');
     }
-    console.log("Now editing linked nodes and links for %s", sentence.get('id'));
+    SC.Logger.log("Now editing linked nodes and links for %s", sentence.get('id'));
     var sentenceLinks = sentence.get('links'); 
     if (!diagramPane.isPaneAttached) {
       diagramPane.append();
@@ -75,7 +75,7 @@ MySystem.SENTENCE_OBJECT_LINKING_SETUP = Ki.State.design({
     this.setUpSentenceLinkPane() before sending us along to SENTENCE_OBJECT_LINKING.
   */
   enterState: function () {
-    console.log("Entering state %s", this.get('name'));
+    SC.Logger.log("Entering state %s", this.get('name'));
     
     var sentence = MySystem.storySentenceController.get('editingSentence');
     
@@ -88,6 +88,6 @@ MySystem.SENTENCE_OBJECT_LINKING_SETUP = Ki.State.design({
   },
   
   exitState: function () {
-    console.log("Leaving state %s", this.get('name'));
+    SC.Logger.log("Leaving state %s", this.get('name'));
   }
 });

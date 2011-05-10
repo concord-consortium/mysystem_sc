@@ -52,11 +52,11 @@ MySystem.statechart = Ki.Statechart.create({
       },
       
       enterState: function () {
-        console.log("Entering state %s", this.get('name'));
+        SC.Logger.log("Entering state %s", this.get('name'));
       },
       
       exitState: function () {
-        console.log("Leaving state %s", this.get('name'));
+        SC.Logger.log("Leaving state %s", this.get('name'));
       }
       
     }),

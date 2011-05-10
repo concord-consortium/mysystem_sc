@@ -44,7 +44,7 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
     // Dim all links
     var allLinks = MySystem.store.find('MySystem.Link');
     allLinks.forEach( function (link) {
-      console.log("Dimming link %s", link.get('id'));
+      SC.Logger.log("Dimming link %s", link.get('id'));
       link.set('isDimmed', YES);
     });
     return YES;
@@ -64,11 +64,11 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
     
     allLinks.forEach( function (link) {
       if (selectedLinks.indexOf(link) > -1) {
-        console.log("Un-dimming link %s", link.get('id'));
+        SC.Logger.log("Un-dimming link %s", link.get('id'));
         link.set('isDimmed', NO);
       }
       else {
-        console.log("Dimming link %s", link.get('id'));
+        SC.Logger.log("Dimming link %s", link.get('id'));
         link.set('isDimmed', YES);
       }
     });
@@ -123,14 +123,14 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
     In response to the "close" button click, set the active sentence to null and return to diagram editing.
   */
   closeButton: function () {
-    console.log("Got the closeButton event");
+    SC.Logger.log("Got the closeButton event");
     MySystem.storySentenceController.set('editingSentence', null);
     this.gotoState('DIAGRAM_EDITING');
     return YES;
   },
   
   enterState: function () {
-    console.log("Entering state %s", this.get('name'));
+    SC.Logger.log("Entering state %s", this.get('name'));
     
     // Make sure all selected stuff is un-dimmed
     this.updateHighlighting();
@@ -138,7 +138,7 @@ MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
   },
   
   exitState: function () {
-    console.log("Leaving state %s", this.get('name'));
+    SC.Logger.log("Leaving state %s", this.get('name'));
     var allLinks = MySystem.store.find(MySystem.Link);
 
     // Close linking pane

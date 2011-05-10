@@ -33,7 +33,7 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
     //     // The proposed link has the right color
     //     return YES;
     //   }
-    //   console.log('No link creation here: ' + this.node.get('linkColor') + ' is not ' + proposedLinkColor);
+    //   SC.Logger.log('No link creation here: ' + this.node.get('linkColor') + ' is not ' + proposedLinkColor);
     //   return NO;
     // } else if (MySystem.studentMode === MySystem.ADVANCED_STUDENT) {
     //   if (this.node.get('links').get('length') === 0) {
@@ -50,10 +50,10 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
     //   if (this.node.hasIncomingLinksWithColor(proposedLinkColor)) {
     //     return YES;
     //   }
-    //   console.log('No link creation here: ' + this.node.get('linkColor') + ' is not ' + proposedLinkColor);
+    //   SC.Logger.log('No link creation here: ' + this.node.get('linkColor') + ' is not ' + proposedLinkColor);
     //   return NO;
     // } else {
-    //   console.log("MySystem.studentMode invalid:" + MySystem.studentMode);
+    //   SC.Logger.log("MySystem.studentMode invalid:" + MySystem.studentMode);
     //   return NO;
     // }
     return YES;
@@ -61,7 +61,7 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
 
   // Validate if the currently-being-created link may end at this terminal
   canDropLink: function() {
-    // console.log('Checking if links may drop at this terminal');
+    // SC.Logger.log('Checking if links may drop at this terminal');
     // var inboundLinkColor = MySystem.linkColorChooser.get('content');
     // if (MySystem.studentMode == MySystem.NOVICE_STUDENT) {
     //   // This block for novice mode
@@ -95,7 +95,7 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
     //   // else
     //   return YES;
     // } else {
-    //   console.log("Bad student mode: " + MySystem.studentMode);
+    //   SC.Logger.log("Bad student mode: " + MySystem.studentMode);
     //   return NO;
     // }
     return YES;

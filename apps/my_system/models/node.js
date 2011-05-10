@@ -143,7 +143,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   // tell LinkIt whether the proposed link is valid
   canLink: function (link) {
-    // console.log(this+".canLink("+link+")");
+    // SC.Logger.log(this+".canLink("+link+")");
     if (!link) return NO;
 
     var sn = link.get('startNode'), 
@@ -330,10 +330,10 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     var colors = [], height = 15;
     var inLinkColors = this.uniqueColors(this.get('inLinkColors'));
     var newNode = this;
-    // console.log("colorObjects, newNode=" + newNode);
+    // SC.Logger.log("colorObjects, newNode=" + newNode);
     inLinkColors.forEach( function (item) {
       var newColorNode = MySystem.EnergyFlow.create( { color: item, side: 'in', position: { x: 10, y: height }, node: newNode, guid: MySystem.EnergyFlow.newGuid() } );
-      // console.log("colorObjects pushing " + newColorNode.get('node'));
+      // SC.Logger.log("colorObjects pushing " + newColorNode.get('node'));
       colors.pushObject( newColorNode );
       newNode.get('inColorMap')[item] = newColorNode;
       height = height + 25;
@@ -343,7 +343,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     newNode = this;
     outLinkColors.forEach( function (item) {
       var newOutNode = MySystem.EnergyFlow.create( { color: item, side: 'out', position: { x: 450, y: height }, node: newNode, guid: MySystem.EnergyFlow.newGuid() } ) ;
-      // console.log("colorObjects pushing " + newOutNode.get('node'));
+      // SC.Logger.log("colorObjects pushing " + newOutNode.get('node'));
       colors.pushObject(newOutNode);
       newNode.get('outColorMap')[item] = newOutNode;
       height = height + 25;

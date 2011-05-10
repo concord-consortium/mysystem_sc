@@ -201,7 +201,7 @@ MySystem.Link = SC.Record.extend(
         return YES;
       }
       else {
-        console.log("No matching color pattern found.");
+        SC.Logger.log("No matching color pattern found.");
         return NO;
       }
     }
@@ -245,7 +245,7 @@ MySystem.Link = SC.Record.extend(
         return YES;
       }
       else {
-        console.log("No matching color pattern found.");
+        SC.Logger.log("No matching color pattern found.");
         return NO;
       }
     }
