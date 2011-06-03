@@ -1,5 +1,3 @@
-/*globals eventManager */
-
 /**
  * This is the constructor for the state object that will be used to represent the
  * student work. An instance of this object will be created each time the student
@@ -9,15 +7,15 @@
  * is just used as an example. you can add any variables that will help you 
  * represent the student's work for your step type.
  */
-function MYSYSTEM_SCSTATE(response) {
-  // html-quoted json representing the student's response
-  this.response = "";
+function MysystemState(response) {
+	//the text response the student wrote
+	this.response = "";
 
-  if (response !== null) {
-    //set the response
-    this.response = response;
-  }
-}
+	if(response != null) {
+		//set the response
+		this.response = response;
+	}
+};
 
 /**
  * This function is used to reload previous work the student submitted for the step.
@@ -29,17 +27,17 @@ function MYSYSTEM_SCSTATE(response) {
  * help you represent the student's work for your type of step.
  * 
  * @param stateJSONObj a JSONObject representing the student work
- * @return a MYSYSTEM_SCSTATE object
+ * @return a MysystemState object
  */
-MYSYSTEM_SCSTATE.prototype.parseDataJSONObj = function (stateJSONObj) {
-  // obtain the student work from the JSONObject
-  var response = stateJSONObj.response;
-  
-  /*
-   * create a state object with the student work
-   */
-  var state = new MYSYSTEM_SCSTATE(response);
-  return state;
+MysystemState.prototype.parseDataJSONObj = function(stateJSONObj) {
+	//obtain the student work from the JSONObject
+	var response = stateJSONObj.response;
+	
+	//create a state object with the student work
+	var mysystemState = new MysystemState(response);
+	
+	//return the state object
+	return mysystemState;
 };
 
 /**
@@ -47,11 +45,13 @@ MYSYSTEM_SCSTATE.prototype.parseDataJSONObj = function (stateJSONObj) {
  * 
  * @return the student work
  */
-MYSYSTEM_SCSTATE.prototype.getStudentWork = function () {
-  return this.response;
+MysystemState.prototype.getStudentWork = function() {
+	var studentWork = this;
+	
+	return studentWork;
 };
 
-// used to notify scriptloader that this script has finished loading
-if (typeof eventManager != 'undefined') {
-  eventManager.fire('scriptLoaded', 'vle/node/mysystem_sc/mysystem_scstate.js');
+//used to notify scriptloader that this script has finished loading
+if(typeof eventManager != 'undefined'){
+	eventManager.fire('scriptLoaded', 'vle/node/mysystem/mysystemState.js');
 }

@@ -8,13 +8,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="apple-touch-icon" href="images/00_my_system_sproutcore-logo.png" />
-	  <link rel="apple-touch-startup-image" media="screen and (orientation:portrait)" href="images/00_my_system_sproutcore-startup-portrait.png" /> 
-	  <link rel="apple-touch-startup-image" media="screen and (orientation:landscape)" href="images/00_my_system_sproutcore-startup-landscape.png" />
-	  <link rel="shortcut icon" href="" type="image/x-icon" />
-    
+    <link rel="apple-touch-startup-image" media="screen and (orientation:portrait)" href="images/00_my_system_sproutcore-startup-portrait.png" />
+    <link rel="apple-touch-startup-image" media="screen and (orientation:landscape)" href="images/00_my_system_sproutcore-startup-landscape.png" />
+    <link rel="shortcut icon" href="" type="image/x-icon" />
+
     <title>My System</title>
   <script type="text/javascript">
-/* >>>>>>>>>> BEGIN source/core.js */
+
+
+    /* >>>>>>>>>> BEGIN source/core.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
 // Copyright: ©2006-2011 Strobe Inc. and contributors.
@@ -49,7 +51,7 @@ SC.browser = (function() {
     mac: !!((/(macintosh)/).test(userAgent) || (/(mac os x)/).test(userAgent)),
     language: (navigator.language || navigator.browserLanguage).split('-', 1)[0]
   };
-  
+
     browser.current = browser.msie ? 'msie' : browser.mozilla ? 'mozilla' : browser.safari ? 'safari' : browser.opera ? 'opera' : 'unknown' ;
   return browser ;
 })();
@@ -84,16 +86,16 @@ SC.setupBodyClassNames = function() {
   browser = SC.browser.current ;
   platform = SC.browser.windows ? 'windows' : SC.browser.mac ? 'mac' : 'other-platform' ;
   style = document.documentElement.style;
-  shadows = (style.MozBoxShadow !== undefined) || 
+  shadows = (style.MozBoxShadow !== undefined) ||
                 (style.webkitBoxShadow !== undefined) ||
                 (style.oBoxShadow !== undefined) ||
                 (style.boxShadow !== undefined);
-  
-  borderRad = (style.MozBorderRadius !== undefined) || 
+
+  borderRad = (style.MozBorderRadius !== undefined) ||
               (style.webkitBorderRadius !== undefined) ||
               (style.oBorderRadius !== undefined) ||
               (style.borderRadius !== undefined);
-  
+
   classNames = el.className ? el.className.split(' ') : [] ;
   if(shadows) classNames.push('box-shadow');
   if(borderRad) classNames.push('border-rad');
@@ -108,20 +110,22 @@ SC.setupBodyClassNames = function() {
 /* >>>>>>>>>> BEGIN bundle_loaded.js */
 ; if ((typeof SC !== 'undefined') && SC && SC.bundleDidLoad) SC.bundleDidLoad('sproutcore/bootstrap');
 
+
+
 </script>
 <script type="text/javascript">SC.buildMode = "production";</script>
 
-  
-  
-     <link href="css/00_my_system_stylesheet-packed.css" rel="stylesheet" type="text/css" />
+
+
+  <link href="css/00_my_system_stylesheet-packed.css" rel="stylesheet" type="text/css" />
   <link href="css/00_my_system_stylesheet.css" rel="stylesheet" type="text/css" />
   <link href="css/01_my_system_stylesheet.css" rel="stylesheet" type="text/css" />
   <link href="css/02_my_system_stylesheet.css" rel="stylesheet" type="text/css" />
-   
-    
+
+
   </head>
-    
-  <body class="linkit-theme focus">  
+
+  <body class="linkit-theme focus">
 <script type="text/javascript">
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
@@ -143,7 +147,7 @@ if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
 
 
 </div>
-<div id="my_system_state" style="display:none; visibility: hidden;">
+<div id="my_system_state" >
   {
     &quot;MySystem.Link&quot;: {
       &quot;link1&quot;: {
@@ -243,6 +247,38 @@ if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
   <script type="text/javascript" src="js/01_my_system_javascript.js"></script>
   <script type="text/javascript" src="js/02_my_system_javascript.js"></script>
   <script type="text/javascript" src="js/03_my_system_javascript.js"></script>
-<script type="text/javascript">String.preferredLanguage = "en";</script>
-	</body>
+  <script type="text/javascript">
+    String.preferredLanguage = "en";
+
+      var mysystem;
+      /**
+        Called back when ... some part of this thing loads.
+      */
+      window.loadContentAfterScriptsLoad = function (node) {
+      // debugger;
+      // mysystem = new Mysystem(node, node.view);
+       mysystem = new Mysystem(node, node.view);
+       mysystem.render();
+      };
+
+      /**
+        Will load the relevant scripts via xhr (?)
+      */
+      window.loadContent = function (node) {
+        scriptloader.loadScripts('mysystem', document, node.id, eventManager);
+      };
+
+      /**
+        Called by WISE4 when we leave the step
+      */
+      window.onExit = function () {  window.save(); };
+      window.save = function()    { mysystem.save();} ;
+
+      /**
+        Called (in a WISE4 context) when we want the MySystem app to save the diagram state
+      */
+
+  </script>
+  </body>
 </html>
+
