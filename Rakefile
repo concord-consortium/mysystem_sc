@@ -4,7 +4,7 @@ require 'erb'
 @tomcat_dir         = ENV['CATALINA_HOME']
 @sc_project_name    = "my_system"
 @project_title      = "My System"
-@wise_step_name     = "mysystem"
+@wise_step_name     = "mysystem2"
 @template_directory = "wise4/#{@wise_step_name}"
 @output_directory   = "vle/node/#{@wise_step_name}"
 @template_suffix    = ".erb"
