@@ -183,4 +183,4 @@ return Forms.FormView.row(SC.FileFieldView,a)},isDirty:NO,errors:function(){},is
 Forms.FormView.registerTransform=function(a,b){Forms.FormView.transforms[SC.guidFor(a)]=b
 };Forms.FormView.registerTransform(Boolean,{fieldData:{autoResize:NO,layout:{height:21,left:120,right:20,centerY:0,width:200},contentValueKey:NO,parentView:this}});
 if((typeof SC!=="undefined")&&SC&&SC.bundleDidLoad){SC.bundleDidLoad("forms")};
-if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', 'vle/node/mysystem/js/00_my_system_javascript.js');};
+if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', 'vle/node/mysystem2/js/00_my_system_javascript.js');};

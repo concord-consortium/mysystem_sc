@@ -410,4 +410,4 @@ var b=MySystem.store.find(MySystem.Node);for(c=0;c<b.get("length");++c){b.object
 var a=JSON.parse(b.get("content"));MySystem.parseOldFormatJson(a)};MySystem.loadWiseConfig=function(b,a){SC.run(function(){var c=MySystem.Activity.fromWiseStepDef(b);
 MySystem.activityController.set("content",c);MySystem.energyTypes=[];c.get("energyTypes").forEach(function(d){MySystem.energyTypes.push({label:d.get("label"),color:d.get("color"),isEnabled:d.get("isEnabled")})
 });MySystem.updateFromDOM()})};
-if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', 'vle/node/mysystem/js/03_my_system_javascript.js');};
+if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', 'vle/node/mysystem2/js/03_my_system_javascript.js');};

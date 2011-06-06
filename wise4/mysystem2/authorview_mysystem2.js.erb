@@ -105,9 +105,9 @@ View.prototype.Mysystem2Node.generateModules = function(){
       var modText = document.createTextNode('Module');
       var nameText = document.createTextNode("Name: ");
       var imageText = document.createTextNode("Image: ");
-      var nameInput = createElement(document, 'input', {id: 'nameInput_' + a, type: 'text', value: this.content.modules[a].name, onchange: 'eventManager.fire("mysystemSCFieldUpdated",["name","' + a + '"])'});
-      var imageInput = createElement(document, 'input', {id: 'imageInput_' + a, type: 'text', value: this.content.modules[a].image, onchange: 'eventManager.fire("mysystemSCFieldUpdated",["image","' + a + '"])'});
-      var removeButt = createElement(document, 'input', {type: 'button', id: 'removeButt', value: 'remove module', onclick: 'eventManager.fire("mysystemSCRemoveMod","' + a + '")'});
+      var nameInput = createElement(document, 'input', {id: 'nameInput_' + a, type: 'text', value: this.content.modules[a].name, onchange: 'eventManager.fire("mysystem2FieldUpdated",["name","' + a + '"])'});
+      var imageInput = createElement(document, 'input', {id: 'imageInput_' + a, type: 'text', value: this.content.modules[a].image, onchange: 'eventManager.fire("mysystem2FieldUpdated",["image","' + a + '"])'});
+      var removeButt = createElement(document, 'input', {type: 'button', id: 'removeButt', value: 'remove module', onclick: 'eventManager.fire("mysystem2RemoveMod","' + a + '")'});
 
       parent.appendChild(modDiv);
       modDiv.appendChild(modText);
@@ -125,7 +125,7 @@ View.prototype.Mysystem2Node.generateModules = function(){
   }
 
   //create buttons to create new modules
-  var createButt = createElement(document, 'input', {type:'button', value:'add new module', onclick:'eventManager.fire("mysystemSCAddNewModule")'});
+  var createButt = createElement(document, 'input', {type:'button', value:'add new module', onclick:'eventManager.fire("mysystem2AddNewModule")'});
   parent.appendChild(createButt);
 };
 
@@ -157,9 +157,9 @@ View.prototype.Mysystem2Node.generateEnergyTypes= function(){
     var modText = document.createTextNode('EnergyType');
     var labelText = document.createTextNode("Label: ");
     var colorText = document.createTextNode("Color: ");
-    var labelInput = createElement(document, 'input', {id: 'labelInput_' + a, type: 'text', value: this.content.energy_types[a].label, onchange: 'eventManager.fire("mysystemSCEnergyFieldUpdated",["label","' + a + '"])'});
-    var colorInput = createElement(document, 'input', {id: 'colorInput_' + a, type: 'text', value: this.content.energy_types[a].color, onchange: 'eventManager.fire("mysystemSCEnergyFieldUpdated",["color","' + a + '"])'});
-    var removeButt = createElement(document, 'input', {type: 'button', id: 'removeButt', value: 'remove module', onclick: 'eventManager.fire("mysystemSCRemoveEtype,"' + a + '")'});
+    var labelInput = createElement(document, 'input', {id: 'labelInput_' + a, type: 'text', value: this.content.energy_types[a].label, onchange: 'eventManager.fire("mysystem2EnergyFieldUpdated",["label","' + a + '"])'});
+    var colorInput = createElement(document, 'input', {id: 'colorInput_' + a, type: 'text', value: this.content.energy_types[a].color, onchange: 'eventManager.fire("mysystem2EnergyFieldUpdated",["color","' + a + '"])'});
+    var removeButt = createElement(document, 'input', {type: 'button', id: 'removeButt', value: 'remove module', onclick: 'eventManager.fire("mysystem2RemoveEtype,"' + a + '")'});
     var colorWell = createElement(document, 'div', {
       id: 'colorWell_' + a, 
       style:'display:inline-block; border: 1px solid black; margin-left:1em; width:15px; height:15px; background-color: ' +  this.content.energy_types[a].color + ';'
@@ -180,7 +180,7 @@ View.prototype.Mysystem2Node.generateEnergyTypes= function(){
   };
 
   //create buttons to create new energy_types
-  var createButt = createElement(document, 'input', {type:'button', value:'add new Energy Type', onclick:'eventManager.fire("mysystemSCAddNewEnergyType")'});
+  var createButt = createElement(document, 'input', {type:'button', value:'add new Energy Type', onclick:'eventManager.fire("mysystem2AddNewEnergyType")'});
   parent.appendChild(createButt);
 };
 /**

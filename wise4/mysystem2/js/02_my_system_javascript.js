@@ -31,4 +31,4 @@ For more information about SproutCore, visit http://github.com/FrozenCanuck/Ki
 @license */
 if((typeof SC!=="undefined")&&SC&&SC.bundleDidLoad){SC.bundleDidLoad("ki")
 };
-if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', 'vle/node/mysystem/js/02_my_system_javascript.js');};
+if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', 'vle/node/mysystem2/js/02_my_system_javascript.js');};

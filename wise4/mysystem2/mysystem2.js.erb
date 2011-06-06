@@ -4,7 +4,6 @@
  * be created in the .html for this step (look at mysystem.html)
  */
 function Mysystem2(node,view) {
-  debugger;
   this.node = node;
   this.content = node.getContent().getContentJSON();
 
@@ -38,14 +37,11 @@ Mysystem2.prototype.render = function() {
     var latestResponse = latestState.response;
     this.domIO.textContent = latestResponse;
   }
-  if (this.content && this.MySystem) {
-    this.MySystem.loadWiseConfig(this.content,null);
+  if (this.content) {
+    this.MySystem.loadWiseConfig(this.content,latestState);
   }
-  else if (this.MySystem) {
-    // alert("no authoring info");
-  }
-  else {
-    // alert("no data");
+  if (latestState) {
+    this.MySystem.updateFromDOM();
   }
 };
 
@@ -74,7 +70,6 @@ Mysystem2.prototype.getLatestState = function() {
  */
 Mysystem2.prototype.save = function() {
   // We use a simple dom element for our data passing
-  debugger;
   var response =this.domIO.textContent;
   /*
    * create a student state object that will store the new work the student

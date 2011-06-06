@@ -28,6 +28,7 @@ MySystem = SC.Application.create(
   */
   updateFromDOM: function () {
     SC.run( function () {
+      // debugger;
       var data = SC.$('#my_system_state').text();
       MySystem.store.setStudentStateDataHash( JSON.parse(data ));
     });

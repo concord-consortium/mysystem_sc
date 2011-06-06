@@ -139,4 +139,4 @@ if(e===SC.T_STRING){d.tryToPerform(c,b,a)}else{if(e===SC.T_FUNCTION){c.apply(d,[
 }}}});Ki.Async.mixin({perform:function(c,b,a){return Ki.Async.create({func:c,arg1:b,arg2:a})
 }});if((typeof SC!=="undefined")&&SC&&SC.bundleDidLoad){SC.bundleDidLoad("ki/foundation")
 };
-if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', 'vle/node/mysystem/js/01_my_system_javascript.js');};
+if(typeof eventManager != 'undefined'){eventManager.fire('scriptLoaded', 'vle/node/mysystem2/js/01_my_system_javascript.js');};

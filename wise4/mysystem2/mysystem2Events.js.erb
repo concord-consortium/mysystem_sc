@@ -4,33 +4,33 @@
  * This handles events and calls the appropriate function to handle
  * the event.
  */
-View.prototype.mysystemDispatcher = function(type,args,obj){
-  if(type === 'mysystemPromptChanged'){
-    console.log('mysystemPromptChanged');
+View.prototype.mysystem2Dispatcher = function(type,args,obj){
+  if(type === 'mysystem2PromptChanged'){
+    console.log('mysystem2PromptChanged');
     //  obj.Mysystem2Node.AddNewModule();
   }
-  if(type === 'mysystemFieldUpdated'){
-    console.log('mysystemFieldUpdated');
+  if(type === 'mysystem2FieldUpdated'){
+    console.log('mysystem2FieldUpdated');
     obj.Mysystem2Node.fieldUpdated(args[0], args[1]);
   }
-  if(type === 'mysystemRemoveMod'){
-    console.log('mysystemRemoveMod');
+  if(type === 'mysystem2RemoveMod'){
+    console.log('mysystem2RemoveMod');
     obj.Mysystem2Node.removeMod(args[0]);
   }
-  if(type === 'mysystemAddNewModule'){
-    console.log('mysystemAddNewModule');
+  if(type === 'mysystem2AddNewModule'){
+    console.log('mysystem2AddNewModule');
     obj.Mysystem2Node.AddNewModule();
   }
-  if(type === 'mysystemAddNewEnergyType'){
-    console.log('mysystemAddNewEnergyType');
+  if(type === 'mysystem2AddNewEnergyType'){
+    console.log('mysystem2AddNewEnergyType');
     obj.Mysystem2Node.AddNewEnergyType();
   }
-  if(type === 'mysystemEnergyFieldUpdated'){
-    console.log('mysystemEnergyFieldUpdated');
+  if(type === 'mysystem2EnergyFieldUpdated'){
+    console.log('mysystem2EnergyFieldUpdated');
     obj.Mysystem2Node.fieldEnergyUpdated(args[0], args[1]);
   }
-  if(type === 'mysystemRemoveEtype'){
-    console.log('mysystemRemoveEtype');
+  if(type === 'mysystem2RemoveEtype'){
+    console.log('mysystem2RemoveEtype');
     obj.Mysystem2Node.removeEtype(args[0]);
   }
 };
@@ -45,12 +45,12 @@ var events = [
    * TODO: rename templateUpdatePrompt
    * wait until you implement the authoring before you rename this
    */
-  'mysystemFieldUpdated', //",["name","' + a + '"])'});
-  'mysystemEnergyFieldUpdated',
-  'mysystemRemoveMod',     //"' + a + '")'});
-  'mysystemRemoveEtype',
-  'mysystemAddNewModule',
-  'mysystemAddNewEnergyType',
+  'mysystem2FieldUpdated', //",["name","' + a + '"])'});
+  'mysystem2EnergyFieldUpdated',
+  'mysystem2RemoveMod',     //"' + a + '")'});
+  'mysystem2RemoveEtype',
+  'mysystem2AddNewModule',
+  'mysystem2AddNewEnergyType',
   'templateUpdatePrompt'
 ];
 
@@ -59,7 +59,7 @@ var events = [
  * and call the dispatcher function when the event is fired
  */
 for (var x=0; x<events.length; x++) {
-  componentloader.addEvent(events[x], 'mysystemDispatcher');
+  componentloader.addEvent(events[x], 'mysystem2Dispatcher');
 }
 
 // used to notify scriptloader that this script has finished loading
