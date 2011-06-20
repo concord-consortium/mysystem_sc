@@ -17,8 +17,8 @@
 2. cd mysystem_sc
 3. git submodule update --init
 4. echo 'rvm use 1.9.2@my_system_sc --create' > .rvmrc; cd ..; cd -
-5. bundle install
-6. bundle exec sc-server
+5. bundle install --binstubs
+6. bin/sc-server
 7. if you get an error about 'iconv' see this [rvm page](http://rvm.beginrescueend.com/packages/iconv/)
 
 

@@ -1,4 +1,6 @@
 .rvmrc
+.bundle/*
+bin/*
 tmp/*
 build_folder/*
 reports/*.xml
