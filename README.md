@@ -21,7 +21,22 @@
 6. bin/sc-server
 7. if you get an error about 'iconv' see this [rvm page](http://rvm.beginrescueend.com/packages/iconv/)
 
+### Run tests in browser ###
+For Jasmine:
 
+1. start sc server: bin/sc-server
+2. open jasmine test page in browser: http://localhost:4020/my_system/en/current/tests/jasmine.html
+
+For Qunit:
+There are several qunit tests but they all appear to be failing right now, you can try to run them like this:
+
+1. start sc server: bin/sc-server
+2. open qunit test page in browser: http://localhost:4020/my_system/en/current/tests/qunit.html
+
+The tests are located at: mysystem_sc/apps/mysystem/tests
+
+If you want to run a subset of the tests you can update the url above to include the folder name.  For example:
+http://localhost:4020/my_system/en/current/tests/qunit/views.html
 
 ### Initial student data
 
