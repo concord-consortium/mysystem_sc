@@ -28,7 +28,6 @@ For Jasmine:
 2. open jasmine test page in browser: http://localhost:4020/my_system/en/current/tests/jasmine.html
 
 For Qunit:
-There are several qunit tests but they all appear to be failing right now, you can try to run them like this:
 
 1. start sc server: bin/sc-server
 2. open qunit test page in browser: http://localhost:4020/my_system/en/current/tests/qunit.html
