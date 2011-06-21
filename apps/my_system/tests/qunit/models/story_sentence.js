@@ -4,13 +4,21 @@
 // ==========================================================================
 /*globals MySystem module test ok equals same stop start */
 
-module("MySystem.StorySentence");
+module("MySystem.StorySentence", {
+  setup: function () {
+    store = MySystem.setupTestStore();
+  },
+  
+  teardown: function () {
+    
+  }
+});
 
 test("test that computed diagramObjects array is updated when node or link associations change", function() {
   expect(4);
-  var node = MySystem.store.find('MySystem.Node',1);
-  var link = MySystem.store.find('MySystem.Link', 'link1');
-  var sent = MySystem.store.find('MySystem.StorySentence', 'ss1');
+  var node = store.find('MySystem.Node',1);
+  var link = store.find('MySystem.Link', 'link1');
+  var sent = store.find('MySystem.StorySentence', 'ss1');
   var originalSentenceConnections = sent.get('diagramObjects').get('length');
   var expectedAfterNode = originalSentenceConnections + 1;
   var expectedAfterLink = expectedAfterNode + 1;

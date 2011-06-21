@@ -4,7 +4,15 @@
 // ==========================================================================
 /*globals MySystem Forms module test ok equals same stop start */
 
-module("MySystem.PropertyEditorPane");
+module("MySystem.PropertyEditorPane", {
+  setup: function () {
+    store = MySystem.setupTestStore();
+  },
+  
+  teardown: function () {
+    
+  }
+});
 
 var propEdit = MySystem.PropertyEditorPane;
 
@@ -16,7 +24,7 @@ test("Edit pane was created", function() {
 
 test("Edit pane with a node", function() {
   expect(2);
-  var node   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   propEdit.set('objectToEdit', node);
   same(propEdit.get('objectToEdit'), node, "propEdit should be editing the node");
   ok(propEdit.get('propertiesForm').get('fields').get('length') > 0, "The form should have fields");
@@ -25,9 +33,9 @@ test("Edit pane with a node", function() {
 
 test("Edit pane with a link", function() {
   expect(2);
-  var link = MySystem.store.createRecord(MySystem.Link, {'guid': MySystem.Link.newGuid(), 'text': 'Test link for form editing' });
-  var node1   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = MySystem.store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var link = store.createRecord(MySystem.Link, {'guid': MySystem.Link.newGuid(), 'text': 'Test link for form editing' });
+  var node1   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   link.set('startNode', node1);
   link.set('endNode', node2);
   propEdit.set('objectToEdit', link);

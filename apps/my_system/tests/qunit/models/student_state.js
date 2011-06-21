@@ -4,7 +4,15 @@
 // ==========================================================================
 /*globals MySystem module test ok equals same stop start */
 
-module("MySystem.StudentState");
+module("MySystem.StudentState", {
+  setup: function () {
+    store = MySystem.setupTestStore();
+  },
+  
+  teardown: function () {
+    
+  }
+});
 
 sc_require('resources/student_data_example.js');
 
@@ -24,7 +32,7 @@ test("Testing model definition of Student State", function() {
 
 test("Student state should return an array of editable form fields when asked", function() {
   expect(2);
-  var state = MySystem.store.find('MySystem.StudentState', 1);
+  var state = store.find('MySystem.StudentState', 1);
   var formFields = state.get('formFields');
   ok(isArray(formFields), "The formFields attribute should return an array");
   equals(formFields.length, 0, "StudentState should not return any editable fields");
