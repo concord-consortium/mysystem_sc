@@ -17,9 +17,9 @@ sc_require('lib/old_format_json_parser');
 // MySystem.studentMode = MySystem.NOVICE_STUDENT;
 MySystem.studentMode = MySystem.ADVANCED_STUDENT;
 
-MySystem.main = function main() {
+MySystem.setupStore = function setupStore(obj) {
 
-  MySystem.dataSource = SC.CascadeDataSource.create({
+  obj.dataSource = SC.CascadeDataSource.create({
     dataSources: ['studentStateDataSource', 'fixturesDataSource'],
 
     studentStateDataSource: MySystem.MergedHashDataSource.create({
@@ -43,7 +43,7 @@ MySystem.main = function main() {
   });
 
   // the store passes student state data to the student state data source
-  MySystem.store = SC.Store.create({
+  obj.store = SC.Store.create({
     commitRecordsAutomatically: YES,
 
     setStudentStateDataHash: function (hash) {
@@ -53,7 +53,11 @@ MySystem.main = function main() {
       var dataHash = this.dataSource.studentStateDataSource.dataHash();
       return JSON.stringify(dataHash,null,2);
     }
-  }).from(MySystem.dataSource);
+  }).from(obj.dataSource);
+};
+
+MySystem.main = function main() {
+  MySystem.setupStore(MySystem);
 
   // load the initial data from the DOM (see core.js)
   MySystem.updateFromDOM();

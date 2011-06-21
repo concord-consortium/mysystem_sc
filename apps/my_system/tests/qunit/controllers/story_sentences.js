@@ -17,9 +17,10 @@ var contains = function(array, search) {
 };
 
 test("Data loading", function() {
+  var store = MySystem.setupTestStore();
   expect(2);
   // Tests that sentences get loaded from the store
-  var sentences = MySystem.store.find(MySystem.StorySentence);
+  var sentences = store.find(MySystem.StorySentence);
   ok(sentences.get('length') > 0, "There should be sentences in the store");
   MySystem.storySentenceController.set('content', sentences);
   equals(MySystem.storySentenceController.get('content').get('length'), sentences.get('length'), "Controller should have as many Sentences as the store");
