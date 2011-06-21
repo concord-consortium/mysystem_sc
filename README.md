@@ -43,13 +43,9 @@ The app saves the "student data" state (i.e., the nodes, links, and stories) int
 
 ### Lebowski testing: ###
 
-TODO: Looks like lebowski tests might be wedged.
-
 0. the Gemfile stipulates dependencies on lebowski
 1. cd to your sproutcore directory: <code> cd /path/to/mysystem_sc </code>
 2. run the test! <code>bundle exec lebowski-spec spec/mysystem_spec.rb</code> (where mysystem_spec.rb is your test)
-
-
 
 ### Running SproutCore QUnit tests with capybara-testrunner ###
 1. From the top-level mysystem_sc directory:
