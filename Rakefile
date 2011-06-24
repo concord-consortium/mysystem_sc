@@ -12,10 +12,13 @@ require 'erb'
 task :default => [:wise]
 
 desc "package sproutcore for for a wise4 deployment"
-task :wise => [:repackage, :inject_javascript, :copy_templates, :copy_files] 
+task :wise => [:build, :install] 
 
-desc "copy the files to the apache dir"
-task :copy_files do
+desc "package sproutcore for Wise4 but don't copy"
+task :build => [:repackage, :inject_javascript, :copy_templates]
+
+desc "copy the files to the Wise4 vle directory dir"
+task :install do
   dest_dir = "#{@tomcat_dir}/webapps/vlewrapper/vle/node/#{@wise_step_name}" 
   src_dir = @output_directory
   %x[ rm -rf #{dest_dir}]
