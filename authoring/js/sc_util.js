@@ -91,7 +91,7 @@ SCUtil.ModelArray = SC.ArrayProxy.extend({
     this.get('modelObjects').forEach(function(model){
       model.destroy();
     });
-    this.set('modelObjects', []);
+    this.set('modelObjects', SC.Set.create());
   }.observesBefore('content')
 });
 
