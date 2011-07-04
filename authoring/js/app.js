@@ -97,5 +97,6 @@ MSA.energyTypesController = SCUtil.ModelArray.create({
 MSA.dataController = SC.Object.create({
   data: function(){
     return JSON.stringify(MSA.data, null, 2);
-  }.property('MSA.modulesController.@each.rev', 'MSA.energyTypesController.@each.rev')
-})
+  }.property('MSA.modulesController.[]', 'MSA.modulesController.@each.rev', 'MSA.energyTypesController.@each.rev')
+});
+
