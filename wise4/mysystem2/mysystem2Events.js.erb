@@ -33,6 +33,14 @@ View.prototype.mysystem2Dispatcher = function(type,args,obj){
     console.log('mysystem2RemoveEtype');
     obj.Mysystem2Node.removeEtype(args[0]);
   }
+  if(type === 'mysystem2AuthoringIFrameLoaded'){
+    console.log('mysystem2AuthoringIFrameLoaded');
+    obj.Mysystem2Node.AuthoringIFrameLoaded();
+  }
+  if(type === 'previewFrameLoaded'){
+    console.log('previewFrameLoaded');
+    obj.Mysystem2Node.previewFrameLoaded();
+  }
 };
 
 /*
@@ -51,7 +59,9 @@ var events = [
   'mysystem2RemoveEtype',
   'mysystem2AddNewModule',
   'mysystem2AddNewEnergyType',
-  'templateUpdatePrompt'
+  'mysystem2AuthoringIFrameLoaded',
+  'templateUpdatePrompt',
+  'previewFrameLoaded'
 ];
 
 /*
