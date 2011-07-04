@@ -24,6 +24,9 @@
   {{#collection contentBinding="MSA.modulesController" tagName="ul"}}
     {{view SC.TextField valueBinding="parentView.content.name" tagName="span" placeholder="name"}}
     {{view SC.TextField valueBinding="parentView.content.image" tagName="span" placeholder="image"}}
+    {{#view SC.Button target="MSA.modulesController" action="removeItem" itemBinding="parentView.content"}}
+    remove
+    {{/view}}
   {{/collection}}
   {{#view SC.Button 
     target="MSA.modulesController"
@@ -35,6 +38,9 @@
   {{#collection contentBinding="MSA.energyTypesController" tagName="ul"}}
     {{view SC.TextField valueBinding="parentView.content.label" tagName="span" placeholder="label"}}
     {{view SC.TextField valueBinding="parentView.content.color" tagName="span" placeholder="color"}}
+    {{#view SC.Button target="MSA.energyTypesController" action="removeItem" itemBinding="parentView.content"}}
+    remove
+    {{/view}}
   {{/collection}}
   {{#view SC.Button 
     target="MSA.energyTypesController"
