@@ -1,8 +1,12 @@
+/*globals SCUtil */
+
 SCUtil = {};
 
 SCUtil.dataHashProperty = function(key, value) {
-  this.get('dataHash') ? null : this.set('dataHash', {});
-  if( value == undefined) {
+  if( !this.get('dataHash')) {
+    this.set('dataHash', {});
+  }
+  if( value === undefined) {
     return this.get('dataHash')[key];
   } else {
     this.get('dataHash')[key] = value;
@@ -22,7 +26,7 @@ SCUtil.ModelObject = SC.Object.extend({
       var dataHash = {};
       if(this.get('defaultDataHash')){
         jQuery.extend(true, dataHash, this.get('defaultDataHash'));
-      };
+      }
       this.set('dataHash', dataHash); 
     }
   }
@@ -31,24 +35,30 @@ SCUtil.ModelObject = SC.Object.extend({
 SCUtil.ModelArray = SC.ArrayProxy.extend({
   // this will point to the dataHashs represnting the models
   content: null,
-  
+
   // this points to the cached model objects
   modelObjects: null,
-  
+
   // type of model object to create
   modelType: null,
-  
+
   objectAtContent: function(idx) {
-    var model = this.get('modelObjects').objectAt(idx),
-        data = null;
+    var data = this.get('content').objectAt(idx),
+        model = null;
+
+    this.get('modelObjects').forEach(function (cur_model){
+      if(cur_model.get('dataHash') === data){
+        model = cur_model;
+      }
+    });
+
     if (!model) {
-      data = this.get('content').objectAt(idx);
       model = this.get('modelType').create({dataHash: data});
-      this.get('modelObjects')[idx] = model;
+      this.get('modelObjects').add(model);
     }
     return model;
   },
-  
+
   replaceContent: function(idx, amt, objects) {
     var dataObjects = null;
     if(objects){
@@ -57,19 +67,33 @@ SCUtil.ModelArray = SC.ArrayProxy.extend({
         dataObjects.push(model.get('dataHash'));
       });
     }
+
     this.get('content').replace(idx, amt, dataObjects);
+
+    // we should clean up the cached model objects
+    // we don't need to actually add the model objects they will be created as they are requested
   },
 
   createItem: function() {
     this.pushObject(this.get('modelType').create());
   },
-  
+
+  removeItem: function(button){
+    this.removeObject(button.get('item'));
+  },
+
   init: function() {
     this._super();
+    this.set('modelObjects', SC.Set.create());
+  },
+
+  _contentWillChange: function () {
+    this.get('modelObjects').forEach(function(model){
+      model.destroy();
+    });
     this.set('modelObjects', []);
-  }
-  
-})
+  }.observesBefore('content')
+});
 
 SCUtil.SelectOption = SC.View.extend({
   tagName: 'option',
