@@ -1,9 +1,4 @@
-/*globals MSA */
-
-Handlebars.registerHelper('debug', function(path){
-	debugger;
-  return 'weird';
-});
+/*globals MSA, SCUtil*/
 
 MSA = SC.Application.create();
 
@@ -26,12 +21,14 @@ MSA.EnergyType = SCUtil.ModelObject.extend({
   color: SCUtil.dataHashProperty
 });
 
-MSA.data = {
+if (top === self) {
+  // we are not in iframe so load in some fake data
+  MSA.data = {
    "type": "mysystem2",
    "prompt": "How can you cook an egg?",
    "modules": [
       {
-         "name": "burner",
+         "name": "burner_static",
          "icon": "http://dl.dropbox.com/u/73403/mysystem/images/burner-transp-70.png",
          "image": "http://dl.dropbox.com/u/73403/mysystem/images/burner-transp-70.png",
          "xtype": "MySystemContainer",
@@ -73,10 +70,17 @@ MSA.data = {
    ],
    "energy_types": [
       {
-         "label": "heat",
+         "label": "heat_static",
          "color": "#E97F02"
       }
    ]
+  };
+} else {
+  // we are in an iframe
+  MSA.data = {
+    "modules": [],
+    "energy_types": []
+  };
 }
 
 
