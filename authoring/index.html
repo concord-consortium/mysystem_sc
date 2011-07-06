@@ -22,8 +22,8 @@
   <script type="text/html">
   <h2>Modules</h2>
   {{#collection contentBinding="MSA.modulesController" tagName="ul"}}
-    {{view SC.TextField valueBinding="parentView.content.name" tagName="span" placeholder="name"}}
-    {{view SC.TextField valueBinding="parentView.content.image" tagName="span" placeholder="image"}}
+    {{view SC.TextField valueBinding="parentView.content.name" placeholder="name"}}
+    {{view SC.TextField valueBinding="parentView.content.image" placeholder="image"}}
     {{#view SC.Button target="MSA.modulesController" action="removeItem" itemBinding="parentView.content"}}
     remove
     {{/view}}
@@ -36,8 +36,8 @@
 
   <h2>Energy Types</h2>
   {{#collection contentBinding="MSA.energyTypesController" tagName="ul"}}
-    {{view SC.TextField valueBinding="parentView.content.label" tagName="span" placeholder="label"}}
-    {{view SC.TextField valueBinding="parentView.content.color" tagName="span" placeholder="color"}}
+    {{view SC.TextField valueBinding="parentView.content.label" placeholder="label"}}
+    {{view SC.TextField valueBinding="parentView.content.color" placeholder="color"}}
     {{#view SC.Button target="MSA.energyTypesController" action="removeItem" itemBinding="parentView.content"}}
     remove
     {{/view}}
@@ -48,19 +48,34 @@
     Add New Energy Type
   {{/view}}
 
-  <h2>Select Module</h2>
-  {{collection SCUtil.Select contentBinding="MSA.modulesController" itemValueBinding=".content.name"}}
+  <h2>Digram Rules</h2>
+  
+  {{#collection contentBinding="MSA.rulesController" tagName="ul"}}
+      The diagram should contain
+      {{collection SCUtil.Select contentBinding="MSA.rulesController.comparisons" valueBinding="parentView.content.comparison"}}
+      {{view SC.TextField valueBinding="parentView.content.number" placeholder="number"}}
+      {{collection SCUtil.Select contentBinding="MSA.rulesController.nodeTypes" valueBinding="parentView.content.type"}}<br/>
+      if not then show the user:
+      {{view SC.TextField valueBinding="parentView.content.suggestion"}}
+  {{/collection}}
+  {{#view SC.Button 
+    target="MSA.rulesController"
+    action="createItem"}}
+    Add New Diagram Rule
+  {{/view}}
   
   <h2>State</h2>
   <pre style="font-size: 80%">
   {{MSA.dataController.data}}
   </pre>
   </script>
+  
+
 
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.6.1.min.js"%3E%3C/script%3E'))</script>
-  <script src="js/libs/sproutcore-2.0.beta.1.js"></script>
+  <script src="js/libs/sproutcore-2.0.git.2532aae4f.js"></script>
   <script src="js/sc_util.js"></script>
   <script src="js/app.js"></script>
 </body>

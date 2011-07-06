@@ -97,20 +97,26 @@ SCUtil.ModelArray = SC.ArrayProxy.extend({
 
 SCUtil.SelectOption = SC.View.extend({
   tagName: 'option',
-  value: null,
+  content: null,
 
   render: function(buffer) {
-    buffer.push(this.get('value'));
+    buffer.push(this.getPath('content'));
   },
 
-  _valueDidChange: function() {
-    this.$().text(this.get('value'));
-  }.observes('value')
+  _contentDidChange: function() {
+    this.$().text(this.get('content'));
+  }.observes('content')
 });
 
 SCUtil.Select = SC.CollectionView.extend({
   tagName: 'select',
-  itemViewClass: SCUtil.SelectOption
+  itemViewClass: SCUtil.SelectOption,
+  attributeBindings: ['value'],
+  
+  change: function(event) {
+    this.set('value', this.$().val());
+    return false;
+  }
 });
 
 
