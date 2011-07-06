@@ -88,7 +88,9 @@ task :copy_templates do
   css_files = css_files.join(",\n\t")
 
   templates.each do |filename|
-    content = ERB.new(::File.read(filename)).result(binding)
+    template = ERB.new(::File.read(filename))
+    template.filename = filename
+    content = template.result(binding)
     resultname = File.basename(filename).gsub(/#{@template_suffix}$/,'')
     resultpath = File.join(@output_directory, resultname)
     File.open(resultpath,'w') do |f|
@@ -96,6 +98,13 @@ task :copy_templates do
       puts "translated #{filename} to #{resultpath}"
     end
   end
+end
+
+desc "Copy authoring files"
+task :copy_authoring do
+  dest_dir = "#{@output_directory}/authoring"
+  %x[ mkdir -p #{dest_dir} ]
+  %x[ cp -r authoring/* #{dest_dir} ]
 end
 
 namespace :demos do
