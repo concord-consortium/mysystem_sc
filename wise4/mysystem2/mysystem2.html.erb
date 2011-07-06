@@ -263,6 +263,7 @@ if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
 
       /**
         Will load the relevant scripts via xhr (?)
+        NOTE: I don't think this is necessary anymore
       */
       window.loadContent = function (node) {
         scriptloader.loadScripts('mysystem', document, node.id, eventManager);
