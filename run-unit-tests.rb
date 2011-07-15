@@ -20,6 +20,7 @@ puts "********************************************"
   opt :sc_server_host, "SC Server Host", :short => 's', :type => :string, :default => "localhost"
   opt :runner, "Browser runner", :short => 'b', :type => String, :default => "capybara"
   opt :image, "Save a png snapshot of the test page(doesn't work in all browser runners)", :short => 'i', :default => false
+  opt :root, "Test directory root", :short => 'r', :type => String, :default => "."
 end
 
 # NOTE the sc_server_host is not used when starting up the sc-server it is only used by the browser runner
@@ -35,10 +36,10 @@ system("git clean -f #{@options[:results_dir]}")
 sc_server.start
 run_tests_cmd = ["bundle", "exec", "sc-testdriver",
                  "-p #{port}",
-                 "-r .", # set the root for looking for the tests to be this directory
+                 "-r #{@options[:root]}", # set the root for looking for the tests to be this directory
                  "#{'-i' if @options[:image]}",
                  "-h",
-                 "-x apps/my_system/tests/jasmine",
+                 # "-x apps/my_system/tests/jasmine",
                  "-t #{@options[:tests_dir]}",
                  "-o #{@options[:results_dir]}",
                  "-s #{@options[:sc_server_host]}",
