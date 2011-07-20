@@ -36,7 +36,7 @@ if (top === self) {
   MSA.data = {
     "modules": [],
     "energy_types": [],
-    "rules": []
+    "diagram_rules": []
   };
 }
 
@@ -51,8 +51,8 @@ MSA.energyTypesController = SCUtil.ModelArray.create({
   modelType: MSA.EnergyType
 });
 
-MSA.rulesController = SCUtil.ModelArray.create({
-  content: MSA.data.rules,
+MSA.diagramRulesController = SCUtil.ModelArray.create({
+  content: MSA.data.diagram_rules,
   modelType: MSA.DiagramRule,
 
   // somehow this needs to include all modules as well as "node", which represents the null type
@@ -70,11 +70,11 @@ MSA.dataController = SC.Object.create({
   }.property('MSA.modulesController.[]', 
              'MSA.modulesController.@each.rev', 
              'MSA.energyTypesController.@each.rev', 
-             'MSA.rulesController.@each.rev')
+             'MSA.diagramRulesController.@each.rev')
 });
 
 MSA.NodeTypesView = SC.CollectionView.extend({
   tagName: 'ul',
-  contentBinding: "MSA.rulesController.nodeTypes"
+  contentBinding: "MSA.diagramRulesController.nodeTypes"
 });
 
