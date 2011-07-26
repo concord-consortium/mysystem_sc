@@ -113,6 +113,12 @@ SCUtil.Select = SC.CollectionView.extend({
   itemViewClass: SCUtil.SelectOption,
   attributeBindings: ['value'],
   
+  // make sure the model value matches what is displayed to the user
+  // we can't do it in init because the html isn't rendered yet...
+  didInsertElement: function() {
+    this.set('value', this.$().val());
+  },
+  
   change: function(event) {
     this.set('value', this.$().val());
     return false;
