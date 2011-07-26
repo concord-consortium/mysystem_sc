@@ -18,6 +18,10 @@ View.prototype.Mysystem2Node.generatePage = function(view){
   if (typeof this.content == 'undefined') {
     this.content = {};
   }
+  // migration from old content format
+  if (!this.content.diagram_rules) {
+    this.content.diagram_rules = [];
+  }
   this.buildPage();
 
   this.testIFrame();
@@ -44,11 +48,13 @@ View.prototype.Mysystem2Node.AuthoringIFrameLoaded = function(){
   // need to add in SC array methods to the arrays so SC can work with correctly
   iframe.SC.NativeArray.apply(this.content.modules);
   iframe.SC.NativeArray.apply(this.content.energy_types);
+  iframe.SC.NativeArray.apply(this.content.diagram_rules);
 
   iframe.MSA.data = this.content;
 
   iframe.MSA.modulesController.set('content', this.content.modules);
   iframe.MSA.energyTypesController.set('content', this.content.energy_types);
+  iframe.MSA.diagramRulesController.set('content', this.content.diagram_rules);
 
   iframe.MSA.dataController.addObserver('data', this, function (){
     /* fire source updated event */
