@@ -24,7 +24,10 @@ MySystem.Activity = SC.Record.extend(
   assignmentText: SC.Record.attr(String),
 
   // Energy types/colors
-  energyTypes: SC.Record.toMany('MySystem.EnergyType')
+  energyTypes: SC.Record.toMany('MySystem.EnergyType'),
+  
+  // Rules for evaluating the digram
+  diagramRules: SC.Record.toMany('MySystem.DiagramRule')
 });
 
 MySystem.Activity.GuidCounter = 100;
@@ -58,6 +61,7 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
   var actguid = MySystem.Activity.newGuid("actvitiy");
   var modules = wiseStepDef["modules"];
   var paletteItem = null;
+  var module= null;
   var activity = MySystem.store.createRecord(
     MySystem.Activity, {
     assignmentText: wiseStepDef["prompt"],
@@ -74,7 +78,7 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
         MySystem.Activity.newGuid("palette_item")
     );
     activity.get('paletteItems').pushObject(paletteItem);
-  };
+  }
   var energy_types = wiseStepDef["energy_types"];
   size = energy_types.length;
   var type = '';
@@ -89,7 +93,20 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
         MySystem.Activity.newGuid("energyType")
     );
     activity.get('energyTypes').pushObject(newEnergyType);
-  };
+  }
+  var diagram_rules = wiseStepDef["diagram_rules"];
+  size = diagram_rules.length;
+  var newDiagramRule = null;
+  var rule = null;
+  for (i=0; i < size; i++) {
+    rule = diagram_rules[i];
+    newDiagramRule = MySystem.store.createRecord(
+      MySystem.DiagramRule,
+      rule, 
+      MySystem.Activity.newGuid("diagramRule")
+    );
+    activity.get('diagramRules').pushObject(newDiagramRule);
+  }
   return activity;
-}
+};
 

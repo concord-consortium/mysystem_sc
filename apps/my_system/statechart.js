@@ -85,18 +85,19 @@ MySystem.statechart = Ki.Statechart.create({
 
       @author Richard Klancer, 4-27-2011
     */
-    checkDiagramAgainstConstraints: function () {      
-      var nodes = MySystem.store.find(MySystem.Node),
-          n = 0;
+    checkDiagramAgainstConstraints: function () {
+      var rules = MySystem.store.find(MySystem.DiagramRule),
+          nodes = MySystem.store.find(MySystem.Node),
+          suggestions = [];
 
-      // FIXME soon. Notice that there is no semantically meaningful field indicating what physical object this node
-      // represents. We have to check the image URL (!) to figure it out.
-      nodes.forEach( function (node) {
-        if (/clay/.test(node.get('image'))) n++;
+      rules.forEach( function (rule) {
+        if (!rule.check(nodes)) {
+          suggestions.pushObject(rule.get('suggestion'));
+        }
       });
-
-      if (n > 2) {
-        SC.AlertPane.warn("You may have too many clay nodes in your diagram.");
+      
+      if (suggestions.get('length') > 0){
+        SC.AlertPane.warn(suggestions.join(" "));
       }
       else {
         SC.AlertPane.info("Your diagram has no obvious problems.");
