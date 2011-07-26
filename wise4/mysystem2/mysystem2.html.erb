@@ -251,14 +251,14 @@ if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
     <script type="text/javascript">
     String.preferredLanguage = "en";
 
-      var mysystem;
+      var mysystem2;
       /**
         Called back when ... some part of this thing loads.
       */
       window.loadContentAfterScriptsLoad = function (node) {
       // mysystem = new Mysystem(node, node.view);
-       mysystem = new Mysystem2(node, node.view);
-       mysystem.render();
+       mysystem2 = new Mysystem2(node, node.view);
+       mysystem2.render();
       };
 
       /**
@@ -266,14 +266,14 @@ if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
         NOTE: I don't think this is necessary anymore
       */
       window.loadContent = function (node) {
-        scriptloader.loadScripts('mysystem', document, node.id, eventManager);
+        scriptloader.loadScripts('mysystem2', document, node.id, eventManager);
       };
 
       /**
         Called by WISE4 when we leave the step
       */
-      window.onExit = function () {  mysystem.save(); };
-      window.save = function()    {  mysystem.save(); } ;
+      window.onExit = function () {  mysystem2.save(); };
+      window.save = function()    {  mysystem2.save(); } ;
 
       /**
         Called (in a WISE4 context) when we want the MySystem app to save the diagram state

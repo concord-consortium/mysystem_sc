@@ -10,10 +10,7 @@ var coreScripts = [
 //the scripts used in the vle
 var studentVLEScripts = [
 	'vle/node/mysystem2/mysystem2.js',
-	'vle/node/mysystem2/mysystem2State.js',
-  // ,
-  'vle/jquery/js/jquery-1.4.4.min.js',
-  'vle/jquery/js/jquery-ui-1.8.7.custom.min.js'
+	'vle/node/mysystem2/mysystem2State.js'
 ];
 
 //the scripts used in the authoring tool
@@ -36,7 +33,7 @@ var nodeClasses = [
 ];
 
 scriptloader.addScriptToComponent('core', coreScripts);
-scriptloader.addScriptToComponent('mysystem', studentVLEScripts);
+scriptloader.addScriptToComponent('mysystem2', studentVLEScripts);
 scriptloader.addScriptToComponent('author', authorScripts);
 scriptloader.addScriptToComponent('studentwork', gradingScripts);
 scriptloader.addDependencies(dependencies);
@@ -52,7 +49,7 @@ componentloader.addNodeClasses('Mysystem2Node', nodeClasses);
 var nodeTemplateParams = [
 	{
 		nodeTemplateFilePath:'node/mysystem2/mysystem2Template.my',
-		nodeExtension:'my'
+		nodeExtension:'my2'
 	}
 ];
 
