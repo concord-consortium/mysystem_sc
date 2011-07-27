@@ -78,15 +78,8 @@ MySystem.statechart = Ki.Statechart.create({
     */
     SENTENCE_OBJECT_LINKING: Ki.State.plugin('MySystem.SENTENCE_OBJECT_LINKING'),
     
-    
-    /**
-      Simple demo of how we might check the diagram against constraints. Counts the number of 'clay' nodes and displays
-      a warning if there are > 2 clay nodes.
-
-      @author Richard Klancer, 4-27-2011
-    */
     checkDiagramAgainstConstraints: function () {
-      var rules = MySystem.store.find(MySystem.DiagramRule),
+      var rules = MySystem.activityController.get('diagramRules'),
           nodes = MySystem.store.find(MySystem.Node),
           suggestions = [];
 
