@@ -42,6 +42,12 @@ SCUtil.ModelArray = SC.ArrayProxy.extend({
   // type of model object to create
   modelType: null,
 
+  // useful when the content is coming from iframe that isn't using SC
+  setExternalContent: function(dataHash) {
+    SC.NativeArray.apply(dataHash);
+    this.set('content', dataHash);
+  },
+
   objectAtContent: function(idx) {
     var data = this.get('content').objectAt(idx),
         model = null;
@@ -111,12 +117,20 @@ SCUtil.SelectOption = SC.View.extend({
 SCUtil.Select = SC.CollectionView.extend({
   tagName: 'select',
   itemViewClass: SCUtil.SelectOption,
-  attributeBindings: ['value'],
   
-  // make sure the model value matches what is displayed to the user
-  // we can't do it in init because the html isn't rendered yet...
-  didInsertElement: function() {
-    this.set('value', this.$().val());
+  value: null,
+  
+  willInsertElement: function() {
+    // make sure the value has something since null is not displayed in the UI
+    if(SC.none(this.get('value'))){
+      this.set('value', this.get('content').objectAt(0));
+    }
+
+    // make sure the view value matches the model
+    // I tried using an attributeBinding on 'value' 
+    // but just setting the 'value' attribute on a select element doesn't necessarly update
+    // the UI.
+    this.$().val(this.get('value'));
   },
   
   change: function(event) {

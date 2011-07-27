@@ -18,26 +18,16 @@ View.prototype.Mysystem2Node.generatePage = function(view){
   if (typeof this.content == 'undefined') {
     this.content = {};
   }
-  // migration from old content format
-  if (!this.content.diagram_rules) {
-    this.content.diagram_rules = [];
-  }
+
   this.buildPage();
 
-  this.testIFrame();
-
-  // for some reason, reload the preview here causes weird effects
-  // this.view.eventManager.fire('sourceUpdated');
-};
-
-View.prototype.Mysystem2Node.testIFrame = function() {
   var iframe = createElement(document, 'iframe', {
-	  src: '/vlewrapper/vle/node/mysystem2/authoring/index.html',
-	  width: '99%',
-	  style: 'display: block; height: 100%;',
-	  id: 'mysystem2-authoring-iframe',
-	  onload: 'eventManager.fire("mysystem2AuthoringIFrameLoaded");'
-	});
+    src: '/vlewrapper/vle/node/mysystem2/authoring/index.html',
+    width: '99%',
+    style: 'display: block; height: 100%;',
+    id: 'mysystem2-authoring-iframe',
+    onload: 'eventManager.fire("mysystem2AuthoringIFrameLoaded");'
+  });
 
   var parent = document.getElementById('dynamicPage');
   parent.appendChild(iframe);
@@ -45,27 +35,11 @@ View.prototype.Mysystem2Node.testIFrame = function() {
 
 View.prototype.Mysystem2Node.AuthoringIFrameLoaded = function(){
   var iframe = document.getElementById('mysystem2-authoring-iframe').contentWindow;
-  // need to add in SC array methods to the arrays so SC can work with correctly
-  iframe.SC.NativeArray.apply(this.content.modules);
-  iframe.SC.NativeArray.apply(this.content.energy_types);
-  iframe.SC.NativeArray.apply(this.content.diagram_rules);
-
-  iframe.MSA.data = this.content;
-
-  iframe.MSA.modulesController.set('content', this.content.modules);
-  iframe.MSA.energyTypesController.set('content', this.content.energy_types);
-  iframe.MSA.diagramRulesController.set('content', this.content.diagram_rules);
-
-  iframe.MSA.dataController.addObserver('data', this, function (){
+  
+  iframe.MSA.setupParentIFrame(this.content, this, function (){
     /* fire source updated event */
     this.view.eventManager.fire('sourceUpdated');
   });
-};
-
-View.prototype.Mysystem2Node.previewFrameLoaded = function(){
-  // Tried reloading the preview here
-  // but it didn't help
-  // this.view.eventManager.fire('sourceUpdated');
 };
 
 /**
