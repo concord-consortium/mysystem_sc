@@ -2,18 +2,13 @@
 
 MSA = SC.Application.create();
 
-MSA.uuid = function() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-    return v.toString(16);
-  });
-};
-
 MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
   // migration from old content format
   if (!dataHash.diagram_rules) {
     dataHash.diagram_rules = [];
   }
+
+  // TODO: migrate objects to have uuids that don't already have them
 
   MSA.data = dataHash;
 
@@ -24,7 +19,7 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
   MSA.dataController.addObserver('data', updateObject, updateFn);
 };
 
-MSA.Module = SCUtil.ModelObject.extend({
+MSA.Module = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
   name: SCUtil.dataHashProperty,
   image: SCUtil.dataHashProperty,
 
@@ -37,7 +32,7 @@ MSA.Module = SCUtil.ModelObject.extend({
   }
 });
 
-MSA.EnergyType = SCUtil.ModelObject.extend({
+MSA.EnergyType = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
   label: SCUtil.dataHashProperty,
   color: SCUtil.dataHashProperty
 });
