@@ -30,6 +30,10 @@ MySystem = SC.Application.create(
     SC.run( function () {
       // debugger;
       var data = SC.$('#my_system_state').text();
+      if(data.trim().length == 0){
+        // there is no data in the dom
+        return;
+      }
       MySystem.store.setStudentStateDataHash( JSON.parse(data ));
     });
   },
