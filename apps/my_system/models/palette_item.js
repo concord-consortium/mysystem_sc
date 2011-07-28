@@ -28,6 +28,14 @@ MySystem.PaletteItem = SC.Record.extend(
     
     @property {String}
   */
-  title: SC.Record.attr(String)
+  title: SC.Record.attr(String),
 
+  
+  /**
+    A UUID identifying this palette item.  This should be assigned when the palette item is authored
+    It will be available on nodes created from this menu item as 'nodeType'
+    
+    @property {String}
+  */
+  uuid: SC.Record.attr(String)
 }) ;

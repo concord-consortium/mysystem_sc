@@ -28,6 +28,13 @@ MySystem.EnergyType = SC.Record.extend(
   */
   color: SC.Record.attr(String, { isRequired: YES }),
   
-  isEnabled: SC.Record.attr(Boolean, { isRequired: YES, defaultValue: YES })
-
+  isEnabled: SC.Record.attr(Boolean, { isRequired: YES, defaultValue: YES }),
+  
+  /**
+    A UUID identifying this palette item.  This should be assigned when the palette item is authored
+    It will be available on nodes created from this menu item as 'nodeType'
+    
+    @property {String}
+  */
+  uuid: SC.Record.attr(String)
 }) ;
