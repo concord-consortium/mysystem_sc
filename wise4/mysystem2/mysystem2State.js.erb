@@ -7,7 +7,7 @@
  * is just used as an example. you can add any variables that will help you 
  * represent the student's work for your step type.
  */
-function MYSYSTEMSTATE(response) {
+function MYSYSTEM2STATE(response) {
 	//the text response the student wrote
 	this.response = "";
 
@@ -27,14 +27,14 @@ function MYSYSTEMSTATE(response) {
  * help you represent the student's work for your type of step.
  * 
  * @param stateJSONObj a JSONObject representing the student work
- * @return a MYSYSTEMSTATE object
+ * @return a MYSYSTEM2STATE object
  */
-MYSYSTEMSTATE.prototype.parseDataJSONObj = function(stateJSONObj) {
+MYSYSTEM2STATE.prototype.parseDataJSONObj = function(stateJSONObj) {
 	//obtain the student work from the JSONObject
 	var response = stateJSONObj.response;
 	
 	//create a state object with the student work
-	var mysystemState = new MYSYSTEMSTATE(response);
+	var mysystemState = new MYSYSTEM2STATE(response);
 	
 	//return the state object
 	return mysystemState;
@@ -45,7 +45,7 @@ MYSYSTEMSTATE.prototype.parseDataJSONObj = function(stateJSONObj) {
  * 
  * @return the student work
  */
-MYSYSTEMSTATE.prototype.getStudentWork = function() {
+MYSYSTEM2STATE.prototype.getStudentWork = function() {
 	var studentWork = this;
 	
 	return studentWork;

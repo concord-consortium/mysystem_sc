@@ -34,7 +34,7 @@ function Mysystem2Node(nodeType, view) {
  * @return a new state object
  */
 Mysystem2Node.prototype.parseDataJSONObj = function(stateJSONObj) {
-	return MYSYSTEMSTATE.prototype.parseDataJSONObj(stateJSONObj);
+	return MYSYSTEM2STATE.prototype.parseDataJSONObj(stateJSONObj);
 };
 
 /**
@@ -96,7 +96,7 @@ Mysystem2Node.prototype.onExit = function() {
  */
 Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivIdPrefix, workgroupId) {
 	//Get the latest student state object for this step
-	var MYSYSTEMSTATE = nodeVisit.getLatestWork();
+	var MYSYSTEM2STATE = nodeVisit.getLatestWork();
 	
 	/*
 	 * get the step work id from the node visit in case we need to use it in
@@ -106,7 +106,7 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
 	 */
 	var stepWorkId = nodeVisit.id;
 	
-	var studentWork = MYSYSTEMSTATE.getStudentWork();
+	var studentWork = MYSYSTEM2STATE.getStudentWork();
 	
 	//put the student work into the div
 	$('#' + divId).html(studentWork.response);

@@ -74,7 +74,7 @@ Mysystem2.prototype.save = function() {
    * create a student state object that will store the new work the student
    * just submitted
    */
-  var state = new MYSYSTEMSTATE(response);
+  var state = new MYSYSTEM2STATE(response);
   
   /*
    * fire the event to push this state to the global view.states object.
