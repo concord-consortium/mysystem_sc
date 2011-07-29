@@ -95,6 +95,11 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
   */
   itemValueKey: null,
   
+  /**
+    The color of the background of the item
+  */
+  itemColorKey: null,
+  
   /** 
     If items property is a hash, specify which property will function as
     the value with this itemIsEnabledKey property.
@@ -114,14 +119,16 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
       [1] => Value
       [2] => Enabled (YES default)
       [3] => Icon (image URL)
+      [4] => color
   */
   displayItems: function() {
     var items = this.get('items'), loc = this.get('localize'),
       titleKey = this.get('itemTitleKey'), valueKey = this.get('itemValueKey'),
       isEnabledKey = this.get('itemIsEnabledKey'), 
-      iconKey = this.get('itemIconKey');
+      iconKey = this.get('itemIconKey'),
+      colorKey = this.get('itemColorKey');
     var ret = [], max = (items)? items.get('length') : 0 ;
-    var item, title, value, idx, isArray, isEnabled, icon;
+    var item, title, value, idx, isArray, isEnabled, icon, color;
     
     for(idx=0;idx<max;idx++) {
       item = items.objectAt(idx); 
@@ -150,15 +157,19 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
           icon = item.get ? item.get(iconKey) : item[iconKey] ;
         } else icon = null ;
         
+        if (colorKey) {
+          color = item.get ? item.get(colorKey) : item[colorKey] ;
+        } else color = null;
+        
       // if item is nil, use somedefaults...
       } else { title = value = icon = null; isEnabled = NO; }
 
       // localize title if needed
       if (loc) title = title.loc();
-      ret.push([title, value, isEnabled, icon]) ;
+      ret.push([title, value, isEnabled, icon, color]) ;
     }
     return ret; // done!
-  }.property('items', 'itemTitleKey', 'itemValueKey', 'itemIsEnabledKey', 'localize', 'itemIconKey').cacheable(),
+  }.property('items', 'itemTitleKey', 'itemValueKey', 'itemIsEnabledKey', 'localize', 'itemIconKey', 'itemColorKey').cacheable(),
   
   /** If the items array itself changes, add/remove observer on item... */
   itemsDidChange: function() {
@@ -223,9 +234,14 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
         
         labelText = this.escapeHTML ? SC.RenderContext.escapeHTML(item[0]) : item[0];
 
+        var colorStyle = "";
+        if(item[4]) {
+          colorStyle = ' style="background-color: ' + item[4] + ';"';
+        }
+
         var checked = !isArray && value === item[1] ? 'checked="checked"' : '';
-        context.push('<label class="sc-radio-button ', selectionStateClassNames, '" style="background-color: ', item[1], ';">');
-        context.push('<input type="radio" value="', item[1], '" name="', name, '" ', disabled, ' ', checked, '/>');
+        context.push('<label class="sc-radio-button ', selectionStateClassNames, '"', colorStyle, '>');
+        context.push('<input type="radio" value="', idx, '" name="', name, '" ', disabled, ' ', checked, '/>');
         context.push('<span class="button"></span>');
         context.push('<span class="sc-button-label">', icon, labelText, '</span></label>');
       }
@@ -373,7 +389,18 @@ MySystem.ImprovedRadioView = SC.FieldView.extend(
     target = this.$(target);
     target.addClass('active');
     this._activeRadioButton = target;
-    this.set('value', tv);
+
+    // ------------ HACKETY HACK -----
+    // this block was taking from getFieldValue above 
+    // the value of the item is the index into the display items
+    // it isn't clear what the purpose of getFieldValue is when there is a 
+    // a value property like this????
+    var items = this.get('displayItems') ;
+    var val = items[parseInt(tv,0)];
+    
+    // if no items are selected there is a saved mixed value, return that...
+    this.set('value', val ? val[1] : this._mixedValue);
+    // ----------
 
     this._field_isMouseDown = YES;
     return YES;
