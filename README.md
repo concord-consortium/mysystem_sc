@@ -83,10 +83,9 @@ exit $EXIT_STATUS`
 2. Build the Wise4 step: 
 2a. bundle exec rake build
 2b. bundle exec rake copy_authoring
-3. Modify your wise4-vagrant/Vagrantfile checkout so it will load in your built wise4 step.  It should have this at the top
-    wise4_step_types = {
-     'Mysystem2' => "../mysystem_sc/vle/node/mysystem2"
-    }
+3. Create the file wise4-step-types.yml listing the name of the step and path to the build output:
+    --- 
+    Mysystem2: ../mysystem_sc/vle/node/mysystem2
 4. Run vagrant up in the wise4-vagrant folder, or if you already started vagrant, run vagrant reload
 5. open a web browser to http://localhost:8080/webapp/index.html
 6. login as admin:pass
