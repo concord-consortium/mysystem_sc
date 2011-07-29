@@ -18,6 +18,10 @@ MySystem.Link = SC.Record.extend(
   color: SC.Record.attr(String),
   text: SC.Record.attr(String),
 
+  // uuid taken from the energy type of this
+  // TODO figure out where this is setup
+  energyType: SC.Record.attr(String),
+
   startNode: SC.Record.toOne('MySystem.Node', {
     inverse: 'outLinks'
   }),
@@ -29,6 +33,38 @@ MySystem.Link = SC.Record.extend(
   sentences: SC.Record.toMany('MySystem.StorySentence', {
     inverse: 'links', isMaster: NO
   }),
+
+  // It might be better to use some of the sproutcore SC.Record.toOne here
+  // however that will require:
+  //  1. dealing with the form below used for editing the energyType field
+  //     the radio button control used there only works currently works with string values
+  //  2. protecting the model so it will work when the energyType it isn't loaded
+  //  3. checking the serialized state of the model: should the guid of EnergyTypes be the uuid?
+  //     if the guid isn't the uuid then an guid will start showing up in the saved state
+  energyTypeObj: function() {
+    var energyTypeUUID = this.get('energyType');
+    if(SC.none(energyTypeUUID)) {
+      return null;
+    }
+    
+    var query = SC.Query.local(MySystem.EnergyType, 'uuid = {uuid}', { uuid: this.get('energyType') });
+    var result = this.get('store').find(query);
+    if(result.get('length') < 1){
+      return null;
+    } else {
+      return result.objectAt(0);
+    }
+  }.property('energyType'),
+
+  energyTypeObjDidChange: function() {
+    var energyType = this.get('energyTypeObj');
+    
+    if(SC.none(energyType)){
+      return;
+    }
+    
+    this.set('color', energyType.get('color'));
+  }.observes('energyTypeObj'),
 
   // Parameters for LinkIt:Link styles:
   //   lineStyle, one of:
@@ -79,11 +115,12 @@ MySystem.Link = SC.Record.extend(
     // Forms.FormView.row(SC.RadioView, {
     Forms.FormView.row(MySystem.ImprovedRadioView, {
       layout: { width: 160, height: 85 }, // TODO: Hardwired height. Ugh.
-      fieldKey: "color",
+      fieldKey: "energyType",
       fieldLabel: "Energy Type:",
-      itemsBinding: 'MySystem.energyTypes',
+      itemsBinding: 'MySystem.activityController.energyTypes',
       itemTitleKey: 'label',
-      itemValueKey: 'color',
+      itemValueKey: 'uuid',
+      itemColorKey: 'color',
       itemIsEnabledKey: 'isEnabled',
       layoutDirection: SC.LAYOUT_VERTICAL
     }),
