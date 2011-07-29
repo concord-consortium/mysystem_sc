@@ -49,16 +49,11 @@ MySystem.DiagramRule = SC.Record.extend(
     }
   },
   
-  // FIXME soon. Notice that there is no semantically meaningful field indicating what physical object this node
-  // represents. We have to check the image URL (!) to figure it out.
   checkNode: function(paletteItem, node) {
     if(paletteItem === null){
       return true;
     } else {
-      // indexOf is used here because the image urls from the paletteItems have
-      //  cache busters at the end in development mode, but the image urls of
-      //  nodes in fixtures do not
-      return paletteItem.get('image').indexOf(node.get('image')) >= 0;
+      return paletteItem.get('uuid') == node.get('nodeType');
     }
   },
   
