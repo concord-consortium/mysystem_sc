@@ -74,7 +74,8 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     paletteItem = MySystem.store.createRecord(
       MySystem.PaletteItem, {
         title: module["name"],
-        image: module["image"]},
+        image: module["image"],
+        uuid: module["uuid"]},
         MySystem.Activity.newGuid("palette_item")
     );
     activity.get('paletteItems').pushObject(paletteItem);
@@ -89,7 +90,8 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
       MySystem.EnergyType, {
         label: type["label"],
         color: type["color"],
-        isEnabled: YES},
+        isEnabled: YES,
+        uuid: type['uuid']},
         MySystem.Activity.newGuid("energyType")
     );
     activity.get('energyTypes').pushObject(newEnergyType);
