@@ -76,6 +76,23 @@ EXIT_STATUS=$?`
 
 exit $EXIT_STATUS`
 
+### Running in Wise4 using vagrant ###
+
+0. Install prerequisites: git, vagrant, and virtualbox
+1. Clone this git repository https://github.com/concord-consortium/wise4-vagrant
+2. Build the Wise4 step: 
+2a. bundle exec rake build
+2b. bundle exec rake copy_authoring
+3. Modify your wise4-vagrant/Vagrantfile checkout so it will load in your built wise4 step.  It should have this at the top
+    wise4_step_types = {
+     'Mysystem2' => "../mysystem_sc/vle/node/mysystem2"
+    }
+4. Run vagrant up in the wise4-vagrant folder, or if you already started vagrant, run vagrant reload
+5. open a web browser to http://localhost:8080/webapp/index.html
+6. login as admin:pass
+7. NEED HELP fininishing these steps, this page has more instuctions on getting started
+     http://code.google.com/p/wise4/wiki/WISE4AdministratorResources
+   But we need to customize that for mysystem2.
 
 ### Building as WISE4 step ###
 
@@ -108,4 +125,16 @@ Related projects:
 * Ki <http://github.com/FrozenCanuck/Ki>
 * Previous mysystem effort: <http://github.com/knowuh/mysystem/>
 
+### Notes from Hiroki ### 
+* look at open response step for example of saving outside of window save
+   open_response.js
+* add in energy_type for the link
+
+? Initial state of diagram for student???
+
+* have check button trigger Mysystem.save()
+* save the text of the computed
+* teacher classroom monitoring tool
+-- look at cargraph studentstatus and StudentAlertable
+* car graph step does some "aggregation" report, it has a slider for filtering which student results to show.
 
