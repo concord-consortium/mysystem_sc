@@ -27,7 +27,8 @@ MySystem.CanvasView = LinkIt.CanvasView.extend(SCUI.Cleanup, {
       'title': drag.data.title,
       'image': drag.data.image,
       'x': newNodeX,
-      'y': newNodeY
+      'y': newNodeY,
+      'nodeType': drag.data.uuid
     };
     
     // Create the node

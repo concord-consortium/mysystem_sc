@@ -45,7 +45,8 @@ MySystem.DIAGRAM_EDITING = Ki.State.design({
       title:    attr.title, 
       image:    attr.image, 
       position: { x: attr.x, y: attr.y },
-      guid:     guid
+      guid:     guid,
+      nodeType: attr.nodeType
     }, guid);
     
     // De-select other diagram objects and select the new node

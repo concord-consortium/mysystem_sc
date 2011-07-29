@@ -71,6 +71,7 @@ MySystem.AddButtonView = SC.View.extend(
       data: {
         title: this.get('content').get('title') || 'title',
         image: this.get('content').get('image') || 'image',
+        uuid: this.get('content').get('uuid'),
         clickX: localOffsetX,
         clickY: localOffsetY
       }

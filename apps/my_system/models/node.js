@@ -20,6 +20,9 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   transformer: SC.Record.attr(Boolean, {defaultValue: true }),
   toolTip: SC.Record.attr(String, { defaultValue: null }),
 
+  // uuid taken from the palette item that created this node
+  nodeType: SC.Record.attr(String),
+  
   outLinks: SC.Record.toMany('MySystem.Link',{
     inverse: 'startNode',
     isMaster: YES
