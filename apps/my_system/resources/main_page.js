@@ -21,8 +21,10 @@ MySystem.mainPage = SC.Page.design({
     childViews: 'topView'.w(),
     topView: SC.SplitView.design({
       defaultThickness: 140,
-      topLeftView: MySystem.NodePaletteView.design({ // Node Palette (left)
-        layout: { top: 0, bottom: 0, left: 15 }
+      topLeftView: SC.ScrollView.design({
+        contentView: MySystem.NodePaletteView.design({
+          layout: { top: 0, bottom: 0, left: 0 }
+        }) 
       }),
       dividerView: SC.SplitDividerView, // Divider for resizing right/left
       bottomRightView: SC.SplitView.design({ // Rest of app (right)
