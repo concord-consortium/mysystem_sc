@@ -30,7 +30,7 @@ MySystem.mainPage = SC.Page.design({
       bottomRightView: SC.SplitView.design({ // Rest of app (right)
         defaultThickness: 150,
         layoutDirection: SC.LAYOUT_VERTICAL,
-        topLeftView: MySystem.StoriesView, // Story section
+        topLeftView: MySystem.InstructionView, // Top instructions
         dividerView: SC.SplitDividerView, // Divider for resizing up/down
         bottomRightView: MySystem.CanvasView.design({
           layout: { top: 120, left: 0, right: 0, bottom: 0 },
