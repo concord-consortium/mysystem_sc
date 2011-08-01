@@ -3,6 +3,7 @@
 bin/*
 tmp/*
 build_folder/*
-reports/*.xml
+reports/*
 vle/*
 debug/snapshot_demo/app
+server.*
