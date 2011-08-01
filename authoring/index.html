@@ -67,6 +67,7 @@
       {{#if "content.hasLink"}}
         {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.linkDirections" valueBinding="parentView.parentView.content.linkDirection"}}
         {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.parentView.content.otherNodeType"}}
+        with energy type: {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.energyTypes" valueBinding="parentView.parentView.content.energyType"}}
       {{else}}
         {{#view SC.Button
           targetBinding="parentView.parentView.content"

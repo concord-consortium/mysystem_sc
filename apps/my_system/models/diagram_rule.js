@@ -21,6 +21,7 @@ MySystem.DiagramRule = SC.Record.extend(
   hasLink: SC.Record.attr(Boolean),
   linkDirection: SC.Record.attr(String),
   otherNodeType: SC.Record.attr(String),
+  energyType: SC.Record.attr(String),
   
   // FIXME use something better than node for non typed rules
   paletteItem: function (nodeType) {
@@ -31,6 +32,18 @@ MySystem.DiagramRule = SC.Record.extend(
     var query = SC.Query.local(MySystem.PaletteItem, 'title = {title}', { title: nodeType });
     var items = MySystem.store.find(query);
     return items.objectAt(0);
+  },
+  
+  energyTypeObject: function() {
+    // the energyType could be null for authored content that was created before energy types
+    var energyType = this.get('energyType');
+    if( !energyType || energyType == 'any'){
+      return null;
+    }
+    
+    var query = SC.Query.local(MySystem.EnergyType, 'label = {label}', { label: energyType });
+    var items = MySystem.store.find(query);
+    return items.objectAt(0);    
   },
   
   check: function(nodes) {
@@ -58,6 +71,12 @@ MySystem.DiagramRule = SC.Record.extend(
   },
   
   checkLink: function(link, startPaletteItem, endPaletteItem) {
+    // check the energyType
+    var energyType = this.energyTypeObject();
+    if(energyType && energyType.get('uuid') != link.get('energyType')){
+      return false;
+    }
+
     return this.checkNode(startPaletteItem, link.get('startNode')) && this.checkNode(endPaletteItem, link.get('endNode'));
   },
   

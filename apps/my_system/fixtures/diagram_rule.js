@@ -31,6 +31,16 @@ MySystem.DiagramRule.FIXTURES = [
     otherNodeType: 'Hand'
   },
   { guid: 'dr4',
+    suggestion: 'At least one Bulb node linked to a Hand node by thermal energy.',
+    comparison: 'more than',
+    number: 0,
+    type: 'Bulb',
+    hasLink: true,
+    linkDirection: '-->',
+    otherNodeType: 'Hand',
+    energyType: "thermal energy"
+  },
+  { guid: 'dr5',
     suggestion: 'Diagram needs at least 2 links.',
     comparison: 'more than',
     number: 1,
