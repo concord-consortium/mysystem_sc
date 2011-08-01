@@ -48,11 +48,9 @@ The app saves the "student data" state (i.e., the nodes, links, and stories) int
 2. run the test! <code>bundle exec lebowski-spec spec/mysystem_spec.rb</code> (where mysystem_spec.rb is your test)
 
 ### Running SproutCore QUnit tests with capybara-testrunner ###
-1. From the top-level mysystem_sc directory:
-`rvm gemset import`
-
-1. don't abort on first error
-`set +e`
+From the top-level mysystem_sc directory:
+1. make sure the gems are installed:
+`bundle install --binstubs`
 
 2. remove cached files:
 `rm -rf tmp`
@@ -61,29 +59,19 @@ The app saves the "student data" state (i.e., the nodes, links, and stories) int
 `rm reports/*.xml`
 
 4. `$SC_SERVER_PORT` is usually 4020. That environment variable is used so multiple ci server (such as Husdon) job instances don't use the same port
-`sc-server --port=$SC_SERVER_PORT --host=0.0.0.0 & sleep 1`
+`export SC_SERVER_PORT=4020`
 
-5. Go into the capybara-testrunner directory and run the tests
-`pushd capybara-testrunner
-ruby -rubygems run-tests.rb -p $SC_SERVER_PORT -i -h -t apps -o ../reports
-EXIT_STATUS=$?`
-
-6. Leave the capybara-testrunner directory
-`popd`
-
-7. send a control-c to sc-server
-`kill -s 2 %1
-
-exit $EXIT_STATUS`
+5. Run the tests
+`bundle exec ruby run-unit-tests.rb -i -o reports`
 
 ### Running in Wise4 using vagrant ###
 
 0. Install prerequisites: git, vagrant, and virtualbox
 1. Clone this git repository https://github.com/concord-consortium/wise4-vagrant
-2. Build the Wise4 step: 
+2. In the mysystem_sc folder, build the Wise4 step: 
 2a. bundle exec rake build
 2b. bundle exec rake copy_authoring
-3. Create the file wise4-step-types.yml listing the name of the step and path to the build output:
+3. In the wise4-vagrant folder, create the file wise4-step-types.yml listing the name of the step and path to the build output:
     --- 
     Mysystem2: ../mysystem_sc/vle/node/mysystem2
 4. Run vagrant up in the wise4-vagrant folder, or if you already started vagrant, run vagrant reload
