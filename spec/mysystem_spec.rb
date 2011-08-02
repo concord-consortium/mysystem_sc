@@ -7,16 +7,33 @@ describe "MySystem" do
   before(:all) do
     start_testing_servers
     @test = new_test
+
     @canvas = @test['canvas']
+    @palette = @test['palette']
+
+    @add_bulb = @palette.childViews[2]
+    @add_hand = @palette.childViews[1]
+    @add_clay = @palette.childViews[0]
+
+    @add_clay.drag_in_canvas(300, 250)
+    @add_hand.drag_in_canvas(500, 250)
+    @add_bulb.drag_in_canvas(150, 250)
+
     @node_0 = @canvas.nodes[0]
     @node_1 = @canvas.nodes[1]
     @node_2 = @canvas.nodes[2]
-    @palette = @test['palette']
-    @add_bulb = @palette.childViews[2]
   end
 
   after(:all) do
     stop_testing_servers
+  end
+
+  it "should link nodes in the diagram" do
+    @node_0.terminal_by_name('a').link_to @node_1.terminal_by_name('b'), 6, 6
+    @node_0.should be_linked_to 1
+
+    @node_0.terminal_by_name('a').link_to @node_2.terminal_by_name('b'), 6, 6
+    @node_0.should be_linked_to 2
   end
 
   # This seems to prove that we have the chrome, but I think it just proves

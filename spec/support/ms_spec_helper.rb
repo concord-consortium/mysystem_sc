@@ -19,7 +19,9 @@ SELENIUM_PORT = ENV[:SELENIUM_PORT.to_s] || 4244;
 TEST_SETTINGS = {
   :app_root_path => "/my_system",
   :app_name => "MySystem",
+  :app_server_host => "127.0.0.1",
   :app_server_port => TEST_PORT,
+  :selenium_server_host => "127.0.0.1",
   :selenium_server_port => SELENIUM_PORT,
   :browser => :firefox
 }
@@ -54,7 +56,7 @@ def new_test
   app.maximize  # TODO: Seems like dragging doesn't work unless we are maximized.
   sleep 2       # TODO: hackish pause, CanvasView is not ready otherwise..
   app.define_path 'canvas', 'mainPage.mainPane.topView.bottomRightView.bottomRightView', CanvasView
-  app.define_path 'palette', 'mainPage.mainPane.topView.topLeftView', View
+  app.define_path 'palette', 'mainPage.mainPane.topView.topLeftView.contentView', View
   app.define_path 'story', 'mainPage.mainPane.topView.bottomRightView.topLeftView', LabelView
   return app
 end
@@ -78,7 +80,7 @@ def start_command(name)
   else
     puts "WARNING: process  #{command[:name] || name} already started with #{command[:pid]}"
   end
-  sleep 2 # Hackish pause to spin up job.
+  sleep 4 # Hackish pause to spin up job.
 end
 
 
