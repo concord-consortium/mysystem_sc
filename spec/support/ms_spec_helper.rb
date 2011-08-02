@@ -31,11 +31,13 @@ $commands = {
   :sproutcore => {
     :path => "sc-server --port #{TEST_PORT}",
     :name => "sproutcore server",
+    :port => TEST_PORT,
     :pid => nil
   },
   :lebowski => {
     :path => "lebowski-start-server -port #{SELENIUM_PORT}",
     :name => "lebowski",
+    :port => SELENIUM_PORT,
     :pid => nil
   }
 }
@@ -80,7 +82,13 @@ def start_command(name)
   else
     puts "WARNING: process  #{command[:name] || name} already started with #{command[:pid]}"
   end
-  sleep 4 # Hackish pause to spin up job.
+  if command[:port]
+    if is_port_open?("127.0.0.1", command[:port])
+      puts "Server port opened!"
+    else
+      puts "WARNING: server port never opened!"
+    end
+  end
 end
 
 
@@ -113,4 +121,28 @@ def with_lebowsk_server (&block)
   sleep 2 #shouldn't have to wait, but there ya-go.
   yield
   stop_testing_servers
+end
+
+require 'socket'
+require 'timeout'
+
+def is_port_open?(ip, port)
+  begin
+    count = 0
+    Timeout::timeout(16) do
+      begin
+        raise Timeout::Error.new if count > 15
+        count += 1
+        s = TCPSocket.new(ip, port)
+        s.close
+        return true
+      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+        sleep 1
+        retry
+      end
+    end
+  rescue Timeout::Error
+  end
+
+  return false
 end
