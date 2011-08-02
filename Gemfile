@@ -11,3 +11,4 @@ git "git://github.com/knowuh/resource_squasher.git" do
 end
 gem "trollop"
 gem "sc-testdriver", "0.1.1", :git => "git://github.com/concord-consortium/capybara-testrunner.git", :branch => "gem"
+gem "cucumber"
