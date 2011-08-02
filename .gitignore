@@ -4,6 +4,8 @@ bin/*
 tmp/*
 build_folder/*
 reports/*
+results/*
+spec/reports/*
 vle/*
 debug/snapshot_demo/app
 server.*

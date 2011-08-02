@@ -1,0 +1,5 @@
+---
+default: --format pretty
+hudson: --profile junit --profile html --format progress
+junit: --format junit --out <%= ENV['CI_REPORTS'] || 'results' %>
+html: --format html --out <%= ENV['CI_REPORTS'] || 'results' %>/cucumber-report.html
