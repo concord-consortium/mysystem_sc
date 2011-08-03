@@ -15,7 +15,7 @@ desc "package sproutcore for for a wise4 deployment"
 task :wise => [:build, :install] 
 
 desc "package sproutcore for Wise4 but don't copy"
-task :build => [:repackage, :inject_javascript, :copy_templates]
+task :build => [:repackage, :inject_javascript, :copy_templates, :copy_authoring]
 
 desc "copy the files to the Wise4 vle directory dir"
 task :install do
