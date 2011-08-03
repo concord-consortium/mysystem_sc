@@ -47,6 +47,12 @@ The app saves the "student data" state (i.e., the nodes, links, and stories) int
 1. cd to your sproutcore directory: <code> cd /path/to/mysystem_sc </code>
 2. run the test! <code>bundle exec lebowski-spec spec/mysystem_spec.rb</code> (where mysystem_spec.rb is your test)
 
+### Cucumber testing: ###
+
+0. the Gemfile stipulates dependencies on lebowski
+1. cd to your sproutcore directory: <code> cd /path/to/mysystem_sc </code>
+2. run the tests! <code>bundle exec cucumber features/</code>
+
 ### Running SproutCore QUnit tests with capybara-testrunner ###
 From the top-level mysystem_sc directory:
 1. make sure the gems are installed:
