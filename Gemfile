@@ -1,6 +1,6 @@
 source :gemcutter
 
-gem "sproutcore", "~> 1.4.5"
+gem "sproutcore", "~> 1.6"
 gem "lebowski"
 gem "daemon_controller"
 gem "capybara"

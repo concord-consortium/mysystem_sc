@@ -11,7 +11,7 @@
   @extends SC.View
 */
 sc_require('core');
-MySystem.TransformationCanvas = LinkIt.CanvasView.extend(SCUI.Cleanup, 
+MySystem.TransformationCanvas = LinkIt.CanvasView.extend(
 /** @scope MySystem.TransformationCanvas.prototype */ {
   isDropTarget: NO, 
 

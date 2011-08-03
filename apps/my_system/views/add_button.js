@@ -80,7 +80,7 @@ MySystem.AddButtonView = SC.View.extend(
   },
 
   mouseUp: function(evt) {
-    sc_super();
+    // sc_super();
     var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
     SC.Drag.removeDropTarget(myCanvas);
   }

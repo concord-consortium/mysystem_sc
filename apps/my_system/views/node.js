@@ -14,7 +14,7 @@
 sc_require('models/link');
 sc_require('views/terminal');
 
-MySystem.NodeView = SC.View.extend(SCUI.Cleanup, LinkIt.NodeView,
+MySystem.NodeView = SC.View.extend(LinkIt.NodeView,
 /** @scope MySystem.NodeView.prototype */ {
 
   layout: { top: 0, left: 0, width: 100, height: 120 },
