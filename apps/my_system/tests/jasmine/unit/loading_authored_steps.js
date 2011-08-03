@@ -153,4 +153,40 @@ describe("LoadingAuthoredSteps", function () {
     expect(rules[4].get('energyType')).toBe(null);    
   });
   
+  it("should be able to load a step with no items at all", function () {
+    
+    var authoredContent = 
+      {
+        "type": "mysystem2",
+        "prompt": "",
+        "modules": [],
+        "energy_types": [],
+        "diagram_rules": []
+      };
+      
+      var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
+      MySystem.activityController.set('content',activity);   
+      
+      expect(MySystem.activityController.get('paletteItems').length()).toBe(0);
+      expect(MySystem.activityController.get('energyTypes').length()).toBe(0);
+      expect(MySystem.activityController.get('diagramRules').length()).toBe(0);
+  });
+  
+  it("should be able to load a step with assignment text", function () {
+    
+    var authoredContent = 
+      {
+        "type": "mysystem2",
+        "prompt": "prompt1",
+        "modules": [],
+        "energy_types": [],
+        "diagram_rules": []
+      };
+      
+      var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
+      MySystem.activityController.set('content',activity);   
+      
+      expect(MySystem.activityController.get('assignmentText')).toBe("prompt1");
+  });
+  
 });
