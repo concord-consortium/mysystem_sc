@@ -229,6 +229,8 @@ MySystem.CanvasView = LinkIt.CanvasView.extend({
         this._dragData.startPageX = evt.pageX;
         this._dragData.startPageY = evt.pageY;
         this._dragData.view = itemView;
+        this._dragData.itemFrame = itemView.get('frame'); // note this assumes the item's frame will not change during the drag
+        this._dragData.ownerFrame = this.get('frame'); // note this assumes the canvas' frame will not change during the drag
         this._dragData.didMove = NO; // hasn't moved yet; drag will update this
       }
     }
