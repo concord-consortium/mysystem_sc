@@ -9,3 +9,4 @@ spec/reports/*
 vle/*
 debug/snapshot_demo/app
 server.*
+Gemfile.lock
