@@ -9,7 +9,8 @@ require File.expand_path('../frameworks/jasmine-sproutcore/builders/jasmine_buil
 config :all, 
        :required => [:forms, :sproutcore],
        :load_fixtures => true,
-       :layout => 'lib/index.rhtml'
+       :layout => 'lib/index.rhtml',
+       :serve_public => true
 
 # CORE FRAMEWORKS
 config :scui, :required => [:sproutcore, :'scui/drawing', :'scui/linkit']
