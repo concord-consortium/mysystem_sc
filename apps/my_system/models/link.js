@@ -296,7 +296,8 @@ MySystem.Link = SC.Record.extend(
 }) ;
 MySystem.Link.GuidCounter = 100;
 MySystem.Link.newGuid = function() { return "link" + MySystem.Link.GuidCounter++;};
-MySystem.Link.hashFromLinkItLink = function(linkItLink) {
+MySystem.Link.hashFromLinkItLink = function(linkItLinks) {
+  var linkItLink = linkItLinks[0];
   var tempHash = {};
   tempHash.startNode = linkItLink.get('startNode');
   tempHash.startTerminal = linkItLink.get('startTerminal');
