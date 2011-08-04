@@ -182,59 +182,13 @@ MySystem.CanvasView = LinkIt.CanvasView.extend({
   },
   
   mouseDown: function(evt) {
-    var pv, frame, globalFrame, canvasX, canvasY, itemView, menuPane, menuOptions;
-    var linkSelection;
-
     this.collectionViewMouseDown(evt);
 
-    // init the drag data
-    this._dragData = null;
+    var oldEditable = this.get('isEditable');
+    this.set('isEditable', YES); // set isEditable to force dragging everything
+    sc_super();
+    this.set('isEditable', oldEditable);
 
-    if (evt && (evt.which === 3) || (evt.ctrlKey && evt.which === 1)) {
-      var selectedLinks = this.get('selectedLinks');
-      if (selectedLinks && !this.getPath('selection.length')) {
-        menuOptions = [
-          { title: "Delete Selected Links".loc(), target: this, action: 'deleteLinkSelection', isEnabled: YES }
-        ];
-
-        menuPane = SCUI.ContextMenuPane.create({
-          contentView: SC.View.design({}),
-          layout: { width: 194, height: 0 },
-          itemTitleKey: 'title',
-          itemTargetKey: 'target',
-          itemActionKey: 'action',
-          itemSeparatorKey: 'isSeparator',
-          itemIsEnabledKey: 'isEnabled',
-          items: menuOptions
-        });
-        
-        menuPane.popup(this, evt);
-      }
-    }
-    else {
-      var multiSelect = evt.metaKey && this.get('allowMultipleSelection');
-      pv = this.get('parentView');
-      frame = this.get('frame');
-      globalFrame = pv ? pv.convertFrameToView(frame, null) : frame;
-      canvasX = evt.pageX - globalFrame.x;
-      canvasY = evt.pageY - globalFrame.y;
-      
-      // if the click was on a link, set this.linkSelection to the selected link and set the link's 'isSelected' to YES
-      this._selectLink( {x: canvasX, y: canvasY}, multiSelect );
-
-      // otherwise, if the click was on a node, set dragData
-      itemView = this.itemViewForEvent(evt);
-      if (itemView) {
-        this._dragData = SC.clone(itemView.get('layout'));
-        this._dragData.startPageX = evt.pageX;
-        this._dragData.startPageY = evt.pageY;
-        this._dragData.view = itemView;
-        this._dragData.itemFrame = itemView.get('frame'); // note this assumes the item's frame will not change during the drag
-        this._dragData.ownerFrame = this.get('frame'); // note this assumes the canvas' frame will not change during the drag
-        this._dragData.didMove = NO; // hasn't moved yet; drag will update this
-      }
-    }
-    
     return YES;
   },
 
