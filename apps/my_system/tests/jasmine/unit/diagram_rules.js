@@ -233,6 +233,29 @@ describe("DiagramRules", function () {
       expect({nodes: ['obj1','obj2'], links: ['obj1.0-->obj2.0']}).toFail();
     
     });
+    
+    it("should be correctly grade --> between nodes with a set energy", function () {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1",
+            "hasLink": true,
+            "energyType": "en1",
+            "linkDirection": "-->",
+            "otherNodeType": "obj2"
+          }
+        ]
+      );
+      
+      // we can set the energy type of a link after a colon
+      // NOTE: In runtime a student trying to change the energy of a link
+      // does not work. This is a runtime bug somewhere
+      expect({nodes: ['obj1','obj2'], links: ['obj1.0-->obj2.0:en1']}).toPass();
+      expect({nodes: ['obj1','obj2'], links: ['obj1.0-->obj2.0:en2']}).toFail();
+    
+    });
   });
   
   givenRules = function (rules) {
@@ -300,6 +323,11 @@ describe("DiagramRules", function () {
       if (!studentData['MySystem.Link']){
         studentData['MySystem.Link'] = {};
       }
+      var energyType = null;
+      if (linkDesc.split(":").length > 1){
+        energyType = linkDesc.split(":")[1];
+        linkDesc = linkDesc.split(":")[0];
+      }
       startNode = linkDesc.split("-->")[0];
       endNode = linkDesc.split("-->")[1];
       studentData['MySystem.Link']['link'+i] = {
@@ -308,7 +336,8 @@ describe("DiagramRules", function () {
         endNode: endNode,
         energyType: 'any',
         startTerminal: 'a',
-        endTerminal: 'a'
+        endTerminal: 'a',
+        energyType: energyType
       };
     });
     
