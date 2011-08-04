@@ -104,7 +104,7 @@ desc "Copy authoring files"
 task :copy_authoring do
   dest_dir = "#{@output_directory}/authoring"
   %x[ mkdir -p #{dest_dir} ]
-  %x[ cp -r authoring/* #{dest_dir} ]
+  %x[ cp -r public/authoring/* #{dest_dir} ]
 end
 
 namespace :demos do
