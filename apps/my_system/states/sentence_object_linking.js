@@ -3,7 +3,7 @@
 // Copyright: ©2011 Concord Consortium
 // @author    Parker Morse <pmorse@cantinaconsulting.com>
 // ==========================================================================
-/*globals MySystem Ki */
+/*globals MySystem */
 
 /** 
 
@@ -14,7 +14,7 @@
   associated with the currently operative sentence; when it is de-selected it is also de-associated.
 
 */
-MySystem.SENTENCE_OBJECT_LINKING = Ki.State.design({
+MySystem.SENTENCE_OBJECT_LINKING = SC.State.design({
   
   /**
     Taking a sentence argument, adjusts the sentence being edited in the controller, then 

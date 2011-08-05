@@ -3,7 +3,7 @@
 // Copyright: ©2011 Concord Consortium
 // @author    Parker Morse <pmorse@cantinaconsulting.com>
 // ==========================================================================
-/*globals MySystem Ki */
+/*globals MySystem */
 
 /** 
 
@@ -16,7 +16,7 @@
   DIAGRAM_EDITING state when the object being edited is no longer selected.
 
 */
-MySystem.DIAGRAM_OBJECT_EDITING = Ki.State.design({
+MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
   
   /**
     Set up the property pane attributes and attach it.

@@ -4,7 +4,7 @@
 // ==========================================================================
 /*globals MySystem module test ok equals same stop start */
 
-// Currently, this setup crashes the app with "Object Ki.State has no method 'get'" despite working outside the test
+// Currently, this setup crashes the app with "Object SC.State has no method 'get'" despite working outside the test
 // environment. (the observer method MySystem.nodesController.propertyEditing() attempts to call sendEvent on
 // the uninitialized statechart MySystem.statechart.)
 

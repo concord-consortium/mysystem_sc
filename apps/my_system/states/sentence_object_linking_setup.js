@@ -3,7 +3,7 @@
 // Copyright: ©2011 Concord Consortium
 // @author    Parker Morse <pmorse@cantinaconsulting.com>
 // ==========================================================================
-/*globals MySystem Ki */
+/*globals MySystem */
 
 /** 
 
@@ -15,7 +15,7 @@
   state.
 
 */
-MySystem.SENTENCE_OBJECT_LINKING_SETUP = Ki.State.design({
+MySystem.SENTENCE_OBJECT_LINKING_SETUP = SC.State.design({
   
   /**
     In this transient state, we want to ignore any selection changes made in the diagram,

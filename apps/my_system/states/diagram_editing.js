@@ -3,7 +3,7 @@
 // Copyright: ©2011 Concord Consortium
 // @author    Parker Morse <pmorse@cantinaconsulting.com>
 // ==========================================================================
-/*globals MySystem Ki */
+/*globals MySystem */
 
 /** 
 
@@ -11,7 +11,7 @@
   manipulate the diagram.
 
 */
-MySystem.DIAGRAM_EDITING = Ki.State.design({
+MySystem.DIAGRAM_EDITING = SC.State.design({
   
   enterState: function () {
     SC.Logger.log("Entering state %s", this.get('name'));
