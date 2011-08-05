@@ -23,27 +23,36 @@ MySystem.DiagramRule = SC.Record.extend(
   otherNodeType: SC.Record.attr(String),
   energyType: SC.Record.attr(String),
   
+  
   // FIXME use something better than node for non typed rules
   paletteItem: function (nodeType) {
     if( nodeType == 'node' ) {
-      return null;
+      return MySystem.DiagramRule.genericPaletteItem;
     }
     
     var query = SC.Query.local(MySystem.PaletteItem, 'title = {title}', { title: nodeType });
     var items = MySystem.store.find(query);
-    return items.objectAt(0);
+    if(items.get('length') > 0){
+      return items.objectAt(0);
+    } else {
+      return null;
+    }
   },
   
   energyTypeObject: function() {
     // the energyType could be null for authored content that was created before energy types
     var energyType = this.get('energyType');
     if( !energyType || energyType == 'any'){
-      return null;
+      return MySystem.DiagramRule.genericEnergyType;
     }
     
     var query = SC.Query.local(MySystem.EnergyType, 'label = {label}', { label: energyType });
     var items = MySystem.store.find(query);
-    return items.objectAt(0);    
+    if(items.get('length') > 0){
+      return items.objectAt(0);    
+    } else {
+      return null;
+    }
   },
   
   check: function(nodes) {
@@ -63,7 +72,11 @@ MySystem.DiagramRule = SC.Record.extend(
   },
   
   checkNode: function(paletteItem, node) {
-    if(paletteItem === null){
+    if (paletteItem === null){
+      // the paletteItem couldn't be found this is a error in the diagram rule
+      // it would probably be best to add some special note to the feedback
+      return false;
+    } else if(paletteItem === MySystem.DiagramRule.genericPaletteItem){
       return true;
     } else {
       return paletteItem.get('uuid') == node.get('nodeType');
@@ -73,7 +86,11 @@ MySystem.DiagramRule = SC.Record.extend(
   checkLink: function(link, startPaletteItem, endPaletteItem) {
     // check the energyType
     var energyType = this.energyTypeObject();
-    if(energyType && energyType.get('uuid') != link.get('energyType')){
+    if(!energyType){
+      return false;
+    }
+    
+    if((energyType != MySystem.DiagramRule.genericEnergyType ) && (energyType.get('uuid') != link.get('energyType'))){
       return false;
     }
 
@@ -116,6 +133,8 @@ MySystem.DiagramRule = SC.Record.extend(
       return n;
     } else {
       if (paletteItem === null) {
+        return false;
+      } else if(paletteItem === MySystem.DiagramRule.genericPaletteItem) {
         // fast path
         return nodes.get('length');
       } else {
@@ -127,3 +146,6 @@ MySystem.DiagramRule = SC.Record.extend(
     }
   }
 }) ;
+
+MySystem.DiagramRule.genericPaletteItem = "genericPaletteItem";
+MySystem.DiagramRule.genericEnergyType = "genericEnergyType";
