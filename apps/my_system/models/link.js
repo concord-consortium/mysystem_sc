@@ -47,13 +47,10 @@ MySystem.Link = SC.Record.extend(
       return null;
     }
     
-    var query = SC.Query.local(MySystem.EnergyType, 'uuid = {uuid}', { uuid: this.get('energyType') });
-    var result = this.get('store').find(query);
-    if(result.get('length') < 1){
-      return null;
-    } else {
-      return result.objectAt(0);
-    }
+    // HACK, this can go away when we start passing around real objects
+    // the activityController is used instead of a general SC.Query, because the authoring interaction causes a new
+    // instance of each EnergyType to be created whenever the authored content is updated
+    return MySystem.getPath('activityController.energyTypes').findProperty('uuid', this.get('energyType'));
   }.property('energyType'),
 
   energyTypeObjDidChange: function() {
