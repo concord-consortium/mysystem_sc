@@ -11,7 +11,6 @@
   @extends SC.View
 */
 sc_require('views/node');
-// sc_require('LinkIt.CanvasView');
 sc_require('core');
 MySystem.CanvasView = LinkIt.CanvasView.extend({ 
   allowMultipleSelection: YES,

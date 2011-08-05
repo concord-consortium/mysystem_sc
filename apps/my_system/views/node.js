@@ -43,7 +43,7 @@ MySystem.NodeView = SC.View.extend(LinkIt.NodeView,
 
   icon: SC.ImageView.design({
     classNames: 'image',
-    useImageCache: true,
+    useImageQueue: YES,
     layout: { top: 20, width:50, height:70, centerX: 0},
     valueBinding: '.parentView*content.image'
   }),
@@ -74,7 +74,7 @@ MySystem.NodeView = SC.View.extend(LinkIt.NodeView,
   /* Temporarily removed for Berkeley 0.1 release */
   // transformationIcon: SC.ImageView.design({
   //   classNames: 'image',
-  //   useImageCache: true,
+  //   useImageQueue: YES,
   //   layout: {left: 5, bottom: +5, width: 20, height:20 },
   //   valueBinding: '.parentView*content.transformationIcon',
   //   toolTipBinding: '.parentView*content.toolTip',

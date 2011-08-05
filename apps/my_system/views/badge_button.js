@@ -33,7 +33,7 @@ MySystem.BadgeButtonView = SC.View.extend(
 
   icon: SC.ImageView.design({
     classNames: 'image',
-    useImageCache: true,
+    useImageQueue: YES,
     layout: { top: 20, width:68, height:68, centerX: 0},
     value: sc_static('resources/badge.png')
   }),

@@ -38,7 +38,7 @@ MySystem.AddButtonView = SC.View.extend(
 
   icon: SC.ImageView.design({
     classNames: 'image',
-    useImageCache: true,
+    useImageQueue: YES,
     layout: { top: 30, width:50, height:70, centerX: 0},
     valueBinding: '.parentView.content.image'
   }),

@@ -90,10 +90,14 @@ MySystem.statechart = Ki.Statechart.create({
       });
       
       if (suggestions.get('length') > 0){
-        SC.AlertPane.warn(suggestions.join(" "));
+        SC.AlertPane.warn({
+          description: suggestions.join(" \n")
+        });
       }
       else {
-        SC.AlertPane.info("Your diagram has no obvious problems.");
+        SC.AlertPane.info({
+          description: "Your diagram has no obvious problems."
+        });
       }
     }
     
