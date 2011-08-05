@@ -258,6 +258,64 @@ describe("DiagramRules", function () {
     });
   });
   
+  describe("Handle invalid Diagram Rules", function () {
+    it("should handle a invalid node type", function () {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj3",
+            "hasLink": false,
+          }
+        ]
+      );
+      
+      // It isn't clear if it should fail or do something worse when there
+      // is an invalid node type
+      expect({nodes: ['obj1']}).toFail();    
+    });
+
+    it("should handle a invalid other node type", function () {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj3",
+            "hasLink": true,
+            "linkDirection": "---",
+            "otherNodeType": "obj4"
+          }
+        ]
+      );
+      
+      // It isn't clear if it should fail or do something worse when there
+      // is an invalid node type
+      expect({nodes: ['obj1','obj2'], links: ['obj1.0-->obj2.0:en1']}).toFail();    
+    });
+
+    it("should handle a invalid energy type", function () {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1",
+            "hasLink": true,
+            "linkDirection": "---",
+            "otherNodeType": "obj2",
+            "energyType": "en3"
+          }
+        ]
+      );
+      
+      // It isn't clear if it should fail or do something worse when there
+      // is an invalid node type
+      expect({nodes: ['obj1','obj2'], links: ['obj1.0-->obj2.0:en1']}).toFail();    
+    });
+  });
+  
   givenRules = function (rules) {
     $.each(rules, function(i, rule){
       if (!rule.suggestion){
