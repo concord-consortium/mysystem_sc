@@ -10,6 +10,7 @@ config :all,
        :required => [:forms, :sproutcore],
        :load_fixtures => true,
        :layout => 'lib/index.rhtml',
+       :theme => 'sproutcore/ace',
        :serve_public => true
 
 # CORE FRAMEWORKS
@@ -19,7 +20,7 @@ config :scui, :required => [:sproutcore, :'scui/drawing', :'scui/linkit']
 # application, even bundles that come from other gems.
 config :my_system,
   :required => [:sproutcore, :scui, :forms, :ki],
-  :theme => 'my_system_theme'
+  :css_theme => 'ace.mysystem-theme'
 
 namespace :build do
   desc "builds a jasmine unit test"

@@ -1,3 +1,0 @@
-config :my_system_theme, :css_theme => 'ace.my-system-theme'
-
-
