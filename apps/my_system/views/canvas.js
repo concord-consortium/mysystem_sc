@@ -68,6 +68,11 @@ MySystem.CanvasView = LinkIt.CanvasView.extend({
   mouseDown: function(evt) {
     var oldEditable = this.get('isEditable');
     this.set('isEditable', YES); // set isEditable to force dragging everything
+    
+    if (!!evt.shiftKey){
+      evt.shiftKey = NO;
+      evt.ctrlKey = YES;
+    }
     sc_super();
     this.set('isEditable', oldEditable);
 
