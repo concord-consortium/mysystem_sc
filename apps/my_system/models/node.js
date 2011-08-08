@@ -136,7 +136,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       var el1 = array1[i];
       for (var j = 0; j < array2.length; j += 1) {
         var el2 = array2[j];
-        if (el1 == el2) {
+        if (el1 === el2) {
           result.push(el1);
         }
       }
@@ -243,7 +243,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       var startNode = model_link.get("startNode");
       var endNode = model_link.get("endNode");
       // if we are the startNode then we are responsible for removing the link.
-      if (startNode && startNode == this) {
+      if (startNode && startNode === this) {
         // SC.Logger.log("removing link %@", model_link);
         startNode.get("outLinks").removeObject(model_link);
         startNode.get("inLinks").removeObject(model_link);
@@ -257,9 +257,9 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   // Returns a list of acceptable colors for out-links, null if no restriction
   acceptableOutLinkColors: function() {
-    if (MySystem.studentMode == MySystem.ADVANCED_STUDENT) {
+    if (MySystem.studentMode === MySystem.ADVANCED_STUDENT) {
       return null;  // Advanced students can create any kind of link they want
-    } else if (MySystem.studentMode == MySystem.NOVICE_STUDENT) {
+    } else if (MySystem.studentMode === MySystem.NOVICE_STUDENT) {
       if (this.get('transformer')) {
         return null;
       }
@@ -283,9 +283,9 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   // Returns a list of acceptable colors for in-links, null if no restriction
   acceptableInLinkColors: function() {
-    if (MySystem.studentMode == MySystem.ADVANCED_STUDENT) {
+    if (MySystem.studentMode === MySystem.ADVANCED_STUDENT) {
       return null;
-    } else if (MySystem.studentMode == MySystem.NOVICE_STUDENT) {
+    } else if (MySystem.studentMode === MySystem.NOVICE_STUDENT) {
       if (this.get('transformer')) {
         return null;
       }
@@ -500,7 +500,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
       for (i=0; i<inLength; i++) { // Check each in-link
         color = inLinks.objectAt(i).get('color');
        for (j=0; j<outLength; j++) { // Check against each out-link
-          if (color != outLinks.objectAt(j).get('color')) {
+          if (color !== outLinks.objectAt(j).get('color')) {
             _hasTransformation = YES; // Found one
             break; // stop looking at out-links
           }
@@ -514,7 +514,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
   transformationsAreAllAnnotated: function() {
     var _areAnnotated = YES;
     this.get('transformations').forEach( function (item, index, enumerable) {
-      if (!item.get('isAnnotated') == NO) {
+      if (!item.get('isAnnotated') === NO) {
         _areAnnotated = NO;
       }
     });
@@ -526,7 +526,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     var l = transformations.get('length');
     for (var i = 0; i < l; i += 1) {
       var transformation = transformations.objectAt(i);
-      if (transformation.get('outLinkColor') == color) {
+      if (transformation.get('outLinkColor') === color) {
         return YES;
       }
     }
@@ -538,7 +538,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     var l = links.get('length');
     for (var i = 0; i < l; i += 1) {
       var link = links.objectAt(i);
-      if (link.get('color') == color) {
+      if (link.get('color') === color) {
         return YES;
       }
     }
