@@ -43,7 +43,7 @@ MySystem.mainPage = SC.Page.design({
     })
   }),
 
-  propertyViewPane: MySystem.PropertyEditorPane,
+  inspectorPane: MySystem.InspectorPane,
 
   sentenceLinkPane: MySystem.SentenceConnectPane,
 
