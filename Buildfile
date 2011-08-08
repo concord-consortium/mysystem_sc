@@ -7,7 +7,7 @@ require File.expand_path('../frameworks/jasmine-sproutcore/builders/jasmine_buil
 
 # Add initial buildfile information here
 config :all, 
-       :required => [:forms, :sproutcore],
+       :required => [:forms, :sproutcore, "sproutcore/experimental/forms"],
        :load_fixtures => true,
        :layout => 'lib/index.rhtml',
        :theme => 'sproutcore/ace',
