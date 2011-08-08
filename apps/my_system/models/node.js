@@ -113,7 +113,7 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     var outLinks = this.get('outLinks');
     var inLinks = this.get('inLinks');
     outLinks.invoke('destroy');
-    outLinks.invoke('destroy');
+    inLinks.invoke('destroy');
     this.set('outLinks',[]);
     this.set('inLinks', []);
     SC.Logger.log("destroy called on ", this);
