@@ -49,3 +49,14 @@ Forms.FormFieldView.reopen({
 SC.View.reopen({
   didUpdateLayer: function() {}
 });
+
+// add a binding transform to take the first element of an array and return it
+SC.Binding.firstOnly = function() {
+  return this.transform(function(value, binding) {
+    if (!!value) {
+      return value.firstObject();
+    } else {
+      return null;
+    }
+  });
+};
