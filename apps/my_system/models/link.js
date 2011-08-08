@@ -83,6 +83,7 @@ MySystem.Link = SC.Record.extend(
     lineStyle: LinkIt.VERTICAL_CURVED,
     width: 6,
     arrowLength: 10,
+    arrowAngle: 20,
     color: '#00ff00',
     cap: LinkIt.ROUND,
     arrows: LinkIt.ARROW_END
@@ -198,6 +199,7 @@ MySystem.Link = SC.Record.extend(
       lineStyle: this.get('linkStyle').lineStyle,
       width: this.get('linkStyle').width,
       arrowLength: this.get('linkStyle').arrowLength,
+      arrowAngle: this.get('linkStyle').arrowAngle,
       color: this.get('color'),
       cap: this.get('linkStyle').cap,
       arrows: this.get('linkStyle').arrows
