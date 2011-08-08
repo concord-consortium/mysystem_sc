@@ -72,7 +72,7 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
     }
     else {
       // Update the property editor pane
-      this.setUpPropertyPane();
+      this.setUpInspectorPane();
     }
     return YES;
   }

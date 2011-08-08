@@ -13,6 +13,7 @@
   @extends SC.PalettePane
 */
 sc_require('core');
+sc_require('views/link_form');
 
 MySystem.InspectorPane = SC.PalettePane.design({
   defaultResponder: 'MySystem.statechart',
