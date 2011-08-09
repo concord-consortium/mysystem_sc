@@ -6,9 +6,6 @@
 [submodule "Lebowski"]
 	path = Lebowski
 	url = http://github.com/FrozenCanuck/Lebowski.git
-[submodule "frameworks/forms"]
-	path = frameworks/forms
-	url = git://github.com/ialexi/Forms.git
 [submodule "frameworks/sproutcore"]
 	path = frameworks/sproutcore
 	url = http://github.com/sproutcore/sproutcore.git
