@@ -15,6 +15,7 @@ MySystem.Link = SC.Record.extend(
 /** @scope MySystem.Link.prototype */ {
   color: SC.Record.attr(String),
   text: SC.Record.attr(String),
+  extendedText: SC.Record.attr(String),
 
   // uuid taken from the energy type of this
   // TODO figure out where this is setup

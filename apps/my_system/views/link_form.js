@@ -14,10 +14,10 @@
 
 MySystem.LinkFormView = SC.FormView.extend({
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.allSelected').firstOnly(),
-  childViews: "energy text".w(),
+  childViews: "energy text extended".w(),
 
   text: SC.FormView.row("Label:", SC.TextFieldView.design({
-    layout: {width: 150, height: 20 },
+    layout: {width: 150, height: 20, centerY: 0 },
     contentValueKey: 'text'
   })),
 
@@ -55,6 +55,12 @@ MySystem.LinkFormView = SC.FormView.extend({
       }
       return null;
     }
+  })),
+
+  extended: SC.FormView.row("Description:", SC.TextFieldView.design({
+    layout: {width: 150, height: 60, centerY: 0 },
+    contentValueKey: 'extendedText',
+    isTextArea: YES
   }))
 
 });
