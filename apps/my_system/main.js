@@ -23,7 +23,7 @@ MySystem.setupStore = function setupStore(obj) {
     dataSources: ['studentStateDataSource', 'fixturesDataSource'],
 
     studentStateDataSource: MySystem.MergedHashDataSource.create({
-      handledRecordTypes: [MySystem.Link, MySystem.Node, MySystem.Story, MySystem.StorySentence],
+      handledRecordTypes: [MySystem.Link, MySystem.Node, MySystem.Story, MySystem.StorySentence, MySystem.RuleFeedback],
 
       // write the updated student-state data to the DOM whenever it changes
       // New: Write the updated student-state data to a variable whenever it changes.

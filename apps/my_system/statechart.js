@@ -93,15 +93,30 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
         }
       });
       
-      if (suggestions.get('length') > 0){
-        SC.AlertPane.warn({
-          description: suggestions.join(" \n")
-        });
-      }
-      else {
-        SC.AlertPane.info({
-          description: "Your diagram has no obvious problems."
-        });
+      var feedback, showAlertPane;
+      var success = (suggestions.get('length') === 0);
+      if (success){
+        feedback = "Your diagram has no obvious problems.";
+        showAlertPane = SC.AlertPane.info;
+      } else {  
+        feedback = suggestions.join(" \n");
+        showAlertPane = SC.AlertPane.warn;
+      } 
+      
+      this.saveFeedback(feedback, success);
+      showAlertPane.call(SC.AlertPane, {description: feedback})
+    },
+    
+    saveFeedback: function(feedback, success){
+      // remove previous feedback
+      var lastFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+      if (lastFeedback.get('status')  & SC.Record.READY == SC.Record.READY){
+        lastFeedback.set({feedback: feedback, success: success});
+      } else {
+        MySystem.store.createRecord(
+          MySystem.RuleFeedback, 
+          {feedback: feedback, success: success}, 
+          MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
       }
     },
     
