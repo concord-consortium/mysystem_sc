@@ -27,11 +27,3 @@ test("Story creation", function() {
   equals(typeof newStory.get('storyHtml'), 'string', 'The Story HTML should be a string');
 });
 
-test("Stories should return an array of editable form fields when asked", function() {
-  expect(2);
-  var newStory = store.find('MySystem.Story', 2);
-  var formFields = newStory.get('formFields');
-  ok(isArray(formFields), "The formFields attribute should return an array");
-  equals(formFields.length, 1, "Stories should return one editable field");
-});
-

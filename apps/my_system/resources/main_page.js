@@ -5,7 +5,6 @@
 /*globals MySystem LinkIt SCUI */
 
 sc_require('views/node');
-sc_require('views/property_editor');
 sc_require('views/node_palette');
 sc_require('views/sentence');
 sc_require('views/sentence_connect_pane');
@@ -43,7 +42,7 @@ MySystem.mainPage = SC.Page.design({
     })
   }),
 
-  propertyViewPane: MySystem.PropertyEditorPane,
+  inspectorPane: MySystem.InspectorPane,
 
   sentenceLinkPane: MySystem.SentenceConnectPane,
 

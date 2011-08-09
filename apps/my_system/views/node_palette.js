@@ -27,9 +27,4 @@ MySystem.NodePaletteView = SC.ListView.extend({ // Node Palette (left)
   //   image: sc_static('resources/lightbulb_tn.png'),
   //   title: ""
   // })
-  // 
-  // linkColorChooser: MySystem.ColorChooserView.design({
-  //   layout: { left: 0, right: 10, top: 553, width: 200, height: 120 },
-  //   classNames: ['color-chooser']
-  // })
 });

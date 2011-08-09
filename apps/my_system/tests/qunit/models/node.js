@@ -115,16 +115,6 @@ test("nodes should have a position attribute", function() {
   equals(node.get('position').y, 150, "Y position should be 150 as created");
 });
 
-test("nodes should return an array of editable form fields when asked", function() {
-  expect(2);
-  var ccNode = store.find('MySystem.Node', 'testNode001');
-  var formFields = ccNode.get('formFields');
-  ok(isArray(formFields), "The formFields attribute should return an array");
-  /* Temporarily removed for Berkeley 0.1 release */
-  // equals(formFields.length, 3, "Nodes should return three editable fields");
-  equals(formFields.length, 2, "Nodes should return two editable fields");
-});
-
 test("We should be able to generate a new GUID", function() {
   expect(3);
   var newGuid = MySystem.Node.newGuid();

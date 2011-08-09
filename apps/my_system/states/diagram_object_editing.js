@@ -21,45 +21,42 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
   /**
     Set up the property pane attributes and attach it.
   */
-  setUpPropertyPane: function () {
-    var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');
-    var selectedObject = MySystem.nodesController.get('allSelected').firstObject();
-    if (!propertyEditor.isPaneAttached) {
-      propertyEditor.append();
+  setUpInspectorPane: function () {
+    var inspector = MySystem.getPath('mainPage.inspectorPane');
+    if (!inspector.isPaneAttached) {
+      inspector.append();
     }
-    propertyEditor.set('objectToEdit', selectedObject);
   },
   
   /**
     Delete the object being edited.
   */
   deleteObject: function () {
-    var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');
-    propertyEditor.get('objectToEdit').destroy();
+    var inspector = MySystem.getPath('mainPage.inspectorPane');
+    // FIXME this currently doesn't delete antying
     return YES;
   },
   
   /**
     Re-set the property pane attributes and remove it from the page.
   */
-  tearDownPropertyPane: function () {
-    var propertyEditor = MySystem.getPath('mainPage.propertyViewPane');
-    if (propertyEditor.isPaneAttached) {
-      propertyEditor.remove();
+  tearDownInspectorPane: function () {
+    var inspector = MySystem.getPath('mainPage.inspectorPane');
+    if (inspector.isPaneAttached) {
+      inspector.remove();
     }
-    propertyEditor.set('objectToEdit', null);
   },
 
   enterState: function () {
     SC.Logger.log("Entering state %s", this.get('name'));
     // Set up the property editor pane and attach it
-    this.setUpPropertyPane();
+    this.setUpInspectorPane();
   },
   
   exitState: function () {
     SC.Logger.log("Leaving state %s", this.get('name'));
     // Detatch property editor pane and clean it up
-    this.tearDownPropertyPane();
+    this.tearDownInspectorPane();
   },
   
   /**
@@ -75,7 +72,7 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
     }
     else {
       // Update the property editor pane
-      this.setUpPropertyPane();
+      this.setUpInspectorPane();
     }
     return YES;
   }

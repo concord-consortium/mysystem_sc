@@ -10,13 +10,12 @@
   @version 0.1
 */
 
-require('views/improved_radio.js');
-
 MySystem.Link = SC.Record.extend(
 
 /** @scope MySystem.Link.prototype */ {
   color: SC.Record.attr(String),
   text: SC.Record.attr(String),
+  extendedText: SC.Record.attr(String),
 
   // uuid taken from the energy type of this
   // TODO figure out where this is setup
@@ -107,29 +106,6 @@ MySystem.Link = SC.Record.extend(
   startTerminal: SC.Record.attr(String),
   endTerminal: SC.Record.attr(String),
 
-  // return a hash of editable attributes for the property editor
-  formFields: [
-    // fields: "color text".w(),
-    // color: 
-    // Forms.FormView.row(SC.RadioView, {
-    Forms.FormView.row(MySystem.ImprovedRadioView, {
-      layout: { width: 160, height: 85 }, // TODO: Hardwired height. Ugh.
-      fieldKey: "energyType",
-      fieldLabel: "Energy Type:",
-      itemsBinding: 'MySystem.activityController.energyTypes',
-      itemTitleKey: 'label',
-      itemValueKey: 'uuid',
-      itemColorKey: 'color',
-      itemIsEnabledKey: 'isEnabled',
-      layoutDirection: SC.LAYOUT_VERTICAL
-    }),
-    //text: 
-    Forms.FormView.row(SC.TextFieldView, {
-      fieldKey: "text",
-      fieldLabel: "Label:"
-    })
-  ],
-  
   isDimmed: NO,
 
   init: function () {

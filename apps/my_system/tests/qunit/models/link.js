@@ -60,20 +60,6 @@ test("Links should return LinkIt.Link objects when asked", function() {
   equals(linkItLink.model, newLink, 'The LinkIt Link should return the model it was derived from');
 });
 
-test("Links should return an array of editable form fields when asked", function() {
-  expect(2);
-  var linkHash = {
-      guid: MySystem.Link.newGuid(),
-      text: 'Test link for form fields',
-      startNode: node1.id(),
-      endNode: node2.id()
-    };
-  var newLink = store.createRecord(MySystem.Link, linkHash, linkHash.guid);
-  var formFields = newLink.get('formFields');
-  ok(isArray(formFields), "The formFields attribute should return an array");
-  equals(formFields.length, 2, "Links should return two editable fields");
-});
-
 test("We should be able to generate a new GUID", function() {
   expect(3);
   var newGuid = MySystem.Link.newGuid();

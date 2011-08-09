@@ -45,26 +45,6 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
 
   terminals: ['a', 'b'],
 
-  // return a hash of editable attributes for the property editor
-  formFields: [
-    // fields: "image title".w(),
-    // image: 
-    Forms.FormView.row(SC.TextFieldView, {
-      fieldKey: 'image',
-      fieldLabel: 'Image:'
-    }),
-    // title: 
-    Forms.FormView.row(SC.TextFieldView, {
-      fieldKey: 'title',
-      fieldLabel: 'Title:'
-    })
-    /* Temporarily removed for Berkeley 0.1 release */
-    // Forms.FormView.row(SC.CheckboxView, {
-    //   fieldKey: 'transformer',
-    //   fieldLabel: 'Transformer?'
-    // })
-  ],
-
   inColorMap: [],
   outColorMap: [],
 
