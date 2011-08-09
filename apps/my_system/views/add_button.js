@@ -56,9 +56,6 @@ MySystem.AddButtonView = SC.View.extend(
   dragDataForType: function(drag, dataType) { return null; },
   
   mouseDown: function(evt) {
-    var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-    SC.Drag.addDropTarget(myCanvas);
-    
     return YES;
   },
   
@@ -83,10 +80,5 @@ MySystem.AddButtonView = SC.View.extend(
       }
     };
     SC.Drag.start(dragOpts);
-  },
-
-  mouseUp: function(evt) {
-    var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-    SC.Drag.removeDropTarget(myCanvas);
   }
 });
