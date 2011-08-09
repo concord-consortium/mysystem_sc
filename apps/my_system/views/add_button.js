@@ -24,7 +24,7 @@ MySystem.AddButtonView = SC.View.extend(
   content: null,
   isSelected: false,
 
-  childViews: 'frame icon label'.w(),
+  childViews: 'frame'.w(),
 
   render: function (context) {
     sc_super();
@@ -33,41 +33,44 @@ MySystem.AddButtonView = SC.View.extend(
 
   frame: SC.View.design({
     classNames: 'node addbutton'.w(),
-    layout: { top: 12, bottom: 10, height: 122 }
-  }),
+    layout: { top: 12, bottom: 10, height: 122 },
+    childViews: 'icon label'.w(),
+    
+    icon: SC.ImageView.design({
+      classNames: ['image'],
+      // useImageQueue: YES,
+      useCanvas: NO,
+      layout: { top: 18, width:50, height:70, centerX: 0},
+      valueBinding: '.parentView.parentView.content.image'
+    }),
 
-  icon: SC.ImageView.design({
-    classNames: 'image',
-    useImageQueue: YES,
-    layout: { top: 30, width:50, height:70, centerX: 0},
-    valueBinding: '.parentView.content.image'
-  }),
-
-  label: SC.LabelView.design({
-    layout: { bottom: 5, centerX: 0, width: 100, height: 25 },
-    classNames: ['name'],
-    textAlign: SC.ALIGN_CENTER,    
-    valueBinding: '.parentView.content.title',
-    isEditable: NO
+    label: SC.LabelView.design({
+      layout: { bottom: 5, centerX: 0, width: 100, height: 25 },
+      classNames: ['name'],
+      textAlign: SC.ALIGN_CENTER,    
+      valueBinding: '.parentView.parentView.content.title',
+      isEditable: NO
+    }),
   }),
   
   dragDataForType: function(drag, dataType) { return null; },
   
-  mouseDown: function(eventID) {
-    // SC.Logger.log("mouseDown called");
-    var self = this;
-    var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-    SC.Drag.addDropTarget(myCanvas);
-    
+  mouseDown: function(evt) {
+    return YES;
+  },
+  
+  mouseDragged: function(evt) {
     // Figure ghost offset
-    var localOffsetX = eventID.clientX - 20; // Hardwired left margin is in CSS (ugh)
-    var localOffsetY = eventID.clientY - this.layout.top - 10; // 10 for CSS margin
+    var localOffsetX = evt.clientX - 70; // Hardwired left margin is in CSS (ugh)
+    var localOffsetY = evt.clientY - this.layout.top - 50; // 10 for CSS margin
 
     var dragOpts = {
-      event: eventID,
-      source: self,
+      event: evt,
+      source: this,
+      dragView: this,
       ghost: NO,
       slideBack: NO,
+      ghostActsLikeCursor: YES,
       data: {
         title: this.get('content').get('title') || 'title',
         image: this.get('content').get('image') || 'image',
@@ -77,10 +80,5 @@ MySystem.AddButtonView = SC.View.extend(
       }
     };
     SC.Drag.start(dragOpts);
-  },
-
-  mouseUp: function(evt) {
-    var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-    SC.Drag.removeDropTarget(myCanvas);
   }
 });

@@ -14,7 +14,7 @@ sc_require('views/node');
 sc_require('core');
 MySystem.CanvasView = LinkIt.CanvasView.extend({ 
   allowMultipleSelection: YES,
-  isDropTarget: NO, // we will add this as a drop target when we're dragging a new node
+  isDropTarget: YES,
   computeDragOperations: function(drag, evt) { return SC.DRAG_COPY; },
   performDragOperation: function(drag, op) { 
     // Figure the new node's x and y locations
