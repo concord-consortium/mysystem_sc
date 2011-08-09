@@ -39,17 +39,6 @@ MySystem = SC.Application.create(
   },
 });
 
-// Monkey Patch Forms library until we replace it with built in 1.6
-Forms.FormFieldView.reopen({
-  // need this so the sc_super() in FormTextFieldView doesnt' fail
-  keyDown: function(e, input) {}
-});
-
-// the forms library assumes didUpdateLayer is aways there
-SC.View.reopen({
-  didUpdateLayer: function() {}
-});
-
 // add a binding transform to take the first element of an array and return it
 SC.Binding.firstOnly = function() {
   return this.transform(function(value, binding) {

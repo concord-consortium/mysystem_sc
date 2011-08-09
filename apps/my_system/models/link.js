@@ -10,8 +10,6 @@
   @version 0.1
 */
 
-require('views/improved_radio.js');
-
 MySystem.Link = SC.Record.extend(
 
 /** @scope MySystem.Link.prototype */ {
