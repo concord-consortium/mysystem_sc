@@ -107,29 +107,6 @@ MySystem.Link = SC.Record.extend(
   startTerminal: SC.Record.attr(String),
   endTerminal: SC.Record.attr(String),
 
-  // return a hash of editable attributes for the property editor
-  formFields: [
-    // fields: "color text".w(),
-    // color: 
-    // Forms.FormView.row(SC.RadioView, {
-    Forms.FormView.row(MySystem.ImprovedRadioView, {
-      layout: { width: 160, height: 85 }, // TODO: Hardwired height. Ugh.
-      fieldKey: "energyType",
-      fieldLabel: "Energy Type:",
-      itemsBinding: 'MySystem.activityController.energyTypes',
-      itemTitleKey: 'label',
-      itemValueKey: 'uuid',
-      itemColorKey: 'color',
-      itemIsEnabledKey: 'isEnabled',
-      layoutDirection: SC.LAYOUT_VERTICAL
-    }),
-    //text: 
-    Forms.FormView.row(SC.TextFieldView, {
-      fieldKey: "text",
-      fieldLabel: "Label:"
-    })
-  ],
-  
   isDimmed: NO,
 
   init: function () {

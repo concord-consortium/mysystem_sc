@@ -1,5 +1,5 @@
 // ==========================================================================
-// Project:   MySystem.PropertyEditorPane
+// Project:   MySystem.InspectorPane
 // Copyright: ©2010 Concord Consortium 
 // under the MIT License (see LICENSE file for more info)
 // ==========================================================================

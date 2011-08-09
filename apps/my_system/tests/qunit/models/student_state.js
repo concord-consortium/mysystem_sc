@@ -30,11 +30,3 @@ test("Testing model definition of Student State", function() {
   equals(timestamp.getDate(), 12, "Date should be the 12th");
 });
 
-test("Student state should return an array of editable form fields when asked", function() {
-  expect(2);
-  var state = store.find('MySystem.StudentState', 1);
-  var formFields = state.get('formFields');
-  ok(isArray(formFields), "The formFields attribute should return an array");
-  equals(formFields.length, 0, "StudentState should not return any editable fields");
-});
-

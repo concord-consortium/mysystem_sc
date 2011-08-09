@@ -16,10 +16,5 @@ MySystem.StudentState = SC.Record.extend(
 
   content: SC.Record.attr(String),
   timestamp: SC.Record.attr(Number),
-  
-  // return a hash of editable attributes for the property editor
-  formFields: [
-    // fields: "".w()
-  ]
-  
+
 }) ;
