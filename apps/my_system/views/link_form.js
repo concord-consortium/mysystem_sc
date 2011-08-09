@@ -29,7 +29,32 @@ MySystem.LinkFormView = SC.FormView.extend({
     itemTitleKey: 'label',
     itemValueKey: 'uuid',
     itemIsEnabledKey: 'isEnabled',
-    layoutDirection: SC.LAYOUT_VERTICAL
+    layoutDirection: SC.LAYOUT_VERTICAL,
+
+    // override so we can inject the color information
+    displayItems: function() {
+      var ret = sc_super();
+      for (var i = 0; i < ret.length; i++) {
+        var item = this._findItemByValue(ret[i].get('value'));
+        if (!!item) {
+          ret[i].set('color', item.get('color'));
+        }
+      }
+      return ret;
+    }.property('isEnabled', 'value', 'items', 'itemTitleKey', 'itemWidthKey', 'itemValueKey', 'itemIsEnabledKey', 'localize', 'itemIconKey','itemAriaLabeledByKey', 'itemAriaLabelKey').cacheable(),
+
+    _findItemByValue: function(val) {
+      var key = this.get('itemValueKey');
+      var items = this.get('items');
+      for (var i = 0; i < items.length(); i++) {
+        var item = items.objectAt(i);
+        var iVal = item.get(key);
+        if (iVal == val) {
+          return item;
+        }
+      }
+      return null;
+    }
   }))
 
 });
