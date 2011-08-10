@@ -17,6 +17,8 @@ function Mysystem2(node,view) {
   else {
     this.states = [];
   }
+  
+  MySystem.registerExternalSaveFunction(this.save, this);
 };
 
 /**
