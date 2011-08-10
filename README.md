@@ -15,7 +15,7 @@
 
 1. git clone git://github.com/concord-consortium/mysystem_sc.git mysystem_sc
 2. cd mysystem_sc
-3. git submodule update --init
+3. git submodule update --init --recursive    # RaphaelViews needs --recursive option
 4. echo 'rvm use 1.9.2@my_system_sc --create' > .rvmrc; cd ..; cd -
 5. bundle install --binstubs
 6. bin/sc-server

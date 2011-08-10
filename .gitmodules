@@ -12,3 +12,6 @@
 [submodule "frameworks/jasmine-sproutcore"]
 	path = frameworks/jasmine-sproutcore
 	url = git://github.com/concord-consortium/jasmine-sproutcore.git
+[submodule "frameworks/raphael_views"]
+	path = frameworks/raphael_views
+	url = http://github.com/rklancer/RaphaelViews.git

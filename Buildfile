@@ -19,7 +19,7 @@ config :scui, :required => [:sproutcore, :'scui/drawing', :'scui/linkit']
 # This configuration section will be applied to all bundles used by your
 # application, even bundles that come from other gems.
 config :my_system,
-  :required => [:sproutcore, :scui, "sproutcore/experimental/forms"],
+  :required => [:sproutcore, :scui, "sproutcore/experimental/forms", 'raphael_views/raphael_views'],
   :css_theme => 'ace.mysystem-theme'
 
 namespace :build do
