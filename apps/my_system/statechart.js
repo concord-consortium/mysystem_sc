@@ -82,7 +82,16 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     */
     SENTENCE_OBJECT_LINKING: SC.State.plugin('MySystem.SENTENCE_OBJECT_LINKING'),
     
-    checkDiagramAgainstConstraints: function () {
+    checkButtonPressed: function () {
+      var suggestions = this.checkDiagramAgainstConstraints(true);
+      
+      if (!!MySystem.externalSaveFunction){
+        MySystem.externalSaveFunction();
+      }
+      
+    },
+    
+    checkDiagramAgainstConstraints: function (showPopup) {
       var rules = MySystem.activityController.get('diagramRules'),
           nodes = MySystem.store.find(MySystem.Node),
           suggestions = [];
@@ -104,10 +113,10 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       } 
       
       this.saveFeedback(feedback, success);
-      if (!!MySystem.externalSaveFunction){
-        MySystem.externalSaveFunction();
+      
+      if (showPopup){
+        showAlertPane.call(SC.AlertPane, {description: feedback});
       }
-      showAlertPane.call(SC.AlertPane, {description: feedback});
     },
     
     saveFeedback: function(feedback, success){

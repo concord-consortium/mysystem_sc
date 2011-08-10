@@ -26,7 +26,7 @@ MySystem.InstructionView = SC.View.extend({
     layout: { right: 15, bottom: 10, height: 20, width: 80 },
     title: 'Check',
     toolTip: 'Check your diagram',
-    action: 'checkDiagramAgainstConstraints'
+    action: 'checkButtonPressed'
   })
   
 });
