@@ -131,3 +131,9 @@ MySystem.registerExternalSaveFunction = function(func, context) {
   };
 };
 
+// Do any processing or cleanup that ought to be done before an external application 
+// wants to save data and exit
+MySystem.preExternalSave = function() {
+  this.statechart.sendAction('checkDiagramAgainstConstraints');
+};
+

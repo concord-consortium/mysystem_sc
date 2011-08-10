@@ -61,6 +61,13 @@ Mysystem2.prototype.getLatestState = function() {
   return latestState;
 };
 
+// this gets called as part of the window.onExit function, called by Wise2 when
+// we leave a step, and allows us to perform any final or cleanup work before
+// we save.
+Mysystem2.prototype.preSave = function() {
+  this.MySystem.preExternalSave();
+};
+
 /**
  * This function retrieves the student work from the html ui, creates a state
  * object to represent the student work, and then saves the student work.
@@ -72,6 +79,9 @@ Mysystem2.prototype.getLatestState = function() {
 Mysystem2.prototype.save = function() {
   // We use a simple dom element for our data passing
   var response =this.domIO.textContent;
+  console.log("saving");
+  console.log(response);
+  
   /*
    * create a student state object that will store the new work the student
    * just submitted
