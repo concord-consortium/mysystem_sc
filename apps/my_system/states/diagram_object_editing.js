@@ -75,5 +75,13 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
       this.setUpInspectorPane();
     }
     return YES;
+  },
+
+  addNode: function(attr) {
+    // if the user tries to drag a new node onto the canvas while in
+    // this mode, switch to DIAGRAM_EDITING, and trigger its addNode
+    self.gotoState('DIAGRAM_EDITING');
+    MySystem.statechart.sendEvent('addNode', attr);
+    return YES;
   }
 });
