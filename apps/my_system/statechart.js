@@ -104,11 +104,14 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       } 
       
       this.saveFeedback(feedback, success);
-      showAlertPane.call(SC.AlertPane, {description: feedback})
+      if (!!MySystem.externalSaveFunction){
+        MySystem.externalSaveFunction();
+      }
+      showAlertPane.call(SC.AlertPane, {description: feedback});
     },
     
     saveFeedback: function(feedback, success){
-      // remove previous feedback
+      SC.RunLoop.begin();
       var lastFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
       if (lastFeedback.get('status')  & SC.Record.READY == SC.Record.READY){
         lastFeedback.set({feedback: feedback, success: success});
@@ -118,6 +121,7 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
           {feedback: feedback, success: success}, 
           MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
       }
+      SC.RunLoop.end();
     },
     
     // The delete key should generally be handled before this, but if not this is the place
