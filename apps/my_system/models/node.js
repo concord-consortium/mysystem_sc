@@ -33,7 +33,19 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     isMaster: YES
   }),
   
-  position: SC.Record.attr(Object),
+  /**
+    X-position (in pixels) of this node, relative to the upper left corner of the diagram
+    
+    @property {Number}
+  */
+  x: SC.Record.attr(Number),
+
+  /**
+    Y-position (in pixels) of this node, relative to the upper left corner of the diagram
+    
+    @property {Number}
+  */
+  y: SC.Record.attr(Number),
   
   sentences: SC.Record.toMany('MySystem.StorySentence', {
     inverse: 'nodes', isMaster: NO

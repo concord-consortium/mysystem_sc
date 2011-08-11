@@ -13,10 +13,8 @@ MySystem.Node.FIXTURES = [
     "link1",
     "link2"
   ],
-  "position": {
-    "x": 160,
-    "y": 160
-  },
+  "x": 160,
+  "y": 160,
   "transformations": [
     "trans1"
   ],
@@ -31,10 +29,8 @@ MySystem.Node.FIXTURES = [
     "link1"
   ],
   "outLinks": [],
-  "position": {
-    "x": 310,
-    "y": 10
-  },
+  "x": 310,
+  "y": 10,
   "nodeType": "12553af0-b92c-11e0-a4dd-0800200c9a66"
 },
 {
@@ -46,10 +42,8 @@ MySystem.Node.FIXTURES = [
     "link2"
   ],
   "outLinks": [],
-  "position": {
-    "x": 10,
-    "y": 10
-  },
+  "x": 10,
+  "y": 10,
   "nodeType": "1e3f7650-b92c-11e0-a4dd-0800200c9a66"
 }
 ];

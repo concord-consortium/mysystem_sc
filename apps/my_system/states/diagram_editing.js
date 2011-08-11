@@ -44,7 +44,8 @@ MySystem.DIAGRAM_EDITING = SC.State.design({
     node = MySystem.store.createRecord(MySystem.Node, { 
       title:    attr.title, 
       image:    attr.image, 
-      position: { x: attr.x, y: attr.y },
+      x:        attr.x,
+      y:        attr.y,
       guid:     guid,
       nodeType: attr.nodeType
     }, guid);
