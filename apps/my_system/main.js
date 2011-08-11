@@ -88,6 +88,8 @@ MySystem.main = function main() {
   MySystem.transformationAnnotaterPane = MySystem.getPath('mainPage.transformationAnnotaterPane');
 
   MySystem.statechart.initStatechart();
+  
+  SC.RootResponder.CAPTURE_BACKSPACE_KEY = YES;
 };
 
 function main() { MySystem.main(); }
