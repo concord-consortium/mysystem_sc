@@ -83,7 +83,7 @@ MySystem.main = function main() {
 
   // MySystem.linkColorChooser = MySystem.mainPage.mainPane.childViews.objectAt(0).topLeftView.childViews.objectAt(5);
   // MySystem.linkColorChooser.set('content', 'red');
-  MySystem.canvasView = MySystem.mainPage.mainPane.topView.bottomRightView.bottomRightView;
+  MySystem.canvasView = MySystem.mainPage.mainPane.get('diagramView');    // TODO rename to 'diagramView' project-wide RPK 8-11-11
   MySystem.transformationsCanvasView = MySystem.getPath('mainPage.transformationBuilderPane').get('childViews').objectAt(0).get('childViews').objectAt(2);
   MySystem.transformationAnnotaterPane = MySystem.getPath('mainPage.transformationAnnotaterPane');
 

@@ -40,11 +40,37 @@ MySystem.mainPage = SC.Page.design({
           
           childViews: 'diagramView'.w(),
           
-          diagramView: RaphaelViews.RaphaelCollectionView.design({
-            contentBinding: SC.Binding.from('MySystem.nodesController'),
-            selectionBinding: 'MySystem.nodesController.selection',
-            linkSelectionBinding: 'MySystem.nodesController.linkSelection',
-            exampleView: MySystem.NodeView
+          diagramView: RaphaelViews.RaphaelCollectionView.design(SC.DropTarget, {
+            // contentBinding: SC.Binding.from('MySystem.nodesController'),
+            // selectionBinding: 'MySystem.nodesController.selection',
+            // linkSelectionBinding: 'MySystem.nodesController.linkSelection',
+            // exampleView: MySystem.NodeView,
+            
+            selectedLinks: [],
+            
+            computeDragOperations: function () {
+              return SC.DRAG_LINK;
+            },
+            
+            performDragOperation: function (drag, op) {
+
+              // Build the data hash
+              var newNodeAttributes = {
+                title:    drag.data.title,
+                image:    drag.data.image,
+                x:        drag.location.x - this.getPath('parentView.frame').x - drag.data.clickX,
+                y:        drag.location.y - this.getPath('parentView.frame').y - drag.data.clickY,
+                nodeType: drag.data.uuid
+              };
+              
+              // Create the node
+              console.log("sending 'addNode' event'");
+              MySystem.statechart.sendEvent('addNode', newNodeAttributes);
+          
+              // De-select other diagram objects and select 
+              return SC.DRAG_COPY; 
+            }
+            
           })
         })
       })
