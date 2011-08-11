@@ -39,9 +39,11 @@ MySystem.Node = SC.Record.extend(LinkIt.Node,
     inverse: 'nodes', isMaster: NO
   }),
 
-  transformations: SC.Record.toMany('MySystem.Transformation', {
-    inverse: 'node', isMaster: YES
-  }),
+  // For some reason this line was causing the qunit tests to fail when finding nodes
+  // perhaps it was related to both sides being listed as 'master'
+  // transformations: SC.Record.toMany('MySystem.Transformation', {
+  //   inverse: 'node', isMaster: YES
+  // }),
 
   terminals: ['a', 'b'],
 
