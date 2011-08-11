@@ -19,13 +19,12 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
   // PROPERTIES
   
-  
   isSelected: NO,
   isDragging: NO,
   
   bodyWidth: 100,
   bodyHeight: 120,
-  bodyColor: '#FFFFFF',
+  bodyColor: 'none',
   
   borderColor: function () {
     return this.get('isSelected') ? 'rgb(173, 216, 230)' : '#CCCCCC';
@@ -38,6 +37,14 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   }.property('isSelected'),
   
   borderRadius: 5,
+
+  // place-holder for our rendered raphael image object
+  // this is the nodes 'image'.
+  _raphaelImage: null,
+
+  // place-holder for our rendered raphael rectangle object
+  // this is the nodes 'border' essentially.
+  _raphaelRect: null,
 
   collectionView: function () {
     var ret = this.get('parentView');
@@ -60,13 +67,18 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   // RENDER METHODS
   
   
-  renderCallback: function (raphaelCanvas, attrs) {
-    return raphaelCanvas.rect().attr(attrs);
+  renderCallback: function (raphaelCanvas, attrs,imageAttrs) {
+    this._raphaelRect  = raphaelCanvas.rect();
+    this._raphaelImage = raphaelCanvas.image();
+
+    this._raphaelRect.attr(attrs);
+    this._raphaelImage.attr(imageAttrs);
+
+    return raphaelCanvas.set().push(this._raphaelRect,this._raphaelImage);
   },
   
   render: function (context, firstTime) {
     var content = this.get('content'),
-
         attrs = {
           'x':              content.get('x'),
           'y':              content.get('y'),
@@ -79,14 +91,20 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           'stroke-opacity': this.get('borderOpacity')
         },
 
-        rect;
-    
+        imageAttrs = {
+          src:    content.get('image'),
+          x:      25 + content.get('x'),
+          y:      20 + content.get('y'),
+          width:  50,
+          height: 70
+        };
+
     if (firstTime) {
-      context.callback(this, this.renderCallback, attrs);
+      context.callback(this, this.renderCallback, attrs, imageAttrs);
     }
     else {
-      rect = this.get('raphaelObject');
-      rect.attr(attrs);
+      this._raphaelRect.attr(attrs);
+      this._raphaelImage.attr(imageAttrs);
     }
   },
   
