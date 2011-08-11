@@ -10,8 +10,7 @@
   @version 0.1
 */
 
-MySystem.Link = SC.Record.extend(
-
+MySystem.Link = MySystem.AutoGuidRecord.extend(  
 /** @scope MySystem.Link.prototype */ {
   color: SC.Record.attr(String),
   text: SC.Record.attr(String),
@@ -271,8 +270,6 @@ MySystem.Link = SC.Record.extend(
     }
   }
 }) ;
-MySystem.Link.GuidCounter = 100;
-MySystem.Link.newGuid = function() { return "link" + MySystem.Link.GuidCounter++;};
 MySystem.Link.hashFromLinkItLink = function(linkItLinks) {
   var linkItLink = linkItLinks[0];
   var tempHash = {};

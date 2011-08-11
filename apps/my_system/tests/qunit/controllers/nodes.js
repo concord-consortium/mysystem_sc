@@ -9,36 +9,26 @@
 // the uninitialized statechart MySystem.statechart.)
 
 
-// sc_require('lib/old_format_json_parser');
-// 
-// module("MySystem.nodesController", {
-//   setup: function () {
-//     MySystem.canvasView = MySystem.getPath('mainPage.mainPane.topView.bottomRightView.bottomRightView');
-//   }
-//   
-// });
-// 
-// 
-// // This breaks, probably due to a newer SproutCore version: "Not Found" error
-// test("Data loading from JSON", function() {
-//   expect(2);
-//   var oldFirstNode = MySystem.store.find(MySystem.Node).firstObject().toString();
-//   // To prove we're loading from JSON we should test that the nodes
-//   // loaded here are different from those loaded from the store.
-//   // We've serialized the first of the old nodes in order to save the value;
-//   // if the following function works it would overwrite the original node.
-//   MySystem.loadCanvas(); // Clears the store and re-loads the store from JSON.
-//   var nodes = MySystem.store.find(MySystem.Node); // Load nodes from store.
-//   ok(nodes.get('length') > 0, "There should be nodes in the store");
-//   ok(!(nodes.firstObject().toString() === oldFirstNode), "The JSON objects shouldn't be the same as the fixture objects");
-// });
-// 
-// 
-// test("Managing selection", function() {
-//   expect(2);
-//   var firstNode = MySystem.nodesController.get('content').firstObject();
-//   MySystem.nodesController.selectObject(firstNode);
-//   equals(MySystem.nodesController.get('allSelected').get('length'), 1, "Only one node should be selected");
-//   MySystem.nodesController.selectObject(MySystem.nodesController.get('content').nextObject(1, firstNode));
-//   equals(MySystem.nodesController.get('allSelected').get('length'), 1, "Still, only one node should be selected");
-// });
+sc_require('lib/old_format_json_parser');
+
+module("MySystem.nodesController", {
+  setup: function () {
+    MySystem.setupStore(MySystem);
+  }
+  
+});
+
+
+// This breaks, probably due to a newer SproutCore version: "Not Found" error
+test("Data loading old data from JSON", function() {
+  expect(2);
+  
+  // there should be no nodes in the store when we start because fixtures are ignored by the 
+  // setupStore method above in setup
+  var nodes = MySystem.store.find(MySystem.Node);
+  ok(nodes.get('length') == 0, "There should be no nodes in the store");
+  
+  MySystem.loadCanvas(); // Clears the store and re-loads the store from old JSON in fixtures
+  var nodes = MySystem.store.find(MySystem.Node); // Load nodes from store.
+  ok(nodes.get('length') > 0, "There should be nodes in the store");
+});
