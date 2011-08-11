@@ -82,6 +82,24 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     */
     SENTENCE_OBJECT_LINKING: SC.State.plugin('MySystem.SENTENCE_OBJECT_LINKING'),
     
+    // clears the canvas after asking the user
+    clearCanvas: function () {
+      SC.AlertPane.warn({
+        description: "Are you sure you want to clear your diagram?",
+        delegate: {
+          alertPaneDidDismiss: function(pane, status) {
+            if (status === SC.BUTTON2_STATUS){    // "yes"
+              MySystem.clearCanvas();
+            }
+          }
+        },
+        buttons: [
+          { title: "Cancel" },
+          { title: "Yes" }
+        ]
+      });
+    },
+    
     // runs the rules, saves the data and pops up a message to the user
     checkButtonPressed: function () {
       var results = this.checkDiagramAgainstConstraints(true);
