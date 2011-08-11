@@ -4,8 +4,6 @@
 // ==========================================================================
 /*globals MySystem RaphaelViews */
 
-sc_require('views/terminal');
-
 /** @class
 
   Display class for displaying a Node. Expects its 'content' property to be a MySystem.Node record.
