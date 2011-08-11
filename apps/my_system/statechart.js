@@ -138,13 +138,7 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     // Note this will only work for views with a statechart as their default responder. Any
     // view for which acceptsFirstResponder = YES will need to handle this themselves.
     keyDown: function(evt) {
-      var childViews = MySystem.getPath('mainPage.mainPane.childViews');
-      if (!!childViews && childViews.length > 0){
-        var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
-        if (!!myCanvas){
-          myCanvas.keyDown(evt);
-        }
-      }
+      MySystem.getPath('mainPage.mainPane.canvasView').keyDown(evt);
       //swallow key down event
       return YES;
     }

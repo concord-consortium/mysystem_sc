@@ -13,7 +13,13 @@
 sc_require('views/node');
 sc_require('core');
 
-MySystem.CanvasView = SC.View.extend();
+MySystem.CanvasView = SC.View.extend({
+  
+  keyDown: function () {
+    console.log("canvasView keyDown event");
+  }
+  
+});
 //LinkIt.CanvasView.extend({ 
 //   allowMultipleSelection: YES,
 //   isDropTarget: YES,

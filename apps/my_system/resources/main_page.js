@@ -18,6 +18,9 @@ MySystem.mainPage = SC.Page.design({
   mainPane: SC.MainPane.design({
     defaultResponder: 'MySystem.statechart',
     childViews: 'topView'.w(),
+    
+    canvasView: SC.outlet('topView.bottomRightView.bottomRightView'),
+    
     topView: SC.SplitView.design({
       defaultThickness: 140,
       topLeftView: SC.ScrollView.design({
