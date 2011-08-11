@@ -4,6 +4,8 @@
 // ==========================================================================
 /*globals MySystem RaphaelViews */
 
+sc_require('views/editable_label');
+
 /** @class
 
   Display class for displaying a Node. Expects its 'content' property to be a MySystem.Node record.
@@ -25,6 +27,23 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   bodyWidth: 100,
   bodyHeight: 120,
   bodyColor: 'none',
+ 
+  // for our child editLabelView
+  textBinding:            '*content.title',
+  textColor:              '#000',
+  xBinding:               '*content.x',
+  yBinding:               '*content.y',
+  margin:                  10, 
+  bodyXCoord: function() {
+    console.log("x: ", this.get('x'));
+    return this.get('x');// + (0.5 * this.get('bodyWidth'));
+  }.property('x'),
+  
+  bodyYCoord: function() {
+    console.log("y: ", this.get('y'));
+    return this.get('y') + (this.get('bodyHeight') - 34);
+  }.property('y'),
+
   
   borderColor: function () {
     return this.get('isSelected') ? 'rgb(173, 216, 230)' : '#CCCCCC';
@@ -63,10 +82,14 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     }
   }.property('parentView').cacheable(),
   
-  
+  childViews: 'labelView'.w(),
+  labelView: MySystem.EditableLabelView.design({
+    isEditable: YES,
+    fontSize: 14
+  }),
+
+
   // RENDER METHODS
-  
-  
   renderCallback: function (raphaelCanvas, attrs,imageAttrs) {
     this._raphaelRect  = raphaelCanvas.rect();
     this._raphaelImage = raphaelCanvas.image();
@@ -101,6 +124,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
     if (firstTime) {
       context.callback(this, this.renderCallback, attrs, imageAttrs);
+      this.renderChildViews(context,firstTime);
     }
     else {
       this._raphaelRect.attr(attrs);
