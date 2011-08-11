@@ -1,8 +1,8 @@
 // ==========================================================================
 // Project:   MySystem - mainPage
-// Copyright: ©2010 Concord Consortium
+// Copyright: ©2011 Concord Consortium
 // ==========================================================================
-/*globals MySystem LinkIt SCUI */
+/*globals MySystem RaphaelViews */
 
 sc_require('views/node');
 sc_require('views/node_palette');
@@ -20,6 +20,7 @@ MySystem.mainPage = SC.Page.design({
     childViews: 'topView'.w(),
     
     canvasView: SC.outlet('topView.bottomRightView.bottomRightView'),
+    diagramView: SC.outlet('canvasView.diagramView'),
     
     topView: SC.SplitView.design({
       defaultThickness: 140,
@@ -34,12 +35,17 @@ MySystem.mainPage = SC.Page.design({
         layoutDirection: SC.LAYOUT_VERTICAL,
         topLeftView: MySystem.InstructionView, // Top instructions
         dividerView: SC.SplitDividerView, // Divider for resizing up/down
-        bottomRightView: MySystem.CanvasView.design({
+        bottomRightView: RaphaelViews.RaphaelCanvasView.design({
           layout: { top: 120, left: 0, right: 0, bottom: 0 },
-          contentBinding: SC.Binding.from('MySystem.nodesController'),
-          selectionBinding: 'MySystem.nodesController.selection',
-          linkSelectionBinding: 'MySystem.nodesController.linkSelection',
-          exampleView: MySystem.NodeView
+          
+          childViews: 'diagramView'.w(),
+          
+          diagramView: RaphaelViews.RaphaelCollectionView.design({
+            contentBinding: SC.Binding.from('MySystem.nodesController'),
+            selectionBinding: 'MySystem.nodesController.selection',
+            linkSelectionBinding: 'MySystem.nodesController.linkSelection',
+            exampleView: MySystem.NodeView
+          })
         })
       })
     })
