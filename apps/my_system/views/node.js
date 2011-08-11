@@ -10,10 +10,11 @@
 
   @extends SC.View
 */
-MySystem.NodeView = RaphaelViews.RaphaelView.extend(
+MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.NodeView.prototype */ {
 
-  displayProperties: 'content.x content.y bodyColor borderColor borderOpacity bodyWidth bodyHeight borderWidth'.w(),
+  contentDisplayProperties: 'x y image title'.w(),
+  displayProperties: 'bodyWidth bodyHeight bodyColor borderColor borderOpacity borderWidth borderRadius'.w(),
 
 
   // PROPERTIES
@@ -22,20 +23,21 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(
   isSelected: NO,
   isDragging: NO,
   
-  bodyColor: '#CCCCCC',
+  bodyWidth: 100,
+  bodyHeight: 120,
+  bodyColor: '#FFFFFF',
   
   borderColor: function () {
-    return this.get('isSelected') ? '#FFFF00' : '#AAAAAA';
+    return this.get('isSelected') ? 'rgb(173, 216, 230)' : '#CCCCCC';
   }.property('isSelected'),
   
   borderOpacity: 1.0,
   
-  bodyWidth: 50,
-  bodyHeight: 50,
-  
   borderWidth: function () {
-    return this.get('isSelected') ? 4 : 2;
+    return this.get('isSelected') ? 2 : 1;
   }.property('isSelected'),
+  
+  borderRadius: 5,
 
   collectionView: function () {
     var ret = this.get('parentView');
@@ -68,7 +70,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(
         attrs = {
           'x':              content.get('x'),
           'y':              content.get('y'),
-          'r':              5,
+          'r':              this.get('borderRadius'),
           'width':          this.get('bodyWidth'),
           'height':         this.get('bodyHeight'),
           'fill':           this.get('bodyColor'),
