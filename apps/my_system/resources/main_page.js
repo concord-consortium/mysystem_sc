@@ -41,10 +41,10 @@ MySystem.mainPage = SC.Page.design({
           childViews: 'diagramView'.w(),
           
           diagramView: RaphaelViews.RaphaelCollectionView.design(SC.DropTarget, {
-            // contentBinding: SC.Binding.from('MySystem.nodesController'),
-            // selectionBinding: 'MySystem.nodesController.selection',
+            contentBinding: SC.Binding.from('MySystem.nodesController'),
+            selectionBinding: 'MySystem.nodesController.selection',
             // linkSelectionBinding: 'MySystem.nodesController.linkSelection',
-            // exampleView: MySystem.NodeView,
+            exampleView: MySystem.NodeView,
             
             selectedLinks: [],
             
