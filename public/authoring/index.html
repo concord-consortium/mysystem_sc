@@ -51,7 +51,8 @@
   <h2>Diagram Rules</h2>
   
   {{#collection contentBinding="MSA.diagramRulesController" tagName="ul"}}
-      The diagram should contain
+      The diagram 
+      {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
       {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.comparisons" valueBinding="parentView.content.comparison"}}
       {{view SC.TextField valueBinding="parentView.content.number" placeholder="number"}}<br/>
       {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.content.type"}}
