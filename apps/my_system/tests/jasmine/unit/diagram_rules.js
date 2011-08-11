@@ -409,8 +409,8 @@ describe("DiagramRules", function () {
     var studentData = createStudentDataHash(data);
     
     MySystem.store.setStudentStateDataHash(studentData);
-    
-    MySystem.statechart.sendAction('checkDiagramAgainstConstraints');
+
+    MySystem.statechart.sendAction('checkButtonPressed');
     
   };
   

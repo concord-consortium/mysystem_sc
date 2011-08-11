@@ -111,7 +111,9 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     saveFeedback: function(feedback, success){
       SC.RunLoop.begin();
       var lastFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
-      if (lastFeedback.get('status')  & SC.Record.READY == SC.Record.READY){
+      
+      // check if it's previously been created. Using lastFeedback.get('status') wasn't working with tests
+      if (lastFeedback.get('feedback')){
         lastFeedback.set({feedback: feedback, success: success});
       } else {
         MySystem.store.createRecord(
