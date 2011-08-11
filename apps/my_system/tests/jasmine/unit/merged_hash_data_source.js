@@ -43,13 +43,13 @@ describe("MergedHashDataSource", function () {
     var handledRecordType1, handledRecordType2, notHandledRecordType;
 
     beforeEach( function () {
-      handledRecordType1 = SC.Record.extend();
+      handledRecordType1 = MySystem.AutoGuidRecord.extend();
       handledRecordType1._object_className = "MyApp.HandledRecordType1"; // normally set by SC on app init
 
-      handledRecordType2 = SC.Record.extend();
+      handledRecordType2 = MySystem.AutoGuidRecord.extend();
       handledRecordType2._object_className = "MyApp.HandledRecordType2";
 
-      notHandledRecordType = SC.Record.extend();
+      notHandledRecordType = MySystem.AutoGuidRecord.extend();
       notHandledRecordType._object_className = "MyApp.NotHandledRecordType";
 
       dataSource = MySystem.MergedHashDataSource.create({
@@ -736,6 +736,39 @@ describe("MergedHashDataSource", function () {
             expect(dataHashProperty["MyApp.HandledRecordType1"]["new id 1"]["key"]).not.toBe(newDataHash["MyApp.HandledRecordType1"]["new id 1"]["key"]);
           });
         });
+
+        describe("the next id for the record types", function () {
+          beforeEach( function () {
+            newDataHash = {
+              "MyApp.HandledRecordType1": {
+                "MyApp.HandledRecordType1-1": { key: { nestedKey: "value" } }
+              },
+              "MyApp.HandledRecordType2": {
+                "MyApp.HandledRecordType2-999": { key: { nestedKey: "value" } }
+              }
+            };
+            dataSource._dataHash = {};
+            dataSource.setDataHash(store, newDataHash);
+          });
+
+          it("should be one more than maxium id of type", function () {
+             expect(handledRecordType1.getNextId()).toBe("MyApp.HandledRecordType1-2");
+             expect(handledRecordType2.getNextId()).toBe("MyApp.HandledRecordType2-1000");
+          });
+        });
+      });
+    });
+
+    describe("with a real DataStore", function () {
+      var dataStore;
+      
+      beforeEach( function () {
+        dataStore = SC.Store.create().from(dataSource);
+      });
+      
+      it("a record created without an id should have an id after commitRecords", function () {
+        var record = dataStore.createRecord(handledRecordType1, {name: "hello"});
+        expect(record.get('id')).toBe('MyApp.HandledRecordType1-1');
       });
     });
   });
