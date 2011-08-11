@@ -15,9 +15,9 @@ MySystem.Node.FIXTURES = [
   ],
   "x": 160,
   "y": 160,
-  "transformations": [
-    "trans1"
-  ],
+  // "transformations": [
+  //   "trans1"
+  // ],
   "nodeType": "030454f0-b92c-11e0-a4dd-0800200c9a66"
 },
 {

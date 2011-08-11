@@ -53,4 +53,4 @@ MySystem.StorySentence = SC.Record.extend(
 }) ;
 
 MySystem.StorySentence.GuidCounter = 100;
-MySystem.StorySentence.newGuid = function() { return "ss" + MySystem.Node.GuidCounter++;};
+MySystem.StorySentence.newGuid = function() { return "ss" + MySystem.StorySentence.GuidCounter++;};

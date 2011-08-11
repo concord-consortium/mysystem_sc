@@ -22,6 +22,7 @@ MySystem.DiagramRule = SC.Record.extend(
   linkDirection: SC.Record.attr(String),
   otherNodeType: SC.Record.attr(String),
   energyType: SC.Record.attr(String),
+  not: SC.Record.attr(Boolean, { defaultValue: NO }),
   
   
   // FIXME use something better than node for non typed rules
@@ -59,16 +60,25 @@ MySystem.DiagramRule = SC.Record.extend(
     var count = this.matches(nodes);
     
     // 'more than', 'less than', 'exactly'
+    var passes;
     switch(this.get('comparison')) {
       case 'more than':
-        return count > this.get('number');
+        passes = count > this.get('number');
+        break;
       case 'less than':
-        return count < this.get('number');
+        passes = count < this.get('number');
+        break;
       case 'exactly':
-        return count == this.get('number');
+        passes = count == this.get('number');
+        break;
       default:
         throw "Invalid comparison value for diagram rule.";
     }
+    
+    if (this.get('not')){
+      return !passes;
+    }
+    return passes;
   },
   
   checkNode: function(paletteItem, node) {

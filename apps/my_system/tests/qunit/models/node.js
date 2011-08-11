@@ -29,9 +29,9 @@ test("test title from fixture", function() {
 
 test("test inLinks and outLinks", function() {
   expect(2);
-  var node1   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var newLink = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Link to test node' });
+  var node1   = store.createRecord(MySystem.Node, { 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = store.createRecord(MySystem.Node, { 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink = store.createRecord(MySystem.Link, { 'text': 'Link to test node' });
   newLink.set("startNode", node1);
   newLink.set("endNode", node2);
   newLink.set("startTerminal","a");
@@ -60,15 +60,15 @@ test("tests connecting nodes to storySentences", function () {
 
 test("test links computed param", function() {
   expect(1);
-  var node1   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node3   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var newLink1 = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'First test link' });
+  var node1   = store.createRecord(MySystem.Node, { 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = store.createRecord(MySystem.Node, { 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node3   = store.createRecord(MySystem.Node, { 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink1 = store.createRecord(MySystem.Link, { 'text': 'First test link' });
   newLink1.set("startNode", node1);
   newLink1.set("endNode", node2);
   newLink1.set("startTerminal","a");
   newLink1.set("endTerminal","b");
-  var newLink2 = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Second test link' });
+  var newLink2 = store.createRecord(MySystem.Link, { 'text': 'Second test link' });
   newLink2.set("startNode", node2);
   newLink2.set("endNode", node3);
   newLink2.set("startTerminal","a");
@@ -82,15 +82,15 @@ test("test links computed param", function() {
 
 test("test that computed 'links' are updated when inlinks or outlinks changes", function() {
   expect(2);
-  var node1   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node3   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var newLink1 = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'First test link' });
+  var node1   = store.createRecord(MySystem.Node, { 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = store.createRecord(MySystem.Node, { 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node3   = store.createRecord(MySystem.Node, { 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink1 = store.createRecord(MySystem.Link, { 'text': 'First test link' });
   newLink1.set("startNode", node1);
   newLink1.set("endNode", node2);
   newLink1.set("startTerminal","a");
   newLink1.set("endTerminal","b");
-  var newLink2 = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Second test link' });
+  var newLink2 = store.createRecord(MySystem.Link, { 'text': 'Second test link' });
   newLink2.set("startNode", node2);
   newLink2.set("endNode", node3);
   newLink2.set("startTerminal","a");
@@ -98,7 +98,7 @@ test("test that computed 'links' are updated when inlinks or outlinks changes", 
   var expectedLinks = 2;
   var foundLinks = node2.get('links').get('length');
   equals(foundLinks, expectedLinks, "There should be "+ expectedLinks +" links");
-  var newLink3 = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Third test link' });
+  var newLink3 = store.createRecord(MySystem.Link, { 'text': 'Third test link' });
   newLink3.set("startNode", node2);
   newLink3.set("endNode", node1);
   newLink3.set("startTerminal","a");
@@ -110,31 +110,22 @@ test("test that computed 'links' are updated when inlinks or outlinks changes", 
 
 test("nodes should have a position attribute", function() {
   expect(2);
-  var node = store.createRecord(MySystem.Node, {'title': 'Edit Title', 'image': 'http://concord.org/favicon.ico', 'position': {'x': 120, 'y': 150}, 'guid': 'testNode001'});
+  var node = store.createRecord(MySystem.Node, {'title': 'Edit Title', 'image': 'http://concord.org/favicon.ico', 'position': {'x': 120, 'y': 150}});
   equals(node.get('position').x, 120, "X position should be 120 as created");
   equals(node.get('position').y, 150, "Y position should be 150 as created");
 });
 
-test("We should be able to generate a new GUID", function() {
-  expect(3);
-  var newGuid = MySystem.Node.newGuid();
-  var newGuid2 = MySystem.Node.newGuid();
-  ok(MySystem.Node.newGuid(), "The newGuid function should return a defined value");
-  equals(typeof newGuid, 'string', "The newGuid function should return strings");
-  ok((newGuid2 != newGuid), 'The second newGuid should not be the same as the first');
-});
-
 test("inLinkColors and ouLinkColors should return arrays of link colors", function() {
   expect(4);
-  var node1   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node3   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var newLink1 = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'First test link', 'color': 'red' });
+  var node1   = store.createRecord(MySystem.Node, { 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = store.createRecord(MySystem.Node, { 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node3   = store.createRecord(MySystem.Node, { 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink1 = store.createRecord(MySystem.Link, { 'text': 'First test link', 'color': 'red' });
   newLink1.set("startNode", node1);
   newLink1.set("endNode", node2);
   newLink1.set("startTerminal","a");
   newLink1.set("endTerminal","b");
-  var newLink2 = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Second test link', 'color': 'green' });
+  var newLink2 = store.createRecord(MySystem.Link, { 'text': 'Second test link', 'color': 'green' });
   newLink2.set("startNode", node1);
   newLink2.set("endNode", node3);
   newLink2.set("startTerminal","a");
@@ -147,10 +138,9 @@ test("inLinkColors and ouLinkColors should return arrays of link colors", functi
 
 test("Checking transformation colors should return arrays of link colors", function() {
   expect(0);
-  var nodeGuid = MySystem.Node.newGuid();
-  var node1   = store.createRecord(MySystem.Node, { 'guid': nodeGuid, 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var trans1  = store.createRecord(MySystem.Transformation, { 'guid': MySystem.Transformation.newGuid(), 'node': nodeGuid, 'inLinkColor': 'red', 'outLinkColor': 'green' });
-  var trans2  = store.createRecord(MySystem.Transformation, { 'guid': MySystem.Transformation.newGuid(), 'node': nodeGuid, 'inLinkColor': 'red', 'outLinkColor': 'blue' });
+  var node1   = store.createRecord(MySystem.Node, { 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var trans1  = store.createRecord(MySystem.Transformation, { 'guid': MySystem.Transformation.newGuid(), 'node': node1.id(), 'inLinkColor': 'red', 'outLinkColor': 'green' });
+  var trans2  = store.createRecord(MySystem.Transformation, { 'guid': MySystem.Transformation.newGuid(), 'node': node1.id(), 'inLinkColor': 'red', 'outLinkColor': 'blue' });
   // equals(node1.get('inLinkColorsWithTransformations').get('length'), 2, "There should be two colors returned");
   // same(node1.get('inLinkColorsWithTransformations'), ["red", "red"], "They should both be red");
   // equals(node1.get('outLinkColorsWithTransformations').get('length'), 2, "There should be two colors returned");
@@ -159,21 +149,21 @@ test("Checking transformation colors should return arrays of link colors", funct
 
 test("Checking for implied transformations", function() {
   expect(1);
-  var node1   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node3   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var newLink1 = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'First test link', 'color': 'red' });
+  var node1   = store.createRecord(MySystem.Node, { 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node2   = store.createRecord(MySystem.Node, { 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node3   = store.createRecord(MySystem.Node, { 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var newLink1 = store.createRecord(MySystem.Link, { 'text': 'First test link', 'color': 'red' });
   newLink1.set("startNode", node1);
   newLink1.set("endNode", node2);
   newLink1.set("startTerminal","a");
   newLink1.set("endTerminal","b");
-  var newLink2 = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Second test link', 'color': 'green' });
+  var newLink2 = store.createRecord(MySystem.Link, { 'text': 'Second test link', 'color': 'green' });
   newLink2.set("startNode", node1);
   newLink2.set("endNode", node3);
   newLink2.set("startTerminal","a");
   newLink2.set("endTerminal","b");
   ok(!node1.get('hasImpliedTransformations'), 'There should not be implied transformations');
-  var newLink3 = store.createRecord(MySystem.Link, { 'guid': MySystem.Link.newGuid(), 'text': 'Third test link', 'color': 'red' });
+  var newLink3 = store.createRecord(MySystem.Link, { 'text': 'Third test link', 'color': 'red' });
   newLink2.set("startNode", node3);
   newLink2.set("endNode", node2);
   newLink2.set("startTerminal","a");
@@ -183,7 +173,7 @@ test("Checking for implied transformations", function() {
 
 test("Checking transformation annotations", function() {
   expect(0);
-  var node1   = store.createRecord(MySystem.Node, { 'guid': MySystem.Node.newGuid(), 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
+  var node1   = store.createRecord(MySystem.Node, { 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
   var trans1  = store.createRecord(MySystem.Transformation, { 'guid': MySystem.Transformation.newGuid(), 'node': node1.id(), 'inLinkColor': 'red', 'outLinkColor': 'green' });
   // ok(!node1.get('transformationsAreAllAnnotated'), "The transformation is not annotated");
   trans1.set('annotation', store.createRecord(MySystem.StorySentence, { 'guid': MySystem.StorySentence.newGuid(), 'bodyText': 'lorem ipsum' }));

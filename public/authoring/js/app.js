@@ -48,6 +48,11 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
   linkDirection: SCUtil.dataHashProperty,
   otherNodeType: SCUtil.dataHashProperty,
   energyType: SCUtil.dataHashProperty,
+  not: SCUtil.dataHashProperty,
+  shouldOption: "should",
+  updateNot: function() {
+    this.set('not', this.get('shouldOption') != "should");
+  }.observes('shouldOption'),
   toggleHasLink: function(){
     this.set('hasLink', !this.get('hasLink'));
   }
@@ -89,6 +94,9 @@ MSA.diagramRulesController = SCUtil.ModelArray.create({
   }.property('MSA.energyTypesController.[]', 'MSA.energyTypesController.@each.label').cacheable(),
   
   comparisons: ['more than', 'less than', 'exactly'],
+  
+  shouldOptions: ['should', 'should not'],
+  
   linkDirections: ['-->', '<--', '---']
 });
 

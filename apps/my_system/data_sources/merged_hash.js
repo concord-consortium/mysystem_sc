@@ -220,6 +220,8 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
       for (id in newDataHash[recordTypeName]) {
         if (!newDataHash[recordTypeName].hasOwnProperty(id)) continue;
         
+        if(recordType.updateNextId) recordType.updateNextId(id);
+        
         store.pushRetrieve(recordType, id, SC.copy(newDataHash[recordTypeName][id], YES));
         newDataHashCopy[recordTypeName][id] = SC.copy(newDataHash[recordTypeName][id], YES);
       }

@@ -82,47 +82,38 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     */
     SENTENCE_OBJECT_LINKING: SC.State.plugin('MySystem.SENTENCE_OBJECT_LINKING'),
     
+    // runs the rules, saves the data and pops up a message to the user
     checkButtonPressed: function () {
-      var suggestions = this.checkDiagramAgainstConstraints(true);
+      var results = this.checkDiagramAgainstConstraints(true);
       
       if (!!MySystem.externalSaveFunction){
         MySystem.externalSaveFunction();
       }
       
+      var showAlertPane = results[0] ? SC.AlertPane.info : SC.AlertPane.warn;
+      showAlertPane.call(SC.AlertPane, {description: results[1]});
     },
     
-    checkDiagramAgainstConstraints: function (showPopup) {
-      var rules = MySystem.activityController.get('diagramRules'),
-          nodes = MySystem.store.find(MySystem.Node),
-          suggestions = [];
-
-      rules.forEach( function (rule) {
-        if (!rule.check(nodes)) {
-          suggestions.pushObject(rule.get('suggestion'));
-        }
-      });
+    // runs the diagram rules, saves the results to the learner data and returns
+    // an array containing a success boolean and a feedback string
+    checkDiagramAgainstConstraints: function () {
+      var suggestions = MySystem.activityController.runDiagramRules();
       
-      var feedback, showAlertPane;
+      // for now, we can assume that if there are no suggestions the diagram is good
       var success = (suggestions.get('length') === 0);
-      if (success){
-        feedback = "Your diagram has no obvious problems.";
-        showAlertPane = SC.AlertPane.info;
-      } else {  
-        feedback = suggestions.join(" \n");
-        showAlertPane = SC.AlertPane.warn;
-      } 
+      var feedback = success ? "Your diagram has no obvious problems." : suggestions.join(" \n");
       
       this.saveFeedback(feedback, success);
       
-      if (showPopup){
-        showAlertPane.call(SC.AlertPane, {description: feedback});
-      }
+      return [success, feedback];
     },
     
     saveFeedback: function(feedback, success){
       SC.RunLoop.begin();
       var lastFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
-      if (lastFeedback.get('status')  & SC.Record.READY == SC.Record.READY){
+      
+      // check if it's previously been created. Using lastFeedback.get('status') wasn't working with tests
+      if (lastFeedback.get('feedback')){
         lastFeedback.set({feedback: feedback, success: success});
       } else {
         MySystem.store.createRecord(

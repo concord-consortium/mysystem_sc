@@ -258,6 +258,45 @@ describe("DiagramRules", function () {
     });
   });
   
+  describe("Handling NOT rules", function () {
+  
+    it("should be correctly grade NOT rules", function () {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "not": true,
+            "type": "obj1"
+          }
+        ]
+      );
+      
+      expect({nodes: []}).toPass();
+      expect({nodes: ['obj1']}).toFail();
+      expect({nodes: ['obj1', 'obj1']}).toPass();
+    
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "not": true,
+            "type": "obj1",
+            "hasLink": true,
+            "energyType": "any",
+            "linkDirection": "-->",
+            "otherNodeType": "obj2"
+          }
+        ]
+      );
+      
+      
+      expect({nodes: ['obj1', 'obj2']}).toPass();
+      expect({nodes: ['obj1','obj2'], links: ['obj1.0-->obj2.0']}).toFail();
+    });
+  });
+  
   describe("Handle invalid Diagram Rules", function () {
     it("should handle a invalid node type", function () {
       givenRules(
@@ -313,6 +352,53 @@ describe("DiagramRules", function () {
       // It isn't clear if it should fail or do something worse when there
       // is an invalid node type
       expect({nodes: ['obj1','obj2'], links: ['obj1.0-->obj2.0:en1']}).toFail();    
+    });
+  });
+  
+  describe("Saving learner data", function () {
+    it("should add the latest feedback to the learner data", function () {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2",
+            "hasLink": false,
+          }
+        ]
+      );
+      
+      var ruleFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+      expect(ruleFeedback.get('feedback')).toBeNull();
+      
+      runRules({nodes: ['obj1']});
+      expect(ruleFeedback.get('feedback')).toBe("Failed rule 0");   // see givenRules() function
+      expect(ruleFeedback.get('success')).toBe(false);
+      
+      runRules({nodes: ['obj2']});
+      expect(ruleFeedback.get('feedback')).toBe("Your diagram has no obvious problems."); // this should be a static variable
+      expect(ruleFeedback.get('success')).toBe(true);
+      
+    });
+    
+    it("should try to save data externally when check button is pressed", function () {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2",
+            "hasLink": false,
+          }
+        ]
+      );
+      
+      var callCount = 0;
+      MySystem.registerExternalSaveFunction(function() {callCount++});
+      
+      expect(callCount).toBe(0);
+      runRules({nodes: ['obj1']});
+      expect(callCount).toBe(1);
     });
   });
   
@@ -409,8 +495,8 @@ describe("DiagramRules", function () {
     var studentData = createStudentDataHash(data);
     
     MySystem.store.setStudentStateDataHash(studentData);
-    
-    MySystem.statechart.sendAction('checkDiagramAgainstConstraints');
+
+    MySystem.statechart.sendAction('checkButtonPressed');
     
   };
   

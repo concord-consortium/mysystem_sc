@@ -97,4 +97,45 @@ describe("LoadingStudentData", function () {
     
   });
   
+  it("should allow new nodes and links to be created", function () {
+    var studentData = {
+      'MySystem.Link': {
+        link100: {
+          startNode: "node100",
+          startTerminal: "a",
+          endNode: "node101",
+          endTerminal: "b",
+          guid: "link100",
+          isSelected: true,
+          text: "test",
+          energyType: "12553af0-b92c-11e0-a4dd-0800200c9a66"
+        }
+      },
+      'MySystem.Node': {
+        node100: {
+          title: "Hand",
+          image: "hand_tn.png",
+          position: {
+            x: 169,
+            y: 101
+          },
+          guid: "node100",
+          nodeType: "12553af0-b92c-11e0-a4dd-0800200c9a66",
+          outLinks: [
+            "link100"
+          ]
+        }
+      },
+      'MySystem.Story': {},
+      'MySystem.StorySentence': {}
+    };
+    MySystem.store.setStudentStateDataHash( studentData);
+    var link = MySystem.store.createRecord(MySystem.Link, {});
+    expect(link).toNotBe(null);
+    expect(link.get('id')).toBeDefined();
+    var node = MySystem.store.createRecord(MySystem.Node, {});
+    expect(node).toNotBe(null);
+    expect(node.get('id')).toBeDefined();
+  });
+  
 });

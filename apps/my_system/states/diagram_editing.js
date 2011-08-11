@@ -38,17 +38,15 @@ MySystem.DIAGRAM_EDITING = SC.State.design({
   */
   addNode: function (attr) {
     var node;
-    var guid = MySystem.Node.newGuid();
     
     // Create a new node in store
     node = MySystem.store.createRecord(MySystem.Node, { 
       title:    attr.title, 
-      image:    attr.image, 
+      image:    attr.image,
       x:        attr.x,
       y:        attr.y,
-      guid:     guid,
       nodeType: attr.nodeType
-    }, guid);
+    });
     
     // De-select other diagram objects and select the new node
     MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
