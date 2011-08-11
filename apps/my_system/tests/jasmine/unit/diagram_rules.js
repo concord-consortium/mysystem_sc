@@ -258,6 +258,45 @@ describe("DiagramRules", function () {
     });
   });
   
+  describe("Handling NOT rules", function () {
+  
+    it("should be correctly grade NOT rules", function () {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "not": true,
+            "type": "obj1"
+          }
+        ]
+      );
+      
+      expect({nodes: []}).toPass();
+      expect({nodes: ['obj1']}).toFail();
+      expect({nodes: ['obj1', 'obj1']}).toPass();
+    
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "not": true,
+            "type": "obj1",
+            "hasLink": true,
+            "energyType": "any",
+            "linkDirection": "-->",
+            "otherNodeType": "obj2"
+          }
+        ]
+      );
+      
+      
+      expect({nodes: ['obj1', 'obj2']}).toPass();
+      expect({nodes: ['obj1','obj2'], links: ['obj1.0-->obj2.0']}).toFail();
+    });
+  });
+  
   describe("Handle invalid Diagram Rules", function () {
     it("should handle a invalid node type", function () {
       givenRules(
