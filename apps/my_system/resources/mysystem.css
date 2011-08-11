@@ -1,3 +1,11 @@
+/* BEGIN changes for RaphaelViews */
+
+.diagram-background {
+  background-color: white;
+}
+
+/* END   changes for RaphaelViews */
+
 /* Terminal colors*/
 .terminal {
   border: 2px solid rgba(255, 255, 255, 0);

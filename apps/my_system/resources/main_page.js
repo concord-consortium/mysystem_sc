@@ -33,7 +33,9 @@ MySystem.mainPage = SC.Page.design({
         topLeftView: MySystem.InstructionView, // Top instructions
         dividerView: SC.SplitDividerView, // Divider for resizing up/down
         bottomRightView: RaphaelViews.RaphaelCanvasView.design({
+
           layout: { top: 120, left: 0, right: 0, bottom: 0 },
+          classNames: 'diagram-background',
           
           childViews: 'diagramView'.w(),
           
