@@ -316,6 +316,53 @@ describe("DiagramRules", function () {
     });
   });
   
+  describe("Saving learner data", function () {
+    it("should add the latest feedback to the learner data", function () {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2",
+            "hasLink": false,
+          }
+        ]
+      );
+      
+      var ruleFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+      expect(ruleFeedback.get('feedback')).toBeNull();
+      
+      runRules({nodes: ['obj1']});
+      expect(ruleFeedback.get('feedback')).toBe("Failed rule 0");   // see givenRules() function
+      expect(ruleFeedback.get('success')).toBe(false);
+      
+      runRules({nodes: ['obj2']});
+      expect(ruleFeedback.get('feedback')).toBe("Your diagram has no obvious problems."); // this should be a static variable
+      expect(ruleFeedback.get('success')).toBe(true);
+      
+    });
+    
+    it("should try to save data externally when check button is pressed", function () {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2",
+            "hasLink": false,
+          }
+        ]
+      );
+      
+      var callCount = 0;
+      MySystem.registerExternalSaveFunction(function() {callCount++});
+      
+      expect(callCount).toBe(0);
+      runRules({nodes: ['obj1']});
+      expect(callCount).toBe(1);
+    });
+  });
+  
   givenRules = function (rules) {
     $.each(rules, function(i, rule){
       if (!rule.suggestion){
