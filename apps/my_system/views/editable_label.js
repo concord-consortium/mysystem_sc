@@ -3,7 +3,7 @@
 // Copyright: ©2011 Concord Consortium
 // Author:    Noah Paessel <knowuh@gmail.com>
 // ==========================================================================
-/*globals MySystem, RaphaelViews */
+/*globals MySystem RaphaelViews */
 
 /** @class
 
@@ -18,57 +18,29 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
 /** @scope MySystem.EditableLabelView.prototype */
 
   childViews: ['editBoxView'],
+  displayProperties: 'displayText textColor centerX centerY fontSize'.w(),
 
-  isEditing:           YES,
-  isAllSelected:       NO,
-
-  fontSize:            12,
-  displayProperties:   'displayText textColor displayText x raphTextY isEditing'.w(),
-
-  nodeView:       SC.outlet('parentView'),
-
-  textBinding:         '.nodeView.text',
-  textColorBinding:    '.nodeView.textColor',
-  parentXBinding:      '.nodeView.bodyXCoord',
-	parentXBindingDefault: SC.Binding.oneWay(),
-  parentYBinding:      '.nodeView.bodyYCoord',
-	parentYBindingDefault: SC.Binding.oneWay(),
-  parentMarginBinding: '.nodeView.margin',
-	parentMarginBindingDefault: SC.Binding.oneWay(),
-
-  // itemBinding:         '.nodeView.item',
+  // PROPERTIES
   
-  // createdByLabelToolBinding: '*item.createdByLabelTool',
-  // hasEditedFirstTimeBinding: '*item.hasEditedFirstTime',
+  isEditing:     YES,
+  isAllSelected: NO,
+  fontSize:      12,
+  text:          '',
+  textColor:     '#000',
+  centerX:       0,
+  centerY:       0,
 
-  // isEditFirstTimePending: function () {
-  //   return this.get('createdByLabelTool') && !this.get('hasEditedFirstTime');
-  // }.property('createdByLabelTool', 'hasEditedFirstTime'),
+  displayText: function () {
+    var txt = this.get('text');
+    if (this.get('isEditing')) { txt = txt + "_"; }
+    return txt;
+  }.property('text', 'isEditing').cacheable(),
+
+  textBBox: function () {
+    var raphaelText = this.get('raphaelObject');
+    return raphaelText ? raphaelText.getBBox() : null;
+  }.property('displayText', 'centerX', 'centerY', 'fontSize', 'raphaelObject'),  // don't make this .cacheable(), it doesn't work right
   
-  // Bounds need to be calculated by Raphael:
-  minHeight: 18,
-  minWidth: 80,
-  
-  // our parent view is going to modify our position
-  // but we will modify our parents width and height
-  x: function () {
-    // in IE 8 and 9, parentX is sometimes undefined
-    var parentX = this.get('parentX') || 0;
-    return  parentX + this.get('parentMargin');
-  }.property('parentX', 'parentMargin').cacheable(),
-
-  y: function () {
-    // in IE 8 and 9, parentX is sometimes undefined
-    var parentY = this.get('parentY') || 0;
-    return parentY + this.get('parentMargin');
-  }.property('parentY', 'parentMargin').cacheable(),
-
-  raphTextY: function () {
-    // in IE 8 and 9, height is sometimes undefined
-    var h = this.get('height') || 0;
-    return this.get('y') + (h / 2);
-  }.property('y', 'height').cacheable(),
-
   acceptsFirstResponder: function () {
     return this.get('isEnabled');
   }.property('isEnabled').cacheable(),
@@ -83,22 +55,16 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
     return raphaelCanvas.text().attr(attrs);
   },
 
-  displayText: function () {
-    var txt = this.get('text');
-    if (this.get('isEditing')) { txt = txt + "_"; }
-    return txt;
-  }.property('text', 'isEditing').cacheable(),
-
   render: function (context, firstTime) {
     var attrs = {
-          x:             this.get('x'),
-          y:             this.get('raphTextY'),
+          x:             this.get('centerX'),
+          y:             this.get('centerY'),
           fill:          this.get('textColor'),
           text:          this.get('displayText'),
           'font-size':   this.get('fontSize'),
-          'text-anchor': 'start',
+          'text-anchor': 'middle'
         },
-        editing = this.get('isEditing'),
+        
         raphaelText;
 
     if (firstTime) {
@@ -110,28 +76,6 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
       raphaelText.attr(attrs);
     }
   },
-
-  adjustMetrics: function () {
-    var editing = this.get('isEditing'),
-        raphaelText = this.get('raphaelObject'),
-        bounds,
-        minWidth = this.get('minWidth'),
-        minHeight = this.get('minHeight'),
-        width,
-        height;
-
-    if (raphaelText) {
-      raphaelText.attr('text',this.get('displayText'));
-      bounds = raphaelText.getBBox();
-      width  = bounds.width  < minWidth  ? minWidth  : bounds.width;
-      height = bounds.height < minHeight ? minHeight : bounds.height;
-
-      this.beginPropertyChanges();
-      this.set('width'  , width);
-      this.set('height' , height);
-      this.endPropertyChanges();
-    }
-  }.observes('displayText'),
 
   toggle: function (paramName) {
     this.set(paramName, (! this.get(paramName)));
@@ -240,14 +184,18 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
   // },
 
   editBoxView: RaphaelViews.RaphaelView.design({
-    displayProperties:    'parentsX parentsY width height isVisible isAllSelected'.w(),
+    displayProperties:    'textBBox isAllSelected'.w(),
+    
     textLabelView:        SC.outlet('parentView'),
     isVisibleBinding:     '.textLabelView.isEditing',
-    parentsWidthBinding:  '.textLabelView.width',
-    parentsHeightBinding: '.textLabelView.height',
-    parentsXBinding:      '.textLabelView.x',
-    parentsYBinding:      '.textLabelView.y',
     isAllSelectedBinding: '.textLabelView.isAllSelected',
+    textBBoxBinding:      '.textLabelView.textBBox',
+    textBBoxBindingDefault: SC.Binding.oneWay(),
+
+    minHeight:            18,
+    minWidth:             20,
+    margin:               2,  
+
     fill:                 '#FF5',
     strokeWidth:          1,
     stroke:               '#CCC',
@@ -255,25 +203,31 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
     normalOpacity:        0.05,
     margin:               3,
 
-    twoMargin: function () {
-      return this.get('margin') * 2;
-    }.property().cacheable(),
-
     x: function () {
-      return this.get('parentsX') - this.get('margin');
-    }.property('parentsX').cacheable(),
+      var textBBox = this.get('textBBox');
+      return textBBox ? textBBox.x - this.get('margin') : 0;
+    }.property('textBBox').cacheable(),
 
     y: function () {
-      return this.get('parentsY') - this.get('margin');
-    }.property('parentsY').cacheable(),
+      var textBBox = this.get('textBBox');
+      return textBBox ? textBBox.y - this.get('margin') : 0;
+    }.property('textBBox').cacheable(),
 
     width: function () {
-      return this.get('parentsWidth') + this.get('twoMargin');
-    }.property('parentsWidth').cacheable(),
+      var textBBox  = this.get('textBBox'),
+          minWidth = this.get('minWidth'),
+          width    = textBBox ? textBBox.width + 2 * this.get('margin') : 0;
+          
+      return (width >= minWidth) ? width : minWidth; 
+    }.property('textBBox').cacheable(),
 
     height: function () {
-      return this.get('parentsHeight') + this.get('twoMargin');
-    }.property('parentsHeight').cacheable(),
+      var textBBox  = this.get('textBBox'),
+          minHeight = this.get('minHeight'),
+          height    = textBBox ? textBBox.height + 2 * this.get('margin') : 0;
+          
+      return (height >= minHeight) ? height : minHeight;
+    }.property('textBBox').cacheable(),
 
     renderCallback: function (raphaelCanvas, attrs) {
       return raphaelCanvas.rect().attr(attrs);
@@ -283,14 +237,14 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
       var raphaelRect,
           opacity = this.get('isAllSelected') ? this.get('editingOpacity') : this.get('normalOpacity'),
           attrs = {
-             'fill':    this.get('fill'),
+             'fill':         this.get('fill'),
              'fill-opacity': opacity,
              'stroke-width': this.get('strokeWidth'),
              'stroke':       this.get('stroke'),
-             'x':       this.get('x'),
-             'y':       this.get('y'),
-             'width':   this.get('width'),
-             'height':  this.get('height')
+             'x':            this.get('x'),
+             'y':            this.get('y'),
+             'width':        this.get('width'),
+             'height':       this.get('height')
           };
 
       if (firstTime) {

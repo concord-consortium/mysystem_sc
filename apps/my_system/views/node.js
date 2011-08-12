@@ -15,10 +15,11 @@ sc_require('views/editable_label');
 MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.NodeView.prototype */ {
 
+  childViews: 'labelView'.w(),
+  
   contentDisplayProperties: 'x y image title'.w(),
   displayProperties: 'bodyWidth bodyHeight bodyColor bodyOpacity borderColor borderOpacity borderWidth borderRadius'.w(),
-
-
+    
   // PROPERTIES
   
   isSelected: NO,
@@ -29,22 +30,19 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   bodyColor: '#000000',       // the node s/b visually transparent, but not transparent to mouse events, so it must have a fill
   bodyOpacity: 0,
  
-  // for our child editLabelView
-  textBinding:            '*content.title',
-  textColor:              '#000',
-  xBinding:               '*content.x',
-  yBinding:               '*content.y',
-  margin:                  10, 
-  bodyXCoord: function() {
-    console.log("x: ", this.get('x'));
-    return this.get('x');// + (0.5 * this.get('bodyWidth'));
-  }.property('x'),
+  // for labelView
+  titleBinding: '*content.title',
+  titleBindingDefault: SC.Binding.oneWay(),
+  xBinding:     '*content.x',
+  yBinding:     '*content.y',
   
-  bodyYCoord: function() {
-    console.log("y: ", this.get('y'));
-    return this.get('y') + (this.get('bodyHeight') - 34);
-  }.property('y'),
-
+  textCenterX: function () {
+    return this.get('x') + this.get('bodyWidth') / 2;
+  }.property('x', 'bodyWidth'),
+  
+  textCenterY: function () {
+    return this.get('y') + this.get('bodyHeight') - 20;     // could parameterize this better later
+  }.property('y', 'bodyHeight'),
   
   borderColor: function () {
     return this.get('isSelected') ? 'rgb(173, 216, 230)' : '#CCCCCC';
@@ -82,14 +80,19 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
       }
     }
   }.property('parentView').cacheable(),
+
+
+  // CHILD VIEWS
   
-  childViews: 'labelView'.w(),
   labelView: MySystem.EditableLabelView.design({
-    isEditable: YES,
-    fontSize: 14
+    isEditable:     YES,
+    fontSize:       14,
+    textColor:      '#000',
+    textBinding:    '.parentView.title',
+    centerXBinding: '.parentView.textCenterX',
+    centerYBinding: '.parentView.textCenterY'
   }),
-
-
+  
   // RENDER METHODS
   renderCallback: function (raphaelCanvas, attrs,imageAttrs) {
     this._raphaelRect  = raphaelCanvas.rect();
