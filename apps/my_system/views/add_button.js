@@ -60,10 +60,10 @@ MySystem.AddButtonView = SC.View.extend(
   },
   
   mouseDragged: function(evt) {
-    // Figure ghost offset
-    var localOffsetX = evt.clientX - 70; // Hardwired left margin is in CSS (ugh)
-    var localOffsetY = evt.clientY - this.layout.top - 50; // 10 for CSS margin
-
+    this._startDrag(evt);
+  },
+  
+  _startDrag: function(evt) {
     var dragOpts = {
       event: evt,
       source: this,
@@ -74,10 +74,21 @@ MySystem.AddButtonView = SC.View.extend(
         title: this.get('content').get('title') || 'title',
         image: this.get('content').get('image') || 'image',
         uuid: this.get('content').get('uuid'),
-        clickX: localOffsetX,
-        clickY: localOffsetY
       }
     };
-    SC.Drag.start(dragOpts);
+    this._drag = SC.Drag.start(dragOpts);
+  },
+  
+  touchStart: function(touch) {
+    return YES;
+  },
+  
+  touchesDragged: function(evt, touches) {
+    if(this._drag) return;
+    this._startDrag(evt);
+  },
+  
+  dragDidEnd: function(drag, loc, op) {
+    this._drag = null;
   }
 });
