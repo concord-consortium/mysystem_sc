@@ -60,7 +60,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   borderOpacity: 1.0,
   
   borderWidth: function () {
-    return this.get('isSelected') ? 2 : 1;
+    return this.get('isSelected') ? 4 : 1;
   }.property('isSelected'),
   
   borderRadius: 5,
