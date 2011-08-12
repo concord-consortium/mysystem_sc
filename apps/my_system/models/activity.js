@@ -27,7 +27,10 @@ MySystem.Activity = SC.Record.extend(
   energyTypes: SC.Record.toMany('MySystem.EnergyType'),
   
   // Rules for evaluating the digram
-  diagramRules: SC.Record.toMany('MySystem.DiagramRule')
+  diagramRules: SC.Record.toMany('MySystem.DiagramRule'),
+
+  // The maximum number of pieces of feedback to give to the user
+  maxFeedbackItems: SC.Record.attr(Number, {defaultValue: 0})
 });
 
 MySystem.Activity.GuidCounter = 100;
@@ -62,9 +65,12 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
   var modules = wiseStepDef["modules"];
   var paletteItem = null;
   var module= null;
+  var maxFeedbackItems = wiseStepDef["maxFeedbackItems"] || 0
+
   var activity = MySystem.store.createRecord(
     MySystem.Activity, {
     assignmentText: wiseStepDef["prompt"],
+    maxFeedbackItems: maxFeedbackItems,
     guid: MySystem.Activity.newGuid("activity")
   });
   var size = modules.length;
