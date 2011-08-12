@@ -16,7 +16,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.NodeView.prototype */ {
 
   contentDisplayProperties: 'x y image title'.w(),
-  displayProperties: 'bodyWidth bodyHeight bodyColor borderColor borderOpacity borderWidth borderRadius'.w(),
+  displayProperties: 'bodyWidth bodyHeight bodyColor bodyOpacity borderColor borderOpacity borderWidth borderRadius'.w(),
 
 
   // PROPERTIES
@@ -26,7 +26,8 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   bodyWidth: 100,
   bodyHeight: 120,
-  bodyColor: 'none',
+  bodyColor: '#000000',       // the node s/b visually transparent, but not transparent to mouse events, so it must have a fill
+  bodyOpacity: 0,
  
   // for our child editLabelView
   textBinding:            '*content.title',
@@ -109,6 +110,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           'width':          this.get('bodyWidth'),
           'height':         this.get('bodyHeight'),
           'fill':           this.get('bodyColor'),
+          'fill-opacity':   this.get('bodyOpacity'),
           'stroke':         this.get('borderColor'),
           'stroke-width':   this.get('borderWidth'),
           'stroke-opacity': this.get('borderOpacity')
