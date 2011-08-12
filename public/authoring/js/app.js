@@ -12,12 +12,17 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
 
   MSA.data = dataHash;
 
+  MSA.set('activity', MSA.ActivityModel.create({dataHash: MSA.data}));
   MSA.modulesController.setExternalContent(dataHash.modules);
   MSA.energyTypesController.setExternalContent(dataHash.energy_types);
   MSA.diagramRulesController.setExternalContent(dataHash.diagram_rules);
 
   MSA.dataController.addObserver('data', updateObject, updateFn);
 };
+
+MSA.ActivityModel = SCUtil.ModelObject.extend({
+  maxFeedbackItems: SCUtil.dataHashProperty
+});
 
 MSA.Module = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
   name: SCUtil.dataHashProperty,
@@ -107,7 +112,7 @@ MSA.dataController = SC.Object.create({
              'MSA.modulesController.@each.rev', 
              'MSA.energyTypesController.@each.rev', 
              'MSA.diagramRulesController.@each.rev',
-             'MSA.data.maxFeedbackItems')
+             'MSA.activity.maxFeedbackItems')
 });
 
 MSA.NodeTypesView = SC.CollectionView.extend({
