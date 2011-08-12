@@ -47,7 +47,11 @@
     action="createItem"}}
     Add New Energy Type
   {{/view}}
-
+  <h2>Limit Feedback</h2>
+    Only report 
+      {{view SC.TextField valueBinding="MSA.data.maxFeedbackItems"
+placeholder="#" id="feedbackLimit"}}
+    feedback items
   <h2>Diagram Rules</h2>
   
   {{#collection contentBinding="MSA.diagramRulesController" tagName="ul"}}

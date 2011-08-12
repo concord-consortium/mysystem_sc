@@ -66,10 +66,10 @@ if (top === self) {
   MSA.data = {
     "modules": [],
     "energy_types": [],
-    "diagram_rules": []
+    "diagram_rules": [],
+    "maxFeedbackItems": 0
   };
 }
-
 
 MSA.modulesController = SCUtil.ModelArray.create({
   content: MSA.data.modules,
@@ -106,7 +106,8 @@ MSA.dataController = SC.Object.create({
   }.property('MSA.modulesController.[]', 
              'MSA.modulesController.@each.rev', 
              'MSA.energyTypesController.@each.rev', 
-             'MSA.diagramRulesController.@each.rev')
+             'MSA.diagramRulesController.@each.rev',
+             'MSA.data.maxFeedbackItems')
 });
 
 MSA.NodeTypesView = SC.CollectionView.extend({
