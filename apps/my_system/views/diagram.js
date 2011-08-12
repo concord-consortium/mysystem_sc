@@ -20,6 +20,9 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
   
   selectedLinks: [],
   
+  _isDragging: NO,
+  
+  
   // SC.DropTarget
   //   The methods below are all part o the SC.DropTarget protocol
   //   and must be implemented to function as a drop target.
@@ -84,6 +87,7 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
     this._drag(evt);
     
     // just to be sure we don't drag views around in case we get sent more mouseDragged events
+    this._isDragging = NO;
     this._dragMap = [];
     this._draggedViews = [];
     
@@ -93,6 +97,8 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
   _startDrag: function () {
     var containerView  = this.get('containerView') || this,
         $canvasView    = this.get('canvasView').$();
+    
+    this._isDragging = YES;
     
     this._dragFrame = {
       left:   0,
@@ -118,7 +124,9 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
   _drag: function (evt) {
     var dx = evt.pageX - this._dragX,
         dy = evt.pageY - this._dragY;
-        
+    
+    if (!this._isDragging) return;
+    
     this._dragX = evt.pageX;
     this._dragY = evt.pageY;
     
