@@ -15,7 +15,7 @@ sc_require('views/editable_label');
 MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.NodeView.prototype */ {
 
-  childViews: 'labelView'.w(),
+  childViews: 'titleView'.w(),
   
   contentDisplayProperties: 'x y image title'.w(),
   displayProperties: 'bodyWidth bodyHeight bodyColor bodyOpacity borderColor borderOpacity borderWidth borderRadius'.w(),
@@ -30,17 +30,17 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   bodyColor: '#000000',       // the node s/b visually transparent, but not transparent to mouse events, so it must have a fill
   bodyOpacity: 0,
  
-  // for labelView
+  // for titleView
   titleBinding: '*content.title',
   titleBindingDefault: SC.Binding.oneWay(),
   xBinding:     '*content.x',
   yBinding:     '*content.y',
   
-  textCenterX: function () {
+  titleCenterX: function () {
     return this.get('x') + this.get('bodyWidth') / 2;
   }.property('x', 'bodyWidth'),
   
-  textCenterY: function () {
+  titleCenterY: function () {
     return this.get('y') + this.get('bodyHeight') - 20;     // could parameterize this better later
   }.property('y', 'bodyHeight'),
   
@@ -84,13 +84,13 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
   // CHILD VIEWS
   
-  labelView: MySystem.EditableLabelView.design({
+  titleView: MySystem.EditableLabelView.design({
     isEditable:     YES,
     fontSize:       14,
     textColor:      '#000',
     textBinding:    '.parentView.title',
-    centerXBinding: '.parentView.textCenterX',
-    centerYBinding: '.parentView.textCenterY'
+    centerXBinding: '.parentView.titleCenterX',
+    centerYBinding: '.parentView.titleCenterY'
   }),
   
   // RENDER METHODS
