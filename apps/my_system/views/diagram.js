@@ -59,6 +59,101 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
 
     // De-select other diagram objects and select 
     return SC.DRAG_COPY;
-  }
+  },
+  
+  
+  mouseDown: function (evt) {
+    var handledBySuper = sc_super();
+    
+    if (handledBySuper) {
+      this._dragX = evt.pageX;
+      this._dragY = evt.pageY;
+      this.invokeLast(this._startDrag);
+    }
+
+    return handledBySuper;
+  },
+  
+  mouseDragged: function (evt) {
+    this._drag(evt);
+    return sc_super();
+  },
+  
+  mouseUp: function (evt) {
+    // don't forget to handle the last mouse movement!
+    this._drag(evt);
+    
+    // just to be sure we don't drag views around in case we get sent more mouseDragged events
+    this._dragMap = [];
+    this._draggedViews = [];
+    
+    return sc_super();
+  },
+  
+  _startDrag: function () {
+    var containerView  = this.get('containerView') || this,
+        $canvasView    = this.get('canvasView').$();
+    
+    this._dragFrame = {
+      left:   0,
+      top:    0,
+      right:  $canvasView.innerWidth(),
+      bottom: $canvasView.innerHeight()
+    };
+
+    this._draggedViews = containerView.get('childViews').filter(function (view) {
+      return view.get('isSelected') && view.get('content').kindOf(MySystem.Node);
+    });
+    
+    this._dragMap = this._draggedViews.map( function (view) {
+      return {
+        x:      view.get('x'),
+        y:      view.get('y'),
+        width:  view.get('bodyWidth') + view.get('borderWidth') / 2,
+        height: view.get('bodyHeight') + view.get('borderWidth') / 2
+      };
+    });
+  },
+  
+  _drag: function (evt) {
+    var dx = evt.pageX - this._dragX,
+        dy = evt.pageY - this._dragY;
+        
+    this._dragX = evt.pageX;
+    this._dragY = evt.pageY;
+    
+    this._updateDragMap(dx, dy);
+    this._adjustDraggedViews();
+  },
+  
+  _updateDragMap: function (dx, dy) {
+    for (var i = 0; i < this._dragMap.length; i++) {
+      this._dragMap[i].x += dx;
+      this._dragMap[i].y += dy;
+    }
+  },
+  
+  _adjustDraggedViews: function () {
+    var i, x, y, view, width, height;
+    
+    for (i = 0; i < this._draggedViews.length; i++) {
+      x      = this._dragMap[i].x;
+      y      = this._dragMap[i].y;
+      width  = this._dragMap[i].width;
+      height = this._dragMap[i].height;
+      
+      if (x          < this._dragFrame.left)   x = this._dragFrame.left;
+      if (x + width  > this._dragFrame.right)  x = this._dragFrame.right - width;
+      if (y          < this._dragFrame.top)    y = this._dragFrame.top;
+      if (y + height > this._dragFrame.bottom) y = this._dragFrame.bottom - height;
+      
+      view = this._draggedViews[i];
+
+      view.beginPropertyChanges();
+      view.set('x', x);
+      view.set('y', y);
+      view.endPropertyChanges();
+    }
+  }  
   
 });

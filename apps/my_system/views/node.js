@@ -155,79 +155,9 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
       this._raphaelRect.attr(attrs);
       this._raphaelImage.attr(imageAttrs);
     }
-  },
-  
-  
-  // EVENT METHODS
-  
-  
-  mouseDown: function (evt) {
-    this.startDrag(evt);
-    return YES;
-  },
-  
-  mouseDragged: function (evt) {
-    this.drag(evt);
-    return YES;
-  },
-  
-  mouseUp: function (evt) {
-    this.endDrag(evt);
-    return YES;
-  },
-  
-  startDrag: function (evt) {
-    // our layer doesn't respect SC.Cursor, so set the cursors manually
-    this.get('parentView').$().css('cursor', 'move');
-    
-    this.set('isDragging', YES);
-    this._dragX = evt.pageX;
-    this._dragY = evt.pageY;
-    this._mouseDownEvent = evt;
-    this._didDragBody = NO;
-  },
-  
-  drag: function (evt) {
-    var content = this.get('content'),
-        x = content.get('x') + evt.pageX - this._dragX,
-        y = content.get('y') + evt.pageY - this._dragY;
-
-    if ( !this.get('isDragging') ) return;
-    
-    // FIXME this code to limit to the borders of the parent container could be simplified with local vars, and by 
-    // double-checking the geometry and arithmetic:
-    if (x < this.get('borderWidth')) x = this.get('borderWidth');
-    if (x + this.get('bodyWidth') > this.getPath('parentView.width') + this.getPath('parentView.borderWidth')) {
-      x = this.getPath('parentView.width') + this.getPath('parentView.borderWidth') - this.get('bodyWidth');
-    }
-    
-    if (y < this.get('borderWidth')) y = this.get('borderWidth');
-    if (y + this.get('bodyHeight') > this.getPath('parentView.height') + this.getPath('parentView.borderWidth')) {
-      y = this.getPath('parentView.height') + this.getPath('parentView.borderWidth') - this.get('bodyHeight');
-    }
-    
-    content.set('x', x);
-    content.set('y', y);
-
-    this._dragX = evt.pageX;
-    this._dragY = evt.pageY;
-    this._didDragBody = YES;
-  },  
-  
-  endDrag: function (evt) {
-    var cv = this.get('collectionView');
-    
-    if (!this._didDragBody) {
-      cv.mouseDown(this._mouseDownEvent);    
-      cv.mouseUp(evt);
-    }
-
-    this.drag(evt);
-    
-    this.get('parentView').$().css('cursor', 'default');
-    this.set('isDragging', NO); 
   }
   
+  // EVENT METHODS GO HERE:
 });
 
 
