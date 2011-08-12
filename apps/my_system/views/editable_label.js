@@ -22,7 +22,7 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
 
   // PROPERTIES
   
-  isEditing:     YES,
+  isEditing:     NO,
   isAllSelected: NO,
   fontSize:      12,
   text:          '',
@@ -147,7 +147,7 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
 
   // @see frameworks/sproutcore/frameworks/desktop/system/key_bindings.js
   insertNewline: function () {
-    this.appendText("\n");
+    this.commitEditing();
   },
 
   // @see frameworks/sproutcore/frameworks/desktop/system/key_bindings.js
@@ -176,6 +176,43 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
     this.updateText(newText);
     return YES;
   },
+
+    recentUp: function(up_now) {
+      var now      = new Date().getTime(),// ms
+          interval = 202,                 // ms
+          maxTime  = 200;                 // ms
+
+      if (typeof this.lastUp !== 'undefined' && this.lastUp) {
+        interval  = now - this.lastUp;
+        if (interval < maxTime) {
+          return YES;
+        }
+      }
+      if (up_now) {
+        this.lastUp = now;
+      }
+      return NO;
+    },
+
+    mouseDown: function (evt) {
+      // this.startDrag(evt);
+      if (this.recentUp(NO)) {
+        return YES;
+      }
+      return YES;
+    },
+
+    mouseUp: function(evt) {
+      if (this.recentUp(YES)) {
+        return this.doubleClick(evt);
+      }
+      return NO;
+    },
+
+    doubleClick: function(evt) {
+      this.beginEditing();
+      return YES;
+    },
 
   // @see frameworks/sproutcore/frameworks/desktop/system/key_bindings.js
   // only problem is that deleteForward seems bound to "."
