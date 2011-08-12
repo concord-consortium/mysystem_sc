@@ -12,7 +12,6 @@ sc_require('views/terminal');
   Is a drop target for nodes from the NodesPaletteView, invokes statechart's 'addNode' action upon drop.
 
   @extends SC.View
-  @extends SC.DropTarget  
 */
 MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
 /** @scope MySystem.DiagramView.prototype */ {
@@ -39,15 +38,13 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
   },
   
   performDragOperation: function (drag, op) {
-    var pv       = this.getPath('parentView.parentView'), // call this 'pv' (instead of, say, 'pvpv') to track master branch
-        frame    = this.getPath('parentView.frame'),
-        newFrame = pv ? pv.convertFrameToView(frame, null) : frame,
+    var canvasOffset = this.get('canvasView').$().offset(),
 
         // The numbers at the end are to account for the difference in size of the AddButtonView
         // compared to the Node view.  Mostly likely those could be computed.
 
-        newNodeX = drag.location.x - drag.ghostOffset.x - newFrame.x + 17,
-        newNodeY = drag.location.y - drag.ghostOffset.y - newFrame.y + 9,
+        newNodeX = drag.location.x - drag.ghostOffset.x - canvasOffset.left + 17,
+        newNodeY = drag.location.y - drag.ghostOffset.y - canvasOffset.top  + 9,
     
         newNodeAttributes = {
           title:    drag.data.title,

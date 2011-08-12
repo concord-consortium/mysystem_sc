@@ -40,8 +40,9 @@ MySystem.mainPage = SC.Page.design({
           childViews: 'diagramView'.w(),
           
           diagramView: MySystem.DiagramView.design({
-            contentBinding:   SC.Binding.from('MySystem.nodesController'),
-            selectionBinding: 'MySystem.nodesController.selection'
+            contentBinding:    SC.Binding.from('MySystem.nodesController'),
+            selectionBinding: 'MySystem.nodesController.selection',
+            canvasView:        SC.outlet('parentView')
           })
         })
       })
