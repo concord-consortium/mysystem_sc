@@ -6,7 +6,7 @@
 
 /*globals MySystem  */
 MySystem.InstructionView = SC.View.extend({
-  childViews: 'assignmentView checkButtonView'.w(),
+  childViews: 'assignmentView clearButtonView checkButtonView'.w(),
   backgroundColor: '#eeefff',
   
   canCollapse: YES,
@@ -22,9 +22,16 @@ MySystem.InstructionView = SC.View.extend({
     textAlign: SC.ALIGN_LEFT
   }),
   
+  clearButtonView: SC.ButtonView.design({
+    layout: { right: 150, bottom: 10, height: 25, width: 80 },
+    title: 'Clear',
+    toolTip: 'Clear everything from your diagram',
+    action: 'clearCanvas'
+  }),
+  
   checkButtonView: SC.ButtonView.design({
-    layout: { right: 15, bottom: 10, height: 20, width: 80 },
-    title: 'Check',
+    layout: { right: 15, bottom: 10, height: 25, width: 120 },
+    title: 'Check Diagram',
     toolTip: 'Check your diagram',
     action: 'checkButtonPressed'
   })

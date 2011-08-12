@@ -75,8 +75,7 @@ From the top-level mysystem_sc directory:
 0. Install prerequisites: git, vagrant, and virtualbox
 1. Clone this git repository https://github.com/concord-consortium/wise4-vagrant
 2. In the mysystem_sc folder, build the Wise4 step: 
-2a. bundle exec rake build
-2b. bundle exec rake copy_authoring
+`bundle exec rake build`
 3. In the wise4-vagrant folder, create the file wise4-step-types.yml listing the name of the step and path to the build output:
     --- 
     Mysystem2: ../mysystem_sc/vle/node/mysystem2
@@ -86,6 +85,11 @@ From the top-level mysystem_sc directory:
 7. NEED HELP fininishing these steps, this page has more instuctions on getting started
      http://code.google.com/p/wise4/wiki/WISE4AdministratorResources
    But we need to customize that for mysystem2.
+
+If you've been making changes to the MySystem runtime that you want to see updated in the Wise4 application, run
+`bundle exec rake build`
+if you've only been making changes to the files in the wise4 folder, you can just run
+`bundle exec rake copy_templates`
 
 ### Building as WISE4 step ###
 

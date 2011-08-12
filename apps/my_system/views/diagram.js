@@ -26,14 +26,23 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(SC.DropTarget,
   },
   
   performDragOperation: function (drag, op) {
-    // Build the data hash
-    var newNodeAttributes = {
-      title:    drag.data.title,
-      image:    drag.data.image,
-      x:        drag.location.x - this.getPath('parentView.frame').x - drag.data.clickX,
-      y:        drag.location.y - this.getPath('parentView.frame').y - drag.data.clickY,
-      nodeType: drag.data.uuid
-    };
+    var pv       = this.getPath('parentView.parentView'), // call this 'pv' (instead of, say, 'pvpv') to track master branch
+        frame    = this.getPath('parentView.frame'),
+        newFrame = pv ? pv.convertFrameToView(frame, null) : frame,
+
+        // The numbers at the end are to account for the difference in size of the AddButtonView
+        // compared to the Node view.  Mostly likely those could be computed.
+
+        newNodeX = drag.location.x - drag.ghostOffset.x - newFrame.x + 17,
+        newNodeY = drag.location.y - drag.ghostOffset.y - newFrame.y + 9,
+    
+        newNodeAttributes = {
+          title:    drag.data.title,
+          image:    drag.data.image,
+          x:        newNodeX,
+          y:        newNodeY,
+          nodeType: drag.data.uuid
+        };
     
     // Create the node
     MySystem.statechart.sendEvent('addNode', newNodeAttributes);
