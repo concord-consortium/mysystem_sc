@@ -5,6 +5,7 @@
 /*globals MySystem RaphaelViews */
 
 sc_require('views/editable_label');
+sc_require('views/terminal');
 
 /** @class
 
@@ -15,7 +16,7 @@ sc_require('views/editable_label');
 MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.NodeView.prototype */ {
 
-  childViews: 'titleView'.w(),
+  childViews: 'titleView terminalA terminalB'.w(),
   
   contentDisplayProperties: 'x y image title'.w(),
   displayProperties: 'bodyWidth bodyHeight bodyColor bodyOpacity borderColor borderOpacity borderWidth borderRadius'.w(),
@@ -36,14 +37,22 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   xBinding:     '*content.x',
   yBinding:     '*content.y',
   
-  titleCenterX: function () {
+  centerX: function () {
     return this.get('x') + this.get('bodyWidth') / 2;
   }.property('x', 'bodyWidth'),
   
-  titleCenterY: function () {
-    return this.get('y') + this.get('bodyHeight') - 20;     // could parameterize this better later
+  titleY: function () {
+    return this.get('y') + this.get('bodyHeight') - 25;     // could parameterize this better later
+  }.property('y', 'bodyHeight'),
+ 
+  terminalAY: function() {
+    return this.get('y') + 10;     // could parameterize this better later
   }.property('y', 'bodyHeight'),
   
+  terminalBY: function() {
+    return this.get('y') + this.get('bodyHeight') - 10;     // could parameterize this better later
+  }.property('y', 'bodyHeight'),
+
   borderColor: function () {
     return this.get('isSelected') ? 'rgb(173, 216, 230)' : '#CCCCCC';
   }.property('isSelected'),
@@ -89,10 +98,21 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     fontSize:       14,
     textColor:      '#000',
     textBinding:    '.parentView.title',
-    centerXBinding: '.parentView.titleCenterX',
-    centerYBinding: '.parentView.titleCenterY'
+    centerXBinding: '.parentView.centerX',
+    centerYBinding: '.parentView.titleY'
   }),
-  
+ 
+  terminalA: MySystem.TerminalView.design({
+    xBinding: '.parentView.centerX',
+    yBinding: '.parentView.terminalAY',
+    isVisible: YES
+  }),
+  terminalB: MySystem.TerminalView.design({
+    xBinding: '.parentView.centerX',
+    yBinding: '.parentView.terminalBY',
+    isVisible: YES
+  }),
+
   // RENDER METHODS
   renderCallback: function (raphaelCanvas, attrs,imageAttrs) {
     this._raphaelRect  = raphaelCanvas.rect();
