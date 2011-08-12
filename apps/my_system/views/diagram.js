@@ -14,13 +14,26 @@ sc_require('views/terminal');
   @extends SC.View
   @extends SC.DropTarget  
 */
-MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(SC.DropTarget,
+MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
 /** @scope MySystem.DiagramView.prototype */ {
 
   exampleView: MySystem.NodeView,
   
   selectedLinks: [],
   
+  // SC.DropTarget
+  //   The methods below are all part o the SC.DropTarget protocol
+  //   and must be implemented to function as a drop target.
+  isDropTarget: YES,
+  dragStarted: function(drag, evt) {},
+  dragEntered: function(drag, evt) {},
+  dragUpdated: function(drag, evt) {},
+  dragExited: function(drag, evt) {},
+  dragEnded: function(drag, evt) {},
+  acceptDragOperation: function(drag, op) {
+    return YES;
+  },
+
   computeDragOperations: function () {
     return SC.DRAG_LINK;      // TODO this happens to work, but are we using the right semantics?
   },
