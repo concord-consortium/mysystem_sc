@@ -201,7 +201,6 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
     stroke:               '#CCC',
     editingOpacity:       0.3,
     normalOpacity:        0.05,
-    margin:               3,
 
     x: function () {
       var textBBox = this.get('textBBox');
