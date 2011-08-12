@@ -2,22 +2,62 @@
 // Project:   MySystem.Terminal
 // Copyright: ©2010 Concord Consortium
 // ==========================================================================
-/*globals MySystem LinkIt */
+/*globals MySystem RaphaelViews */
 
 /** @class
 
-  (Document Your View Here)
-
-  @extends SC.View
+  @extends RaphaelViews.RaphaelView
 */
-MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
+MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
+     displayProperties: 'x y r fill stroke'.w(),
+  
+     x:                 0,
+     y:                 0,
+     r:                 5,
+     fill:              '#ccc',
+     fillOpacity:       '0.2',
+     stroke:            '#333',
+     strokeWidth:       '1',
+     strokeOpacity:     '0.2',
 
-  layout: { left: 45, top: +5, width: 10, height: 10 },
+     _raphaelCircle:    null,
 
-  linkClass: 'MySystem.Link',
+  attrs: function() {
+    return {
+       'cx':             this.get('x'),
+       'cy':             this.get('y'),
+       'r':              this.get('r'),
+       'fill':           this.get('fill'),
+       'fill-opacity':   this.get('fillOpacity'),
+       'stroke':         this.get('stroke'),
+       'strokeWidth':    this.get('strokeWidth'),
+       'stroke-opacity': this.get('strokeOpacity')
+    };
+  },
+
+  // RENDER METHODS
+  renderCallback: function (raphaelCanvas, attrs) {
+    this._raphaelCircle  = raphaelCanvas.circle();
+    this._raphaelCircle.attr(this.attrs());
+    return this._raphaelCircle;
+  },
+  
+  render: function (context, firstTime) {
+    if (firstTime) {
+      context.callback(this, this.renderCallback, this.attrs());
+      this.renderChildViews(context,firstTime);
+    }
+    else {
+      this._raphaelCircle.attr(this.attrs());
+    }
+  },
+  
+  // NOTE: old Linkit code commented out:
+  // layout: { left: 45, top: +5, width: 10, height: 10 },
+  // linkClass: 'MySystem.Link',
 
   // Validate if links can originate from this terminal
-  canDragLink: function() {
+  // canDragLink: function() {
     // var proposedLinkColor = MySystem.linkColorChooser.get('content');
     // if (MySystem.studentMode === MySystem.NOVICE_STUDENT) {
     //   // This block for novice mode
@@ -56,11 +96,11 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
     //   SC.Logger.log("MySystem.studentMode invalid:" + MySystem.studentMode);
     //   return NO;
     // }
-    return YES;
-  }, 
+  //   return YES;
+  // }, 
 
   // Validate if the currently-being-created link may end at this terminal
-  canDropLink: function() {
+  // canDropLink: function() {
     // SC.Logger.log('Checking if links may drop at this terminal');
     // var inboundLinkColor = MySystem.linkColorChooser.get('content');
     // if (MySystem.studentMode == MySystem.NOVICE_STUDENT) {
@@ -98,12 +138,12 @@ MySystem.Terminal = SC.View.extend(LinkIt.Terminal, {
     //   SC.Logger.log("Bad student mode: " + MySystem.studentMode);
     //   return NO;
     // }
-    return YES;
-  },
+  //   return YES;
+  // },
 
-  computeDragOperations: function(drag, evt) {
-    return this.canDropLink() ? SC.DRAG_LINK : SC.DRAG_NONE;
-  }
+  // computeDragOperations: function(drag, evt) {
+  //   return this.canDropLink() ? SC.DRAG_LINK : SC.DRAG_NONE;
+  // }
 
 });
 
