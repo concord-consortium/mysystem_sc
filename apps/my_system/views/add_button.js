@@ -24,14 +24,14 @@ MySystem.AddButtonView = SC.View.extend(
   content: null,
   isSelected: false,
 
-  childViews: 'frame'.w(),
+  childViews: 'borderFrame'.w(),
 
   render: function (context) {
     sc_super();
     if (this.get('isSelected')) context.addClass('selected');
   },  
 
-  frame: SC.View.design({
+  borderFrame: SC.View.design({
     classNames: 'node addbutton'.w(),
     layout: { top: 12, bottom: 10, height: 122 },
     childViews: 'icon label'.w(),
@@ -50,7 +50,7 @@ MySystem.AddButtonView = SC.View.extend(
       textAlign: SC.ALIGN_CENTER,    
       valueBinding: '.parentView.parentView.content.title',
       isEditable: NO
-    }),
+    })
   }),
   
   dragDataForType: function(drag, dataType) { return null; },
@@ -70,7 +70,6 @@ MySystem.AddButtonView = SC.View.extend(
       dragView: this,
       ghost: NO,
       slideBack: NO,
-      ghostActsLikeCursor: YES,
       data: {
         title: this.get('content').get('title') || 'title',
         image: this.get('content').get('image') || 'image',

@@ -18,8 +18,13 @@ MySystem.CanvasView = LinkIt.CanvasView.extend({
   computeDragOperations: function(drag, evt) { return SC.DRAG_COPY; },
   performDragOperation: function(drag, op) { 
     // Figure the new node's x and y locations
-    var newNodeX = drag.location.x - this.parentView.get('frame').x - drag.data.clickX;
-    var newNodeY = drag.location.y - this.get('frame').y - drag.data.clickY;
+    var pv = this.get('parentView'), frame = this.get('frame');
+    var newFrame = pv ? pv.convertFrameToView(frame, null) : frame;
+    
+    // The numbers at the end are to account for the difference in size of the AddButtonView
+    // compared to the Node view.  Mostly likely those could be computed.
+    var newNodeX = drag.location.x - drag.ghostOffset.x - newFrame.x + 17;
+    var newNodeY = drag.location.y - drag.ghostOffset.y - newFrame.y + 9;
     
     // Build the data hash
     var newNodeAttributes = {
