@@ -125,6 +125,14 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
     var dx = evt.pageX - this._dragX,
         dy = evt.pageY - this._dragY;
     
+    // clear the select properties of mouseDownInfo
+    // TODO: change the conditions, probably the nodes shouldn't move eitehr until
+    //   these conditiosn are met
+    if(Math.abs(dx) > 5 || Math.abs(dy) > 5){
+      this.mouseDownInfo.shouldReselect = NO;
+      this.mouseDownInfo.shouldSelect = NO;
+    }
+    
     if (!this._isDragging) return;
     
     this._dragX = evt.pageX;
