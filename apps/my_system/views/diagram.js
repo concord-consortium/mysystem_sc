@@ -18,6 +18,10 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
 
   exampleView: MySystem.NodeView,
   
+  // This tels the collection view to deselect everything
+  // if the nothing is clicked on 
+  allowDeselectAll: YES,
+  
   selectedLinks: [],
   
   _isDragging: NO,

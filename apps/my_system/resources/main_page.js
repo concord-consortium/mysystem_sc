@@ -43,7 +43,13 @@ MySystem.mainPage = SC.Page.design({
             contentBinding:    SC.Binding.from('MySystem.nodesController'),
             selectionBinding: 'MySystem.nodesController.selection',
             canvasView:        SC.outlet('parentView')
-          })
+          }),
+          
+          // forward the mouseDown to the collection view so it can handle the mouseDown 
+          // on the background.
+          mouseDown: function(evt) {
+            return this.get('diagramView').mouseDown(evt);
+          }
         })
       })
     })
