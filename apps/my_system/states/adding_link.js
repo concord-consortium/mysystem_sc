@@ -41,7 +41,7 @@ MySystem.ADDING_LINK = SC.State.design({
   setUpInspectorPane: function () {
     var inspector = MySystem.getPath('mainPage.inspectorPane');
     inspector.set('isOptionsForNewLink', YES);
-    // inspector.set('isModal', YES);
+    inspector.set('isModal', YES);
     if (!inspector.isPaneAttached) {
       inspector.append();
     }
