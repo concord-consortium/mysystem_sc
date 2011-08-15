@@ -29,7 +29,12 @@ MySystem.activityController = SC.ObjectController.create({
         suggestions.pushObject(rule.get('suggestion'));
       }
     });
-    
+
+    var maxFeedback = this.get('maxFeedbackItems');
+
+    if (maxFeedback && maxFeedback > 0 && suggestions.length > maxFeedback) {
+      return suggestions.slice(0,maxFeedback);
+    }
     return suggestions;
   }
   

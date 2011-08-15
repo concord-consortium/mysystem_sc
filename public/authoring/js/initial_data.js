@@ -51,5 +51,6 @@ InitialMySystemData = {
        "color": "#E97F02"
     }
  ],
- "diagram_rules": []
+ "diagram_rules": [],
+ "maxFeedbackItems": 0
 };

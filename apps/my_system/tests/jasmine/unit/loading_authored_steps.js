@@ -89,7 +89,8 @@ describe("LoadingAuthoredSteps", function () {
             "linkDirection": "-->",
             "otherNodeType": "testObject2"
           }
-        ]
+        ],
+        "maxFeedbackItems": 5
       };
       
       var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
@@ -153,6 +154,27 @@ describe("LoadingAuthoredSteps", function () {
     expect(rules[4].get('energyType')).toBe(null);    
   });
   
+  it("should be able to load a step with a maximum number of feedback items", function() {
+    expect(MySystem.activityController.get('maxFeedbackItems')).toBe(5);
+  });
+  
+  it("should be able to load a step with unspecified number of feedback items", function () {
+    
+    var authoredContent = 
+      {
+        "type": "mysystem2",
+        "prompt": "",
+        "modules": [],
+        "energy_types": [],
+        "diagram_rules": []
+      };
+      
+      var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
+      MySystem.activityController.set('content',activity);   
+      
+      expect(MySystem.activityController.get('maxFeedbackItems')).toBe(0);
+  });
+  
   it("should be able to load a step with no items at all", function () {
     
     var authoredContent = 
@@ -188,5 +210,5 @@ describe("LoadingAuthoredSteps", function () {
       
       expect(MySystem.activityController.get('assignmentText')).toBe("prompt1");
   });
-  
+
 });

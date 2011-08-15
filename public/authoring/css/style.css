@@ -110,6 +110,8 @@ a:hover { color: #036; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
 
+#feedbackLimit { width: 15px; }
+
 
 @media all and (orientation:portrait) {
 

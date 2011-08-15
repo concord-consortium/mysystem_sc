@@ -401,14 +401,148 @@ describe("DiagramRules", function () {
       expect(callCount).toBe(1);
     });
   });
+
+  describe("Limiting number of feedback items", function() {
+    it('should not limit feedback by default', function() {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1",
+            "hasLink": true,
+            "energyType": "any",
+            "linkDirection": "-->",
+            "otherNodeType": "obj2"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2",
+            "hasLink": true,
+            "energyType": "any",
+            "linkDirection": "-->",
+            "otherNodeType": "obj1"
+          }
+        ]
+      );
+
+      MySystem.store.commitRecords();
+      var ruleFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+      expect(ruleFeedback.get('feedback')).toBeNull();
+
+      runRules({nodes: ['obj1']});
+      expect(ruleFeedback.get('feedback')).toBe("Failed rule 1 \nFailed rule 2 \nFailed rule 3");   // see givenRules() function
+      expect(ruleFeedback.get('success')).toBe(false);
+    });
+
+    it('should limit feedback when too many failures', function() {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1",
+            "hasLink": true,
+            "energyType": "any",
+            "linkDirection": "-->",
+            "otherNodeType": "obj2"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2",
+            "hasLink": true,
+            "energyType": "any",
+            "linkDirection": "-->",
+            "otherNodeType": "obj1"
+          }
+        ], 2
+      );
+
+      var ruleFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+      expect(ruleFeedback.get('feedback')).toBeNull();
+
+      runRules({nodes: ['obj1']});
+      expect(ruleFeedback.get('feedback')).toBe("Failed rule 1 \nFailed rule 2");   // see givenRules() function
+      expect(ruleFeedback.get('success')).toBe(false);
+    });
+
+    it('should not limit feedback when failures are fewer than limit', function() {
+      givenRules(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1",
+            "hasLink": true,
+            "energyType": "any",
+            "linkDirection": "-->",
+            "otherNodeType": "obj2"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2",
+            "hasLink": true,
+            "energyType": "any",
+            "linkDirection": "-->",
+            "otherNodeType": "obj1"
+          }
+        ], 2
+      );
+
+      var ruleFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+      expect(ruleFeedback.get('feedback')).toBeNull();
+
+      runRules({nodes: ['obj1','obj2'], links: ['obj1.0-->obj2.0:en1']});
+      expect(ruleFeedback.get('feedback')).toBe("Failed rule 3");   // see givenRules() function
+      expect(ruleFeedback.get('success')).toBe(false);
+    });
+  });
   
-  givenRules = function (rules) {
+  givenRules = function (rules, maxFeedback) {
     $.each(rules, function(i, rule){
       if (!rule.suggestion){
         rule.suggestion = "Failed rule "+i;
       }
     });
     authoredContent.diagram_rules = rules;
+    if (maxFeedback) {
+      authoredContent.maxFeedbackItems = maxFeedback;
+    } else {
+      authoredContent.maxFeedbackItems = 0;
+    }
     var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
     MySystem.activityController.set('content',activity);
   };
