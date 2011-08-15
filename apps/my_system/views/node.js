@@ -13,6 +13,7 @@
 */
 sc_require('models/link');
 sc_require('views/terminal');
+sc_require('views/letterbox_image_view');
 
 MySystem.NodeView = SC.View.extend(LinkIt.NodeView,
 /** @scope MySystem.NodeView.prototype */ {
@@ -41,7 +42,7 @@ MySystem.NodeView = SC.View.extend(LinkIt.NodeView,
     if (this.get('isSelected')) context.addClass('selected');
   },  
 
-  icon: SC.ImageView.design({
+  icon: MySystem.LetterboxImageView.design({
     classNames: 'image',
     useImageQueue: YES,
     layout: { top: 20, width:50, height:70, centerX: 0},
