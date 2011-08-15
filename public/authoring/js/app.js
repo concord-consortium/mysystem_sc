@@ -102,7 +102,33 @@ MSA.diagramRulesController = SCUtil.ModelArray.create({
   
   shouldOptions: ['should', 'should not'],
   
-  linkDirections: ['-->', '<--', '---']
+  linkDirections: ['-->', '<--', '---'],
+
+  moveItemUp: function(button) {
+    var c = this.get('content');
+    var item = button.get('item');
+    var i = c.indexOf(item.get('dataHash'));
+
+    if (i > 0) {
+      this.contentWillChange();
+      var itemBefore = this.objectAt(i-1);
+      this.replaceContent(i-1, 2, [item, itemBefore]);
+      this.contentDidChange();
+    }
+  },
+
+  moveItemDown: function(button) {
+    var c = this.get('content');
+    var item = button.get('item');
+    var i = c.indexOf(item.get('dataHash'));
+
+    if (i < (c.length-1)) {
+      this.contentWillChange();
+      var itemAfter = this.objectAt(i+1);
+      this.replaceContent(i, 2, [itemAfter, item]);
+      this.contentDidChange();
+    }
+  },
 });
 
 MSA.dataController = SC.Object.create({

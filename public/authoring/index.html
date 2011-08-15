@@ -86,6 +86,8 @@ placeholder="#" id="feedbackLimit"}}
       {{#view SC.Button target="MSA.diagramRulesController" action="removeItem" itemBinding="parentView.content"}}
       Remove Diagram Rule
       {{/view}}
+      {{#view SC.Button target="MSA.diagramRulesController" action="moveItemUp" itemBinding="parentView.content"}} Up {{/view}}
+      {{#view SC.Button target="MSA.diagramRulesController" action="moveItemDown" itemBinding="parentView.content"}} Down {{/view}}
   {{/collection}}
   {{#view SC.Button 
     target="MSA.diagramRulesController"
