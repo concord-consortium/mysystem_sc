@@ -9,18 +9,21 @@
   @extends RaphaelViews.RaphaelView
 */
 MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
-     displayProperties: 'x y r fill stroke'.w(),
-  
-     x:                 0,
-     y:                 0,
-     r:                 5,
-     fill:              '#ccc',
-     fillOpacity:       '0.2',
-     stroke:            '#333',
-     strokeWidth:       '1',
-     strokeOpacity:     '0.2',
+	 childViews: 'inProgressLinkView'.w(),
+	 displayProperties: 'x y r fill stroke'.w(),
 
-     _raphaelCircle:    null,
+	 x:                 0,
+	 y:                 0,
+	 r:                 5,
+	 fill:              '#ccc',
+	 fillOpacity:       '0.2',
+	 stroke:            '#333',
+	 strokeWidth:       '1',
+	 strokeOpacity:     '0.2',
+	 isLineDrag:        NO,
+	 deltaX:              null,
+	 deltaY:              null,
+	 _raphaelCircle:    null,
 
   attrs: function() {
     return {
@@ -51,7 +54,90 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
       this._raphaelCircle.attr(this.attrs());
     }
   },
+	
+	mouseDown: function (evt) {
+		this._downX = evt.pageX;
+		this._downY = evt.pageY;
+		this.set('deltaX', 0);
+		this.set('deltaY', 0);
+		this.set('isLineDrag', YES);
+		return YES;
+	},
+	
+	mouseDragged: function (evt) {
+		return this._drag(evt);
+	},
+
+	
+	_drag: function (evt) {
+		if (!this.get('isLineDrag')) {
+			return NO;
+		}
+		this.set('deltaX', evt.pageX - this._downX);
+		this.set('deltaY', evt.pageY - this._downY);
+		return YES;
+	},
+
+	mouseUp: function (evt) {
+		// don't forget to handle the last mouse movement!
+		this._drag(evt);
+		console.log("sldkfjsdklfjs;dklfhjaksjhfsadkjhfasdkjfhasdkjfhasdkjfhasdkljfhasdkjlfh");
+		this.set('isLineDrag', NO);
+		return YES;
+	},
   
+
+	// Rubber-Banding In-Progress Link
+	//
+	//
+	inProgressLinkView:  RaphaelViews.RaphaelView.design({
+		displayProperties: 'startX startY deltaX deltaY isVisible'.w(),
+		startXBinding:     '.parentView.x',
+		startYBinding:     '.parentView.y',
+		isVisibleBinding:  '.parentView.isLineDrag',
+		strokeWidth:       2,
+		strokeColor:       "#FF0000",
+		deltaXBinding:     '.parentView.deltaX',
+		deltaYBinding:     '.parentView.deltaY',
+		_raphaelPath:      null,
+
+		path: function() {
+			var x1 = this.get('startX'),
+					x2 = this.get('deltaX') + x1,
+					y1 = this.get('startY'),
+					y2 = this.get('deltaY') + y1,
+					_path = ["M",x1,y1,"L",x2,y2].join(" "); 
+			console.log(_path);
+			return _path;
+		},
+
+		attrs: function() {
+			return { 
+				'path': this.path(),
+				'stroke': this.get('strokeColor'),
+				'stroke-width': this.get('strokeWidth')
+			};
+		},
+
+		renderCallback: function (raphaelCanvas, attrs) {
+			this._raphaelPath  = raphaelCanvas.path();
+			this._raphaelPath.attr(attrs);
+			return this._raphaelPath;
+		},
+		
+		render: function (context, firstTime) {
+			if (firstTime) {
+				context.callback(this, this.renderCallback, this.attrs());
+				this.renderChildViews(context,firstTime);
+			}
+			else {
+				this._raphaelPath.attr(this.attrs());
+			}
+		}
+
+	})
+});
+
   // NOTE: old Linkit code commented out:
   // layout: { left: 45, top: +5, width: 10, height: 10 },
   // linkClass: 'MySystem.Link',
@@ -144,6 +230,4 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   // computeDragOperations: function(drag, evt) {
   //   return this.canDropLink() ? SC.DRAG_LINK : SC.DRAG_NONE;
   // }
-
-});
 
