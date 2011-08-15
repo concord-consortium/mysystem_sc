@@ -21,7 +21,11 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
   // This tels the collection view to deselect everything
   // if the nothing is clicked on 
   allowDeselectAll: YES,
-  
+
+  // Allow keyboard delete operations:
+  acceptsFirstResponder: YES,
+  canDeleteContent: YES,
+
   selectedLinks: [],
   
   _isDragging: NO,
