@@ -81,7 +81,6 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
 	mouseUp: function (evt) {
 		// don't forget to handle the last mouse movement!
 		this._drag(evt);
-		console.log("sldkfjsdklfjs;dklfhjaksjhfsadkjhfasdkjfhasdkjfhasdkjfhasdkljfhasdkjlfh");
 		this.set('isLineDrag', NO);
 		return YES;
 	},
@@ -107,7 +106,6 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
 					y1 = this.get('startY'),
 					y2 = this.get('deltaY') + y1,
 					_path = ["M",x1,y1,"L",x2,y2].join(" "); 
-			console.log(_path);
 			return _path;
 		},
 
