@@ -58,6 +58,7 @@ MySystem.Link = MySystem.AutoGuidRecord.extend(
       return;
     }
     
+    this.set('text', energyType.get('label'));
     this.set('color', energyType.get('color'));
   }.observes('energyTypeObj'),
 
