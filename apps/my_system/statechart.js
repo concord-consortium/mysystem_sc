@@ -16,6 +16,7 @@ sc_require('states/diagram_editing');
 sc_require('states/diagram_object_editing');
 sc_require('states/sentence_object_linking');
 sc_require('states/sentence_object_linking_setup');
+sc_require('states/adding_link');
 
 MySystem.statechart = SC.Object.create(SC.StatechartManager, {
   rootState: SC.State.design({
@@ -64,6 +65,8 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       }
       
     }),
+    
+    ADDING_LINK: SC.State.plugin('MySystem.ADDING_LINK'),
     
     /**
       SENTENCE_OBJECT_LINKING_SETUP: A transient state setting up SENTENCE_OBJECT_LINKING. 

@@ -23,6 +23,8 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
   */
   setUpInspectorPane: function () {
     var inspector = MySystem.getPath('mainPage.inspectorPane');
+    inspector.set('isOptionsForNewLink', NO);
+    inspector.set('isModal', NO);
     if (!inspector.isPaneAttached) {
       inspector.append();
     }

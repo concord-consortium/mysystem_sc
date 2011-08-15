@@ -60,7 +60,9 @@ MySystem.DIAGRAM_EDITING = SC.State.design({
   diagramSelectionChanged: function () {
     var selection = MySystem.nodesController.get('allSelected');
     if ((selection.get('length') == 1) && selection.firstObject().get('linkStyle')) {
-      this.gotoState('DIAGRAM_OBJECT_EDITING');
+      // Hacky: go straight to adding_link state. If it turns out this is not a new link, adding_link state
+      // will then go to diagram_object_editing. This should be refactored when we switch to raphael views.
+      this.gotoState('ADDING_LINK');
     }
     return YES;
   },
