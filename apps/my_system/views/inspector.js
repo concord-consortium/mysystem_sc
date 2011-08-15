@@ -17,10 +17,31 @@ sc_require('views/link_form');
 
 MySystem.InspectorPane = SC.PalettePane.design({
   defaultResponder: 'MySystem.statechart',
-  layout: { top: 150, right: 5, width: 270, height: 240 },
+  isOptionsForNewLink: NO,
+  layout: function(){
+    if (this.get('isOptionsForNewLink')){
+      return { centerY: 0, centerX: 0, width: 270, height: 200 };
+    } else {
+      return { top: 150, right: 5, width: 270, height: 200 };
+    }
+  }.property('isOptionsForNewLink'),
   classNames: 'property-editor'.w(),
   
   // the contenView property should be updated with the view that is correct
   // for the current object
-  contentView: MySystem.LinkFormView
+  contentView: SC.View.design({
+    childViews: 'title form'.w(),
+    title: SC.LabelView.design({
+      value: function() {
+        if (this.getPath('parentView.parentView.isOptionsForNewLink')){
+          return "Pick an energy type for your new link";
+        }
+        return "Energy type of your link:";
+      }.property('parentView.parentView.isOptionsForNewLink'),
+      layout: {top: 0, left: 0, right: 0, height: 22}
+    }),
+    form: MySystem.LinkFormView.design({
+      layout: {top: 22, left: 0, right: 0}
+    })
+  })
 });
