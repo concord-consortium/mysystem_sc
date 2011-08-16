@@ -96,8 +96,6 @@ MySystem.Node = MySystem.Diagrammable.extend(LinkIt.Node,
     var inLinks = this.get('inLinks');
     outLinks.invoke('destroy');
     inLinks.invoke('destroy');
-    this.set('outLinks',[]);
-    this.set('inLinks', []);
     SC.Logger.log("destroy called on ", this);
     sc_super();
   },

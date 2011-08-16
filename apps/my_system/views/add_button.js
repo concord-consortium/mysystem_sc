@@ -4,6 +4,7 @@
 
 /*globals MySystem */
 sc_require('core');
+sc_require('views/letterbox_image_view');
 
 /**
 
@@ -36,7 +37,7 @@ MySystem.AddButtonView = SC.View.extend(
     layout: { top: 12, bottom: 10, height: 122 },
     childViews: 'icon label'.w(),
     
-    icon: SC.ImageView.design({
+    icon: MySystem.LetterboxImageView.design({
       classNames: ['image'],
       // useImageQueue: YES,
       useCanvas: NO,
@@ -73,7 +74,7 @@ MySystem.AddButtonView = SC.View.extend(
       data: {
         title: this.get('content').get('title') || 'title',
         image: this.get('content').get('image') || 'image',
-        uuid: this.get('content').get('uuid'),
+        uuid: this.get('content').get('uuid')
       }
     };
     this._drag = SC.Drag.start(dragOpts);
