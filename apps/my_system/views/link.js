@@ -62,6 +62,8 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         }
         var pathStr   = ['M', startX, startY, 'L', endX, endY].join(' ');
 
+        var lineColor = this.get('lineColor') || "#000099";
+
         var borderAttrs = {
           'path':           pathStr,
           'stroke':         this.get('borderColor'),
@@ -72,7 +74,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
         lineAttrs = {
           'path':           pathStr,
-          'stroke':         this.get('lineColor'),
+          'stroke':         lineColor,
           'stroke-width':   this.get('lineWidth'),
           'stroke-linecap': 'round'
         },
