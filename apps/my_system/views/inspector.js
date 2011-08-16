@@ -18,13 +18,7 @@ sc_require('views/link_form');
 MySystem.InspectorPane = SC.PalettePane.design({
   defaultResponder: 'MySystem.statechart',
   isOptionsForNewLink: NO,
-  layout: function(){
-    if (this.get('isOptionsForNewLink')){
-      return { centerY: 0, centerX: 0, width: 270, height: 200 };
-    } else {
-      return { top: 150, right: 5, width: 270, height: 200 };
-    }
-  }.property('isOptionsForNewLink'),
+  layout: { top: 150, right: 5, width: 270, height: 200 },
   classNames: 'property-editor'.w(),
   
   // the contenView property should be updated with the view that is correct
