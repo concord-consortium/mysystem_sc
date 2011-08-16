@@ -124,6 +124,14 @@ MySystem.Node = MySystem.Diagrammable.extend(LinkIt.Node,
     return result;
   },
 
+  addInLink: function(link) {
+    this.get('outLinks').pushObject(link); 
+  },
+
+  addOutLink: function(link) {
+    this.get('inLinks').pushObject(link);
+  },
+
   // tell LinkIt whether the proposed link is valid
   canLink: function (link) {
     // SC.Logger.log(this+".canLink("+link+")");
