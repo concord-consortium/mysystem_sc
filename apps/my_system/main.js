@@ -67,7 +67,7 @@ MySystem.main = function main() {
   SC.ExceptionHandler = MySystem.ExceptionHandler;
 
   //Set the content property on the primary controller
-  var nodes = MySystem.store.find(MySystem.Node);
+  var nodes = MySystem.store.find(MySystem.Diagrammable);
   MySystem.nodesController.set('content', nodes);
 
   // Configured activity
