@@ -27,6 +27,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   deltaY:            null,
   _raphaelCircle:    null,
 
+  dragLinkSrcTerminalBinding: 'MySystem.nodesController.dragLinkSrcTerminal',
   attrs: function() {
     return {
       'cx':             this.get('x'),
@@ -63,6 +64,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     this.set('deltaX', 0);
     this.set('deltaY', 0);
     this.set('isLineDrag', YES);
+    this.set('dragLinkSrcTerminal', this);
     return YES;
   },
 
@@ -84,9 +86,24 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     // don't forget to handle the last mouse movement!
     this._drag(evt);
     this.set('isLineDrag', NO);
+    if (this.get('dragLinkSrcTerminal') === this) {
+      this.set('dragLinkSrcTerminal',null);
+    }
     return YES;
   },
 
+  mouseEntered: function () {
+    var jquery = this.$();
+    this.set('isHovering', YES);
+    return YES;
+  },
+
+  mouseExited: function () {
+    var jquery = this.$();
+    this.set('isHovering',NO);
+    return YES;
+  },
+  
 
   // Rubber-Banding In-Progress Link
   //

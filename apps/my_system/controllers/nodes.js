@@ -13,6 +13,9 @@
 MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate, 
 /** @scope MySystem.nodesController.prototype */ {
 
+  // the in-progress links originating terminal
+  dragLinkSrcTerminal:     null,
+
   selectedLinksBinding: "MySystem.canvasView.selectedLinks",
 
   allSelected: function() {
