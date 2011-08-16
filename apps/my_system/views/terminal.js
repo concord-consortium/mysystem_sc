@@ -36,14 +36,16 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   isHovering:        NO,
 
   fill: function() {
-    var hover = this.get('isHovering'),
-        dragging = this.get('dragLinkSrcTerminal');
-
-    if (! hover) {
-      return this.get('normalFill');
+    var hover    = this.get('isHovering'),
+        isSrc    = this.get('dragLinkSrcTerminal') == this,
+        isEnd    = this.get('dragLinkEndTerminal') == this;
+    
+    if (hover) {
+      return isEnd ? this.get('draggingFill') : this.get('hoverFill');
     }
-    return dragging ? this.get('draggingFill') : this.get('hoverFill');
-  }.property('isHovering').cacheable(),
+    
+    return isSrc ? this.get('hoverFill') :this.get('normalFill');
+  }.property('isHovering', 'dragLinkSrcTerminal').cacheable(),
 
   attrs: function() {
     return {
@@ -115,7 +117,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
 
   mouseEntered: function () {
     this.set('isHovering', YES);
-    if (this.get('dragLinkSrcTerminal') != this) {
+    if (this.get('dragLinkSrcTerminal') && this.get('dragLinkSrcTerminal') != this) {
       this.set('dragLinkEndTerminal',this);
     }
     return YES;
