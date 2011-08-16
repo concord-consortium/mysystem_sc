@@ -13,10 +13,27 @@ sc_require('views/terminal');
 
   @extends SC.View
 */
+
+// Define the diagramExampleView attribute in Link and Node.
+// It seems weird to have the model object specify a view, so
+// I'm doing it here, rather than directly in the model
+// because this is where the views are going to be used.
+MySystem.Link.reopen({
+  diagramExampleView: function() {
+    return MySystem.LinkView;
+  }.property()
+});
+MySystem.Node.reopen({
+  diagramExampleView: function() {
+    return MySystem.NodeView;
+  }.property()
+});
+
 MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
 /** @scope MySystem.DiagramView.prototype */ {
 
-  exampleView: MySystem.NodeView,
+  // exampleView: MySystem.NodeView,
+  contentExampleViewKey: 'diagramExampleView',
   
   // This tels the collection view to deselect everything
   // if the nothing is clicked on 
