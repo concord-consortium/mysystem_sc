@@ -99,10 +99,6 @@ MySystem.clearCanvas = function () {
   for (i = 0; i < nodes.get('length'); ++i) {
       nodes.objectAt(i).destroy();
   }
-  var links = MySystem.store.find(MySystem.Link);
-  for (i = 0; i < links.get('length'); ++i) {
-      links.objectAt(i).destroy();
-  }
 };
 
 // Load canvas data for student
