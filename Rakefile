@@ -9,6 +9,13 @@ require 'erb'
 @output_directory   = "vle/node/#{@wise_step_name}"
 @template_suffix    = ".erb"
 
+# Build / Version info goes into the HTML HEAD / Meta section
+@git_sha         = %x[git log -n1 --pretty="%H" ].chomp.strip
+@git_time        = %x[git log -n1 --pretty="%ad" ].chomp.strip
+@git_branch      = %x[git log -n1 --pretty="%d"].chomp.strip
+@sc_build_time   = Time.now.to_s
+@sc_build_number = %x[sc-build-number #{@sc_project_name}].chomp.strip
+
 task :default => [:wise]
 
 desc "package sproutcore for for a wise4 deployment"

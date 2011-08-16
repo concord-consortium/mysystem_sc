@@ -42,14 +42,13 @@ MySystem.ADDING_LINK = SC.State.design({
   addLink: function(node1, node2, terminal1, terminal2){
     this._newLink = MySystem.store.createRecord(MySystem.Link, {
       color: "#0000FF",
-      startNode: node1.get('guid'),
       startTerminal: terminal1,
-      endNode: node2.get('guid'),
       endTerminal: terminal2
     });
     
     this._newLink.addObserver('energyType', this, '_energyTypeChanged');
-    
+    node1.addInLink(this._newLink);
+    node2.addOutLink(this._newLink);
     MySystem.nodesController.selectObject(this._newLink);
     this.setUpInspectorPane();
   },

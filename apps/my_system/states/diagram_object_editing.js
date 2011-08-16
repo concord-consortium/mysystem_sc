@@ -66,7 +66,7 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
     Deal with diagram selection update events.
   */
   diagramSelectionChanged: function () {
-    var newSelection = MySystem.nodesController.get('allSelected');
+    var newSelection = MySystem.nodesController.get('selection');
     if (newSelection.get('length') !== 1) {
       this.gotoState('DIAGRAM_EDITING');
     }

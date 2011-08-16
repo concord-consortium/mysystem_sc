@@ -17,9 +17,6 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   dragLinkSrcTerminal:     null,
   dragLinkEndTerminal:     null,
 
-  // FIXME dummy property for backward compatibility
-  allSelectedBinding: 'selection',
-
   // FIXME dummy method for backward compatibility
   unselectAll: function() {
     this.deselectObjects(this.get('selection'));
@@ -58,5 +55,5 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
 
   propertyEditing: function() {
     MySystem.statechart.sendEvent('diagramSelectionChanged', { });
-  }.observes('allSelected')
+  }.observes('selection')
 });

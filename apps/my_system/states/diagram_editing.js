@@ -49,7 +49,7 @@ MySystem.DIAGRAM_EDITING = SC.State.design({
     });
     
     // De-select other diagram objects and select the new node
-    MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
+    MySystem.nodesController.deselectObjects(MySystem.nodesController.get('selection'));
     MySystem.nodesController.selectObject(node);
 
     return YES;
@@ -59,7 +59,7 @@ MySystem.DIAGRAM_EDITING = SC.State.design({
     When a link is selected, we transition to the link-editing state.
   */
   diagramSelectionChanged: function () {
-    var selection = MySystem.nodesController.get('allSelected');
+    var selection = MySystem.nodesController.get('selection');
     if ((selection.get('length') == 1) && selection.firstObject().get('linkStyle')) {
       // Hacky: go straight to adding_link state. If it turns out this is not a new link, adding_link state
       // will then go to diagram_object_editing. This should be refactored when we switch to raphael views.

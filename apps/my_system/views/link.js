@@ -46,11 +46,21 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     var content   = this.get('content'),
         startNode = content.get('startNode'),
         endNode   = content.get('endNode'),
-        startX    = startNode.get('x'),
-        startY    = startNode.get('y'),
-        endX      = endNode.get('x'),
-        endY      = endNode.get('y');
+        startX    = 0,
+        startY    = 0,
+        endX      = 0,
+        endY      = 0;
 
+        if (!!startNode) { 
+          startX = startNode.get('x');
+          startY = startNode.get('y');
+        }
+        
+        if (!!endNode) {
+          endX = endNode.get('x');
+          endY = endNode.get('y');
+        }
+    
         if (content.get('startTerminal') === 'a') {
           startX = startX + 50;
           startY = startY + 10;
