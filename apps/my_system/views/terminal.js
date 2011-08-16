@@ -32,6 +32,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   _raphaelCircle:    null,
 
   dragLinkSrcTerminalBinding: 'MySystem.nodesController.dragLinkSrcTerminal',
+  dragLinkEndTerminalBinding: 'MySystem.nodesController.dragLinkEndTerminal',
   isHovering:        NO,
 
   fill: function() {
@@ -105,16 +106,25 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     if (this.get('dragLinkSrcTerminal') === this) {
       this.set('dragLinkSrcTerminal',null);
     }
+    if (!!this.get('dragLinkEndTerminal')) {
+      MySystem.statechart.sendAction('rubberbandLinkComplete');
+    }
     return YES;
   },
 
   mouseEntered: function () {
     this.set('isHovering', YES);
+    if (this.get('dragLinkSrcTerminal') != this) {
+      this.set('dragLinkEndTerminal',this);
+    }
     return YES;
   },
 
   mouseExited: function () {
     this.set('isHovering',NO);
+    if (this.get('dragLinkEndTerminal') === this) {
+      this.set('dragLinkEndTerminal',null);
+    }
     return YES;
   },
   

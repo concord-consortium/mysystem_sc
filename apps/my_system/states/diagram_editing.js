@@ -55,6 +55,30 @@ MySystem.DIAGRAM_EDITING = SC.State.design({
     return YES;
   },
   
+  rubberbandLinkComplete: function() {
+    var node1View = MySystem.nodesController.get('dragLinkSrcTerminal').get('parentView'),
+        node2View = MySystem.nodesController.get('dragLinkEndTerminal').get('parentView'),
+        node1 = node1View.get('content'),
+        node2 = node2View.get('content');
+        
+    var terminal1 = node1View.get('terminalA') === MySystem.nodesController.get('dragLinkSrcTerminal') ?
+        "a" : "b";
+    var terminal2 = node2View.get('terminalA') === MySystem.nodesController.get('dragLinkEndTerminal') ?
+        "a" : "b";
+        
+    this.addLink(node1, node2, terminal1, terminal2);
+  },
+  
+  addLink: function(node1, node2, terminal1, terminal2){
+    MySystem.store.createRecord(MySystem.Link, {
+      color: "#0000FF",
+      startNode: node1.get('guid'),
+      startTerminal: terminal1,
+      endNode: node2.get('guid'),
+      endTerminal: terminal2
+    });
+  },
+  
   /**
     When a link is selected, we transition to the link-editing state.
   */
