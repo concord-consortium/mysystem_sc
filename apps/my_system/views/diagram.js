@@ -43,8 +43,6 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
   acceptsFirstResponder: YES,
   canDeleteContent: YES,
 
-  selectedLinks: [],
-  
   _isDragging: NO,
   
   
