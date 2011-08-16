@@ -154,7 +154,7 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       if (evt.keyCode === 8) {
         var childViews = MySystem.getPath('mainPage.mainPane.childViews');
         if (!!childViews && childViews.length > 0){
-          var myCanvas = MySystem.getPath('mainPage.mainPane.childViews').objectAt(0).getPath('bottomRightView.bottomRightView');
+          var myCanvas = MySystem.getPath('mainPage.mainPane.childViews.0.bottomRightView.bottomRightView.diagramView');
           if (!!myCanvas){
             myCanvas.keyDown(evt);
           }
