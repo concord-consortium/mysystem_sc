@@ -23,8 +23,8 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   strokeWidth:       '1',
   strokeOpacity:     '0.2',
   isLineDrag:        NO,
-  deltaX:              null,
-  deltaY:              null,
+  deltaX:            null,
+  deltaY:            null,
   _raphaelCircle:    null,
 
   attrs: function() {
