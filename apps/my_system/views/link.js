@@ -6,6 +6,7 @@
 
 sc_require('views/editable_label');
 sc_require('views/terminal');
+sc_require('mixins/arrow_drawing');
 
 /** @class
 
@@ -60,7 +61,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           endX = endX + 50;
           endY = endY + 110;
         }
-        var pathStr   = ['M', startX, startY, 'L', endX, endY].join(' ');
+        var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY);
 
         var lineColor = this.get('lineColor') || "#000099";
 
@@ -75,6 +76,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         lineAttrs = {
           'path':           pathStr,
           'stroke':         lineColor,
+          'fill':           lineColor,
           'stroke-width':   this.get('lineWidth'),
           'stroke-linecap': 'round'
         },
