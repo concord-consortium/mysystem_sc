@@ -17,26 +17,12 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   dragLinkSrcTerminal:     null,
   dragLinkEndTerminal:     null,
 
-  selectedLinksBinding: "MySystem.canvasView.selectedLinks",
+  // FIXME dummy property for backward compatibility
+  allSelectedBinding: 'selection',
 
-  allSelected: function() {
-    var links  = MySystem.canvasView.get('selectedLinks');
-    var resultSet = this.get('selection').clone();
-    resultSet = resultSet.addObjects(links.map(function(link){return link.get('model');}));
-
-    return resultSet;
-  }.property('selectedLinks','selection').cacheable(),
-  
+  // FIXME dummy method for backward compatibility
   unselectAll: function() {
-    // De-select links
-    if (this.selectedLinks) {
-      this.set('selectedLinks', []);
-      MySystem.canvasView.linksDidChange();
-    }
-    
-    // De-select nodes
-    var baseSet = this.get('selection').clone();
-    this.deselectObjects(baseSet);
+    this.deselectObjects(this.get('selection'));
   },
 
   /* We'll need to refactor this when we get back to transformations */
