@@ -12,15 +12,17 @@ sc_require('mixins/arrow_drawing');
 */
 MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   childViews: 'inProgressLinkView'.w(),
-  displayProperties: 'x y r fill isHovering dragLinkSrcTerminal stroke'.w(),
+  displayProperties: 'x y r isHovering dragLinkSrcTerminal stroke'.w(),
 
   x:                 0,
   y:                 0,
-  r:                 5,
+  r:                 function(){
+                        return this.get('isHovering') ? 6 : 5;
+                      }.property('isHovering'),
   normalFill:        '#ccc',
   hoverFill:         '#00F',
-  draggingFill:      '#F00',
-  fillOpacity:       '0.4',
+  draggingFill:      '#0F0',
+  fillOpacity:       0.4,
   stroke:            '#333',
   strokeWidth:       '1',
   strokeOpacity:     '0.2',
@@ -107,13 +109,11 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   },
 
   mouseEntered: function () {
-    var jquery = this.$();
     this.set('isHovering', YES);
     return YES;
   },
 
   mouseExited: function () {
-    var jquery = this.$();
     this.set('isHovering',NO);
     return YES;
   },
@@ -139,7 +139,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
       y1 = this.get('startY'),
       y2 = this.get('deltaY') + y1;
 
-      return MySystem.ArrowDrawing.arrowPath(x1,y1,x2,y2,15,20);
+      return MySystem.ArrowDrawing.arrowPath(x1,y1,x2,y2);
     },
 
     attrs: function() {

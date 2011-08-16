@@ -43,7 +43,9 @@ MySystem.ArrowDrawing = {
       between the line and each wing of the arrowhead. 
       Should be less than 90.
   */
-  arrowPath: function(startx,starty,endx,endy,len,angle) {    
+  arrowPath: function(startx,starty,endx,endy,_len,_angle) { 
+    var len   = _len || 15,
+        angle = _angle || 20;
 		return MySystem.ArrowDrawing.arrowPathArray(startx,starty,endx,endy,len,angle).join(" ");
 	},
 
