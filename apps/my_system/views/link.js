@@ -31,10 +31,14 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   borderWidth: 3,
 
   // RENDER METHODS
-  renderCallback: function (raphaelCanvas, lineAttrs, borderAttrs) {
+  renderCallback: function (raphaelCanvas, lineAttrs, borderAttrs, labelAttrs) {
+    var label = raphaelCanvas.text().attr(labelAttrs);
+    var labelBg = raphaelCanvas.rect().attr(this._getLabelBackgroundAttrs(raphaelCanvas, label));
     return raphaelCanvas.set().push(
       raphaelCanvas.path().attr(borderAttrs),
-      raphaelCanvas.path().attr(lineAttrs)
+      raphaelCanvas.path().attr(lineAttrs),
+      labelBg,
+      label.toFront()
     );
   },
 
@@ -61,6 +65,11 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           endX = endX + 50;
           endY = endY + 110;
         }
+
+        // offset the labels to the 1/3 mark closest to the destination to help avoid overlapping labels
+        var centerX = (endX-startX)*2/3.0 + startX;
+        var centerY = (endY-startY)*2/3.0 + startY;
+
         var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY);
 
         var lineColor = this.get('lineColor') || "#000099";
@@ -81,21 +90,53 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           'stroke-linecap': 'round'
         },
 
+        labelAttrs =  {
+          'x':              centerX,
+          'y':              centerY,
+          'fill':           'black',
+          'text':           content.get('text')
+        },
+
         raphaelObject,
         border,
-        line;
+        line,
+        label;
 
     if (firstTime) {
-      context.callback(this, this.renderCallback, lineAttrs, borderAttrs);
+      context.callback(this, this.renderCallback, lineAttrs, borderAttrs, labelAttrs);
     }
     else {
       raphaelObject = this.get('raphaelObject');
       border        = raphaelObject.items[0];
       line          = raphaelObject.items[1];
+      labelBg       = raphaelObject.items[2];
+      label         = raphaelObject.items[3];
 
       border.attr(borderAttrs);
       line.attr(lineAttrs);
+      label.attr(labelAttrs);
+      labelBg.attr(this._getLabelBackgroundAttrs(this, label));
+
+      labelBg.toFront();
+      label.toFront();
     }
+  },
+
+  _getLabelBackgroundAttrs: function(canvas, label) {
+    var bb = label.getBBox();
+    var hpad = 10;
+    var vpad = 6;
+    return {
+      'x':              bb.x - hpad/2,
+      'y':              bb.y - vpad/2,
+      'width':          bb.width + hpad,
+      'height':         bb.height + vpad + 1, // offset just a little more on the bottom so the text looks visually centered
+      'r':              5,
+      'fill':           'white',
+      'stroke':         '#444444',
+      'stroke-width':   1,
+      'stroke-opacity': 0.5
+    };
   }
 });
 
