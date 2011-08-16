@@ -175,62 +175,62 @@ MySystem.Node = MySystem.Diagrammable.extend(LinkIt.Node,
   },
 
   // Part of LinkIt Node Contract. Called when a new link created by drag event.
-  didCreateLink: function (inlink) {
-    var tmpHash = MySystem.Link.hashFromLinkItLink(inlink);
-    var link = null,
-        links;
+  // didCreateLink: function (inlink) {
+  //   var tmpHash = MySystem.Link.hashFromLinkItLink(inlink);
+  //   var link = null,
+  //       links;
 
-    var sn = tmpHash.startNode,
-        st = tmpHash.startTerminal,
-        en = tmpHash.endNode, 
-        et = tmpHash.endTerminal;
+  //   var sn = tmpHash.startNode,
+  //       st = tmpHash.startTerminal,
+  //       en = tmpHash.endNode, 
+  //       et = tmpHash.endTerminal;
 
-    // funny, we sometimes get new nodes?
-    if (SC.none(this.get("guid"))) {
-      SC.Logger.warn("No guid found for %@".fmt(this));
-      return;
-    }
-    // add only completed links (both sides are mapped)
-    if(sn && st && en && et) {
+  //   funny, we sometimes get new nodes?
+  //   if (SC.none(this.get("guid"))) {
+  //     SC.Logger.warn("No guid found for %@".fmt(this));
+  //     return;
+  //   }
+  //   add only completed links (both sides are mapped)
+  //   if(sn && st && en && et) {
 
-      if (sn === this) {
-         tmpHash.startNode = null;
-         tmpHash.endNode = null;
-         link = MySystem.store.createRecord(MySystem.Link, tmpHash);
-         link.set("startNode",sn);
-         link.set("endNode",en);
-         // link.set('color', MySystem.linkColorChooser.get('content'));
-         MySystem.canvasView.selectLink(link);
-       }
-       else if (en === this) {
-         // if we are the end-node let our peer start-node do the object creation ... 
-       }
-    }
-  },
+  //     if (sn === this) {
+  //        tmpHash.startNode = null;
+  //        tmpHash.endNode = null;
+  //        link = MySystem.store.createRecord(MySystem.Link, tmpHash);
+  //        link.set("startNode",sn);
+  //        link.set("endNode",en);
+  //        link.set('color', MySystem.linkColorChooser.get('content'));
+  //        MySystem.canvasView.selectLink(link);
+  //      }
+  //      else if (en === this) {
+  //        if we are the end-node let our peer start-node do the object creation ... 
+  //      }
+  //   }
+  // },
   
   // @param link is a LinkIt.Link.
   // we are notified from the LinkIt framework
-  willDeleteLink: function (link) {
-    var sn = link.get('startNode'), 
-        st = link.get('startTerminal');
-    var en = link.get('endNode'), 
-        et = link.get('endTerminal');
-    var model_link = link.model;
-    if (model_link) {
-      var startNode = model_link.get("startNode");
-      var endNode = model_link.get("endNode");
-      // if we are the startNode then we are responsible for removing the link.
-      if (startNode && startNode === this) {
-        // SC.Logger.log("removing link %@", model_link);
-        startNode.get("outLinks").removeObject(model_link);
-        startNode.get("inLinks").removeObject(model_link);
-        endNode.get("outLinks").removeObject(model_link);
-        endNode.get("inLinks").removeObject(model_link);
-        model_link.destroy();
-        link = null;
-      }
-    }
-  },
+  // willDeleteLink: function (link) {
+  //   var sn = link.get('startNode'), 
+  //       st = link.get('startTerminal');
+  //   var en = link.get('endNode'), 
+  //       et = link.get('endTerminal');
+  //   var model_link = link.model;
+  //   if (model_link) {
+  //     var startNode = model_link.get("startNode");
+  //     var endNode = model_link.get("endNode");
+  //     if we are the startNode then we are responsible for removing the link.
+  //     if (startNode && startNode === this) {
+  //       SC.Logger.log("removing link %@", model_link);
+  //       startNode.get("outLinks").removeObject(model_link);
+  //       startNode.get("inLinks").removeObject(model_link);
+  //       endNode.get("outLinks").removeObject(model_link);
+  //       endNode.get("inLinks").removeObject(model_link);
+  //       model_link.destroy();
+  //       link = null;
+  //     }
+  //   }
+  // },
 
   // Returns a list of acceptable colors for out-links, null if no restriction
   acceptableOutLinkColors: function() {
