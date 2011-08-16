@@ -14,25 +14,44 @@ MySystem.ADDING_LINK = SC.State.design({
   
   enterState: function () {
     SC.Logger.log("Entering state %s", this.get('name'));
-    
-    var selection = MySystem.nodesController.get('allSelected');
-    if ((selection.get('length') == 1) && selection.firstObject().get('linkStyle') && !selection.firstObject().get('energyType')) {
-      // Set up the property editor pane and attach it
-      this.setUpInspectorPane();
-      
-      this._selectedLink = selection.firstObject();
-      this._selectedLink.addObserver('energyType', this, '_energyTypeChanged');
-    } else {
-      this.gotoState('DIAGRAM_OBJECT_EDITING');
-    }
+    this._newLink = null;
   },
   
-  _selectedLink: null,
+  _newLink: null,
   
   exitState: function () {
     SC.Logger.log("Leaving state %s", this.get('name'));
-    // Detatch property editor pane and clean it up
+    // // Detatch property editor pane and clean it up
     this.tearDownInspectorPane();
+  },
+  
+  rubberbandLinkComplete: function() {
+    var node1View = MySystem.nodesController.get('dragLinkSrcTerminal').get('parentView'),
+        node2View = MySystem.nodesController.get('dragLinkEndTerminal').get('parentView'),
+        node1 = node1View.get('content'),
+        node2 = node2View.get('content');
+        
+    var terminal1 = node1View.get('terminalA') === MySystem.nodesController.get('dragLinkSrcTerminal') ?
+        "a" : "b";
+    var terminal2 = node2View.get('terminalA') === MySystem.nodesController.get('dragLinkEndTerminal') ?
+        "a" : "b";
+        
+    this.addLink(node1, node2, terminal1, terminal2);
+  },
+  
+  addLink: function(node1, node2, terminal1, terminal2){
+    this._newLink = MySystem.store.createRecord(MySystem.Link, {
+      color: "#0000FF",
+      startNode: node1.get('guid'),
+      startTerminal: terminal1,
+      endNode: node2.get('guid'),
+      endTerminal: terminal2
+    });
+    
+    this._newLink.addObserver('energyType', this, '_energyTypeChanged');
+    
+    MySystem.nodesController.selectObject(this._newLink);
+    this.setUpInspectorPane();
   },
   
   /**
@@ -48,7 +67,7 @@ MySystem.ADDING_LINK = SC.State.design({
   },
   
   _energyTypeChanged: function() {
-    this._selectedLink.removeObserver('energyType', this, '_energyTypeChanged');
+    this._newLink.removeObserver('energyType', this, '_energyTypeChanged');
     this.gotoState('DIAGRAM_OBJECT_EDITING');
   },
   

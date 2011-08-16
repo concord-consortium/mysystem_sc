@@ -76,6 +76,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   },
 
   mouseDown: function (evt) {
+    MySystem.statechart.gotoState('ADDING_LINK');
     this._downX = evt.pageX;
     this._downY = evt.pageY;
     this.set('deltaX', 0);
