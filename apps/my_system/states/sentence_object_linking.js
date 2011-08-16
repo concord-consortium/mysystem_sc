@@ -60,7 +60,7 @@ MySystem.SENTENCE_OBJECT_LINKING = SC.State.design({
       return x.kindOf(MySystem.Link);
     };
     var allLinks = MySystem.store.find('MySystem.Link');
-    var selectedLinks = MySystem.nodesController.get('allSelected').filter(isLink);
+    var selectedLinks = MySystem.nodesController.get('selection').filter(isLink);
     
     allLinks.forEach( function (link) {
       if (selectedLinks.indexOf(link) > -1) {
@@ -83,7 +83,7 @@ MySystem.SENTENCE_OBJECT_LINKING = SC.State.design({
     sentence to match the set of selected nodes and links.
   */
   diagramSelectionChanged: function () {
-    var selection = MySystem.nodesController.get('allSelected');
+    var selection = MySystem.nodesController.get('selection');
     var sentence = MySystem.storySentenceController.get('editingSentence');
 
     // Remove existing links
