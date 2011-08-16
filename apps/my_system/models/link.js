@@ -6,11 +6,12 @@
 
 /** @class 
   
-  @extends SC.Record
+  @extends MySystem.Diagrammable
   @version 0.1
 */
+sc_require('models/diagrammable');
 
-MySystem.Link = MySystem.AutoGuidRecord.extend(  
+MySystem.Link = MySystem.Diagrammable.extend(  
 /** @scope MySystem.Link.prototype */ {
   color: SC.Record.attr(String),
   text: SC.Record.attr(String),

@@ -8,11 +8,13 @@
 
   Simple model of a MySystem node.
 
-  @extends SC.Record
+  @extends MySystem.Diagrammable
   @extends LinkIt.Node
   @version 0.1
 */
-MySystem.Node = MySystem.AutoGuidRecord.extend(LinkIt.Node, 
+sc_require('models/diagrammable');
+
+MySystem.Node = MySystem.Diagrammable.extend(LinkIt.Node, 
 /** @scope MySystem.Node.prototype */ {
 
   image: SC.Record.attr(String),
@@ -32,20 +34,6 @@ MySystem.Node = MySystem.AutoGuidRecord.extend(LinkIt.Node,
     inverse: 'endNode',
     isMaster: YES
   }),
-  
-  /**
-    X-position (in pixels) of this node, relative to the upper left corner of the diagram
-    
-    @property {Number}
-  */
-  x: SC.Record.attr(Number),
-
-  /**
-    Y-position (in pixels) of this node, relative to the upper left corner of the diagram
-    
-    @property {Number}
-  */
-  y: SC.Record.attr(Number),
   
   sentences: SC.Record.toMany('MySystem.StorySentence', {
     inverse: 'nodes', isMaster: NO
