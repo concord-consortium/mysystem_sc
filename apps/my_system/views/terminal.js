@@ -4,6 +4,8 @@
 // ==========================================================================
 /*globals MySystem RaphaelViews */
 
+sc_require('mixins/arrow_drawing');
+
 /** @class
 
   @extends RaphaelViews.RaphaelView
@@ -93,31 +95,35 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
 		displayProperties: 'startX startY deltaX deltaY isVisible'.w(),
 		startXBinding:     '.parentView.x',
 		startYBinding:     '.parentView.y',
-		isVisibleBinding:  '.parentView.isLineDrag',
-		strokeWidth:       2,
-		strokeColor:       "#FF0000",
+    isVisibleBinding:  '.parentView.isLineDrag',
+		strokeWidth:       3,
+		strokeColor:       "#0000FF",
 		deltaXBinding:     '.parentView.deltaX',
 		deltaYBinding:     '.parentView.deltaY',
 		_raphaelPath:      null,
 
-		path: function() {
-			var x1 = this.get('startX'),
-					x2 = this.get('deltaX') + x1,
-					y1 = this.get('startY'),
-					y2 = this.get('deltaY') + y1,
-					_path = ["M",x1,y1,"L",x2,y2].join(" "); 
-			return _path;
-		},
+    path: function() {
+      var x1 = this.get('startX'),
+      x2 = this.get('deltaX') + x1,
+      y1 = this.get('startY'),
+      y2 = this.get('deltaY') + y1;
+      
+      return MySystem.ArrowDrawing.arrowPath(x1,y1,x2,y2,15,20);
+    },
 
 		attrs: function() {
 			return { 
 				'path': this.path(),
 				'stroke': this.get('strokeColor'),
+				'fill': "#0000FF",
 				'stroke-width': this.get('strokeWidth')
 			};
 		},
+		
+		_raphaelCanvas: null,
 
 		renderCallback: function (raphaelCanvas, attrs) {
+		  this._raphaelCanvas = raphaelCanvas;
 			this._raphaelPath  = raphaelCanvas.path();
 			this._raphaelPath.attr(attrs);
 			return this._raphaelPath;
