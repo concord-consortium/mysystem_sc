@@ -12,13 +12,15 @@ sc_require('mixins/arrow_drawing');
 */
 MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   childViews: 'inProgressLinkView'.w(),
-  displayProperties: 'x y r fill stroke'.w(),
+  displayProperties: 'x y r fill isHovering dragLinkSrcTerminal stroke'.w(),
 
   x:                 0,
   y:                 0,
   r:                 5,
-  fill:              '#ccc',
-  fillOpacity:       '0.2',
+  normalFill:        '#ccc',
+  hoverFill:         '#00F',
+  draggingFill:      '#F00',
+  fillOpacity:       '0.4',
   stroke:            '#333',
   strokeWidth:       '1',
   strokeOpacity:     '0.2',
@@ -28,6 +30,18 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   _raphaelCircle:    null,
 
   dragLinkSrcTerminalBinding: 'MySystem.nodesController.dragLinkSrcTerminal',
+  isHovering:        NO,
+
+  fill: function() {
+    var hover = this.get('isHovering'),
+        dragging = this.get('dragLinkSrcTerminal');
+
+    if (! hover) {
+      return this.get('normalFill');
+    }
+    return dragging ? this.get('draggingFill') : this.get('hoverFill');
+  }.property('isHovering').cacheable(),
+
   attrs: function() {
     return {
       'cx':             this.get('x'),
