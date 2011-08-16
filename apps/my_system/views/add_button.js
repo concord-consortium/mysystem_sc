@@ -4,7 +4,7 @@
 
 /*globals MySystem */
 sc_require('core');
-sc_require('views/letterbox_image_view');
+sc_require('views/letterbox_image');
 
 /**
 
