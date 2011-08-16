@@ -46,7 +46,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     this._raphaelCircle.attr(this.attrs());
     return this._raphaelCircle;
   },
-  
+
   render: function (context, firstTime) {
     if (firstTime) {
       context.callback(this, this.renderCallback, this.attrs());
@@ -56,7 +56,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
       this._raphaelCircle.attr(this.attrs());
     }
   },
-  
+
   mouseDown: function (evt) {
     this._downX = evt.pageX;
     this._downY = evt.pageY;
@@ -65,12 +65,12 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     this.set('isLineDrag', YES);
     return YES;
   },
-  
+
   mouseDragged: function (evt) {
     return this._drag(evt);
   },
 
-  
+
   _drag: function (evt) {
     if (!this.get('isLineDrag')) {
       return NO;
@@ -86,7 +86,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     this.set('isLineDrag', NO);
     return YES;
   },
-  
+
 
   // Rubber-Banding In-Progress Link
   //
@@ -107,19 +107,19 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
       x2 = this.get('deltaX') + x1,
       y1 = this.get('startY'),
       y2 = this.get('deltaY') + y1;
-      
+
       return MySystem.ArrowDrawing.arrowPath(x1,y1,x2,y2,15,20);
     },
 
     attrs: function() {
-      return { 
+      return {
         'path': this.path(),
         'stroke': this.get('strokeColor'),
         'fill': "#0000FF",
         'stroke-width': this.get('strokeWidth')
       };
     },
-    
+
     _raphaelCanvas: null,
 
     renderCallback: function (raphaelCanvas, attrs) {
@@ -128,7 +128,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
       this._raphaelPath.attr(attrs);
       return this._raphaelPath;
     },
-    
+
     render: function (context, firstTime) {
       if (firstTime) {
         context.callback(this, this.renderCallback, this.attrs());
@@ -187,7 +187,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     //   return NO;
     // }
   //   return YES;
-  // }, 
+  // },
 
   // Validate if the currently-being-created link may end at this terminal
   // canDropLink: function() {
