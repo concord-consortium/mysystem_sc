@@ -275,11 +275,11 @@ MySystem.Link = MySystem.Diagrammable.extend(
   destroy: function() {
     var start = this.get('startNode');
     var end   = this.get('endNode');
-    if (!!start) {
+    if (!!start && (start.get('status') & SC.Record.READY)) {
       start.get('inLinks').removeObject(this);
       start.get('outLinks').removeObject(this);
     }
-    if (!!end) {
+    if (!!end && (end.get('status') & SC.Record.READY)) {
       end.get('inLinks').removeObject(this);
       end.get('outLinks').removeObject(this);
     }
