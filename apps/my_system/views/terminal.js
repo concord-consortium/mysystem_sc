@@ -85,6 +85,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     this.set('deltaY', 0);
     this.set('isLineDrag', YES);
     this.set('dragLinkSrcTerminal', this);
+    this.set('dragLinkEndTerminal', null);
     return YES;
   },
 
