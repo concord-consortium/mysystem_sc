@@ -1,7 +1,6 @@
 // ==========================================================================
-// Project:   MySystem.DIAGRAM_OBJECT_EDITING
+// Project:   MySystem.ADDING_LINK
 // Copyright: ©2011 Concord Consortium
-// @author    Parker Morse <pmorse@cantinaconsulting.com>
 // ==========================================================================
 /*globals MySystem */
 
