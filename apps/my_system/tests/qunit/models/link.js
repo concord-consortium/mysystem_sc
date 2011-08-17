@@ -43,21 +43,6 @@ test("Links should return the nodes they're linked to", function() {
   equals(newLink.get('endNode'), node2, 'The link should return its end node');
 });
 
-test("Links should return LinkIt.Link objects when asked", function() {
-  expect(4);
-  var linkHash = {
-      text: 'Test link for LinkIt Links',
-      startNode: node1.id(),
-      endNode: node2.id()
-    };
-  var newLink = store.createRecord(MySystem.Link, linkHash);
-  var linkItLink = newLink.makeLinkItLink();
-  equals(linkItLink.startNode, newLink.get('startNode'), "The LinkIt Link and MySystem Link should have the same start node");
-  equals(linkItLink.endNode, newLink.get('endNode'), "The LinkIt Link and MySystem Link should have the same end node");
-  same(linkItLink.label, newLink.get('label'), 'The LinkIt Link and MySystem Link should have the same label');
-  equals(linkItLink.model, newLink, 'The LinkIt Link should return the model it was derived from');
-});
-
 test("Link color should be editable and persistent in the store", function() {
   expect(2);
   var linkHash = {

@@ -1,8 +1,3 @@
-[submodule "frameworks/scui"]
-	path = frameworks/scui
-#	url = http://github.com/etgryphon/sproutcore-ui.git
-# url = git@github.com/concord-consortium/sproutcore-ui.git
-  url = http://github.com/concord-consortium/sproutcore-ui.git
 [submodule "Lebowski"]
 	path = Lebowski
 	url = http://github.com/FrozenCanuck/Lebowski.git

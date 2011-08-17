@@ -2,7 +2,7 @@
 // Project:   MySystem.Transformation
 // Copyright: ©2010 Concord Consortium
 // ==========================================================================
-/*globals MySystem LinkIt */
+/*globals MySystem */
 
 /** @class
 
@@ -95,29 +95,8 @@ MySystem.Transformation = SC.Record.extend(
     return _complete;
   }.property("node", ".inLinks.[]", ".outLinks.[]").cacheable(),        // FIXME this is not valid SC!
 
-  makeLinkItLink: function() {
-    var tempHash = {};
-    // this._setLabel();
-    // this._setLinkStyle();
-    tempHash.startNode = this.get('node').inColorMap[this.get('inLinkColor')];
-    tempHash.startTerminal = this.get('startTerminal');
-    tempHash.endNode = this.get('node').outColorMap[this.get('outLinkColor')];
-    tempHash.endTerminal = this.get('endTerminal');
-    tempHash.label = ''; // this.get('label');
-    tempHash.linkStyle = {}; // this.get('linkStyle');
-    tempHash.model = this; // reference back to this
-    return SC.Object.create( LinkIt.Link, tempHash);
-  }
 }) ;
 
 MySystem.Transformation.GuidCounter = 0;
 MySystem.Transformation.newGuid = function() { return "trans" + MySystem.Transformation.GuidCounter++;};
 
-MySystem.Transformation.hashFromLinkItLink = function(linkItLink) {
-  var tempHash = {};
-  tempHash.startNode = linkItLink.get('startNode');
-  tempHash.startTerminal = linkItLink.get('startTerminal');
-  tempHash.endNode = linkItLink.get('endNode');
-  tempHash.endTerminal = linkItLink.get('endTerminal');
-  return tempHash;
-};

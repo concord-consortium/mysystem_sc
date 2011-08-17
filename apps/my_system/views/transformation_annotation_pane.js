@@ -2,7 +2,7 @@
 // Project:   MySystem.TransformationAnnotationPane
 // Copyright: ©2010 Concord Consortium
 // ==========================================================================
-/*globals MySystem LinkIt */
+/*globals MySystem */
 
 /** @class
 
