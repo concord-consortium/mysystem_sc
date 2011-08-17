@@ -138,17 +138,20 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   _getLabelAttrs: function(path) {
     var center = path.getPointAtLength(path.getTotalLength() * (2/3));
-
+    var text = this.get('content').get('text');
      return {
       'x':              center.x,
       'y':              center.y,
       'fill':           'black',
-      'text':           this.get('content').get('text')
+      'text':           !!text ? text : "" 
     }
   },
 
   _getLabelBackgroundAttrs: function(canvas, label) {
     var bb = label.getBBox();
+    if (bb.height === 0){
+      return {};
+    }
     var hpad = 10;
     var vpad = 6;
     return {
