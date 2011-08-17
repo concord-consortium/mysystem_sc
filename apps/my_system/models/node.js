@@ -91,11 +91,13 @@ MySystem.Node = MySystem.Diagrammable.extend(LinkIt.Node,
   
   // update our links before destroy
   // fires off notifications to interested parties.
+  // NOTE: We can't just grab our link arrays and invoke('destroy') on them, as the links remove themselves 
+  // from the arrays and the invoke method doesn't correctly iterate once elements start being removed
   destroy: function() {
-    var outLinks = this.get('outLinks');
-    var inLinks = this.get('inLinks');
-    outLinks.invoke('destroy');
-    inLinks.invoke('destroy');
+    var links = this.get('outLinks').toArray().concat(this.get('inLinks').toArray());
+    for (var i = 0, ii = links.length; i < ii; i++){
+      links[i].destroy();
+    }
     SC.Logger.log("destroy called on ", this);
     sc_super();
   },
