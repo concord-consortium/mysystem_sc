@@ -62,6 +62,12 @@ MySystem.ArrowDrawing = {
 	/**
 	
 	Returns an array representation of the path elements for an arrow
+	
+	First we calculate a simple curve for the tail.
+	
+	Then we pick a point on that curve to use as the base-center of the arrow head, 
+	then calculate the position of that triangle based on the angle between that 
+	point and the tip.
   
 	@params startx {Number} X-coordinate of the start point
     @params starty {Number} Y-coordinate of the start point
@@ -89,9 +95,10 @@ MySystem.ArrowDrawing = {
     var c2 = new this.coord(start.x+curveDistance, start.y),
         c3 = new this.coord(tip.x-curveDistance, tip.y);
         
-    // we could draw a curved path now using just this information:
-    // pathData.push("M", start.x, start.y);  // move to start of line
-    // pathData.push("C", c2.x, c2.y, c3.x, c3.y, end.x, end.y); // curve line to the tip
+    // draw arrow path
+    
+    pathData.push("M", start.x, start.y);  // move to start of line
+    pathData.push("C", c2.x, c2.y, c3.x, c3.y, tip.x, tip.y); // curve line to the tip
     
     // draw arrow head
     var percLengthOfHead = len / this.getLengthOfCubicBezier(start, c2, c3, tip),
@@ -102,9 +109,6 @@ MySystem.ArrowDrawing = {
         baseA      = new this.coord(endx - len * Math.cos(baseAngleA), endy - len * Math.sin(baseAngleA)),
         baseB      = new this.coord(endx - len * Math.cos(baseAngleB), endy - len * Math.sin(baseAngleB));
 
-    pathData.push("M", start.x, start.y);  // move to start of line
-    pathData.push("C", c2.x, c2.y, c3.x, c3.y, tip.x, tip.y); // curve line to the tip
-    
     arrowHeadData.push("M", tip.x, tip.y);
     arrowHeadData.push("L", baseA.x, baseA.y);  // line to baseA
     arrowHeadData.push("L", baseB.x, baseB.y);  // line to baseB
