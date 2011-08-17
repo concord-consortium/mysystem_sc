@@ -28,3 +28,8 @@ namespace :build do
     Jasmine::Builder::Test.build ENTRY, DST_PATH
   end
 end
+
+mode :no_minify
+  config :all,
+    :minify => false,
+    :minify_css => false
