@@ -85,7 +85,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         var lineColor = this.get('lineColor') || "#000099";
 
         var borderAttrs = {
-          'path':           pathStr.tail,
+          'path':           pathStr.tail + pathStr.head,
           'stroke':         this.get('borderColor'),
           'opacity':        this.get('borderOpacity'),
           'stroke-width':   this.get('lineWidth') + 2 * this.get('borderWidth'),  // the border "around" the line is really a fat line behind it

@@ -53,7 +53,10 @@ MySystem.ArrowDrawing = {
         angle = _angle || 20,
         curvature = _curvature || 0.5;
     arrowPathArrays = MySystem.ArrowDrawing.arrowPathArrays(startx,starty,endx,endy,len,angle,curvature);
-		return {tail: arrowPathArrays[0].join(" "), head: arrowPathArrays[1].join(" ")};
+		return {
+		  tail: arrowPathArrays[0].join(" "), 
+		  head: arrowPathArrays[1].join(" ")
+		};
 	},
 
 	/**
