@@ -56,7 +56,7 @@ task :repackage => [:clean] do
   begin
     require 'resource_squasher'
     # clean and build the release
-    %x[sc-build -rc #{@sc_project_name}]
+    %x[sc-build #{@sc_project_name} -r -c --languages=en]
 
     # compact and rewrite application for wise4
     puts "rezsquish squash --project_name=#{@sc_project_name} --output_dir=#{@output_directory} --index_file=#{@wise_step_name}"
