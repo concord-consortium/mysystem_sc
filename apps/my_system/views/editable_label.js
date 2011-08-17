@@ -32,7 +32,12 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
 
   displayText: function () {
     var txt = this.get('text');
-    if (this.get('isEditing')) { txt = txt + "_"; }
+    if (this.get('isEditing')) { 
+      txt = txt + "_"; 
+    }
+    else {
+      txt = (txt.replace(/\s+/g,"") === "") ? "«click to edit»" : txt;
+    }
     return txt;
   }.property('text', 'isEditing').cacheable(),
 
