@@ -146,23 +146,31 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     strokeColor:       "#0000FF",
     deltaXBinding:     '.parentView.deltaX',
     deltaYBinding:     '.parentView.deltaY',
-    _raphaelPath:      null,
+    _arrowPath:       null,
+    _arrowHead:       null,
 
     path: function() {
       var x1 = this.get('startX'),
       x2 = this.get('deltaX') + x1,
       y1 = this.get('startY'),
       y2 = this.get('deltaY') + y1;
-
       return MySystem.ArrowDrawing.arrowPath(x1,y1,x2,y2);
     },
 
     attrs: function() {
+      var paths = this.path();
       return {
-        'path': this.path(),
-        'stroke': this.get('strokeColor'),
-        'fill': "#0000FF",
-        'stroke-width': this.get('strokeWidth')
+        tail: {
+          'path': paths.tail,
+          'stroke': this.get('strokeColor'),
+          'stroke-width': this.get('strokeWidth')
+        },
+        head: {
+          'path': paths.head,
+          'stroke': this.get('strokeColor'),
+          'fill': this.get('strokeColor'),
+          'stroke-width': this.get('strokeWidth')
+        }
       };
     },
 
@@ -170,9 +178,14 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
 
     renderCallback: function (raphaelCanvas, attrs) {
       this._raphaelCanvas = raphaelCanvas;
-      this._raphaelPath  = raphaelCanvas.path();
-      this._raphaelPath.attr(attrs);
-      return this._raphaelPath;
+      this._arrowPath  = raphaelCanvas.path();
+      this._arrowPath.attr(attrs.tail);
+      this._arrowHead  = raphaelCanvas.path();
+      this._arrowHead.attr(attrs.head);
+      return raphaelCanvas.set().push(
+        this._arrowPath,
+        this._arrowHead
+      );
     },
 
     render: function (context, firstTime) {
@@ -181,7 +194,9 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
         this.renderChildViews(context,firstTime);
       }
       else {
-        this._raphaelPath.attr(this.attrs());
+        var attrs = this.attrs();
+        this._arrowPath.attr(attrs.tail);
+        this._arrowHead.attr(attrs.head);
       }
     }
 

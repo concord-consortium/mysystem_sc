@@ -29,7 +29,11 @@ MySystem.ArrowDrawing = {
 	*                   *
 	*                   * <-------- start (x,y)
 	*
-    Returns a Raphael path string which draws an arrow. 
+    Returns two Raphael path strings,
+      "tail" which draws the curved path, and 
+      "head" which draws the arrow head.
+    These are split into two so that one may be filled seperately
+    
     Parameters should be actual screen coordinates, not dataset coordinates.
     
     Original from Noah Paessel, https://gist.github.com/550233
@@ -46,7 +50,8 @@ MySystem.ArrowDrawing = {
   arrowPath: function(startx,starty,endx,endy,_len,_angle) { 
     var len   = _len || 15,
         angle = _angle || 20;
-		return MySystem.ArrowDrawing.arrowPathArray(startx,starty,endx,endy,len,angle).join(" ");
+    arrowPathArrays = MySystem.ArrowDrawing.arrowPathArrays(startx,starty,endx,endy,len,angle);
+		return {tail: arrowPathArrays[0].join(" "), head: arrowPathArrays[1].join(" ")};
 	},
 
 	/**
@@ -63,39 +68,92 @@ MySystem.ArrowDrawing = {
       Should be less than 90.
 
 	**/
-  arrowPathArray: function(startx,starty,endx,endy,len,angle) {    
-    var theta  = Math.atan2((endy-starty),(endx-startx)),
+  arrowPathArrays: function(startx,starty,endx,endy,len,angle) { 
+    
+    if (startx === endx && starty === endy){
+      return [[""],[""]];
+    }   
+    
+    var start = new this.coord(startx, starty),
+        tip = new this.coord(endx, endy),
+        pathData   = [],
+        arrowHeadData = [];
+    
+    // calculate control points c2 and c3
+    var curveDistance = (tip.x - start.x) / 2;
+    var c2 = new this.coord(start.x+curveDistance, start.y),
+        c3 = new this.coord(tip.x-curveDistance, tip.y);
+        
+    // we could draw a curved path now using just this information:
+    // pathData.push("M", start.x, start.y);  // move to start of line
+    // pathData.push("C", c2.x, c2.y, c3.x, c3.y, end.x, end.y); // curve line to the tip
+    
+    // draw arrow head
+    var percLengthOfHead = len / this.getLengthOfCubicBezier(start, c2, c3, tip),
+        centerBaseOfHead = this.getPointOnCubicBezier(percLengthOfHead, start, c2, c3, tip),
+        theta  = Math.atan2((tip.y-centerBaseOfHead.y),(tip.x-centerBaseOfHead.x)),
         baseAngleA = theta + angle * Math.PI/180,
         baseAngleB = theta - angle * Math.PI/180,
-        tipX       = endx,
-        tipY       = endy,
-        baseAX     = endx - len * Math.cos(baseAngleA),
-        baseAY     = endy - len * Math.sin(baseAngleA),
-        baseBX     = endx - len * Math.cos(baseAngleB),
-        baseBY     = endy - len * Math.sin(baseAngleB),
-        pathData   = [];
+        baseA      = new this.coord(endx - len * Math.cos(baseAngleA), endy - len * Math.sin(baseAngleA)),
+        baseB      = new this.coord(endx - len * Math.cos(baseAngleB), endy - len * Math.sin(baseAngleB));
 
+    pathData.push("M", start.x, start.y);  // move to start of line
+    pathData.push("C", c2.x, c2.y, c3.x, c3.y, tip.x, tip.y); // curve line to the tip
+    
+    arrowHeadData.push("M", tip.x, tip.y);
+    arrowHeadData.push("L", baseA.x, baseA.y);  // line to baseA
+    arrowHeadData.push("L", baseB.x, baseB.y);  // line to baseB
+    arrowHeadData.push("L", tip.x,   tip.y  );  // line back to the tip
+
+    return [pathData, arrowHeadData];
+  },
+  
+  getPointOnCubicBezier: function (percent,C1,C2,C3,C4) {
+    if (percent < 0) percent = 0;
+    if (percent > 1) percent = 1;
+    var pos = new this.coord();
+    pos.x = C1.x*this.B1(percent) + C2.x*this.B2(percent) + C3.x*this.B3(percent) + C4.x*this.B4(percent);
+    pos.y = C1.y*this.B1(percent) + C2.y*this.B2(percent) + C3.y*this.B3(percent) + C4.y*this.B4(percent);
+    return pos;
+  },
+  
+  getLengthOfCubicBezier: function (C1,C2,C3,C4)
+  {
+    var precision = 10,
+        length    = 0,
+        t,
+        currentPoint,
+        previousPoint;
+        
+    for (i = 0; i<precision; i++){
+      t = i/precision;
+      currentPoint = this.getPointOnCubicBezier(t, C1,C2,C3,C4);
+      if (i > 0){
+        var xDif = currentPoint.x - previousPoint.x,
+            yDif = currentPoint.y - previousPoint.y;
+        length += Math.sqrt((xDif*xDif) + (yDif*yDif));
+      }
+      previousPoint = currentPoint;
+    }
+    return length;
+  },
+  
+  coord: function (x,y) {
+    if(!x) x = 0;
+    if(!y) y = 0;
     /* 
     *   Limit precision of decimals for SVG rendering.
     *   otherwise we get really long SVG strings, 
     *   and webkit error messsages like of this sort:
     *   "Error: Problem parsing d='<svg string with long dec>'"
     */
-    startx = Math.round(startx * 1000)/1000;
-    starty = Math.round(starty * 1000)/1000;
-    tipX   = Math.round(tipX   * 1000)/1000;
-    tipY   = Math.round(tipY   * 1000)/1000;
-    baseAY = Math.round(baseAY * 1000)/1000;
-    baseBX = Math.round(baseBX * 1000)/1000;
-    baseBY = Math.round(baseBY * 1000)/1000;
-
-
-    pathData.push("M", startx, starty);  // move to start of line
-    pathData.push("L", tipX,   tipY  );  // line to the tip
-    pathData.push("L", baseAX, baseAY);  // line to baseA
-    pathData.push("L", baseBX, baseBY);  // line to baseB
-    pathData.push("L", tipX,   tipY  );  // line back to the tip
-
-    return pathData;
-  }
+    x = Math.round(x * 1000)/1000;
+    y = Math.round(y * 1000)/1000;
+    return {x: x, y: y};
+  },
+  
+  B1: function(t) { return t*t*t; },
+  B2: function(t) { return 3*t*t*(1-t); },
+  B3: function(t) { return 3*t*(1-t)*(1-t); },
+  B4: function(t) { return (1-t)*(1-t)*(1-t); }
 };

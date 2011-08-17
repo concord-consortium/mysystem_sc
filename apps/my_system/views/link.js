@@ -31,12 +31,13 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   borderWidth: 3,
 
   // RENDER METHODS
-  renderCallback: function (raphaelCanvas, lineAttrs, borderAttrs, labelAttrs) {
+  renderCallback: function (raphaelCanvas, lineAttrs, headAttrs, borderAttrs, labelAttrs) {
     var label = raphaelCanvas.text().attr(labelAttrs);
     var labelBg = raphaelCanvas.rect().attr(this._getLabelBackgroundAttrs(raphaelCanvas, label));
     return raphaelCanvas.set().push(
       raphaelCanvas.path().attr(borderAttrs),
       raphaelCanvas.path().attr(lineAttrs),
+      raphaelCanvas.path().attr(headAttrs),
       labelBg,
       label.toFront()
     );
@@ -75,17 +76,16 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           endX = endX + 50;
           endY = endY + 110;
         }
-
+        
         // offset the labels to the 1/3 mark closest to the destination to help avoid overlapping labels
         var centerX = (endX-startX)*2/3.0 + startX;
         var centerY = (endY-startY)*2/3.0 + startY;
 
         var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY);
-
         var lineColor = this.get('lineColor') || "#000099";
 
         var borderAttrs = {
-          'path':           pathStr,
+          'path':           pathStr.tail,
           'stroke':         this.get('borderColor'),
           'opacity':        this.get('borderOpacity'),
           'stroke-width':   this.get('lineWidth') + 2 * this.get('borderWidth'),  // the border "around" the line is really a fat line behind it
@@ -93,7 +93,14 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         },
 
         lineAttrs = {
-          'path':           pathStr,
+          'path':           pathStr.tail,
+          'stroke':         lineColor,
+          'stroke-width':   this.get('lineWidth'),
+          'stroke-linecap': 'round'
+        },
+        
+        headAttrs = {
+          'path':           pathStr.head,
           'stroke':         lineColor,
           'fill':           lineColor,
           'stroke-width':   this.get('lineWidth'),
@@ -110,20 +117,23 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         raphaelObject,
         border,
         line,
+        head,
         label;
 
     if (firstTime) {
-      context.callback(this, this.renderCallback, lineAttrs, borderAttrs, labelAttrs);
+      context.callback(this, this.renderCallback, lineAttrs, headAttrs, borderAttrs, labelAttrs);
     }
     else {
       raphaelObject = this.get('raphaelObject');
       border        = raphaelObject.items[0];
       line          = raphaelObject.items[1];
-      labelBg       = raphaelObject.items[2];
-      label         = raphaelObject.items[3];
+      head          = raphaelObject.items[2];
+      labelBg       = raphaelObject.items[3];
+      label         = raphaelObject.items[4];
 
       border.attr(borderAttrs);
       line.attr(lineAttrs);
+      head.attr(headAttrs);
       label.attr(labelAttrs);
       labelBg.attr(this._getLabelBackgroundAttrs(this, label));
 
