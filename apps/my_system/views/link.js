@@ -31,13 +31,16 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   borderWidth: 3,
 
   // RENDER METHODS
-  renderCallback: function (raphaelCanvas, lineAttrs, headAttrs, borderAttrs, labelAttrs) {
-    var label = raphaelCanvas.text().attr(labelAttrs);
-    var labelBg = raphaelCanvas.rect().attr(this._getLabelBackgroundAttrs(raphaelCanvas, label));
+  renderCallback: function (raphaelCanvas, lineAttrs, headAttrs, borderAttrs) {
+    var tail = raphaelCanvas.path().attr(lineAttrs),
+        head = raphaelCanvas.path().attr(headAttrs),
+        border = raphaelCanvas.path().attr(borderAttrs),
+        label = raphaelCanvas.text().attr(this._getLabelAttrs(tail)),
+        labelBg = raphaelCanvas.rect().attr(this._getLabelBackgroundAttrs(raphaelCanvas, label));
     return raphaelCanvas.set().push(
-      raphaelCanvas.path().attr(borderAttrs),
-      raphaelCanvas.path().attr(lineAttrs),
-      raphaelCanvas.path().attr(headAttrs),
+      border,
+      tail,
+      head,
       labelBg,
       label.toFront()
     );
@@ -61,27 +64,26 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           endX = endNode.get('x');
           endY = endNode.get('y');
         }
+        
+        var startingAtTop = (content.get('startTerminal') === 'a'),
+            endingAtTop   = (content.get('endTerminal') === 'a');
     
-        if (content.get('startTerminal') === 'a') {
+        if (startingAtTop) {
           startX = startX + 50;
           startY = startY + 10;
         } else {
           startX = startX + 50;
           startY = startY + 110;
         }
-        if (content.get('endTerminal') === 'a') {
+        if (endingAtTop) {
           endX = endX + 50;
           endY = endY + 10;
         } else {
           endX = endX + 50;
           endY = endY + 110;
         }
-        
-        // offset the labels to the 1/3 mark closest to the destination to help avoid overlapping labels
-        var centerX = (endX-startX)*2/3.0 + startX;
-        var centerY = (endY-startY)*2/3.0 + startY;
 
-        var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY);
+        var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY,startingAtTop,endingAtTop);
         var lineColor = this.get('lineColor') || "#000099";
 
         var borderAttrs = {
@@ -107,21 +109,13 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           'stroke-linecap': 'round'
         },
 
-        labelAttrs =  {
-          'x':              centerX,
-          'y':              centerY,
-          'fill':           'black',
-          'text':           content.get('text')
-        },
-
         raphaelObject,
         border,
         line,
-        head,
-        label;
+        head;
 
     if (firstTime) {
-      context.callback(this, this.renderCallback, lineAttrs, headAttrs, borderAttrs, labelAttrs);
+      context.callback(this, this.renderCallback, lineAttrs, headAttrs, borderAttrs);
     }
     else {
       raphaelObject = this.get('raphaelObject');
@@ -134,11 +128,22 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
       border.attr(borderAttrs);
       line.attr(lineAttrs);
       head.attr(headAttrs);
-      label.attr(labelAttrs);
+      label.attr(this._getLabelAttrs(line));
       labelBg.attr(this._getLabelBackgroundAttrs(this, label));
 
       labelBg.toFront();
       label.toFront();
+    }
+  },
+  
+  _getLabelAttrs: function(path) {
+    var center = path.getPointAtLength(path.getTotalLength() * (2/3));
+
+     return {
+      'x':              center.x,
+      'y':              center.y,
+      'fill':           'black',
+      'text':           this.get('content').get('text')
     }
   },
 

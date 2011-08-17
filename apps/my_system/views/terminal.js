@@ -154,8 +154,9 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
       var x1 = this.get('startX'),
       x2 = this.get('deltaX') + x1,
       y1 = this.get('startY'),
-      y2 = this.get('deltaY') + y1;
-      return MySystem.ArrowDrawing.arrowPath(x1,y1,x2,y2);
+      y2 = this.get('deltaY') + y1,
+      isTopTerminal = this.get('parentView') == this.getPath('parentView.parentView.terminalA');
+      return MySystem.ArrowDrawing.arrowPath(x1,y1,x2,y2,isTopTerminal,isTopTerminal);
     },
 
     attrs: function() {
