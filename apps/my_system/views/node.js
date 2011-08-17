@@ -19,7 +19,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   childViews: 'titleView terminalA terminalB'.w(),
   
   contentDisplayProperties: 'x y image title'.w(),
-  displayProperties: 'bodyWidth bodyHeight bodyColor bodyOpacity borderColor borderOpacity borderWidth borderRadius'.w(),
+  displayProperties: 'bodyWidth bodyHeight bodyColor bodyOpacity borderColor borderOpacity borderWidth borderRadius imageWidth imageHeight'.w(),
     
   // PROPERTIES
   
@@ -64,6 +64,11 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   }.property('isSelected'),
   
   borderRadius: 5,
+  
+  // target width and height - these may change after image scaling
+  imageWidth: 50,
+  
+  imageHeight: 70,
 
   // place-holder for our rendered raphael image object
   // this is the nodes 'image'.
@@ -125,8 +130,23 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   },
   
   render: function (context, firstTime) {
-    var content = this.get('content'),
-        attrs = {
+    
+    var content = this.get('content');
+    
+    if (firstTime) {
+      // when we first load this image, create a new Image object so we can inspect 
+      // the actual width and height, and then scale the rendered image appropriately 
+      // while keeping the aspect ratio
+      var image = new Image();
+      var self = this;
+      image.onload = function() {
+        self.setImageDimensions(image);
+      };
+      image.src = content.get('image');
+      
+    }
+    
+    var attrs = {
           'x':              content.get('x'),
           'y':              content.get('y'),
           'r':              this.get('borderRadius'),
@@ -141,10 +161,10 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
         imageAttrs = {
           src:    content.get('image'),
-          x:      25 + content.get('x'),
+          x:      25 + content.get('x')+((50-this.get('imageWidth'))/2),  // center narrow images
           y:      20 + content.get('y'),
-          width:  50,
-          height: 70
+          width:  this.get('imageWidth'),
+          height: this.get('imageHeight')
         };
 
     if (firstTime) {
@@ -154,6 +174,49 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     else {
       this._raphaelRect.attr(attrs);
       this._raphaelImage.attr(imageAttrs);
+    }
+  },
+  
+  setImageDimensions: function (image) {
+    image.onload = null;
+    if (image.width > 1){
+      var targetWidth = this.get('imageWidth');
+      var targetHeight = this.get('imageHeight');
+      var srcWidth = image.width;
+      var srcHeight = image.height;
+      
+      var newWidth,
+          newHeight,
+      
+          // scale to the target width
+          scaleX1 = targetWidth,
+          scaleY1 = (srcHeight * targetWidth) / srcWidth,
+
+          // scale to the target height
+          scaleX2 = (srcWidth * targetHeight) / srcHeight,
+          scaleY2 = targetHeight,
+
+          // now figure out which one we should use
+          scaleOnWidth = (scaleX2 > targetWidth);
+
+      if (scaleOnWidth) {
+        newWidth = Math.floor(scaleX1);
+        newHeight = Math.floor(scaleY1);
+      } else {
+        newWidth = Math.floor(scaleX2);
+        newHeight = Math.floor(scaleY2);
+      }
+          
+      // if we're close, don't adjust again or we'll keep iterating down to zero
+      if (Math.abs(targetWidth - newWidth) > 2 ||
+          Math.abs(targetHeight - newHeight) > 2){
+        
+        // RunLoop here, or image won't change until mouse moves
+        SC.RunLoop.begin();
+          this.set('imageWidth', newWidth);
+          this.set('imageHeight', newHeight);
+        SC.RunLoop.end();
+      }
     }
   }
   
