@@ -42,17 +42,19 @@ MySystem.ArrowDrawing = {
     @params starty {Number} Y-coordinate of the start point
     @params endx {Number} X-coordinate of the end point
     @params endy {Number} Y-coordinate of the end point
+    @params startCurveUp {Boolean} Whether the start of the arrow curves upwards or downwards
+    @params endCurveUp {Boolean} Whether the end of the arrow curves upwards or downwards
     @params len {Number} Length of the "tip" of the arrowhead
     @params angle {Number} Angle in degrees 
       between the line and each wing of the arrowhead. 
       Should be less than 90.
     @params curvature {Number} strength of the curve, 0.5 is an easy smooth curve, > 1 is very curved
   */
-  arrowPath: function(startx,starty,endx,endy,_len,_angle,_curvature) { 
+  arrowPath: function(startx,starty,endx,endy,startCurveUp,endCurveUp,_len,_angle,_curvature) { 
     var len   = _len || 15,
         angle = _angle || 20,
         curvature = _curvature || 0.5;
-    arrowPathArrays = MySystem.ArrowDrawing.arrowPathArrays(startx,starty,endx,endy,len,angle,curvature);
+    arrowPathArrays = MySystem.ArrowDrawing.arrowPathArrays(startx,starty,endx,endy,startCurveUp,endCurveUp,len,angle,curvature);
 		return {
 		  tail: arrowPathArrays[0].join(" "), 
 		  head: arrowPathArrays[1].join(" ")
@@ -79,7 +81,7 @@ MySystem.ArrowDrawing = {
       Should be less than 90.
 
 	**/
-  arrowPathArrays: function(startx,starty,endx,endy,len,angle,curvature) { 
+  arrowPathArrays: function(startx,starty,endx,endy,startCurveUp,endCurveUp,len,angle,curvature) { 
     
     if (startx === endx && starty === endy){
       return [[""],[""]];
@@ -91,9 +93,14 @@ MySystem.ArrowDrawing = {
         arrowHeadData = [];
     
     // calculate control points c2 and c3
-    var curveDistance = (tip.x - start.x) * curvature;
-    var c2 = new this.coord(start.x+curveDistance, start.y),
-        c3 = new this.coord(tip.x-curveDistance, tip.y);
+    var curveDistance = (tip.x - start.x) * curvature,
+        startYCurveDistance = endYCurveDistance = Math.max(Math.min(curveDistance, 100), -100),
+        startUp = startCurveUp ? 1 : -1,
+        endUp = endCurveUp ? 1 : -1,
+        startYCurveDistance = (startYCurveDistance * startUp > 0) ? startYCurveDistance : startYCurveDistance * -1,
+        endYCurveDistance = (endYCurveDistance * endUp > 0) ? endYCurveDistance : endYCurveDistance * -1,
+        c2 = new this.coord(start.x+(curveDistance/2), start.y-startYCurveDistance),
+        c3 = new this.coord(tip.x-(curveDistance/2), tip.y-endYCurveDistance);
         
     // draw arrow path
     
