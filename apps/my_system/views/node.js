@@ -104,7 +104,12 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     textColor:      '#000',
     textBinding:    '.parentView.title',
     centerXBinding: '.parentView.centerX',
-    centerYBinding: '.parentView.titleY'
+    centerYBinding: '.parentView.titleY',
+    selectMe: function() {
+      var currentNode = this.getPath('parentView.content');
+      MySystem.nodesController.unselectAll();
+      MySystem.nodesController.selectObject(currentNode);
+    }.observes('isEditing')
   }),
  
   terminalA: MySystem.TerminalView.design({
