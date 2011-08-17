@@ -16,7 +16,7 @@ sc_require('core');
 MySystem.NodePaletteView = SC.ListView.extend({ // Node Palette (left)
   layout: { top: 0, bottom: 0, left: 15 },
   // childViews: 'addDecorator addClay addHand addBulb transformationBadge linkColorChooser'.w(),
-  contentBinding: 'MySystem.nodePaletteController.content',
+  contentBinding: 'MySystem.nodePaletteController',
   exampleView: MySystem.AddButtonView,
   rowHeight: 140
     
