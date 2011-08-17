@@ -137,6 +137,8 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   },
   
   _getLabelAttrs: function(path) {
+    if (path.getTotalLength() < 1) return {};
+    
     var center = path.getPointAtLength(path.getTotalLength() * (2/3));
     var text = this.get('content').get('text');
      return {
