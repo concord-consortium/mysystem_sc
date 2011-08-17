@@ -46,11 +46,13 @@ MySystem.ArrowDrawing = {
     @params angle {Number} Angle in degrees 
       between the line and each wing of the arrowhead. 
       Should be less than 90.
+    @params curvature {Number} strength of the curve, 0.5 is an easy smooth curve, > 1 is very curved
   */
-  arrowPath: function(startx,starty,endx,endy,_len,_angle) { 
+  arrowPath: function(startx,starty,endx,endy,_len,_angle,_curvature) { 
     var len   = _len || 15,
-        angle = _angle || 20;
-    arrowPathArrays = MySystem.ArrowDrawing.arrowPathArrays(startx,starty,endx,endy,len,angle);
+        angle = _angle || 20,
+        curvature = _curvature || 0.5;
+    arrowPathArrays = MySystem.ArrowDrawing.arrowPathArrays(startx,starty,endx,endy,len,angle,curvature);
 		return {tail: arrowPathArrays[0].join(" "), head: arrowPathArrays[1].join(" ")};
 	},
 
@@ -68,7 +70,7 @@ MySystem.ArrowDrawing = {
       Should be less than 90.
 
 	**/
-  arrowPathArrays: function(startx,starty,endx,endy,len,angle) { 
+  arrowPathArrays: function(startx,starty,endx,endy,len,angle,curvature) { 
     
     if (startx === endx && starty === endy){
       return [[""],[""]];
@@ -80,7 +82,7 @@ MySystem.ArrowDrawing = {
         arrowHeadData = [];
     
     // calculate control points c2 and c3
-    var curveDistance = (tip.x - start.x) / 2;
+    var curveDistance = (tip.x - start.x) * curvature;
     var c2 = new this.coord(start.x+curveDistance, start.y),
         c3 = new this.coord(tip.x-curveDistance, tip.y);
         
