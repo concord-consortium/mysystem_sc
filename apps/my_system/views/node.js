@@ -180,43 +180,22 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   setImageDimensions: function (image) {
     image.onload = null;
     if (image.width > 1){
-      var targetWidth = this.get('imageWidth');
-      var targetHeight = this.get('imageHeight');
-      var srcWidth = image.width;
-      var srcHeight = image.height;
+      var targetWidth = this.get('imageWidth'),
+          targetHeight = this.get('imageHeight'),
+          srcWidth = image.width,
+          srcHeight = image.height;
       
-      var newWidth,
-          newHeight,
+      var scaledWidth =  ((srcWidth * targetHeight) / srcHeight);   
+      var scaleOnWidth = scaledWidth > targetWidth;
       
-          // scale to the target width
-          scaleX1 = targetWidth,
-          scaleY1 = (srcHeight * targetWidth) / srcWidth,
-
-          // scale to the target height
-          scaleX2 = (srcWidth * targetHeight) / srcHeight,
-          scaleY2 = targetHeight,
-
-          // now figure out which one we should use
-          scaleOnWidth = (scaleX2 > targetWidth);
-
-      if (scaleOnWidth) {
-        newWidth = Math.floor(scaleX1);
-        newHeight = Math.floor(scaleY1);
-      } else {
-        newWidth = Math.floor(scaleX2);
-        newHeight = Math.floor(scaleY2);
-      }
+      var newWidth = scaleOnWidth ? targetWidth : scaledWidth,
+          newHeight = scaleOnWidth? (srcHeight * targetWidth) / srcWidth : targetHeight;
           
-      // if we're close, don't adjust again or we'll keep iterating down to zero
-      if (Math.abs(targetWidth - newWidth) > 2 ||
-          Math.abs(targetHeight - newHeight) > 2){
-        
-        // RunLoop here, or image won't change until mouse moves
-        SC.RunLoop.begin();
-          this.set('imageWidth', newWidth);
-          this.set('imageHeight', newHeight);
-        SC.RunLoop.end();
-      }
+      // RunLoop here, or image won't change until mouse moves
+      SC.RunLoop.begin();
+        this.set('imageWidth', newWidth);
+        this.set('imageHeight', newHeight);
+      SC.RunLoop.end();
     }
   }
   
