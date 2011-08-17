@@ -111,6 +111,8 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     }
     if (!!this.get('dragLinkEndTerminal')) {
       MySystem.statechart.sendAction('rubberbandLinkComplete');
+    } else {
+      MySystem.statechart.sendAction('rubberbandLinkAbandoned');
     }
     return YES;
   },

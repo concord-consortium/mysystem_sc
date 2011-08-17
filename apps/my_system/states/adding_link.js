@@ -25,6 +25,10 @@ MySystem.ADDING_LINK = SC.State.design({
     this.tearDownInspectorPane();
   },
   
+  rubberbandLinkAbandoned: function() {
+    this.gotoState('DIAGRAM_EDITING');
+  },
+  
   rubberbandLinkComplete: function() {
     var node1View = MySystem.nodesController.get('dragLinkSrcTerminal').get('parentView'),
         node2View = MySystem.nodesController.get('dragLinkEndTerminal').get('parentView'),
