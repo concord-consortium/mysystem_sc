@@ -67,15 +67,13 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
   */
   diagramSelectionChanged: function () {
     var newSelection = MySystem.nodesController.get('selection');
-    if (newSelection.get('length') !== 1) {
-      this.gotoState('DIAGRAM_EDITING');
-    }
-    else if (!newSelection.firstObject().get('linkStyle')) {
-      this.gotoState('DIAGRAM_EDITING');
-    }
-    else {
+
+    if (newSelection.get('length') === 1 && newSelection.firstObject().kindOf(MySystem.Link)) {
       // Update the property editor pane
       this.setUpInspectorPane();
+    }
+    else {
+      this.gotoState('DIAGRAM_EDITING');
     }
     return YES;
   },
