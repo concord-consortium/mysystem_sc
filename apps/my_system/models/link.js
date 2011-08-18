@@ -63,32 +63,6 @@ MySystem.Link = MySystem.Diagrammable.extend(
     this.set('color', energyType.get('color'));
   }.observes('energyTypeObj'),
 
-  // Parameters for LinkIt:Link styles:
-  //   lineStyle, one of:
-      // LinkIt.HORIZONTAL_CURVED
-      // LinkIt.VERTICAL_CURVED
-      // LinkIt.STRAIGHT (default)
-  //   width (in pixels, 6 by default)
-  //   color (HTML RGB color, '#ADD8E6' by default)
-  //   cap, (an un-arrowed line end) one of:
-      // LinkIt.ROUND (default)
-  //   arrows, one of:
-      // LinkIt.ARROW_END (default)
-      // LinkIt.ARROW_START
-      // LinkIt.ARROW_BOTH
-      // LinkIt.ARROW_NONE
-  //   arrowAngle (the width of the arrow "tip", 40 degress by default)
-  //   arrowLength (the length of the arrowhead, 5px by default)
-  linkStyle: {
-    lineStyle: LinkIt.VERTICAL_CURVED,
-    width: 6,
-    arrowLength: 10,
-    arrowAngle: 20,
-    color: '#00ff00',
-    cap: LinkIt.ROUND,
-    arrows: LinkIt.ARROW_END
-  },
-
   // Parameters for LinkIt:Link labels:
   //   text
   //   fontSize
@@ -133,20 +107,6 @@ MySystem.Link = MySystem.Diagrammable.extend(
     return true;
   },
   
-  makeLinkItLink: function() {
-    var tempHash = {};
-    this._setLabel();
-    this._setLinkStyle();
-    tempHash.startNode = this.get('startNode');
-    tempHash.startTerminal = this.get('startTerminal');
-    tempHash.endNode = this.get('endNode');
-    tempHash.endTerminal = this.get('endTerminal');
-    tempHash.label = this.get('label');
-    tempHash.linkStyle = this.get('linkStyle');
-    tempHash.selectionWidth = this.get('linkStyle').width + 4;
-    tempHash.model = this; // reference back to this
-    return SC.Object.create( LinkIt.Link, tempHash);
-  },
   
   _textChanged: function() {
     this.invokeOnce(this._setLabel);
@@ -155,7 +115,6 @@ MySystem.Link = MySystem.Diagrammable.extend(
   }.observes('.text'),
   
   _colorChanged: function() {
-    this.invokeOnce(this._setLinkStyle);
     if (this.get('startNode')) this.get('startNode').notifyPropertyChange('links');
     if (this.get('endNode')) this.get('endNode').notifyPropertyChange('links');
   }.observes('.color'),
@@ -169,19 +128,6 @@ MySystem.Link = MySystem.Diagrammable.extend(
       backgroundColor: "#ffffff"
     };
     this.set("label", newLabel);
-  },
-  
-  _setLinkStyle: function() {
-    var newLinkStyle = {
-      lineStyle: this.get('linkStyle').lineStyle,
-      width: this.get('linkStyle').width,
-      arrowLength: this.get('linkStyle').arrowLength,
-      arrowAngle: this.get('linkStyle').arrowAngle,
-      color: this.get('color'),
-      cap: this.get('linkStyle').cap,
-      arrows: this.get('linkStyle').arrows
-    };
-    this.set("linkStyle", newLinkStyle);
   },
   
   // FIXME color should be a computed property of some kind
