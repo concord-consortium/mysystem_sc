@@ -58,56 +58,6 @@ test("tests connecting nodes to storySentences", function () {
   equals(sent.get('diagramObjects').get('length'), sent.get('nodes').get('length') + sent.get('links').get('length'), "The sentence's diagramObjects should equal the sum of the links and nodes.");
 });
 
-test("test links computed param", function() {
-  expect(1);
-  var node1   = store.createRecord(MySystem.Node, { 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = store.createRecord(MySystem.Node, { 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node3   = store.createRecord(MySystem.Node, { 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var newLink1 = store.createRecord(MySystem.Link, { 'text': 'First test link' });
-  newLink1.set("startNode", node1);
-  newLink1.set("endNode", node2);
-  newLink1.set("startTerminal","a");
-  newLink1.set("endTerminal","b");
-  var newLink2 = store.createRecord(MySystem.Link, { 'text': 'Second test link' });
-  newLink2.set("startNode", node2);
-  newLink2.set("endNode", node3);
-  newLink2.set("startTerminal","a");
-  newLink2.set("endTerminal","b");
-  var foundOutlinks = node2.get('outLinks').get('length');
-  var foundInLinks = node2.get('inLinks').get('length');
-  var expectedLinks = foundOutlinks + foundInLinks;
-  var foundLinks = node2.get('links').get('length');
-  equals(foundLinks, expectedLinks, "There should be "+ expectedLinks +" links");
-});
-
-test("test that computed 'links' are updated when inlinks or outlinks changes", function() {
-  expect(2);
-  var node1   = store.createRecord(MySystem.Node, { 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = store.createRecord(MySystem.Node, { 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node3   = store.createRecord(MySystem.Node, { 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var newLink1 = store.createRecord(MySystem.Link, { 'text': 'First test link' });
-  newLink1.set("startNode", node1);
-  newLink1.set("endNode", node2);
-  newLink1.set("startTerminal","a");
-  newLink1.set("endTerminal","b");
-  var newLink2 = store.createRecord(MySystem.Link, { 'text': 'Second test link' });
-  newLink2.set("startNode", node2);
-  newLink2.set("endNode", node3);
-  newLink2.set("startTerminal","a");
-  newLink2.set("endTerminal","b");
-  var expectedLinks = 2;
-  var foundLinks = node2.get('links').get('length');
-  equals(foundLinks, expectedLinks, "There should be "+ expectedLinks +" links");
-  var newLink3 = store.createRecord(MySystem.Link, { 'text': 'Third test link' });
-  newLink3.set("startNode", node2);
-  newLink3.set("endNode", node1);
-  newLink3.set("startTerminal","a");
-  newLink3.set("endTerminal","b");
-  expectedLinks++;
-  foundLinks = node2.get('links').get('length');
-  equals(foundLinks, expectedLinks, "Then there should be " + expectedLinks + " links");
-});
-
 test("nodes should have a position attribute", function() {
   expect(2);
   var node = store.createRecord(MySystem.Node, {'title': 'Edit Title', 'image': 'http://concord.org/favicon.ico', 'position': {'x': 120, 'y': 150}});

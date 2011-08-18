@@ -68,6 +68,15 @@ MySystem.Link = MySystem.Diagrammable.extend(
     color: '#00ff00'
   },
 
+  label: {
+    text: "label",
+    fontSize: 12,
+    fontFamily: 'sans-serif',
+    fontStyle: 'normal',
+    backgroundColor: "#ffffff",
+    color: '#00ff00'
+  },
+
   startTerminal: SC.Record.attr(String),
   endTerminal: SC.Record.attr(String),
 
