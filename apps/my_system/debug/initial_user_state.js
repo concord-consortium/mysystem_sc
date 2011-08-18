@@ -24,7 +24,7 @@ MySystem.initial_json_state = {
   "MySystem.Node": {
     "1": {
       "guid": "1",
-      "image": "/static/my_system/en/current/resources/clay_red_tn.png",
+      "image": sc_static('resources/clay_red_tn.png'),
       "title": "A Node",
       "transformer": false,
       "inLinks": [],
@@ -42,7 +42,7 @@ MySystem.initial_json_state = {
     },
     "2": {
       "guid": "2",
-      "image": "/static/my_system/en/current/resources/hand_tn.png",
+      "image": sc_static('resources/hand_tn.png'),
       "title": "B Node",
       "transformer": false,
       "inLinks": [
@@ -56,7 +56,7 @@ MySystem.initial_json_state = {
     },
     "3": {
       "guid": "3",
-      "image": "/static/my_system/en/current/resources/lightbulb_tn.png",
+      "image": sc_static('resources/lightbulb_tn.png'),
       "title": "Third Node",
       "transformer": false,
       "inLinks": [
