@@ -252,11 +252,16 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
   
   declaredFieldsOf: function (recordType) {
     var ret = [],
+        primaryKey = recordType.prototype.primaryKey,
         p;
         
     for (p in recordType.prototype) {
       if (recordType.prototype[p] && recordType.prototype[p].isRecordAttribute) ret.push(p);
     }
+    
+    // The 'id' property, which is not explicitly a RecordAttribute, may be mapped to the key specified in 'primaryKey'
+    if (primaryKey && ret.indexOf(primaryKey) < 0) ret.push(primaryKey);
+    
     return ret;
   },
         
@@ -268,7 +273,7 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     
     for (p in recordHash) {
       if (recordHash.hasOwnProperty(p) && fields.indexOf(p) < 0) {
-        throw new ReferenceError("MergedHashDataSource: data hash for record '%@' of type '%@' has an undeclared field '%@'".fmt(recordId, recordTypeName, p));
+        throw new ReferenceError("MergedHashDataSource: data hash for record '%@' of type '%@' specifies a value for the field '%@', which is not a declared RecordAttribute".fmt(recordId, recordTypeName, p));
       }
     }
   }
