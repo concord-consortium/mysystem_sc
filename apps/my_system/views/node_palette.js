@@ -19,7 +19,7 @@ MySystem.NodePaletteView = SC.ListView.extend({ // Node Palette (left)
   // childViews: 'addDecorator addClay addHand addBulb transformationBadge linkColorChooser'.w(),
   contentBinding: 'MySystem.nodePaletteController',
   exampleView: MySystem.PaletteItemView,
-  rowHeight: 140
+  rowHeight: 127
     
   /* Temporarily removed for Berkeley 0.1 release */
   // transformationBadge: MySystem.BadgeButtonView.design({
