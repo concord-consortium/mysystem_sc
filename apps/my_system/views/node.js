@@ -27,7 +27,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   isDragging: NO,
   
   bodyWidth: 100,
-  bodyHeight: 120,
+  bodyHeight: 110,
   bodyColor: '#000000',       // the node s/b visually transparent, but not transparent to mouse events, so it must have a fill
   bodyOpacity: 0,
  
@@ -42,15 +42,15 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   }.property('x', 'bodyWidth'),
   
   titleY: function () {
-    return this.get('y') + this.get('bodyHeight') - 25;     // could parameterize this better later
+    return this.get('y') + this.get('bodyHeight') - 20;     // could parameterize this better later
   }.property('y', 'bodyHeight'),
  
   terminalAY: function() {
-    return this.get('y') + 10;     // could parameterize this better later
+    return this.get('y');     // could parameterize this better later
   }.property('y', 'bodyHeight'),
   
   terminalBY: function() {
-    return this.get('y') + this.get('bodyHeight') - 10;     // could parameterize this better later
+    return this.get('y') + this.get('bodyHeight');     // could parameterize this better later
   }.property('y', 'bodyHeight'),
 
   borderColor: function () {
@@ -167,7 +167,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         imageAttrs = {
           src:    content.get('image'),
           x:      25 + content.get('x')+((50-this.get('imageWidth'))/2),  // center narrow images
-          y:      20 + content.get('y'),
+          y:      10 + content.get('y'),
           width:  this.get('imageWidth'),
           height: this.get('imageHeight')
         };

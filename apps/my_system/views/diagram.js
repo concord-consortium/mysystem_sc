@@ -66,11 +66,11 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
   performDragOperation: function (drag, op) {
     var canvasOffset = this.get('canvasView').$().offset(),
 
-        // The numbers at the end are to account for the difference in size of the AddButtonView
+        // The numbers at the end are to account for the difference in size of the PaletteItemView
         // compared to the Node view.  Mostly likely those could be computed.
 
-        newNodeX = drag.location.x - drag.ghostOffset.x - canvasOffset.left + 17,
-        newNodeY = drag.location.y - drag.ghostOffset.y - canvasOffset.top  + 9,
+        newNodeX = drag.location.x - drag.ghostOffset.x - canvasOffset.left + 21,
+        newNodeY = drag.location.y - drag.ghostOffset.y - canvasOffset.top  + 16,
     
         newNodeAttributes = {
           title:    drag.data.title,
@@ -100,9 +100,17 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
     return handledBySuper;
   },
   
+  touchStart: function (evt) {
+    return this.mouseDown(evt);
+  },
+  
   mouseDragged: function (evt) {
     this._drag(evt);
     return sc_super();
+  },
+  
+  touchesDragged: function(evt, touches) {
+    this.mouseDragged(evt);
   },
   
   mouseUp: function (evt) {
@@ -117,6 +125,10 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
     return sc_super();
   },
   
+  touchEnd: function (evt) {
+    return this.mouseUp(evt);
+  },
+
   _startDrag: function () {
     var containerView  = this.get('containerView') || this,
         $canvasView    = this.get('canvasView').$();

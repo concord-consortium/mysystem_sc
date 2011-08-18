@@ -1,5 +1,5 @@
 // ==========================================================================
-// MySystem.AddButtonView, from LinkItDemo.AddButtonView
+// MySystem.PaletteItemView
 // ==========================================================================
 
 /*globals MySystem */
@@ -16,7 +16,7 @@ sc_require('views/letterbox_image');
   @since ALPHA
 
 */
-MySystem.AddButtonView = SC.View.extend( 
+MySystem.PaletteItemView = SC.View.extend( 
   {
   layout: { top: 10, left: 20, right: 10, width: 100 },
   padding: 10,
@@ -34,19 +34,19 @@ MySystem.AddButtonView = SC.View.extend(
 
   borderFrame: SC.View.design({
     classNames: 'node addbutton'.w(),
-    layout: { top: 12, bottom: 10, height: 122 },
+    layout: { top: 10, bottom: 8, height: 112 },
     childViews: 'icon label'.w(),
     
     icon: MySystem.LetterboxImageView.design({
       classNames: ['image'],
       // useImageQueue: YES,
       useCanvas: NO,
-      layout: { top: 18, width:50, height:70, centerX: 0},
+      layout: { top: 16, width:50, height:70, centerX: 0},
       valueBinding: '.parentView.parentView.content.image'
     }),
 
     label: SC.LabelView.design({
-      layout: { bottom: 5, centerX: 0, width: 100, height: 25 },
+      layout: { bottom: 0, centerX: 0, width: 100, height: 25 },
       classNames: ['name'],
       textAlign: SC.ALIGN_CENTER,    
       valueBinding: '.parentView.parentView.content.title',

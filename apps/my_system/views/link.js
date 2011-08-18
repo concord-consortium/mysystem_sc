@@ -70,14 +70,14 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     
         if (startingAtTop) {
           startX = startX + 50;
-          startY = startY + 10;
+          startY = startY;
         } else {
           startX = startX + 50;
           startY = startY + 110;
         }
         if (endingAtTop) {
           endX = endX + 50;
-          endY = endY + 10;
+          endY = endY;
         } else {
           endX = endX + 50;
           endY = endY + 110;

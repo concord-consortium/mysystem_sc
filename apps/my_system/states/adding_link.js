@@ -53,7 +53,15 @@ MySystem.ADDING_LINK = SC.State.design({
     node1.addInLink(this._newLink);
     node2.addOutLink(this._newLink);
     MySystem.nodesController.selectObject(this._newLink);
-    this.setUpInspectorPane();
+    
+    var allEnergyTypes = MySystem.store.find(MySystem.EnergyType);
+    if (allEnergyTypes.length() > 1){
+      this.setUpInspectorPane();
+    } else if (allEnergyTypes.length() === 1){
+      this._newLink.set("energyType", allEnergyTypes.firstObject().get('uuid'));
+    } else {
+      this.gotoState('DIAGRAM_EDITING');
+    }
   },
   
   /**

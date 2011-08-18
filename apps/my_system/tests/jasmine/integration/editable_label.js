@@ -2,225 +2,244 @@
  clickOn fillIn defineJasmineHelpers runBeforeEach runAfterEach */
 
 defineJasmineHelpers();
-var itShouldBehaveCorrectly, itShouldDragCorrectly;
-$(function () { $('body').css('overflow', 'auto'); });
 
+describe ("A node with an editable label", function() {
+  var appPane, diagram, palette, node, nodeView, titleView;
+  var leftX, topY, offset;
 
-describe("LabelView behavior", function () {
+  /**
+   * See also frameworks/jasmine-sproutcore/jasmin-sproutcore.js which provides other
+   * Event helper macros.
+   *
+   **/
+  function fireEvent(el, eventName, x, y) {
+    var evt = SC.Event.simulateEvent(el, eventName, { pageX: leftX + x, pageY: topY + y });
+    SC.Event.trigger(el, eventName, evt);
+  }
 
-  var pane = SC.MainPane.create(),
-      nodeController,
-      diagramView,
-      xAxis,
-      yAxis;
+  // see also frameworks/jasmine-sproutcore/jasmin-sproutcore.js  fillin() function
+  // which probably works better for non-raphael form fields.
+  function simulateKeyPress(el, letter) {
+    var evt;
+    evt = SC.Event.simulateEvent(el, 'keydown',  { charCode: letter, which: letter });
+    SC.Event.trigger(el, 'keydown', evt);
+    evt = SC.Event.simulateEvent(el, 'keypress', { charCode: letter, which: letter });
+    SC.Event.trigger(el, 'keypress', evt);
+    evt = SC.Event.simulateEvent(el, 'keyup',    { charCode: letter, which: letter });
+    SC.Event.trigger(el, 'keyup', evt);
+  }
 
-  beforeEach( function () {
-    this.addMatchers({
+  // see also frameworks/jasmine-sproutcore/jasmin-sproutcore.js  fillin() function
+  // which probably works better for non-raphael form fields.
+  function simulateTextEntry(view, text) {
+    var i = 0;
+    for (i = 0; i < text.length; i++) {
+      simulateKeyPress(view.get('layer'),text.charCodeAt(i));
+    }
+  }
 
-      toBeInside: function (element) {
-        if (element.jquery) element = element[0];
-        return $.contains(element, this.actual);
-      },
+  function simulateDoubleClick(el, offX, offY) {
+    if(!!!offX) { offX = 10; }
+    if(!!!offY) { offY = 10; }
+    fireEvent(el.get('layer'), 'mousedown', offX, offY);
+    fireEvent(el.get('layer'), 'mouseup',   offX, offY);
+    fireEvent(el.get('layer'), 'mousedown', offX, offY);
+    fireEvent(el.get('layer'), 'mouseup',   offX, offY);
+  }
 
-      toApproximatelyEqual: function (qty, tolerance) {
-        if (tolerance === undefined) tolerance = 0.001;
-        return Math.abs(qty - this.actual) < tolerance;
-      },
+  beforeEach( function() {
 
-      toBeNonzero: function () {
-        return (parseFloat(this.actual) === this.actual) && (Math.abs(this.actual) > 0);
-      },
+    // setup App:
+    MySystem.setupStore(MySystem);
+    MySystem.statechart.initStatechart();
 
-      toHaveColor: function (hexColor) {
-        var actual = this.actual.jquery ? this.actual : $(this.actual);
-        return actual.css('color') === $('<div>').css('color', hexColor).css('color');
-      },
-
-      toBeVisible: function () {
-        return !!this.actual.get('isVisible');
-      },
-
-      toBeWithinOneUnitOf: function (value) {
-        return Math.abs(this.actual - value) <= 1;
-      },
-    }); // addMatchers
-
-  }); // beforeEach
-
-
-  runBeforeEach( function () {
-    nodeController = MySystem.NodeController.create();
-    nodeController.clear();
-
-    diagramView = MySystem.DiagramView.create({ 
-        nodeController: nodeController,
-        layout: { 
-          width: 800, 
-          height: 600 
-        }
+    // create one test node:
+    node = MySystem.store.createRecord(MySystem.Node, {
+      title:    'test title',
+      image:    'http://t0.gstatic.com/images?q=tbn:ANd9GcTff7_LQeEuPCEtb0AGSwAH-S5rNoQ3US7yOoxdQpjrUtlqh7zKrg',
+      x:        50,
+      y:        50,
+      nodeType: 'MySystem2'
     });
 
-    pane.append();
-    pane.appendChild(diagramView);
+    // create minimum set of views:
+    appPane = SC.PanelPane.create({
+      layout: {top: 0, bottom: 0, left: 0, right: 0 },
+      contentView: SC.View.design({
+        childViews: 'diagram'.w(),
+        diagram: RaphaelViews.RaphaelCanvasView.design({
+          layout: {top: 0, bottom: 0, left: 0, right: 0 },
+          classNames: 'diagram-background',
+          childViews: 'nodeView'.w(),
+          diagramView: MySystem.DiagramView.design({
+            content:    MySystem.store.find(MySystem.Diagrammable),
+            selectionBinding: 'MySystem.nodesController.selection',
+            canvasView:        SC.outlet('parentView')
+          }),
+          nodeView: MySystem.NodeView.design({
+            content: node
+          })
+        })
+      })
+    });
+
+    appPane.append();
+
+    var authoredContent =
+      {
+        "type": "mysystem2",
+        "prompt": "",
+        "modules": [
+          {
+            "name": "obj1",
+            "uuid": "obj1"
+          },
+          {
+            "name": "obj2",
+            "uuid": "obj2"
+          }
+        ],
+        "energy_types": [
+          {
+            "label": "en1",
+            "uuid": "en1"
+          },
+          {
+            "label": "en2",
+            "uuid": "en2"
+          }
+        ],
+        "diagram_rules": []
+      };
+
+      var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
+
+      MySystem.activityController.set('content',activity);
+
+      diagram   = appPane.getPath('contentView.diagram.diagramView');
+      nodeView  = appPane.getPath('contentView.diagram.nodeView');
+      titleView = appPane.getPath('contentView.diagram.nodeView.titleView');
+      SC.run();
   });
 
-  runAfterEach( function () {
-    pane.removeAllChildren();
-    pane.remove();
+  afterEach(function() {
+    appPane.remove();
   });
 
-  describe("when a label annotation has been added to the graph controller", function () {
+  it("should have a node", function(){
+    expect(nodeView).toBeDefined();
+  });
 
-    var store,
-    nodeRecord;
+  it("should have a label", function(){
+    expect(titleView).toBeDefined();
+  });
 
-    runBeforeEach( function () {
-      store = SC.Store.create().from(SC.FixturesDataSource.create());
+  describe("editing the label", function () {
 
-      nodeRecord = store.createRecord(MySystem.Node, {
-        name: 'the name of the label',
-        text: 'test text',
-        x: 1,
-        y: 2,
-      });
 
+    beforeEach( function () {
+      offset = $(titleView.get('layer')).offset();
+      leftX  = offset.left;
+      topY   = offset.top;
     });
 
-    describe("the node view", function () {
-      var nodeView;
-
-      beforeEach( function () {
-        nodeView = diagramView.getPath('annotationsHolder.childViews').objectAt(0);
+    describe("when not being edited", function () {
+      beforeEach(function () {
+        // ensure that we are not editing:
+        fireEvent(titleView.get('layer'), 'mouseExited', 0, 0);
+        SC.run( function () { titleView.commitEditing(); });
       });
 
-      it("should be the correct class for a Node object", function () {
-        expect(nodeView).toBeA(MySystem.Node.viewClass);
+      it("should not be in the edit mode", function () {
+        expect(titleView.get('isEditing')).toEqual(NO);
       });
 
-      // describe("editing the label", function () {
-      //   var leftX,
-      //   topY,
-      //   offset,
-      //   labelTextView,
-      //   target;
-
-      //   function fireEvent(el, eventName, x, y) {
-      //     var evt = SC.Event.simulateEvent(el, eventName, { pageX: leftX + x, pageY: topY + y });
-      //     SC.Event.trigger(el, eventName, evt);
-      //   }
-
-      //   function simulateKeyPress(el, letter) {
-      //     var evt = SC.Event.simulateEvent(el, 'keydown', { charCode: letter, which: letter });
-      //     SC.Event.trigger(el, 'keydown', evt);
-      //     evt = SC.Event.simulateEvent(el, 'keypress', { charCode: letter, which: letter });
-      //     SC.Event.trigger(el, 'keypress', evt);
-      //     evt = SC.Event.simulateEvent(el, 'keyup', { charCode: letter, which: letter });
-      //     SC.Event.trigger(el, 'keyup', evt);
-      //   }
-
-      //   beforeEach( function () {
-      //     target = nodeView.get('labelBodyView');
-      //     offset = $(target.get('layer')).offset();
-      //     leftX  = offset.left;
-      //     topY   = offset.top;
-      //   });
-
-      //   describe("when not being edited", function () {
-      //     beforeEach(function () {
-      //       labelTextView = nodeView.getPath('labelBodyView.labelTextView');
-      //       fireEvent(target.get('layer'), 'mouseExited', 0, 0);
-      //       SC.run( function () { labelTextView.commitEditing(); });
-      //     });
-      //     it("should not be in the edit mode", function () {
-      //       expect(nodeView.getPath('labelBodyView.labelTextView.isEditing')).toEqual(NO);
-      //     });
-
-      //     it("should not have a highlighted background", function () {
-      //       expect(nodeView.getPath('labelBodyView.labelTextView.editBoxView.isVisible')).toEqual(NO);
-      //     });
-      //   });
-
-      //   describe("after a double click", function () {
-      //     beforeEach(function () {
-      //       labelTextView = nodeView.getPath('labelBodyView.labelTextView');
-      //       // ensure that we aren't editing at the outset
-      //       SC.run( function () { labelTextView.commitEditing(); });
-      //       fireEvent(target.get('layer'), 'mousedown', 10,10);
-      //       fireEvent(target.get('layer'), 'mouseup', 10,10);
-      //       fireEvent(target.get('layer'), 'mousedown', 10,10);
-      //       fireEvent(target.get('layer'), 'mouseup', 10,10);
-      //     });
-
-      //     it("should be in the edit mode", function () {
-      //       expect(nodeView.getPath('labelBodyView.labelTextView.isEditing')).toEqual(YES);
-      //     });
-
-      //     it("should have a highlighted background", function () {
-      //       expect(nodeView.getPath('labelBodyView.labelTextView.editBoxView.isVisible')).toEqual(YES);
-      //     });
-
-      //     describe("entering some text", function () {
-      //       var existingText,
-      //       textToEnter,
-      //       expectedText,
-      //       i;
-
-      //       beforeEach( function () {
-      //         existingText = labelTextView.get('text');
-      //         textToEnter  = "testing testing\n 1 2 3";
-      //       });
-
-      //       describe("when the label is all selected", function () {
-      //         beforeEach( function () {
-      //           nodeView.setPath('labelBodyView.labelTextView.isAllSelected', YES);
-      //           expectedText = textToEnter;
-      //           for (i = 0; i < textToEnter.length; i++) {
-      //             simulateKeyPress(target.get('layer'),textToEnter.charCodeAt(i));
-      //           }
-      //         });
-
-      //         it("should now have the new text in the label", function () {
-      //           expect(labelTextView.get('text')).toEqual(expectedText);
-      //         });
-      //       });
-
-      //       describe("when the label is not all selected", function () {
-      //         beforeEach( function () {
-      //           nodeView.setPath('labelBodyView.labelTextView.isAllSelected', NO);
-      //           expectedText = existingText + textToEnter;
-      //           for (i = 0; i < textToEnter.length; i++) {
-      //             simulateKeyPress(target.get('layer'),textToEnter.charCodeAt(i));
-      //           }
-      //         });
-
-      //         it("should now have the new text in the label", function () {
-      //           expect(labelTextView.get('text')).toEqual(expectedText);
-      //         });
-
-      //       });
-
-      //       describe("leaving editing mode", function () {
-      //         var x,
-      //         y;
-
-      //         beforeEach( function () {
-      //           x = labelTextView.get("x");
-      //           y = labelTextView.get("y");
-      //           SC.run( function () { labelTextView.commitEditing(); });
-      //         });
-
-      //         it ("the label text should not change its position after editing", function () {
-      //           expect(labelTextView.get("x")).toBeWithinOneUnitOf(x);
-      //           expect(labelTextView.get("y")).toBeWithinOneUnitOf(y);
-      //         });
-
-      //       });
-
-      //     });
-      //   });
-      // }); // editing the label
-
+      it("should not have a highlighted background", function () {
+        expect(titleView.getPath('editBoxView.isVisible')).toEqual(NO);
+      });
     });
+
+    describe("after a double click", function () {
+      beforeEach(function () {
+        // ensure that we aren't editing at the outset
+        SC.run( function () { titleView.commitEditing(); });
+        simulateDoubleClick(titleView);
+      });
+
+      it("should be in the edit mode", function () {
+        expect(titleView.getPath('isEditing')).toEqual(YES);
+      });
+
+      it("should have a highlighted background", function () {
+        expect(titleView.getPath('editBoxView.isVisible')).toEqual(YES);
+      });
+
+      describe("entering some text", function () {
+        var existingText,
+            textToEnter,
+            expectedText,
+            i;
+
+        beforeEach( function () {
+          existingText = titleView.get('text');
+          textToEnter  = "testing testing\n 1 2 3";
+        });
+
+        describe("when the label is all selected", function () {
+          beforeEach( function () {
+            nodeView.setPath('titleView.isAllSelected', YES);
+            expectedText = textToEnter;
+            simulateTextEntry(titleView,textToEnter);
+          });
+
+          it("should now have the new text in the label", function () {
+            expect(titleView.get('text')).toEqual(expectedText);
+          });
+        });
+
+        describe("when the label is not all selected", function () {
+          beforeEach( function () {
+            nodeView.setPath('labelBodyView.titleView.isAllSelected', NO);
+            expectedText = existingText + textToEnter;
+            for (i = 0; i < textToEnter.length; i++) {
+              simulateKeyPress(titleView.get('layer'),textToEnter.charCodeAt(i));
+            }
+          });
+
+          it("should now have the new text in the label", function () {
+            expect(titleView.get('text')).toEqual(expectedText);
+          });
+        }); // when the label is not all selected
+      });   // entering some text
+    });     // after double clicking
+
+    describe ("when the title field of the node is empty", function() {
+      beforeEach(function () {
+        node.set('title',"");
+        SC.run( function() {
+          titleView.set('isEditing',NO);
+          titleView.set('isAllSelected',NO);
+        });
+      });
+
+      describe("the nodes label", function() {
+        it("should display 'click to edit'", function() {
+          expect(titleView.get('displayText')).toMatch(/click to edit/);
+        });
+
+        it("should still present a double-clickable target which enables editing", function() {
+          expect(titleView.get('isEditing')).toBe(NO);
+          SC.run( function() {
+            simulateDoubleClick(titleView);
+          });
+          // after we have double clicked title view, we shoudl be in edit mode
+          expect(titleView.get('isEditing')).toBe(YES);
+          expect(titleView.get('displayText')).toNotMatch(/click to edit/);
+          expect(titleView.get('displayText')).toMatch(/_/);
+        });
+      });
+    }); // title field is empty
+
   });
 });
 

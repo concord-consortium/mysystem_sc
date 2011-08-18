@@ -12,13 +12,14 @@
   @extends SC.View
 */
 sc_require('core');
+sc_require('views/palette_item')
 
 MySystem.NodePaletteView = SC.ListView.extend({ // Node Palette (left)
   layout: { top: 0, bottom: 0, left: 15 },
   // childViews: 'addDecorator addClay addHand addBulb transformationBadge linkColorChooser'.w(),
   contentBinding: 'MySystem.nodePaletteController',
-  exampleView: MySystem.AddButtonView,
-  rowHeight: 140
+  exampleView: MySystem.PaletteItemView,
+  rowHeight: 127
     
   /* Temporarily removed for Berkeley 0.1 release */
   // transformationBadge: MySystem.BadgeButtonView.design({
