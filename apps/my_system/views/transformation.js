@@ -2,7 +2,7 @@
 // Project:   MySystem.TransformationView
 // Copyright: ©2010 Concord Consortium
 // ==========================================================================
-/*globals MySystem LinkIt */
+/*globals MySystem */
 
 /** @class
 
@@ -11,7 +11,7 @@
 
   @extends SC.View
 */
-MySystem.TransformationView = SC.View.extend( LinkIt.Link,
+MySystem.TransformationView = SC.View.extend(
 /** @scope MySystem.TransformationView.prototype */ {
 
   startNode: null,

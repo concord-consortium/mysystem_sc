@@ -3,7 +3,7 @@
 // Copyright: ©2010 Concord Consortium 
 // under the MIT License (see LICENSE file for more info)
 // ==========================================================================
-/*globals MySystem LinkIt SCUI Forms */
+/*globals MySystem SCUI Forms */
 
 /** @class
 

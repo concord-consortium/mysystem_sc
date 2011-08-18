@@ -7,7 +7,7 @@
 /** @class
 
   This controller drives the Transformation Builder pane. The builder is a
-  LinkIt canvas with energy flow types (colors, actually) as nodes and 
+  canvas with energy flow types (colors, actually) as nodes and 
   MySystem.Transformations as links. 
 
   @extends SC.Object

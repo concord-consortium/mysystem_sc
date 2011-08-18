@@ -2,19 +2,18 @@
 // Project:   MySystem.Node
 // Copyright: ©2010 Concord Consortium
 // ==========================================================================
-/*globals MySystem LinkIt Forms */
+/*globals MySystem Forms */
 
 /** @class
 
   Simple model of a MySystem node.
 
   @extends MySystem.Diagrammable
-  @extends LinkIt.Node
   @version 0.1
 */
 sc_require('models/diagrammable');
 
-MySystem.Node = MySystem.Diagrammable.extend(LinkIt.Node, 
+MySystem.Node = MySystem.Diagrammable.extend(
 /** @scope MySystem.Node.prototype */ {
 
   image: SC.Record.attr(String),
@@ -49,41 +48,6 @@ MySystem.Node = MySystem.Diagrammable.extend(LinkIt.Node,
 
   inColorMap: [],
   outColorMap: [],
-
-  // We have to maintain this list of links. 
-  // Its observed from our mixin: LinkIt.Node 
-  // links: [],
-  links: function() {
-    var _links = [], 
-    // SC.Logger.log('Computing links...');
-    link;
-
-    var inputs = this.get('inLinks'),
-    outputs = this.get('outLinks');
-
-    // process inputs
-    for (var i = 0, ii = inputs.get('length'); i < ii; i++) {
-      link = inputs.objectAt(i);
-      if (link && link.isComplete()) {
-        _links.pushObject(link.makeLinkItLink());
-      }
-    }
-
-    // process outputs
-    for (i = 0, ii = outputs.get('length'); i < ii; i++) {
-      link = outputs.objectAt(i);
-      if(link && link.isComplete()) {
-        _links.pushObject(link.makeLinkItLink());
-      }
-    }
-
-    // this.set('links', _links);
-    return _links;
-  }.property('.outlinks.[]', '.inLinks.[]'),    // FIXME this is not valid (at least in this version of SproutCore)
-  // The cacheable property was removed because that broke link drawing when we added
-  // in transformations.
-
-
 
   init: function () {
     sc_super();
@@ -133,114 +97,6 @@ MySystem.Node = MySystem.Diagrammable.extend(LinkIt.Node,
   addOutLink: function(link) {
     this.get('inLinks').pushObject(link);
   },
-
-  // tell LinkIt whether the proposed link is valid
-  canLink: function (link) {
-    // SC.Logger.log(this+".canLink("+link+")");
-    if (!link) return NO;
-
-    var sn = link.get('startNode'), 
-        st = link.get('startTerminal');
-    var en = link.get('endNode'), 
-        et = link.get('endTerminal');
-
-    // Only accept links from nodes
-    if (!sn.instanceOf(MySystem.Node) || !en.instanceOf(MySystem.Node)) return NO;
-
-    // Make sure we don't connect to ourselves.
-    if (sn === en) return NO;
-
-    // Make sure we don't already have this link.
-    if (this._hasLink(link)) return NO;
-
-    /* Temporarily removed for Berkeley 0.1 release */
-    // var outColors = sn.acceptableOutLinkColors();
-    // var inColors = en.acceptableInLinkColors();
-    // var acceptableColors = this.intersection(inColors, outColors);
-    // if (acceptableColors !== null && acceptableColors == []) {
-    //   return NO;
-    // }
-
-    // Input-to-output terminal matching
-    // if ( (st === 'input' && et === 'output') || (st === 'output' && et === 'input')) {
-    //   return YES;
-    // }
-    return YES;
-    // TODO under what other circumstances would we refuse a link?
-    // return NO;
-  },
-
-  // do we already have the proposed new link 'link'?  
-  _hasLink: function (link) {
-    var links = this.get("links") || [];
-    var len = links.get('length');
-    var n;
-    var linkID = LinkIt.genLinkID(link);
-    for (var i = 0; i < len; i++) {
-      n = links.objectAt(i);
-      if (LinkIt.genLinkID(n) === linkID) {
-        return YES;
-      }
-    }
-  },
-
-  // Part of LinkIt Node Contract. Called when a new link created by drag event.
-  // didCreateLink: function (inlink) {
-  //   var tmpHash = MySystem.Link.hashFromLinkItLink(inlink);
-  //   var link = null,
-  //       links;
-
-  //   var sn = tmpHash.startNode,
-  //       st = tmpHash.startTerminal,
-  //       en = tmpHash.endNode, 
-  //       et = tmpHash.endTerminal;
-
-  //   funny, we sometimes get new nodes?
-  //   if (SC.none(this.get("guid"))) {
-  //     SC.Logger.warn("No guid found for %@".fmt(this));
-  //     return;
-  //   }
-  //   add only completed links (both sides are mapped)
-  //   if(sn && st && en && et) {
-
-  //     if (sn === this) {
-  //        tmpHash.startNode = null;
-  //        tmpHash.endNode = null;
-  //        link = MySystem.store.createRecord(MySystem.Link, tmpHash);
-  //        link.set("startNode",sn);
-  //        link.set("endNode",en);
-  //        link.set('color', MySystem.linkColorChooser.get('content'));
-  //        MySystem.canvasView.selectLink(link);
-  //      }
-  //      else if (en === this) {
-  //        if we are the end-node let our peer start-node do the object creation ... 
-  //      }
-  //   }
-  // },
-  
-  // @param link is a LinkIt.Link.
-  // we are notified from the LinkIt framework
-  // willDeleteLink: function (link) {
-  //   var sn = link.get('startNode'), 
-  //       st = link.get('startTerminal');
-  //   var en = link.get('endNode'), 
-  //       et = link.get('endTerminal');
-  //   var model_link = link.model;
-  //   if (model_link) {
-  //     var startNode = model_link.get("startNode");
-  //     var endNode = model_link.get("endNode");
-  //     if we are the startNode then we are responsible for removing the link.
-  //     if (startNode && startNode === this) {
-  //       SC.Logger.log("removing link %@", model_link);
-  //       startNode.get("outLinks").removeObject(model_link);
-  //       startNode.get("inLinks").removeObject(model_link);
-  //       endNode.get("outLinks").removeObject(model_link);
-  //       endNode.get("inLinks").removeObject(model_link);
-  //       model_link.destroy();
-  //       link = null;
-  //     }
-  //   }
-  // },
 
   // Returns a list of acceptable colors for out-links, null if no restriction
   acceptableOutLinkColors: function() {

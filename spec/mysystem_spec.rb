@@ -122,7 +122,7 @@ describe "MySystem" do
     #   link.should be_selected
     # end
   end
-  # The "click" action here appears to get pretty deep in LinkIt, deeper
+  # The "click" action here appears to get pretty deep, deeper
   # than I've been able to get with Lebowski so far, so this is commented
   # for the time being.
 
