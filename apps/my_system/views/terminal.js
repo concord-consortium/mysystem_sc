@@ -17,7 +17,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   x:                 0,
   y:                 0,
   r:                 function(){
-                        return this.get('isHovering') ? 6 : 5;
+                        return this.get('isHovering') ? 12 : 10;
                       }.property('isHovering'),
   normalFill:        '#ccc',
   hoverFill:         '#00F',

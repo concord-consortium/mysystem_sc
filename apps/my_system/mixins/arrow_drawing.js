@@ -94,17 +94,25 @@ MySystem.ArrowDrawing = {
     
     // calculate control points c2 and c3
     var curveDistance = (tip.x - start.x) * curvature,
-        startYCurveDistance = endYCurveDistance = Math.max(Math.min(curveDistance, 100), -100),
+        startYCurveDistance = endYCurveDistance = curveDistance == 0 ? 1 : Math.max(Math.min(curveDistance, 100), -100),
         startUp = startCurveUp ? 1 : -1,
         endUp = endCurveUp ? 1 : -1,
         startYCurveDistance = (startYCurveDistance * startUp > 0) ? startYCurveDistance : startYCurveDistance * -1,
         endYCurveDistance = (endYCurveDistance * endUp > 0) ? endYCurveDistance : endYCurveDistance * -1,
         c2 = new this.coord(start.x+(curveDistance/2), start.y-startYCurveDistance),
-        c3 = new this.coord(tip.x-(curveDistance/2), tip.y-endYCurveDistance);
+        c3 = new this.coord(tip.x-(curveDistance/2), tip.y-endYCurveDistance),
+        cDistance = Math.sqrt(Math.pow((curveDistance/2),2) + Math.pow(startYCurveDistance,2)),
+        radius = 10, 
+        perimX = radius*(curveDistance/2)/cDistance, 
+        perimYstart = radius*startYCurveDistance/cDistance;
+        perimYend = radius*endYCurveDistance/cDistance;
+        
+    // update tip
+    tip = new this.coord(tip.x - perimX, tip.y - perimYend);
         
     // draw arrow path
     
-    pathData.push("M", start.x, start.y);  // move to start of line
+    pathData.push("M", start.x + perimX, start.y - perimYstart);  // move to start of line
     pathData.push("C", c2.x, c2.y, c3.x, c3.y, tip.x, tip.y); // curve line to the tip
     
     // draw arrow head
@@ -113,8 +121,8 @@ MySystem.ArrowDrawing = {
         theta  = Math.atan2((tip.y-centerBaseOfHead.y),(tip.x-centerBaseOfHead.x)),
         baseAngleA = theta + angle * Math.PI/180,
         baseAngleB = theta - angle * Math.PI/180,
-        baseA      = new this.coord(endx - len * Math.cos(baseAngleA), endy - len * Math.sin(baseAngleA)),
-        baseB      = new this.coord(endx - len * Math.cos(baseAngleB), endy - len * Math.sin(baseAngleB));
+        baseA      = new this.coord(tip.x - len * Math.cos(baseAngleA), tip.y - len * Math.sin(baseAngleA)),
+        baseB      = new this.coord(tip.x - len * Math.cos(baseAngleB), tip.y - len * Math.sin(baseAngleB));
 
     arrowHeadData.push("M", tip.x, tip.y);
     arrowHeadData.push("L", baseA.x, baseA.y);  // line to baseA
