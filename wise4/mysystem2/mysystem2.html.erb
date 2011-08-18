@@ -186,9 +186,22 @@ if (SC.setupBodyClassNames) SC.setupBodyClassNames() ;
       };
 
       /**
-        Called (in a WISE4 context) when we want the MySystem app to save the diagram state
-      */
+       * Callback when MySystem is loaded
+       */
+      function main() { 
+          MySystem.main(); 
 
+          if (window.opener && divId) {
+              // if this window is a popup (e.g. from a WISE gradingtool's 'enlarge' link), 
+              // get the content and data from the parent window and load them into MySystem
+	          var data = window.opener.$("#studentwork_"+divId).html();
+          	  var contentString = window.opener.$("#content_"+divId).html();
+          	  var domIO = document.getElementById('my_system_state');
+          	  domIO.textContent = data;
+          	  MySystem.loadWiseConfig(JSON.parse(contentString),null);
+          	  MySystem.updateFromDOM();
+      	  }         
+      }
   </script>
   </body>
 </html>

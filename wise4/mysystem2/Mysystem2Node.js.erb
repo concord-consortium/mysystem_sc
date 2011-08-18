@@ -106,10 +106,29 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
 	 */
 	var stepWorkId = nodeVisit.id;
 	
-	var studentWork = MYSYSTEM2STATE.getStudentWork();
+	// get student work (string)
+	var studentWork = MYSYSTEM2STATE.getStudentWork().response;
 	
-	//put the student work into the div
-	$('#' + divId).html(studentWork.response);
+	// get content
+    var content = this.getContent().getContentString();
+
+	// get content baseurl (e.g. 'http://localhost:8080/curriculum/897')
+	var contentBaseUrl = this.view.config.getConfigParam('getContentBaseUrl');	
+
+    // prepend contentbaseurl in front of "assets" to content
+    content = this.view.utils.prependContentBaseUrlToAssets(contentBaseUrl,content);
+    
+    // prepend contentbaseurl in front of "assets" to student's work
+    var studentWork = this.view.utils.prependContentBaseUrlToAssets(contentBaseUrl, studentWork);
+	
+	// put the student work and content in a hidden element
+    // add enlarge link to show student's diagram in a popup window
+	var divContent = "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
+		"onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"\"'>enlarge</a>" +
+    	"<span id='content_"+divId+"' style='display:none'>"+content+"</span>" +
+    	"<span id='studentwork_"+divId+"' style='display:none'>"+studentWork+"</span>";
+	
+	$('#' + divId).html(divContent);
 };
 
 /**
