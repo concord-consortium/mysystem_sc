@@ -68,9 +68,8 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
 
         // The numbers at the end are to account for the difference in size of the PaletteItemView
         // compared to the Node view.  Mostly likely those could be computed.
-
-        newNodeX = drag.location.x - drag.ghostOffset.x - canvasOffset.left + 21,
-        newNodeY = drag.location.y - drag.ghostOffset.y - canvasOffset.top  + 16,
+        newNodeX = drag.location.x - drag.ghostOffset.x - canvasOffset.left + MySystem.NodeView.DROP_OFFSET.x,
+        newNodeY = drag.location.y - drag.ghostOffset.y - canvasOffset.top  + MySystem.NodeView.DROP_OFFSET.y,
     
         newNodeAttributes = {
           title:    drag.data.title,

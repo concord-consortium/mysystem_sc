@@ -1,4 +1,4 @@
-/*globals MySystem describe beforeEach afterEach it RaphaelViews */
+/*globals MySystem describe beforeEach afterEach it RaphaelViews dragIntoDiagram*/
 
 describe("Adding nodes by dragging", function () {
   var appPane, diagram, palette;
@@ -88,27 +88,45 @@ describe("Adding nodes by dragging", function () {
         
     expect(nodes.get('length')).toBe(0);
   
+    dragIntoDiagram(palette, diagram, 'obj1', 100, 100);
+    
+    expect(nodes.get('length')).toBe(1);
+    var node = nodes.objectAt(0);
+    expect(node.get('x')).toBe(100);
+    expect(node.get('y')).toBe(100);
+  });
+  
+  // This should be moved out, probably into an object that has a palette and diagramView defined
+  // so you don't need to pass them all the time
+  dragIntoDiagram = function(palette, diagramView, paletteItemTitle, diagramX, diagramY) {
+    var query = SC.Query.local(MySystem.PaletteItem, "title = %@", [paletteItemTitle]),
+        paletteItem = MySystem.store.find(query).objectAt(0),
+        paletteItemView = palette.itemViewForContentObject(paletteItem),
+        paletteItemOffset = paletteItemView.$().offset(),
+        diagramOffset = diagramView.$().offset(),
+        downEvt, draggedEvt, upEvt;
+
+    // The offset is adjusted so the resulting node.x and node.y matches exactly what is passed in
+    diagramX = diagramX + diagramOffset.left - MySystem.NodeView.DROP_OFFSET.x;
+    diagramY = diagramY + diagramOffset.top -  MySystem.NodeView.DROP_OFFSET.y;
+    
+    downEvt =    SC.Event.simulateEvent(paletteItemView.get('layer'), 'mousedown', 
+      {pageX: paletteItemOffset.left, pageY: paletteItemOffset.top});
+    draggedEvt = SC.Event.simulateEvent(null, 'mousedragged', 
+      {pageX: diagramX, pageY: diagramY});
+    upEvt =      SC.Event.simulateEvent(null, 'mouseup', 
+      {pageX: diagramX, pageY: diagramY});
+
     SC.RunLoop.begin();
     paletteItemView._startDrag(downEvt);
     SC.RunLoop.end();
-    
+
     SC.RunLoop.begin();
     paletteItemView._drag.mouseDragged(draggedEvt);
     SC.RunLoop.end();
-    
+
     SC.RunLoop.begin();
     paletteItemView._drag.mouseUp(upEvt);
     SC.RunLoop.end();
-    
-    expect(nodes.get('length')).toBe(1);
-  });
-  
-  /**
-    possible example of concise way to build diagram by actions
-    [
-      {type:'drag', source:'paletteItem[0]', down: [10,10], up: [300,300]}
-      {type:'drag', source:'node[0].terminalA', down: [310,310], up: [350,350]}
-      {type:'click', source:'link[0]'}
-    ]
-   **/
+  };
 });

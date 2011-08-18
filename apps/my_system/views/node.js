@@ -207,3 +207,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   // EVENT METHODS GO HERE:
 });
 
+MySystem.NodeView.mixin({
+  DROP_OFFSET: {x: 21, y: 16}
+});
+
