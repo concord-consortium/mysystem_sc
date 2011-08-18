@@ -2,14 +2,58 @@
  clickOn fillIn defineJasmineHelpers runBeforeEach runAfterEach */
 
 defineJasmineHelpers();
-// $(function () { $('body').css('overflow', 'auto'); });
 
-describe ("view tests for the node", function() {
+describe ("A node with an editable label", function() {
   var appPane, diagram, palette, node, nodeView, titleView;
+  var leftX, topY, offset;
+
+  /**
+   * See also frameworks/jasmine-sproutcore/jasmin-sproutcore.js which provides other
+   * Event helper macros.
+   *
+   **/
+  function fireEvent(el, eventName, x, y) {
+    var evt = SC.Event.simulateEvent(el, eventName, { pageX: leftX + x, pageY: topY + y });
+    SC.Event.trigger(el, eventName, evt);
+  }
+
+  // see also frameworks/jasmine-sproutcore/jasmin-sproutcore.js  fillin() function
+  // which probably works better for non-raphael form fields.
+  function simulateKeyPress(el, letter) {
+    var evt;
+    evt = SC.Event.simulateEvent(el, 'keydown',  { charCode: letter, which: letter });
+    SC.Event.trigger(el, 'keydown', evt);
+    evt = SC.Event.simulateEvent(el, 'keypress', { charCode: letter, which: letter });
+    SC.Event.trigger(el, 'keypress', evt);
+    evt = SC.Event.simulateEvent(el, 'keyup',    { charCode: letter, which: letter });
+    SC.Event.trigger(el, 'keyup', evt);
+  }
+
+  // see also frameworks/jasmine-sproutcore/jasmin-sproutcore.js  fillin() function
+  // which probably works better for non-raphael form fields.
+  function simulateTextEntry(view, text) {
+    var i = 0;
+    for (i = 0; i < text.length; i++) {
+      simulateKeyPress(view.get('layer'),text.charCodeAt(i));
+    }
+  }
+
+  function simulateDoubleClick(el, offX, offY) {
+    if(!!!offX) { offX = 10; }
+    if(!!!offY) { offY = 10; }
+    fireEvent(el.get('layer'), 'mousedown', offX, offY);
+    fireEvent(el.get('layer'), 'mouseup',   offX, offY);
+    fireEvent(el.get('layer'), 'mousedown', offX, offY);
+    fireEvent(el.get('layer'), 'mouseup',   offX, offY);
+  }
 
   beforeEach( function() {
+
+    // setup App:
     MySystem.setupStore(MySystem);
     MySystem.statechart.initStatechart();
+
+    // create one test node:
     node = MySystem.store.createRecord(MySystem.Node, {
       title:    'test title',
       image:    'http://t0.gstatic.com/images?q=tbn:ANd9GcTff7_LQeEuPCEtb0AGSwAH-S5rNoQ3US7yOoxdQpjrUtlqh7zKrg',
@@ -17,8 +61,9 @@ describe ("view tests for the node", function() {
       y:        50,
       nodeType: 'MySystem2'
     });
-    appPane = SC.PanelPane.create({
 
+    // create minimum set of views:
+    appPane = SC.PanelPane.create({
       layout: {top: 0, bottom: 0, left: 0, right: 0 },
       contentView: SC.View.design({
         childViews: 'diagram'.w(),
@@ -68,10 +113,11 @@ describe ("view tests for the node", function() {
       };
 
       var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
+
       MySystem.activityController.set('content',activity);
 
-      diagram  = appPane.getPath('contentView.diagram.diagramView');
-      nodeView =  appPane.getPath('contentView.diagram.nodeView');
+      diagram   = appPane.getPath('contentView.diagram.diagramView');
+      nodeView  = appPane.getPath('contentView.diagram.nodeView');
       titleView = appPane.getPath('contentView.diagram.nodeView.titleView');
       SC.run();
   });
@@ -81,38 +127,15 @@ describe ("view tests for the node", function() {
   });
 
   it("should have a node", function(){
-    // expect(diagram.getPath('childViews.length')).toBe(1);
     expect(nodeView).toBeDefined();
   });
 
   it("should have a label", function(){
-    // expect(diagram.getPath('childViews.length')).toBe(1);
     expect(titleView).toBeDefined();
   });
 
   describe("editing the label", function () {
-    var leftX, topY, offset;
 
-    function fireEvent(el, eventName, x, y) {
-      var evt = SC.Event.simulateEvent(el, eventName, { pageX: leftX + x, pageY: topY + y });
-      SC.Event.trigger(el, eventName, evt);
-    }
-
-    function simulateKeyPress(el, letter) {
-      var evt = SC.Event.simulateEvent(el, 'keydown', { charCode: letter, which: letter });
-      SC.Event.trigger(el, 'keydown', evt);
-      evt = SC.Event.simulateEvent(el, 'keypress', { charCode: letter, which: letter });
-      SC.Event.trigger(el, 'keypress', evt);
-      evt = SC.Event.simulateEvent(el, 'keyup', { charCode: letter, which: letter });
-      SC.Event.trigger(el, 'keyup', evt);
-    }
-
-    function doubleClick(el) {
-        fireEvent(el.get('layer'), 'mousedown', 10,10);
-        fireEvent(el.get('layer'), 'mouseup', 10,10);
-        fireEvent(el.get('layer'), 'mousedown', 10,10);
-        fireEvent(el.get('layer'), 'mouseup', 10,10);
-    }
 
     beforeEach( function () {
       offset = $(titleView.get('layer')).offset();
@@ -126,7 +149,7 @@ describe ("view tests for the node", function() {
         fireEvent(titleView.get('layer'), 'mouseExited', 0, 0);
         SC.run( function () { titleView.commitEditing(); });
       });
-    
+
       it("should not be in the edit mode", function () {
         expect(titleView.get('isEditing')).toEqual(NO);
       });
@@ -135,12 +158,12 @@ describe ("view tests for the node", function() {
         expect(titleView.getPath('editBoxView.isVisible')).toEqual(NO);
       });
     });
-    
+
     describe("after a double click", function () {
       beforeEach(function () {
         // ensure that we aren't editing at the outset
         SC.run( function () { titleView.commitEditing(); });
-        doubleClick(titleView);
+        simulateDoubleClick(titleView);
       });
 
       it("should be in the edit mode", function () {
@@ -166,9 +189,7 @@ describe ("view tests for the node", function() {
           beforeEach( function () {
             nodeView.setPath('titleView.isAllSelected', YES);
             expectedText = textToEnter;
-            for (i = 0; i < textToEnter.length; i++) {
-              simulateKeyPress(titleView.get('layer'),textToEnter.charCodeAt(i));
-            }
+            simulateTextEntry(titleView,textToEnter);
           });
 
           it("should now have the new text in the label", function () {
@@ -188,9 +209,37 @@ describe ("view tests for the node", function() {
           it("should now have the new text in the label", function () {
             expect(titleView.get('text')).toEqual(expectedText);
           });
+        }); // when the label is not all selected
+      });   // entering some text
+    });     // after double clicking
+
+    describe ("when the title field of the node is empty", function() {
+      beforeEach(function () {
+        node.set('title',"");
+        SC.run( function() {
+          titleView.set('isEditing',NO);
+          titleView.set('isAllSelected',NO);
         });
       });
-    });
+
+      describe("the nodes label", function() {
+        it("should display 'click to edit'", function() {
+          expect(titleView.get('displayText')).toMatch(/click to edit/);
+        });
+
+        it("should still present a double-clickable target which enables editing", function() {
+          expect(titleView.get('isEditing')).toBe(NO);
+          SC.run( function() {
+            simulateDoubleClick(titleView);
+          });
+          // after we have double clicked title view, we shoudl be in edit mode
+          expect(titleView.get('isEditing')).toBe(YES);
+          expect(titleView.get('displayText')).toNotMatch(/click to edit/);
+          expect(titleView.get('displayText')).toMatch(/_/);
+        });
+      });
+    }); // title field is empty
+
   });
-}); // editing the label
+});
 
