@@ -32,13 +32,8 @@ MySystem.initial_json_state = {
         "link1",
         "link2"
       ],
-      "position": {
-        "x": 160,
-        "y": 160
-      },
-      "transformations": [
-        "trans1"
-      ]
+      "x": 160,
+      "y": 160
     },
     "2": {
       "guid": "2",
@@ -49,10 +44,8 @@ MySystem.initial_json_state = {
         "link1"
       ],
       "outLinks": [],
-      "position": {
-        "x": 310,
-        "y": 10
-      }
+      "x": 310,
+      "y": 10
     },
     "3": {
       "guid": "3",
@@ -63,10 +56,8 @@ MySystem.initial_json_state = {
         "link2"
       ],
       "outLinks": [],
-      "position": {
-        "x": 10,
-        "y": 10
-      }
+      "x": 10,
+      "y": 10
     }
   },
   "MySystem.Story": {
