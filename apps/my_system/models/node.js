@@ -304,16 +304,6 @@ MySystem.Node = MySystem.Diagrammable.extend(LinkIt.Node,
     return outArray;
   },
 
-  // Returns an array of in-link colors which are in transformations for this node
-  inLinkColorsWithTransformations: function() {
-    return this.get('transformations').getEach('inLinkColor');
-  }.property('.transformations.[]'),
-
-  // Returns an array of out-link colors which are in transformations for this node
-  outLinkColorsWithTransformations: function() {
-    return this.get('transformations').getEach('outLinkColor');
-  }.property('.transformations.[]'),
-
   // Checking first out links, then in links, this answers the question:
   // is there at least one link not covered by a defined transformation?
   allLinksHaveTransformations: function() {
