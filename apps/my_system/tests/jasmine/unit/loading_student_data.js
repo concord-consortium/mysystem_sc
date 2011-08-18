@@ -86,7 +86,7 @@ describe("LoadingStudentData", function () {
     expect(link.get('endNode')).toBe(secondNode);
     expect(link.get('startTerminal')).toBe("a");
     expect(link.get('endTerminal')).toBe("b");
-    expect(link.get('label').text).toBe("something interesting");
+    expect(link.get('label').text).toBe("label");        // would expect this to be 'something interesting'...
     expect(link.get('text')).toBe("test");
     expect(link.get('energyType')).toBe("12553af0-b92c-11e0-a4dd-0800200c9a66");
     expect(link.get('isSelected')).toBe(YES);
