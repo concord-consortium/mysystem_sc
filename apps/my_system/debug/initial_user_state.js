@@ -35,10 +35,7 @@ MySystem.initial_json_state = {
       "position": {
         "x": 160,
         "y": 160
-      },
-      "transformations": [
-        "trans1"
-      ]
+      }
     },
     "2": {
       "guid": "2",

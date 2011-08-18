@@ -22,9 +22,6 @@ MySystem.StorySentence = SC.Record.extend(
   links: SC.Record.toMany("MySystem.Link", {
     inverse: "sentences", isMaster: NO
   }),
-  transformation: SC.Record.toOne("MySystem.Transformation", {
-    inverse: "annotation", isMaster: NO
-  }),
 
   // The combined list of nodes and links from the diagram
   diagramObjects: function() {

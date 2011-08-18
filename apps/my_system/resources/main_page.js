@@ -56,8 +56,5 @@ MySystem.mainPage = SC.Page.design({
   }),
 
   inspectorPane: MySystem.InspectorPane,
-
-  sentenceLinkPane: MySystem.SentenceConnectPane,
-
-  transformationAnnotaterPane: MySystem.TransformationAnnotationPane.design({})
+  sentenceLinkPane: MySystem.SentenceConnectPane
 });

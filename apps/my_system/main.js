@@ -79,12 +79,7 @@ MySystem.main = function main() {
   var storySentences = MySystem.store.find(storyQuery);
   MySystem.storySentenceController.set('content', storySentences);
 
-  var transformations = MySystem.store.find(MySystem.Transformation);
-
-  // MySystem.linkColorChooser = MySystem.mainPage.mainPane.childViews.objectAt(0).topLeftView.childViews.objectAt(5);
-  // MySystem.linkColorChooser.set('content', 'red');
   MySystem.canvasView = MySystem.mainPage.mainPane.get('diagramView');    // TODO rename to 'diagramView' project-wide RPK 8-11-11
-  MySystem.transformationAnnotaterPane = MySystem.getPath('mainPage.transformationAnnotaterPane');
 
   MySystem.statechart.initStatechart();
   
