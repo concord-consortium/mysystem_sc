@@ -58,11 +58,11 @@ test("tests connecting nodes to storySentences", function () {
   equals(sent.get('diagramObjects').get('length'), sent.get('nodes').get('length') + sent.get('links').get('length'), "The sentence's diagramObjects should equal the sum of the links and nodes.");
 });
 
-test("nodes should have a position attribute", function() {
+test("nodes should have x and y attributes", function() {
   expect(2);
-  var node = store.createRecord(MySystem.Node, {'title': 'Edit Title', 'image': 'http://concord.org/favicon.ico', 'position': {'x': 120, 'y': 150}});
-  equals(node.get('position').x, 120, "X position should be 120 as created");
-  equals(node.get('position').y, 150, "Y position should be 150 as created");
+  var node = store.createRecord(MySystem.Node, {'title': 'Edit Title', 'image': 'http://concord.org/favicon.ico', 'x': 120, 'y': 150});
+  equals(node.get('x'), 120, "X position should be 120 as created");
+  equals(node.get('y'), 150, "Y position should be 150 as created");
 });
 
 test("inLinkColors and ouLinkColors should return arrays of link colors", function() {
@@ -95,30 +95,6 @@ test("Checking transformation colors should return arrays of link colors", funct
   // same(node1.get('inLinkColorsWithTransformations'), ["red", "red"], "They should both be red");
   // equals(node1.get('outLinkColorsWithTransformations').get('length'), 2, "There should be two colors returned");
   // same(node1.get('outLinkColorsWithTransformations'), ["green", "blue"], "They should be blue and green");
-});
-
-test("Checking for implied transformations", function() {
-  expect(1);
-  var node1   = store.createRecord(MySystem.Node, { 'title': 'Test node 1', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node2   = store.createRecord(MySystem.Node, { 'title': 'Test node 2', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var node3   = store.createRecord(MySystem.Node, { 'title': 'Test node 3', 'image': 'http://ccmysystem.appspot.com/images/At-Concord-Fall/lightbulb_tn.png', 'transformer': false });
-  var newLink1 = store.createRecord(MySystem.Link, { 'text': 'First test link', 'color': 'red' });
-  newLink1.set("startNode", node1);
-  newLink1.set("endNode", node2);
-  newLink1.set("startTerminal","a");
-  newLink1.set("endTerminal","b");
-  var newLink2 = store.createRecord(MySystem.Link, { 'text': 'Second test link', 'color': 'green' });
-  newLink2.set("startNode", node1);
-  newLink2.set("endNode", node3);
-  newLink2.set("startTerminal","a");
-  newLink2.set("endTerminal","b");
-  ok(!node1.get('hasImpliedTransformations'), 'There should not be implied transformations');
-  var newLink3 = store.createRecord(MySystem.Link, { 'text': 'Third test link', 'color': 'red' });
-  newLink2.set("startNode", node3);
-  newLink2.set("endNode", node2);
-  newLink2.set("startTerminal","a");
-  newLink2.set("endTerminal","b");
-  // ok(node3.get('hasImpliedTransformations'), 'There should be an implied transformation');
 });
 
 test("Checking transformation annotations", function() {
