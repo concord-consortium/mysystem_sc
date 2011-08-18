@@ -150,18 +150,6 @@ MySystem.Node = MySystem.Diagrammable.extend(
     }
   },
 
-  // Returns the color of links this node can produce and/or accept.
-  // If "any", returns null (no links yet, or is a transformer)
-  linkColor: function() {
-    if (this.get('transformer')) {
-      return null;
-    }
-    if (this.get('links').get('length') === 0) {
-      return null;
-    }
-    return this.get('links').firstObject().get('model').get('color');
-  }.property('.outlinks.[]', '.inLinks.[]'),          // FIXME this is not valid SC!
-
   // Returns an array of colors of all in-links to the node.
   inLinkColors: function() {
     return this.get('inLinks').getEach('color');
@@ -206,16 +194,6 @@ MySystem.Node = MySystem.Diagrammable.extend(
     });
     return outArray;
   },
-
-  // Returns an array of in-link colors which are in transformations for this node
-  inLinkColorsWithTransformations: function() {
-    return this.get('transformations').getEach('inLinkColor');
-  }.property('.transformations.[]'),
-
-  // Returns an array of out-link colors which are in transformations for this node
-  outLinkColorsWithTransformations: function() {
-    return this.get('transformations').getEach('outLinkColor');
-  }.property('.transformations.[]'),
 
   // Checking first out links, then in links, this answers the question:
   // is there at least one link not covered by a defined transformation?
@@ -323,36 +301,6 @@ MySystem.Node = MySystem.Diagrammable.extend(
     }
   }.observes('hasImpliedTransformations'),
   This is the end of the extra Transformation code **/
-
-  // This function doesn't calculate all possible transformations, or worry about which
-  // transformations actually work. It just verifies that a transformation is
-  // *possible*, that is, at least one inLink with a different color from at least
-  // one outLink.
-  // N.B. Not sure this method actually has a use other than defining implied transformations.
-  hasImpliedTransformations: function() {
-    var inLinks = this.get('inLinks');
-    var outLinks = this.get('outLinks');
-    if ((inLinks.get('length') < 1) || (outLinks.get('length') < 1)) {
-      return NO; // No transformation without both in-flow and out-flow
-    } else {
-      var _hasTransformation = NO;
-      var color = null;
-      var inLength = inLinks.get('length');
-      var outLength = outLinks.get('length');
-      var i, j;
-      for (i=0; i<inLength; i++) { // Check each in-link
-        color = inLinks.objectAt(i).get('color');
-       for (j=0; j<outLength; j++) { // Check against each out-link
-          if (color !== outLinks.objectAt(j).get('color')) {
-            _hasTransformation = YES; // Found one
-            break; // stop looking at out-links
-          }
-        }
-        if (_hasTransformation) { break; } // If we found one, stop looking at in-links
-      }
-      return _hasTransformation;
-    }
-  }.property('.outlinks.[]', '.inLinks.[]'),
 
   transformationsAreAllAnnotated: function() {
     var _areAnnotated = YES;

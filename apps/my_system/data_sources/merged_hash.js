@@ -22,6 +22,15 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
   */
   handledRecordTypes: [],
   
+  
+  /** 
+    @property
+    
+    Whether to ignore undeclared fields (i.e., keys that are not the names of RecordAttributes defined on the relevant
+    recordType) on the individual record hashes when setting the data hash. Default value is NO.
+  */
+  ignoreUndeclaredFields: NO,
+  
   /**
     @property
     
@@ -35,19 +44,27 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
   init: function () {
     sc_super();
     
-    // initialize the dataHash property to contain an empty array per handledRecordType
-    var handledRecordTypes = this.get('handledRecordTypes'),
+    // initialize the dataHash property to contain an empty array per handledRecordType, and cache the list of declared
+    // fields
+    var handledRecordTypes     = this.get('handledRecordTypes'),
+        ignoreUndeclaredFields = this.get('ignoreUndeclaredFields'),
         dataHash = {},
+        declaredFields = {},
         recordType,
+        recordTypeName,
         i, len;
-        
+    
     for (i = 0, len = handledRecordTypes.get('length'); i < len; i++) {
       recordType = handledRecordTypes.objectAt(i);
-      dataHash[recordType.toString()] = {};
+      recordTypeName = recordType.toString();
+      
+      dataHash[recordTypeName] = {};
+      if (!ignoreUndeclaredFields) declaredFields[recordTypeName] = this.declaredFieldsOf(recordType);
     }
     
     this._dataHash = dataHash;
-    this.notifyPropertyChange('dataHash');    
+    this._declaredFields = declaredFields;
+    this.notifyPropertyChange('dataHash');
   },
   
   /**
@@ -220,7 +237,9 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
       for (id in newDataHash[recordTypeName]) {
         if (!newDataHash[recordTypeName].hasOwnProperty(id)) continue;
         
-        if(recordType.updateNextId) recordType.updateNextId(id);
+        if (recordType.updateNextId) recordType.updateNextId(id);
+        
+        this._verifyFieldsAreDeclared(newDataHash[recordTypeName][id], recordTypeName, id);
         
         store.pushRetrieve(recordType, id, SC.copy(newDataHash[recordTypeName][id], YES));
         newDataHashCopy[recordTypeName][id] = SC.copy(newDataHash[recordTypeName][id], YES);
@@ -229,6 +248,30 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     
     this._dataHash = newDataHashCopy;
     this.notifyPropertyChange('dataHash');    
+  },
+  
+  declaredFieldsOf: function (recordType) {
+    var ret = [],
+        p;
+        
+    for (p in recordType.prototype) {
+      if (recordType.prototype[p] && recordType.prototype[p].isRecordAttribute) ret.push(p);
+    }
+    return ret;
+  },
+        
+  _verifyFieldsAreDeclared: function (recordHash, recordTypeName, recordId) {
+    if (this.get('ignoreUndeclaredFields')) return;
+    
+    var fields = this._declaredFields[recordTypeName],
+        p;
+    
+    for (p in recordHash) {
+      if (recordHash.hasOwnProperty(p) && fields.indexOf(p) < 0) {
+        throw new ReferenceError("MergedHashDataSource: data hash for record '%@' of type '%@' has an undeclared field '%@'".fmt(recordId, recordTypeName, p));
+      }
+    }
   }
+  
   
 });

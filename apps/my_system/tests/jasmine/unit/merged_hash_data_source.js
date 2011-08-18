@@ -53,7 +53,8 @@ describe("MergedHashDataSource", function () {
       notHandledRecordType._object_className = "MyApp.NotHandledRecordType";
 
       dataSource = MySystem.MergedHashDataSource.create({
-        handledRecordTypes: [handledRecordType1, handledRecordType2]
+        handledRecordTypes: [handledRecordType1, handledRecordType2],
+        ignoreUndeclaredFields: YES
       });
 
       spyOn(dataSource, 'getRecordTypeFromName').andCallFake(function (recordTypeName) {
