@@ -53,7 +53,14 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
   enterState: function () {
     SC.Logger.log("Entering state %s", this.get('name'));
     // Set up the property editor pane and attach it
-    this.setUpInspectorPane();
+    
+    // for now, the inspector pane only exists to set energy type. If there is only one or
+    // zero energy types, don't bother showing it.
+    if (MySystem.store.find(MySystem.EnergyType).length() > 1){
+      this.setUpInspectorPane();
+    } else {
+      this.gotoState('DIAGRAM_EDITING');
+    }
   },
   
   exitState: function () {
