@@ -127,7 +127,7 @@ SC.setupBodyClassNames = function() {
   <script type="text/javascript">
     String.preferredLanguage = "en";
     var mysystem2;
-    
+
     /**
      * Called back when ... some part of this thing loads.
      */
@@ -148,23 +148,23 @@ SC.setupBodyClassNames = function() {
     /**
      * Called by WISE4 when we leave the step
      */
-    window.onExit = function () {  
+    window.onExit = function () {
       mysystem2.preSave();
-      mysystem2.save(); 
+      mysystem2.save();
     };
-    window.save = function()    {  
+    window.save = function()    {
       mysystem2.preSave();
-      mysystem2.save(); 
+      mysystem2.save();
     };
 
     /**
      * Callback when MySystem is loaded
      */
-    function main() { 
-      MySystem.main(); 
+    function main() {
+      MySystem.main();
 
       if (window.opener && divId) {
-        // if this window is a popup (e.g. from a WISE gradingtool's 'enlarge' link), 
+        // if this window is a popup (e.g. from a WISE gradingtool's 'enlarge' link),
         // get the content and data from the parent window and load them into MySystem
         var data = window.opener.$("#studentwork_"+divId).html();
         var contentString = window.opener.$("#content_"+divId).html();
@@ -172,7 +172,7 @@ SC.setupBodyClassNames = function() {
         domIO.textContent = data;
         MySystem.loadWiseConfig(JSON.parse(contentString),null);
         MySystem.updateFromDOM();
-      }         
+      }
     }
   </script>
   </body>
