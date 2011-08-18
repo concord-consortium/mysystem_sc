@@ -89,10 +89,29 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     return YES;
   },
 
+  touchStart: function (evt) {
+    return this.mouseDown(evt);
+  },
+
   mouseDragged: function (evt) {
     return this._drag(evt);
   },
 
+  touchesDragged: function (evt) {
+    // fake mouseEntered and mouseExited events
+    var rootResponder = this.getPath('pane.rootResponder'),
+        target = document.elementFromPoint(evt.pageX, evt.pageY),
+        targetView = SC.$(target).view()[0];
+    
+    if(this._lastEnteredView && this._lastEnteredView != targetView){
+      this._lastEnteredView.tryToPerform('mouseExited', evt);
+    }
+
+    targetView.tryToPerform('mouseEntered', evt);
+    this._lastEnteredView = targetView;
+
+    return this.mouseDragged(evt);
+  },
 
   _drag: function (evt) {
     if (!this.get('isLineDrag')) {
@@ -116,6 +135,10 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
       MySystem.statechart.sendAction('rubberbandLinkAbandoned');
     }
     return YES;
+  },
+
+  touchEnd: function (evt) {
+    this.mouseUp(evt);
   },
 
   mouseEntered: function () {

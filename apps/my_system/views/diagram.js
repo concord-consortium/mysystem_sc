@@ -100,9 +100,17 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
     return handledBySuper;
   },
   
+  touchStart: function (evt) {
+    return this.mouseDown(evt);
+  },
+  
   mouseDragged: function (evt) {
     this._drag(evt);
     return sc_super();
+  },
+  
+  touchesDragged: function(evt, touches) {
+    this.mouseDragged(evt);
   },
   
   mouseUp: function (evt) {
@@ -117,6 +125,10 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
     return sc_super();
   },
   
+  touchEnd: function (evt) {
+    return this.mouseUp(evt);
+  },
+
   _startDrag: function () {
     var containerView  = this.get('containerView') || this,
         $canvasView    = this.get('canvasView').$();
