@@ -33,7 +33,6 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
  
   // for titleView
   titleBinding: '*content.title',
-  titleBindingDefault: SC.Binding.oneWay(),
   xBinding:     '*content.x',
   yBinding:     '*content.y',
   
