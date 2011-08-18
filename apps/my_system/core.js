@@ -53,17 +53,10 @@ SC.Binding.firstIfType = function (type) {
   });
 };
 
+// All fields of records used in this application must be declared before use. This is especially useful after
+// refactoring models, in order to catch accesses of now-obsolete record types
 SC.Record.reopen({
   unknownProperty: function (key, value) {
-    var name = this.toString ? this.toString() : "(an object)";
-    
-    if ('undefined' === typeof value) {
-      if (key.length > 0) console.error("%s accessed unknown property '%s'", name, key);
-    }
-    else {
-      console.error("%s set unknown property '%s' to value ", name, key, value.toString ? value.toString() : value);
-    }
-    
-    sc_super();
+    if (key.length > 0) throw new ReferenceError("Attempt to access undeclared field '%@' of record: %@".fmt(key, this.toString()));
   }
-});      
+});
