@@ -1,5 +1,5 @@
 // ==========================================================================
-// MySystem.AddButtonView, from LinkItDemo.AddButtonView
+// MySystem.PaletteItemView
 // ==========================================================================
 
 /*globals MySystem */
@@ -16,7 +16,7 @@ sc_require('views/letterbox_image');
   @since ALPHA
 
 */
-MySystem.AddButtonView = SC.View.extend( 
+MySystem.PaletteItemView = SC.View.extend( 
   {
   layout: { top: 10, left: 20, right: 10, width: 100 },
   padding: 10,

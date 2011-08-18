@@ -66,7 +66,7 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
   performDragOperation: function (drag, op) {
     var canvasOffset = this.get('canvasView').$().offset(),
 
-        // The numbers at the end are to account for the difference in size of the AddButtonView
+        // The numbers at the end are to account for the difference in size of the PaletteItemView
         // compared to the Node view.  Mostly likely those could be computed.
 
         newNodeX = drag.location.x - drag.ghostOffset.x - canvasOffset.left + 17,

@@ -11,7 +11,7 @@ include Lebowski::SCUI::Views
 include MySystem::Views
 
 ProxyFactory.proxy NodeView
-ProxyFactory.proxy AddButtonView
+ProxyFactory.proxy PaletteItemView
 ProxyFactory.proxy Link
 
 TEST_PORT =  ENV[:TEST_PORT.to_s] || 4022;
