@@ -39,12 +39,15 @@ MySystem = SC.Application.create(
   }
 });
 
-// add a binding transform to take the first element of an array and return it
-SC.Binding.firstOnly = function() {
-  return this.transform(function(value, binding) {
-    if (!!value) {
-      return value.firstObject();
-    } else {
+// Binding transform that takes the first element of an array and returns it, iff the element is of the specified type
+SC.Binding.firstIfType = function (type) {
+  return this.transform(function (value, binding) {
+    var first;
+    
+    if (value && (first = value.firstObject()) && first.kindOf(type)) {
+      return first;
+    } 
+    else {
       return null;
     }
   });
