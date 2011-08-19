@@ -55,8 +55,9 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   // Having it here is a bit of a hack, and there might be some more stardard way of dealing
   // with the issue that the selection of svg elements doesn't cause browser to track focus.
   focusMainPaneOnSelectionChange: function() {
-    if (MySystem.mainPage.getPath('mainPane.diagramView') && MySystem.mainPage.getPath('mainPane.diagramView').get('layer')){
+    if (MySystem.mainPage.get('mainPane') && MySystem.mainPage.get('mainPane').get('layer')){
       MySystem.mainPage.getPath('mainPane').get('layer').focus();
+      MySystem.mainPage.getPath('mainPane').get('layer').blur();
     }
   }.observes('selection')
 });
