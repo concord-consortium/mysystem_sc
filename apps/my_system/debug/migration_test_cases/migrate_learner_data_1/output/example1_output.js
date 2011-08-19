@@ -29,7 +29,7 @@ MySystem.migrations.testCases.push({
     "MySystem.Node": {
       "1": {
         "guid": "1",
-        "image": "/static/my_system/en/current/source/resources/clay_red_tn.png?1304429971",
+        "image": "/static/my_system/en/current/source/resources/clay_red_tn.png",
         "title": "A Node",
         "inLinks": [],
         "outLinks": [
@@ -41,7 +41,7 @@ MySystem.migrations.testCases.push({
       },
       "2": {
         "guid": "2",
-        "image": "/static/my_system/en/current/source/resources/hand_tn.png?1304429971",
+        "image": "/static/my_system/en/current/source/resources/hand_tn.png",
         "title": "B Node",
         "inLinks": [
           "link1"
@@ -52,7 +52,7 @@ MySystem.migrations.testCases.push({
       },
       "3": {
         "guid": "3",
-        "image": "/static/my_system/en/current/source/resources/lightbulb_tn.png?1304429971",
+        "image": "/static/my_system/en/current/source/resources/lightbulb_tn.png",
         "title": "Third Node",
         "inLinks": [
           "link2"

@@ -12,7 +12,7 @@ sc_require('migrations/migrations');
 */
 MySystem.migrations.migrateLearnerData1 = function (data) {
 
-  // TODO it would be nice to define these transformations declaratively with a JSONPath type syntax rather than 
+  // it would be nice to define these transformations declaratively with a JSONPath type syntax rather than 
   // imperatively
   
   var ret       = SC.copy(data, YES),       // YES => deep copy

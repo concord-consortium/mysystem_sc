@@ -4,7 +4,11 @@ MySystem.migrations.testCases = MySystem.migrations.testCases || [];
 
 MySystem.migrations.testCases.push({
   name: "example1",
-  from_version: 1,
+
+  // explicitly specify which version we're converting from, so that our test of a single migration method doesn't have 
+  // to know how to infer the learner data version from the input data (possibly doing it wrong)
+  version: 1,   
+
   input: {
     "MySystem.Link": {
       "link1": {
@@ -29,7 +33,7 @@ MySystem.migrations.testCases.push({
     "MySystem.Node": {
       "1": {
         "guid": "1",
-        "image": sc_static('resources/clay_red_tn.png'),
+        "image": "/static/my_system/en/current/source/resources/clay_red_tn.png",
         "title": "A Node",
         "transformer": false,
         "inLinks": [],
@@ -47,7 +51,7 @@ MySystem.migrations.testCases.push({
       },
       "2": {
         "guid": "2",
-        "image": sc_static('resources/hand_tn.png'),
+        "image": "/static/my_system/en/current/source/resources/hand_tn.png",
         "title": "B Node",
         "transformer": false,
         "inLinks": [
@@ -61,7 +65,7 @@ MySystem.migrations.testCases.push({
       },
       "3": {
         "guid": "3",
-        "image": sc_static('resources/lightbulb_tn.png'),
+        "image": "/static/my_system/en/current/source/resources/lightbulb_tn.png",
         "title": "Third Node",
         "transformer": false,
         "inLinks": [
