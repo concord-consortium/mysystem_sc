@@ -15,11 +15,14 @@ MySystem.migrations.migrateLearnerData1 = function (data) {
   // TODO it would be nice to define these transformations declaratively with a JSONPath type syntax rather than 
   // imperatively
   
-  var ret = SC.copy(data, YES), // YES => deep copy
+  var ret       = SC.copy(data, YES),       // YES => deep copy
       dataNodes = data["MySystem.Node"],
-      retNodes = ret["MySystem.Node"];
+      retNodes  = ret["MySystem.Node"],
+      dataLinks = data["MySystem.Link"],
+      retLinks  = ret["MySystem.Link"],
+      p;
   
-  for (var p in dataNodes) {
+  for (p in dataNodes) {
     if (!dataNodes.hasOwnProperty(p)) continue;
 
     delete retNodes[p].position;               // to be replaced by x, y
@@ -28,6 +31,13 @@ MySystem.migrations.migrateLearnerData1 = function (data) {
     
     delete retNodes[p].transformer;           // no actual students used this field, don't save it for later
     delete retNodes[p].transformations;       // no actual students used this field, don't save it for later
+  }
+  
+  for (p in dataLinks) {
+    if (!dataLinks.hasOwnProperty(p)) continue; 
+
+    delete retLinks[p].label;
+    delete retLinks[p].isSelected;
   }
   
   ret.version = 2;
