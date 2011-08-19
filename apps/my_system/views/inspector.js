@@ -26,12 +26,8 @@ MySystem.InspectorPane = SC.PalettePane.design({
   contentView: SC.View.design({
     childViews: 'title form'.w(),
     title: SC.LabelView.design({
-      value: function() {
-        if (this.getPath('parentView.parentView.isOptionsForNewLink')){
-          return "Pick an energy type for your new link";
-        }
-        return "Energy type of your link:";
-      }.property('parentView.parentView.isOptionsForNewLink'),
+      value: "Pick an energy type for your new link",
+      isVisibleBinding: '.parentView.parentView.isOptionsForNewLink',
       layout: {top: 0, left: 0, right: 0, height: 22}
     }),
     form: MySystem.LinkFormView.design({
