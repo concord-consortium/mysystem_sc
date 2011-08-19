@@ -32,8 +32,10 @@ MySystem.initial_json_state = {
         "link1",
         "link2"
       ],
-      "x": 160,
-      "y": 160
+      "position": {
+        "x": 160,
+        "y": 160
+      }
     },
     "2": {
       "guid": "2",

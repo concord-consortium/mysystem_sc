@@ -17,7 +17,6 @@ MySystem = SC.Application.create(
   VERSION: '0.1.0',
 
   // TODO: Add global constants or singleton objects needed by your app here.
-  // MySystem.linkColorChooser = null;
   canvasView: null,
   NOVICE_STUDENT: 'novice',
   ADVANCED_STUDENT: 'advanced',

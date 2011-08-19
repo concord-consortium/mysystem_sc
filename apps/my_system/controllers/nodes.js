@@ -22,18 +22,6 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     this.deselectObjects(this.get('selection'));
   },
 
-  /* We'll need to refactor this when we get back to transformations */
-  // selectFirstTransformation: function(node) {
-  //   this.unselectAll();
-  //   var transformation = node.firstUnannotatedTransformation();
-  //   if (transformation) {
-  //     MySystem.nodesController.selectObject(node);
-  //     MySystem.nodesController.selectObjects(transformation.get('inLinks'), YES);
-  //     MySystem.nodesController.selectObjects(transformation.get('outLinks'), YES);
-  //     this.promptForTransformationAnnotation(transformation);
-  //   }
-  // },
-  
   collectionViewDeleteContent: function (view, content, indices) {
     // destroy the records
     var recordsToDestroy = indices.map( function (idx) {
