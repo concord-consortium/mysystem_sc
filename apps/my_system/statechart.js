@@ -110,8 +110,11 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       if (!!MySystem.externalSaveFunction){
         MySystem.externalSaveFunction();
       }
-      
       var showAlertPane = results[0] ? SC.AlertPane.info : SC.AlertPane.warn;
+      
+      // force focus of main pane, as author could have focus elsewhere, hit
+      // checkDiagram, and then hit delete key...
+      MySystem.nodesController.focusMainPane();
       showAlertPane.call(SC.AlertPane, {description: results[1]});
     },
     
