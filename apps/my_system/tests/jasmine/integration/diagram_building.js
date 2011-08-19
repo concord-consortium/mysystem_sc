@@ -1,6 +1,6 @@
 /*globals MySystem describe beforeEach afterEach it RaphaelViews DiagramBuilder*/
 
-describe("Adding nodes by dragging", function () {
+describe("The Diagram", function () {
   var appPane, diagramBuilder;
   
   beforeEach( function() {
@@ -74,21 +74,38 @@ describe("Adding nodes by dragging", function () {
     appPane.remove();
   });
   
-  it("should have 2 palette items", function(){
-    expect(diagramBuilder.paletteView.getPath('childViews.length')).toBe(2);
+  describe("the palette", function (){
+    it("should have 2 items", function(){
+      expect(diagramBuilder.paletteView.getPath('childViews.length')).toBe(2);
+    });    
   });
   
-  it("should create a new node", function(){
-    var nodes = MySystem.store.find(MySystem.Node);
-        
-    expect(nodes.get('length')).toBe(0);
+  describe("dragging a node onto the diagram", function () {
+    it("should create a new node", function(){
+      var nodes = MySystem.store.find(MySystem.Node);
+
+      expect(nodes.get('length')).toBe(0);
+
+      diagramBuilder.add('obj1', 100, 100);
+
+      expect(nodes.get('length')).toBe(1);
+
+      var node = nodes.objectAt(0);
+      expect(node.get('x')).toBe(100);
+      expect(node.get('y')).toBe(100);
+    });    
+  });
   
-    diagramBuilder.add('obj1', 100, 100);
-    
-    expect(nodes.get('length')).toBe(1);
-    
-    var node = nodes.objectAt(0);
-    expect(node.get('x')).toBe(100);
-    expect(node.get('y')).toBe(100);
+  describe("editing a node title", function () {
+    it("should set the title of the node", function () {
+      var nodes = MySystem.store.find(MySystem.Node);
+      expect(nodes.get('length')).toBe(0);
+      diagramBuilder.add('obj1', 100, 100);
+      expect(nodes.get('length')).toBe(1);
+      var node = nodes.objectAt(0);
+      var newTitle = "new title";
+      diagramBuilder.title(0, newTitle);
+      expect(node.get('title')).toBe(newTitle);
+    });
   });
 });
