@@ -1,51 +1,12 @@
 /*globals MySystem RaphaelViews describe it expect xit xdescribe beforeEach afterEach spyOn runs waits waitsFor
- clickOn fillIn defineJasmineHelpers runBeforeEach runAfterEach */
+ clickOn fillIn defineJasmineHelpers runBeforeEach runAfterEach firePointerEvent simulateDoubleClick simulateTextEntry
+ simulateKeyPress*/
 
 defineJasmineHelpers();
 
 describe ("A node with an editable label", function() {
   var appPane, diagram, palette, node, nodeView, titleView;
   var leftX, topY, offset;
-
-  /**
-   * See also frameworks/jasmine-sproutcore/jasmin-sproutcore.js which provides other
-   * Event helper macros.
-   *
-   **/
-  function fireEvent(el, eventName, x, y) {
-    var evt = SC.Event.simulateEvent(el, eventName, { pageX: leftX + x, pageY: topY + y });
-    SC.Event.trigger(el, eventName, evt);
-  }
-
-  // see also frameworks/jasmine-sproutcore/jasmin-sproutcore.js  fillin() function
-  // which probably works better for non-raphael form fields.
-  function simulateKeyPress(el, letter) {
-    var evt;
-    evt = SC.Event.simulateEvent(el, 'keydown',  { charCode: letter, which: letter });
-    SC.Event.trigger(el, 'keydown', evt);
-    evt = SC.Event.simulateEvent(el, 'keypress', { charCode: letter, which: letter });
-    SC.Event.trigger(el, 'keypress', evt);
-    evt = SC.Event.simulateEvent(el, 'keyup',    { charCode: letter, which: letter });
-    SC.Event.trigger(el, 'keyup', evt);
-  }
-
-  // see also frameworks/jasmine-sproutcore/jasmin-sproutcore.js  fillin() function
-  // which probably works better for non-raphael form fields.
-  function simulateTextEntry(view, text) {
-    var i = 0;
-    for (i = 0; i < text.length; i++) {
-      simulateKeyPress(view.get('layer'),text.charCodeAt(i));
-    }
-  }
-
-  function simulateDoubleClick(el, offX, offY) {
-    if(!!!offX) { offX = 10; }
-    if(!!!offY) { offY = 10; }
-    fireEvent(el.get('layer'), 'mousedown', offX, offY);
-    fireEvent(el.get('layer'), 'mouseup',   offX, offY);
-    fireEvent(el.get('layer'), 'mousedown', offX, offY);
-    fireEvent(el.get('layer'), 'mouseup',   offX, offY);
-  }
 
   beforeEach( function() {
 
@@ -146,7 +107,7 @@ describe ("A node with an editable label", function() {
     describe("when not being edited", function () {
       beforeEach(function () {
         // ensure that we are not editing:
-        fireEvent(titleView.get('layer'), 'mouseExited', 0, 0);
+        firePointerEvent(titleView, 'mouseExited', 0, 0);
         SC.run( function () { titleView.commitEditing(); });
       });
 
@@ -202,7 +163,7 @@ describe ("A node with an editable label", function() {
             nodeView.setPath('labelBodyView.titleView.isAllSelected', NO);
             expectedText = existingText + textToEnter;
             for (i = 0; i < textToEnter.length; i++) {
-              simulateKeyPress(titleView.get('layer'),textToEnter.charCodeAt(i));
+              simulateKeyPress(titleView,textToEnter.charCodeAt(i));
             }
           });
 
