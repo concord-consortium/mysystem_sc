@@ -17,12 +17,16 @@ sc_require('lib/old_format_json_parser');
 // MySystem.studentMode = MySystem.NOVICE_STUDENT;
 MySystem.studentMode = MySystem.ADVANCED_STUDENT;
 
-MySystem.setupStore = function setupStore(obj) {
+MySystem.setupStore = function (obj, ignoreUndeclaredFields) {
 
+  if (typeof ignoreUndeclaredFields === 'undefined') ignoreUndeclaredFields = NO;
+  
   obj.dataSource = SC.CascadeDataSource.create({
     dataSources: ['studentStateDataSource', 'fixturesDataSource'],
 
     studentStateDataSource: MySystem.MergedHashDataSource.create({
+      ignoreUndeclaredFields: ignoreUndeclaredFields,
+      
       handledRecordTypes: [MySystem.Link, MySystem.Node, MySystem.Story, MySystem.StorySentence, MySystem.RuleFeedback],
 
       // write the updated student-state data to the DOM whenever it changes
