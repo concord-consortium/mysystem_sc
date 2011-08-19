@@ -43,5 +43,18 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
 
   propertyEditing: function() {
     MySystem.statechart.sendEvent('diagramSelectionChanged', { });
+  }.observes('selection'),
+  
+  // If the selection changes on nodes or links, grab the top layer and call focus().
+  // This forces the browser focus back onto the application, which ensures that
+  // keyboard and other events are properly directed here if we are embedding in an iframe.
+  //
+  // We need to focus again on every selection change, to account for an author who is
+  // going back and forth between an author iframe and preview iframe.
+  //
+  // Having it here is a bit of a hack, and there might be some more stardard way of dealing
+  // with this issue.
+  focusMainPaneOnSelectionChange: function() {
+    MySystem.mainPage.get('mainPane').get('layer').focus();
   }.observes('selection')
 });
