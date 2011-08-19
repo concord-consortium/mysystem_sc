@@ -54,7 +54,7 @@ MySystem.ADDING_LINK = SC.State.design({
     node2.addOutLink(this._newLink);
     MySystem.nodesController.selectObject(this._newLink);
     
-    var allEnergyTypes = MySystem.store.find(MySystem.EnergyType);
+    var allEnergyTypes = MySystem.activityController.get('energyTypes');
     if (allEnergyTypes.length() > 1){
       this.setUpInspectorPane();
     } else if (allEnergyTypes.length() === 1){

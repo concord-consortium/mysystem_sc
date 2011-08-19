@@ -56,7 +56,7 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
     
     // for now, the inspector pane only exists to set energy type. If there is only one or
     // zero energy types, don't bother showing it.
-    if (MySystem.store.find(MySystem.EnergyType).length() > 1){
+    if (MySystem.activityController.get('energyTypes').length() > 1){
       this.setUpInspectorPane();
     } else {
       this.gotoState('DIAGRAM_EDITING');
