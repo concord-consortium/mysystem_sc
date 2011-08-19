@@ -45,7 +45,7 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     MySystem.statechart.sendEvent('diagramSelectionChanged', { });
   }.observes('selection'),
   
-  // If the selection changes on nodes or links, grab the top layer and call focus().
+  // If the selection changes on nodes or links, grab the diagramView layer and call focus().
   // This forces the browser focus back onto the application, which ensures that
   // keyboard and other events are properly directed here if we are embedding in an iframe.
   //
@@ -53,10 +53,10 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   // going back and forth between an author iframe and preview iframe.
   //
   // Having it here is a bit of a hack, and there might be some more stardard way of dealing
-  // with this issue.
+  // with the issue that the selection of svg elements doesn't cause browser to track focus.
   focusMainPaneOnSelectionChange: function() {
-    if (MySystem.mainPage.get('mainPane') && MySystem.mainPage.get('mainPane').get('layer')){
-      MySystem.mainPage.get('mainPane').get('layer').focus();
+    if (MySystem.mainPage.getPath('mainPane.diagramView') && MySystem.mainPage.getPath('mainPane.diagramView').get('layer')){
+      MySystem.mainPage.getPath('mainPane.diagramView').get('layer').focus();
     }
   }.observes('selection')
 });
