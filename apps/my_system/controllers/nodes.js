@@ -55,6 +55,8 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   // Having it here is a bit of a hack, and there might be some more stardard way of dealing
   // with this issue.
   focusMainPaneOnSelectionChange: function() {
-    MySystem.mainPage.get('mainPane').get('layer').focus();
+    if (MySystem.mainPage.get('mainPane') && MySystem.mainPage.get('mainPane').get('layer')){
+      MySystem.mainPage.get('mainPane').get('layer').focus();
+    }
   }.observes('selection')
 });
