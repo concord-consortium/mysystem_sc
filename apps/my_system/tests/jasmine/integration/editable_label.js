@@ -156,6 +156,10 @@ describe ("A node with an editable label", function() {
           it("should now have the new text in the label", function () {
             expect(titleView.get('text')).toEqual(expectedText);
           });
+          
+          it("should have updated the model", function () {
+            expect(node.get('title')).toEqual(expectedText);
+          });
         });
 
         describe("when the label is not all selected", function () {
