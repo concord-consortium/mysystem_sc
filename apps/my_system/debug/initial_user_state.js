@@ -35,7 +35,10 @@ MySystem.initial_json_state = {
       "position": {
         "x": 160,
         "y": 160
-      }
+      },
+      "transformations": [
+        "trans1"
+      ]
     },
     "2": {
       "guid": "2",
@@ -93,8 +96,10 @@ MySystem.initial_json_state = {
 
 MySystem.setupTestStore = function setupTestStore() {
   // setup store and load initial data
-  var obj = {};
+  var obj = {},
+      learnerData = MySystem.migrations.migrateLearnerData(MySystem.initial_json_state);
+      
   MySystem.setupStore(obj);
-  obj.store.setStudentStateDataHash( MySystem.initial_json_state);
+  obj.store.setStudentStateDataHash(learnerData);
   return obj.store;
 };

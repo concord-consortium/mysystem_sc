@@ -63,11 +63,6 @@ MySystem.Link = MySystem.Diagrammable.extend(
     this.set('color', energyType.get('color'));
   }.observes('energyTypeObj'),
 
-  linkStyle: {
-    width: 6,
-    color: '#00ff00'
-  },
-
   label: {
     text: "label",
     fontSize: 12,
@@ -113,7 +108,6 @@ MySystem.Link = MySystem.Diagrammable.extend(
   }.observes('.text'),
   
   _colorChanged: function() {
-    this.invokeOnce(this._setLinkStyle);
     if (this.get('startNode')) this.get('startNode').notifyPropertyChange('links');
     if (this.get('endNode')) this.get('endNode').notifyPropertyChange('links');
   }.observes('.color'),
@@ -128,15 +122,7 @@ MySystem.Link = MySystem.Diagrammable.extend(
     };
     this.set("label", newLabel);
   },
-  
-  _setLinkStyle: function() {
-    var newLinkStyle = {
-      width: this.get('linkStyle').width,
-      color: this.get('color')
-    };
-    this.set("linkStyle", newLinkStyle);
-  },
-  
+
   // FIXME color should be a computed property of some kind
   dimColor: function() { // If we're selecting links in some states, we want un-selected links to be dimmed.
     if (this.get('isDimmed') === YES) {

@@ -58,10 +58,10 @@ test("tests connecting nodes to storySentences", function () {
   equals(sent.get('diagramObjects').get('length'), sent.get('nodes').get('length') + sent.get('links').get('length'), "The sentence's diagramObjects should equal the sum of the links and nodes.");
 });
 
-test("nodes should have a position attribute", function() {
+test("nodes should have x and y attributes", function() {
   expect(2);
-  var node = store.createRecord(MySystem.Node, {'title': 'Edit Title', 'image': 'http://concord.org/favicon.ico', 'position': {'x': 120, 'y': 150}});
-  equals(node.get('position').x, 120, "X position should be 120 as created");
-  equals(node.get('position').y, 150, "Y position should be 150 as created");
+  var node = store.createRecord(MySystem.Node, {'title': 'Edit Title', 'image': 'http://concord.org/favicon.ico', 'x': 120, 'y': 150});
+  equals(node.get('x'), 120, "X position should be 120 as created");
+  equals(node.get('y'), 150, "Y position should be 150 as created");
 });
 

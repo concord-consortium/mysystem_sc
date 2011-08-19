@@ -17,17 +17,25 @@ sc_require('lib/old_format_json_parser');
 // MySystem.studentMode = MySystem.NOVICE_STUDENT;
 MySystem.studentMode = MySystem.ADVANCED_STUDENT;
 
-MySystem.setupStore = function setupStore(obj) {
+MySystem.setupStore = function (obj, ignoreUndeclaredFields) {
 
+  if (typeof ignoreUndeclaredFields === 'undefined') ignoreUndeclaredFields = NO;
+  
   obj.dataSource = SC.CascadeDataSource.create({
     dataSources: ['studentStateDataSource', 'fixturesDataSource'],
 
     studentStateDataSource: MySystem.MergedHashDataSource.create({
+      ignoreUndeclaredFields: ignoreUndeclaredFields,
+      
       handledRecordTypes: [MySystem.Link, MySystem.Node, MySystem.Story, MySystem.StorySentence, MySystem.RuleFeedback],
 
       // write the updated student-state data to the DOM whenever it changes
       // New: Write the updated student-state data to a variable whenever it changes.
       dataStoreDidUpdateDataHash: function () {
+        // include a 'version' field in the saved data. The WISE4 glue code will warn users if 
+        // MySystem.learnerDataVersion === DEVELOPMENT_HEAD; hopefully, this will prevent students from
+        // actually using a MySystem version that saves learner data with 'version' field === DEVELOPMENT_HEAD
+        this.get('dataHash').version = MySystem.learnerDataVersion; 
         var textRep = JSON.stringify(this.get('dataHash'), null, 2);
         SC.$('#my_system_state').text(textRep);
       }
