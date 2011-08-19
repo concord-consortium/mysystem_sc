@@ -35,7 +35,10 @@ MySystem.initial_json_state = {
       "position": {
         "x": 160,
         "y": 160
-      }
+      },
+      "transformations": [
+        "trans1"
+      ]
     },
     "2": {
       "guid": "2",
@@ -46,8 +49,10 @@ MySystem.initial_json_state = {
         "link1"
       ],
       "outLinks": [],
-      "x": 310,
-      "y": 10
+      "position": {
+        "x": 310,
+        "y": 10
+      }
     },
     "3": {
       "guid": "3",
@@ -58,8 +63,10 @@ MySystem.initial_json_state = {
         "link2"
       ],
       "outLinks": [],
-      "x": 10,
-      "y": 10
+      "position": {
+        "x": 10,
+        "y": 10
+      }
     }
   },
   "MySystem.Story": {
