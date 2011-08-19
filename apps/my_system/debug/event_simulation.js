@@ -19,12 +19,20 @@ function firePointerEvent(view, eventName, x, y) {
   fireEvent(view, eventName, { pageX: leftX + x, pageY: topY + y });
 }
 
+function simulateKeyPressWithAttributes(view, attribs) {
+  fireEvent(view,  'keydown',  attribs);
+  fireEvent(view,  'keypress', attribs);
+  fireEvent(view,  'keyup',    attribs);
+}
+
 // see also frameworks/jasmine-sproutcore/jasmin-sproutcore.js  fillin() function
 // which probably works better for non-raphael form fields.
 function simulateKeyPress(view, letter) {
-  fireEvent(view,  'keydown',  { charCode: letter, which: letter });
-  fireEvent(view,  'keypress', { charCode: letter, which: letter });
-  fireEvent(view,  'keyup',    { charCode: letter, which: letter });
+  simulateKeyPressWithAttributes(view, { charCode: letter, which: letter });
+}
+
+function simulateBackspace(view) {
+  simulateKeyPressWithAttributes(view, { keyCode: SC.Event.KEY_BACKSPACE });
 }
 
 // see also frameworks/jasmine-sproutcore/jasmin-sproutcore.js  fillin() function

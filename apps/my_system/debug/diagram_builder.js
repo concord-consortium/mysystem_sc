@@ -1,4 +1,4 @@
-/*globals DiagramBuilder MySystem simulateDoubleClick simulateTextEntry*/
+/*globals DiagramBuilder MySystem simulateDoubleClick simulateTextEntry simulateKeyPress simulateBackspace*/
 sc_require('debug/event_simulation');
 
 /*
@@ -51,6 +51,11 @@ DiagramBuilder = SC.Object.extend({
         titleView = nodeView.get('titleView');
     
     simulateDoubleClick(titleView);
+    // figure out how many backspaces to press
+    var i, existingChars = titleView.getPath('text.length');
+    for (i = 0; i < existingChars; i++) {
+      simulateBackspace(titleView);
+    }
     simulateTextEntry(titleView,title);
   }
 });
