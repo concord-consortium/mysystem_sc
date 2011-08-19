@@ -63,15 +63,6 @@ MySystem.Link = MySystem.Diagrammable.extend(
     this.set('color', energyType.get('color'));
   }.observes('energyTypeObj'),
 
-  label: {
-    text: "label",
-    fontSize: 12,
-    fontFamily: 'sans-serif',
-    fontStyle: 'normal',
-    backgroundColor: "#ffffff",
-    color: '#00ff00'
-  },
-
   startTerminal: SC.Record.attr(String),
   endTerminal: SC.Record.attr(String),
 
@@ -102,7 +93,6 @@ MySystem.Link = MySystem.Diagrammable.extend(
   },
   
   _textChanged: function() {
-    this.invokeOnce(this._setLabel);
     if (this.get('startNode')) this.get('startNode').notifyPropertyChange('links');
     if (this.get('endNode')) this.get('endNode').notifyPropertyChange('links');
   }.observes('.text'),
@@ -111,17 +101,6 @@ MySystem.Link = MySystem.Diagrammable.extend(
     if (this.get('startNode')) this.get('startNode').notifyPropertyChange('links');
     if (this.get('endNode')) this.get('endNode').notifyPropertyChange('links');
   }.observes('.color'),
-  
-  _setLabel: function() {
-    var newLabel = {
-      text: this.get('text'),
-      fontSize: 12,
-      fontFamily: 'sans-serif',
-      fontStyle: 'normal',
-      backgroundColor: "#ffffff"
-    };
-    this.set("label", newLabel);
-  },
 
   // FIXME color should be a computed property of some kind
   dimColor: function() { // If we're selecting links in some states, we want un-selected links to be dimmed.
