@@ -28,6 +28,10 @@ MySystem.setupStore = function setupStore(obj) {
       // write the updated student-state data to the DOM whenever it changes
       // New: Write the updated student-state data to a variable whenever it changes.
       dataStoreDidUpdateDataHash: function () {
+        // include a 'version' field in the saved data. The WISE4 glue code will warn users if 
+        // MySystem.learnerDataVersion === DEVELOPMENT_HEAD; hopefully, this will prevent students from
+        // actually using a MySystem version that saves learner data with 'version' field === DEVELOPMENT_HEAD
+        this.get('dataHash').version = MySystem.learnerDataVersion; 
         var textRep = JSON.stringify(this.get('dataHash'), null, 2);
         SC.$('#my_system_state').text(textRep);
       }

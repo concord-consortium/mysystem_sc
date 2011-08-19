@@ -20,22 +20,31 @@ MySystem = SC.Application.create(
   canvasView: null,
   NOVICE_STUDENT: 'novice',
   ADVANCED_STUDENT: 'advanced',
-
+  DEVELOPMENT_HEAD: 'head',
+  
+  learnerDataVersion: 'head',
+  
   /**
     Callback provided so that external applications, like WISE4, can let MySystem know to read the student state from
     the DOM element used for inter-iframe communication with MySystem.
   */
   updateFromDOM: function () {
     SC.run( function () {
-      // debugger;
-      var data = SC.$('#my_system_state').text();
-      if(data.trim().length === 0){
-        // there is no data in the dom
-        return;
+      var text = SC.$('#my_system_state').text(),
+          data;
+          
+      if (text.trim().length === 0) {
+        return; // there is no data in the DOM
       }
-      MySystem.store.setStudentStateDataHash( JSON.parse(data ));
+      data = MySystem.migrations.migrateLearnerData(JSON.parse(text));
+      MySystem.loadLearnerData(data);
     });
+  },
+  
+  loadLearnerData: function (data) {
+    MySystem.store.setStudentStateDataHash(data);
   }
+  
 });
 
 // Binding transform that takes the first element of an array and returns it, iff the element is of the specified type
