@@ -20,32 +20,16 @@ MySystem.LetterboxImageView = SC.ImageView.extend(
     sc_super();
     if (this.get('image').width > 1){
       // debugger
-      var targetWidth = this.get('layout').width;
-      var targetHeight = this.get('layout').height;
-      var srcWidth = this.get('image').width;
-      var srcHeight = this.get('image').height;
+      var targetWidth = this.get('layout').width,
+          targetHeight = this.get('layout').height,
+          srcWidth = this.get('image').width,
+          srcHeight = this.get('image').height;
       
-      var newWidth,
-          newHeight;
+      var scaledWidth =  ((srcWidth * targetHeight) / srcHeight);   
+      var scaleOnWidth = scaledWidth > targetWidth;
       
-      // scale to the target width
-      var scaleX1 = targetWidth;
-      var scaleY1 = (srcHeight * targetWidth) / srcWidth;
-
-      // scale to the target height
-      var scaleX2 = (srcWidth * targetHeight) / srcHeight;
-      var scaleY2 = targetHeight;
-
-      // now figure out which one we should use
-      var scaleOnWidth = (scaleX2 > targetWidth);
-
-      if (scaleOnWidth) {
-        newWidth = Math.floor(scaleX1);
-        newHeight = Math.floor(scaleY1);
-      } else {
-        newWidth = Math.floor(scaleX2);
-        newHeight = Math.floor(scaleY2);
-      }
+      var newWidth = scaleOnWidth ? targetWidth : scaledWidth,
+          newHeight = scaleOnWidth? (srcHeight * targetWidth) / srcWidth : targetHeight;
           
       // if we're close, don't adjust or we'll keep iterating down to zero
       if (Math.abs(targetWidth - newWidth) > 2 ||

@@ -13,7 +13,7 @@
 */
 
 MySystem.LinkFormView = SC.FormView.extend({
-  contentBinding: SC.Binding.oneWay('MySystem.nodesController.allSelected').firstOnly(),
+  contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Link),
   childViews: "energy".w(), // extended description field is disabled for now
 
   text: SC.FormView.row("Label:", SC.TextFieldView.design({

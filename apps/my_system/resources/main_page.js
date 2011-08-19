@@ -1,13 +1,10 @@
 // ==========================================================================
 // Project:   MySystem - mainPage
-// Copyright: ©2010 Concord Consortium
+// Copyright: ©2011 Concord Consortium
 // ==========================================================================
-/*globals MySystem LinkIt SCUI */
+/*globals MySystem RaphaelViews */
 
-sc_require('views/node');
 sc_require('views/node_palette');
-sc_require('views/sentence');
-sc_require('views/sentence_connect_pane');
 
 // This page describes the main user interface for your application.  
 MySystem.mainPage = SC.Page.design({
@@ -18,6 +15,10 @@ MySystem.mainPage = SC.Page.design({
   mainPane: SC.MainPane.design({
     defaultResponder: 'MySystem.statechart',
     childViews: 'topView'.w(),
+    
+    canvasView: SC.outlet('topView.bottomRightView.bottomRightView'),
+    diagramView: SC.outlet('canvasView.diagramView'),
+    
     topView: SC.SplitView.design({
       defaultThickness: 140,
       topLeftView: SC.ScrollView.design({
@@ -31,22 +32,29 @@ MySystem.mainPage = SC.Page.design({
         layoutDirection: SC.LAYOUT_VERTICAL,
         topLeftView: MySystem.InstructionView, // Top instructions
         dividerView: SC.SplitDividerView, // Divider for resizing up/down
-        bottomRightView: MySystem.CanvasView.design({
+        bottomRightView: RaphaelViews.RaphaelCanvasView.design({
+
           layout: { top: 120, left: 0, right: 0, bottom: 0 },
-          contentBinding: SC.Binding.from('MySystem.nodesController'),
-          selectionBinding: 'MySystem.nodesController.selection',
-          linkSelectionBinding: 'MySystem.nodesController.linkSelection',
-          exampleView: MySystem.NodeView
+          classNames: 'diagram-background',
+          
+          childViews: 'diagramView'.w(),
+          
+          diagramView: MySystem.DiagramView.design({
+            contentBinding:    SC.Binding.from('MySystem.nodesController'),
+            selectionBinding: 'MySystem.nodesController.selection',
+            canvasView:        SC.outlet('parentView')
+          }),
+          
+          // forward the mouseDown to the collection view so it can handle the mouseDown 
+          // on the background.
+          mouseDown: function(evt) {
+            return this.get('diagramView').mouseDown(evt);
+          }
         })
       })
     })
   }),
 
   inspectorPane: MySystem.InspectorPane,
-
-  sentenceLinkPane: MySystem.SentenceConnectPane,
-
-  transformationBuilderPane: MySystem.TransformationBuilderPane.design({}),
-
-  transformationAnnotaterPane: MySystem.TransformationAnnotationPane.design({})
+  sentenceLinkPane: MySystem.SentenceConnectPane
 });

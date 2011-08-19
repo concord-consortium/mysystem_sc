@@ -1,3 +1,11 @@
+/* BEGIN changes for RaphaelViews */
+
+.diagram-background {
+  background-color: white;
+}
+
+/* END   changes for RaphaelViews */
+
 /* Terminal colors*/
 .terminal {
   border: 2px solid rgba(255, 255, 255, 0);
@@ -146,4 +154,10 @@
 .energy-type .transformation-terminal {
   border: 2px solid #333;
   background-color: #ACEE75;
+}
+
+/* Modal panels */
+.sc-modal {
+  background: #000;
+  opacity: 0.2;  
 }

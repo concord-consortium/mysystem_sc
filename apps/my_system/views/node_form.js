@@ -13,7 +13,7 @@
 */
 
 MySystem.NodeFormView = SC.FormView.extend({
-  contentBinding: SC.Binding.oneWay('MySystem.nodesController.allSelected').firstOnly(),
+  contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Node),
   childViews: "image title".w(),
 
   image: SC.FormView.row("Image:", SC.TextFieldView.design({

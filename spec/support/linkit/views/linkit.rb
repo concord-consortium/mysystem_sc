@@ -8,10 +8,10 @@ module Lebowski
     module Views
 
       #
-      # Represents a proxy to a SCUI LinkIt canvas view (LinkIt.CanvasView)
+      # Represents a proxy to a Raphael view (MySystem.DiagramView)
       #
-      class CanvasView < Lebowski::Foundation::Views::CollectionView        
-        representing_sc_class 'LinkIt.CanvasView'
+      class DiagramView < Lebowski::Foundation::Views::CollectionView        
+        representing_sc_class 'MySystem.DiagramView'
         
         def nodes
           return item_views

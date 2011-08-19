@@ -13,40 +13,15 @@
 MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate, 
 /** @scope MySystem.nodesController.prototype */ {
 
-  selectedLinksBinding: "MySystem.canvasView.selectedLinks",
+  // the in-progress links originating and ending terminals
+  dragLinkSrcTerminal:     null,
+  dragLinkEndTerminal:     null,
 
-  allSelected: function() {
-    var links  = MySystem.canvasView.get('selectedLinks');
-    var resultSet = this.get('selection').clone();
-    resultSet = resultSet.addObjects(links.map(function(link){return link.get('model');}));
-
-    return resultSet;
-  }.property('selectedLinks','selection').cacheable(),
-  
+  // FIXME dummy method for backward compatibility
   unselectAll: function() {
-    // De-select links
-    if (this.selectedLinks) {
-      this.set('selectedLinks', []);
-      MySystem.canvasView.linksDidChange();
-    }
-    
-    // De-select nodes
-    var baseSet = this.get('selection').clone();
-    this.deselectObjects(baseSet);
+    this.deselectObjects(this.get('selection'));
   },
 
-  /* We'll need to refactor this when we get back to transformations */
-  // selectFirstTransformation: function(node) {
-  //   this.unselectAll();
-  //   var transformation = node.firstUnannotatedTransformation();
-  //   if (transformation) {
-  //     MySystem.nodesController.selectObject(node);
-  //     MySystem.nodesController.selectObjects(transformation.get('inLinks'), YES);
-  //     MySystem.nodesController.selectObjects(transformation.get('outLinks'), YES);
-  //     this.promptForTransformationAnnotation(transformation);
-  //   }
-  // },
-  
   collectionViewDeleteContent: function (view, content, indices) {
     // destroy the records
     var recordsToDestroy = indices.map( function (idx) {
@@ -68,5 +43,20 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
 
   propertyEditing: function() {
     MySystem.statechart.sendEvent('diagramSelectionChanged', { });
-  }.observes('allSelected')
+  }.observes('selection'),
+  
+  // If the selection changes on nodes or links, grab the top layer and call focus().
+  // This forces the browser focus back onto the application, which ensures that
+  // keyboard and other events are properly directed here if we are embedding in an iframe.
+  //
+  // We need to focus again on every selection change, to account for an author who is
+  // going back and forth between an author iframe and preview iframe.
+  //
+  // Having it here is a bit of a hack, and there might be some more stardard way of dealing
+  // with this issue.
+  focusMainPaneOnSelectionChange: function() {
+    if (MySystem.mainPage.get('mainPane') && MySystem.mainPage.get('mainPane').get('layer')){
+      MySystem.mainPage.get('mainPane').get('layer').focus();
+    }
+  }.observes('selection')
 });

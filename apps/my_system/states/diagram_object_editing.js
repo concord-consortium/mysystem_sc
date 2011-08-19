@@ -25,6 +25,7 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
     var inspector = MySystem.getPath('mainPage.inspectorPane');
     inspector.set('isOptionsForNewLink', NO);
     inspector.set('isModal', NO);
+    inspector.set('layout', { top: 150, right: 5, width: 270, height: 200 });
     if (!inspector.isPaneAttached) {
       inspector.append();
     }
@@ -52,7 +53,14 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
   enterState: function () {
     SC.Logger.log("Entering state %s", this.get('name'));
     // Set up the property editor pane and attach it
-    this.setUpInspectorPane();
+    
+    // for now, the inspector pane only exists to set energy type. If there is only one or
+    // zero energy types, don't bother showing it.
+    if (MySystem.activityController.get('energyTypes').length() > 1){
+      this.setUpInspectorPane();
+    } else {
+      this.gotoState('DIAGRAM_EDITING');
+    }
   },
   
   exitState: function () {
@@ -65,16 +73,14 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
     Deal with diagram selection update events.
   */
   diagramSelectionChanged: function () {
-    var newSelection = MySystem.nodesController.get('allSelected');
-    if (newSelection.get('length') !== 1) {
-      this.gotoState('DIAGRAM_EDITING');
-    }
-    else if (!newSelection.firstObject().get('linkStyle')) {
-      this.gotoState('DIAGRAM_EDITING');
-    }
-    else {
+    var newSelection = MySystem.nodesController.get('selection');
+
+    if (newSelection.get('length') === 1 && newSelection.firstObject().kindOf(MySystem.Link)) {
       // Update the property editor pane
       this.setUpInspectorPane();
+    }
+    else {
+      this.gotoState('DIAGRAM_EDITING');
     }
     return YES;
   },

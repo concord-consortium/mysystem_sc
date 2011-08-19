@@ -11,10 +11,12 @@ require 'erb'
 
 # Build / Version info goes into the HTML HEAD / Meta section
 @git_sha         = %x[git log -n1 --pretty="%H" ].chomp.strip
+@git_short_sha   = %x[git log -n1 --pretty="%h" ].chomp.strip
 @git_time        = %x[git log -n1 --pretty="%ad" ].chomp.strip
 @git_branch      = %x[git log -n1 --pretty="%d"].chomp.strip
-@sc_build_time   = Time.now.to_s
 @sc_build_number = %x[sc-build-number #{@sc_project_name}].chomp.strip
+@sc_build_time   = Time.now.to_s
+@git_commit_link = "https://github.com/concord-consortium/mysystem_sc/commits/#{@git_sha}"
 
 task :default => [:wise]
 
@@ -56,7 +58,7 @@ task :repackage => [:clean] do
   begin
     require 'resource_squasher'
     # clean and build the release
-    %x[sc-build -rc #{@sc_project_name}]
+    %x[sc-build #{@sc_project_name} -r -c --languages=en]
 
     # compact and rewrite application for wise4
     puts "rezsquish squash --project_name=#{@sc_project_name} --output_dir=#{@output_directory} --index_file=#{@wise_step_name}"

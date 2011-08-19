@@ -42,13 +42,14 @@ MySystem.DIAGRAM_EDITING = SC.State.design({
     // Create a new node in store
     node = MySystem.store.createRecord(MySystem.Node, { 
       title:    attr.title, 
-      image:    attr.image, 
-      position: { x: attr.x, y: attr.y },
+      image:    attr.image,
+      x:        attr.x,
+      y:        attr.y,
       nodeType: attr.nodeType
     });
     
     // De-select other diagram objects and select the new node
-    MySystem.nodesController.deselectObjects(MySystem.nodesController.get('allSelected'));
+    MySystem.nodesController.deselectObjects(MySystem.nodesController.get('selection'));
     MySystem.nodesController.selectObject(node);
 
     return YES;
@@ -58,11 +59,11 @@ MySystem.DIAGRAM_EDITING = SC.State.design({
     When a link is selected, we transition to the link-editing state.
   */
   diagramSelectionChanged: function () {
-    var selection = MySystem.nodesController.get('allSelected');
-    if ((selection.get('length') == 1) && selection.firstObject().get('linkStyle')) {
+    var selection = MySystem.nodesController.get('selection');
+    if ((selection.get('length') == 1) && selection.firstObject().kindOf(MySystem.Link)) {
       // Hacky: go straight to adding_link state. If it turns out this is not a new link, adding_link state
       // will then go to diagram_object_editing. This should be refactored when we switch to raphael views.
-      this.gotoState('ADDING_LINK');
+      this.gotoState('DIAGRAM_OBJECT_EDITING');
     }
     return YES;
   },
