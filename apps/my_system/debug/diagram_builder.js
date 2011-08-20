@@ -1,4 +1,4 @@
-/*globals DiagramBuilder MySystem simulateDoubleClick simulateTextEntry simulateKeyPress simulateBackspace*/
+/*globals DiagramBuilder MySystem simulateDoubleClick simulateTextEntry simulateKeyPress simulateBackspace firePointerEvent*/
 sc_require('debug/event_simulation');
 
 /*
@@ -15,39 +15,25 @@ DiagramBuilder = SC.Object.extend({
   add: function(paletteItemTitle, diagramX, diagramY) {
     var query = SC.Query.local(MySystem.PaletteItem, "title = %@", [paletteItemTitle]),
         paletteItem = MySystem.store.find(query).objectAt(0),
-        paletteItemView = this.paletteView.itemViewForContentObject(paletteItem),
-        paletteItemOffset = paletteItemView.$().offset(),
-        diagramOffset = this.diagramView.$().offset(),
-        downEvt, draggedEvt, upEvt;
+        paletteItemView = this.paletteView.itemViewForContentObject(paletteItem);
 
     // The offset is adjusted so the resulting node.x and node.y matches exactly what is passed in
-    diagramX = diagramX + diagramOffset.left - MySystem.NodeView.DROP_OFFSET.x;
-    diagramY = diagramY + diagramOffset.top -  MySystem.NodeView.DROP_OFFSET.y;
+    diagramX = diagramX - MySystem.NodeView.DROP_OFFSET.x;
+    diagramY = diagramY - MySystem.NodeView.DROP_OFFSET.y;
     
-    downEvt =    SC.Event.simulateEvent(paletteItemView.get('layer'), 'mousedown', 
-      {pageX: paletteItemOffset.left, pageY: paletteItemOffset.top});
-    draggedEvt = SC.Event.simulateEvent(null, 'mousedragged', 
-      {pageX: diagramX, pageY: diagramY});
-    upEvt =      SC.Event.simulateEvent(null, 'mouseup', 
-      {pageX: diagramX, pageY: diagramY});
+    firePointerEvent(paletteItemView, 'mousedown', 0, 0);
+    firePointerEvent(paletteItemView, 'mousemove', 0, 0);
 
-    SC.RunLoop.begin();
-    paletteItemView._startDrag(downEvt);
-    SC.RunLoop.end();
-
-    SC.RunLoop.begin();
-    paletteItemView._drag.mouseDragged(draggedEvt);
-    SC.RunLoop.end();
-
-    SC.RunLoop.begin();
-    paletteItemView._drag.mouseUp(upEvt);
-    SC.RunLoop.end();
+    // we have to get the parentView for a consistant offset.  JQueries offset function returns
+    // the offset of the visible node so for an svg group that appears to the be offset of its
+    // items bounding box.  When there are no items then it is the offset of the parent.
+    // not sure if the mousemove is necessary
+    firePointerEvent(this.diagramView.get('parentView'), 'mousemove', diagramX, diagramY);
+    firePointerEvent(this.diagramView.get('parentView'), 'mouseup', diagramX, diagramY);
   },
   
   title: function(nodeIdx, title) {
-    var diagramItemViews = this.diagramView.get('childViews'),
-        nodeViews = diagramItemViews.filter(function(v){return v instanceof MySystem.NodeView;}),        
-        nodeView = nodeViews.objectAt(nodeIdx),
+    var nodeView = this._nodeViewAtIndex(nodeIdx),
         titleView = nodeView.get('titleView');
     
     simulateDoubleClick(titleView);
@@ -57,5 +43,26 @@ DiagramBuilder = SC.Object.extend({
       simulateBackspace(titleView);
     }
     simulateTextEntry(titleView,title);
+  },
+  
+  // Note: this will only work if there is 0 or 1 energy types
+  //  otherwise a modal dialog comes up that need to be dealt with
+  connect: function(startNodeIdx, startTerminal, endNodeIdx, endTerminal) {
+    var startNodeView = this._nodeViewAtIndex(startNodeIdx),
+        startTerminalView = startNodeView.get('terminal' + startTerminal.toUpperCase()),
+        endNodeView = this._nodeViewAtIndex(endNodeIdx),
+        endTerminalView = endNodeView.get('terminal' + startTerminal.toUpperCase());
+    
+    firePointerEvent(startTerminalView, 'mousedown', 0, 0);
+    // need to trigger mouseEntered on endNode
+    firePointerEvent(endTerminalView, 'mousemove', 0, 0);
+    firePointerEvent(startTerminalView, 'mouseup', 0, 0);
+  },
+  
+  _nodeViewAtIndex: function(nodeIdx) {
+    var diagramItemViews = this.diagramView.get('childViews'),
+        nodeViews = diagramItemViews.filter(function(v){return v instanceof MySystem.NodeView;});
+        
+    return nodeViews.objectAt(nodeIdx);
   }
 });

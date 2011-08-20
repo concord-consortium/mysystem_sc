@@ -51,10 +51,6 @@ describe("The Diagram", function () {
           {
             "label": "en1",
             "uuid": "en1"
-          },
-          {
-            "label": "en2",
-            "uuid": "en2"
           }
         ],
         "diagram_rules": []
@@ -96,6 +92,26 @@ describe("The Diagram", function () {
     });    
   });
   
+  describe("dragging 2 nodes onto the diagram", function () {
+    it("should create a new node", function(){
+      var nodes = MySystem.store.find(MySystem.Node);
+
+      expect(nodes.get('length')).toBe(0);
+
+      diagramBuilder.add('obj1', 100, 100);
+      diagramBuilder.add('obj1', 300, 100);
+
+      expect(nodes.get('length')).toBe(2);
+
+      var node1 = nodes.objectAt(0),
+          node2 = nodes.objectAt(1);
+      expect(node1.get('x')).toBe(100);
+      expect(node1.get('y')).toBe(100);
+      expect(node2.get('x')).toBe(300);
+      expect(node2.get('y')).toBe(100);
+    });    
+  });
+
   describe("editing a node title", function () {
     it("should set the title of the node", function () {
       var nodes = MySystem.store.find(MySystem.Node);
@@ -106,6 +122,17 @@ describe("The Diagram", function () {
       var newTitle = "new title";
       diagramBuilder.title(0, newTitle);
       expect(node.get('title')).toBe(newTitle);
+    });
+  });
+  
+  describe("connecting 2 nodes", function () {
+    it("should create a new link", function () {
+      var links = MySystem.store.find(MySystem.Link);
+      expect(links.get('length')).toBe(0);
+      diagramBuilder.add('obj1', 100, 100);
+      diagramBuilder.add('obj1', 300, 100);
+      diagramBuilder.connect(0, 'a', 1, 'b');
+      expect(links.get('length')).toBe(1);
     });
   });
 });
