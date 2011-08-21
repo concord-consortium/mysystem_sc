@@ -51,6 +51,10 @@ describe("The Diagram", function () {
           {
             "label": "en1",
             "uuid": "en1"
+          },
+          {
+            "label": "en2",
+            "uuid": "en2"
           }
         ],
         "diagram_rules": []
@@ -131,8 +135,10 @@ describe("The Diagram", function () {
       expect(links.get('length')).toBe(0);
       diagramBuilder.add('obj1', 100, 100);
       diagramBuilder.add('obj1', 300, 100);
-      diagramBuilder.connect(0, 'a', 1, 'b');
+      diagramBuilder.connect(0, 'a', 1, 'b', 'en2');
       expect(links.get('length')).toBe(1);
+      var link = links.objectAt(0);
+      expect(link.get('energyType')).toBe('en2');
     });
   });
 });

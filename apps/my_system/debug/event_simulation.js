@@ -44,6 +44,19 @@ function simulateTextEntry(view, text) {
   }
 }
 
+// This is a modified version of what is in jasmin-sproutcore
+// that version uses jasmine's asynchronous api but doing that appears unnecessary and 
+// would complicate the use of this function
+function simulateClickOnSelector(selector) {
+  var target = SC.CoreQuery(selector);
+  if(target.length === 0) throw new Error('Could not find ' + selector + ' on the page');
+
+  SC.Event.trigger(target, 'mouseover');
+  SC.Event.trigger(target, 'mousedown');
+  SC.Event.trigger(target, 'focus');
+  SC.Event.trigger(target, 'mouseup');
+}
+
 function simulateDoubleClick(view, offX, offY) {
   if(!!!offX) { offX = 10; }
   if(!!!offY) { offY = 10; }

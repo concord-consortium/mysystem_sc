@@ -1,4 +1,5 @@
-/*globals DiagramBuilder MySystem simulateDoubleClick simulateTextEntry simulateKeyPress simulateBackspace firePointerEvent*/
+/*globals DiagramBuilder MySystem simulateDoubleClick simulateTextEntry simulateKeyPress simulateBackspace firePointerEvent 
+          simulateClickOnSelector*/
 sc_require('debug/event_simulation');
 
 /*
@@ -47,7 +48,7 @@ DiagramBuilder = SC.Object.extend({
   
   // Note: this will only work if there is 0 or 1 energy types
   //  otherwise a modal dialog comes up that need to be dealt with
-  connect: function(startNodeIdx, startTerminal, endNodeIdx, endTerminal) {
+  connect: function(startNodeIdx, startTerminal, endNodeIdx, endTerminal, energyTypeLabel) {
     var startNodeView = this._nodeViewAtIndex(startNodeIdx),
         startTerminalView = startNodeView.get('terminal' + startTerminal.toUpperCase()),
         endNodeView = this._nodeViewAtIndex(endNodeIdx),
@@ -57,6 +58,17 @@ DiagramBuilder = SC.Object.extend({
     // need to trigger mouseEntered on endNode
     firePointerEvent(endTerminalView, 'mousemove', 0, 0);
     firePointerEvent(startTerminalView, 'mouseup', 0, 0);
+    
+    // select energy type
+    var inspector = MySystem.getPath('mainPage.inspectorPane');
+    if (inspector.isPaneAttached){
+      var radioGroupId = inspector.getPath('contentView.form.energy.childViews.1.layer.id');
+
+      simulateClickOnSelector('#' + radioGroupId + ' div[role="radio"]:contains(' + energyTypeLabel + ')');
+
+      // remove the inspector pane to avoid confusion
+      inspector.remove();
+    }
   },
   
   _nodeViewAtIndex: function(nodeIdx) {
