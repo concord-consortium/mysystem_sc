@@ -12,23 +12,25 @@ msaPreview.CouchDS.prototype =
   db: null,
   authoredDocId: null,
   authoredDocRev: null,
+  learnerDocId: null,
+  learnerDocRev: null,
   authorContentWindow: null,
+  learnerContentWindow: null,
   
-  loadAuthoredData: function (authoredDocId) {
-    this.authoredDocId = authoredDocId;
-    var self = this;
-    this.loadData(function(response){
-      if (response.authored_data){
-        self.authoredDocRev = response._rev;
-        self.authorContentWindow.MSA.loadData(response.authored_data);
-      }
-    });
+  
+  setAuthorContentWindow: function (contentWindow) {
+    this.authorContentWindow = contentWindow;
   },
   
-  loadData: function (callback) {
+  
+  setLearnerContentWindow: function (contentWindow) {
+    this.learnerContentWindow = contentWindow;
+  },
+
+  loadData: function (data_id, callback) {
     var self = this;
     this.db.openDoc(
-      this.authoredDocId, 
+      data_id, 
       {
         success: function (response) {
           callback(response);
@@ -40,21 +42,58 @@ msaPreview.CouchDS.prototype =
       }
     );
   },
-  
-  saveData: function(data, callback) {
+
+  saveData: function(data, docId, revId, callback) {
+    var self = this;
     this.db.saveDoc(  
       data,  
       { 
         success: function(response) { 
           console.log("Saved ok, id = "+response.id);
+          if (!!docId){
+            console.log("saving with known id "+this.learnerDocId);
+            data._id = docId;
+          }
+          if (!!revId){
+            data._rev = revId;
+          }
           callback(response);
+          window.location.hash = (self.authoredDocId || "") + (self.learnerDocId ? "/"+self.learnerDocId : "");
         }
       }  
     );
   },
   
-  setAuthorContentWindow: function (contentWindow) {
-    this.authorContentWindow = contentWindow;
+  loadAuthoredData: function (authoredDocId) {
+    this.authoredDocId = authoredDocId;
+    var self = this;
+    this.loadData(
+      authoredDocId, 
+      function(response){
+        if (response.authored_data){
+          self.authoredDocRev = response._rev;
+          self.authorContentWindow.MSA.loadData(response.authored_data);
+        }
+      }
+    );
+  },
+  
+  loadLearnerData: function (learnerDocId) {
+    this.learnerDocId = learnerDocId;
+    var self = this;
+    this.loadData(
+      learnerDocId, 
+      function(response){
+        if (response.learner_data){
+          self.learnerDocRev = response._rev;
+          
+          self.learnerContentWindow.SC.RunLoop.begin();
+          var data = self.learnerContentWindow.MySystem.migrations.migrateLearnerData(response.learner_data);
+          self.learnerContentWindow.MySystem.loadLearnerData(data);
+          self.learnerContentWindow.SC.RunLoop.end();
+        }
+      }
+    );
   },
   
   saveAuthoring: function () {
@@ -62,131 +101,36 @@ msaPreview.CouchDS.prototype =
         authoredDataHash = JSON.parse(JSON.stringify(authoredData, null, 2));
         
     var data = {"authored_data": authoredDataHash};
-        
-    if (!!this.authoredDocId){
-      console.log("saving with known id "+this.authoredDocId);
-      data._id = this.authoredDocId;
-    }
-    if (!!this.authoredDocRev){
-      data._rev = this.authoredDocRev;
-    }
     
     var self = this;
-    this.saveData(data, function(response){
-      self.authoredDocId = response.id;
-      self.authoredDocRev = response.rev;
-      window.location.hash = self.authoredDocId;
-    });
+    this.saveData(
+      data, 
+      this.authoredDocId,
+      this.authoredDocRev,
+      function(response){
+        self.authoredDocId = response.id;
+        self.authoredDocRev = response.rev;
+      }
+    );
 
+  },
+  
+  saveLearner: function () {
+    var learnerData = this.learnerContentWindow.$('#my_system_state').html(),
+        learnerDataHash = JSON.parse(learnerData);
+
+    var data = {"learner_data": learnerDataHash};
+    
+    var self = this;
+    this.saveData(
+      data, 
+      this.learnerDocId,
+      this.learnerDocRev,
+      function(response){
+        self.learnerDocId = response.id;
+        self.learnerDocRev = response.rev;
+      }
+    );
   }
   
 };
-
-// 
-// (function (){
-//     sparks.CouchDS = function (){
-//         this.saveDocUID = null;
-//         this.saveDocRevision = null;
-//         this.user = null;
-//         
-//         this.dbPath = "/couchdb/mysystem_designes";
-//     };
-// 
-//     sparks.CouchDS.prototype =
-//     {
-//       
-//         loadActivity: function(id, callback) {
-//           $.couch.urlPrefix = this.activityPath;
-//           $.couch.db('').openDoc(id, 
-//             {
-//               success: function (response) {
-//                 console.log("Loaded "+response._id);
-//                 callback(response);
-//               }
-//             }
-//           );
-//         },
-//         
-//         setUser: function(_user) {
-//           this.user = _user;
-//         },
-//         
-//         // write the data
-//         save: function (_data) {
-//           if (!this.user){
-//             return;
-//           }
-//           
-//           $.couch.urlPrefix = this.saveDataPath;
-//           
-//           _data.user = this.user;
-//           _data.runnable_id = this.runnableId;
-//           _data.save_time = new Date().valueOf();
-//           
-//           if (!!this.saveDocUID){
-//             console.log("saving with known id "+this.saveDocUID);
-//             _data._id = this.saveDocUID;
-//           }
-//           if (!!this.saveDocRevision){
-//             _data._rev = this.saveDocRevision;
-//           }
-//           
-//           var self = this;
-//           $.couch.db('').saveDoc(  
-//             _data,  
-//             { success: function(response) { 
-//               console.log("Saved ok, id = "+response.id);
-//               self.saveDocUID = response.id;
-//               self.saveDocRevision = response.rev;
-//              }}  
-//           );
-//           
-//         },
-//         
-//         // saves and does not try to modify _rev or other data
-//         saveRawData: function(_data) {
-//           $.couch.urlPrefix = this.saveDataPath;
-//           $.couch.db(this.db).saveDoc(  
-//             _data,  
-//             { success: function(response) { 
-//               console.log("Saved ok, id = "+response.id);
-//              }}  
-//           );
-//         },
-//     
-//         loadStudentData: function (activity, studentName, success, failure) {
-//           $.couch.urlPrefix = this.saveDataPath;
-//           if (!studentName){
-//             studentName = this.user.name;
-//           }
-//           var self = this;
-//           $.couch.db('').view(
-//             "session_scores/Scores%20per%20activity", 
-//             {
-//               key:[studentName, activity],
-//               success: function(response) { 
-//                 console.log("success loading");
-//                 console.log(response);
-//                 if (response.rows.length > 0){
-//                   sparks.couchDS.saveDocUID = response.rows[response.rows.length-1].value._id;
-//                   sparks.couchDS.saveDocRevision = response.rows[response.rows.length-1].value._rev;
-//                   console.log("setting id to "+sparks.couchDS.saveDocUID);
-//                   success(response);
-//                 } else {
-//                   failure();
-//                 }
-//             }}
-//           );
-//         },
-//         
-//         handleData: function (id) {
-//           $.couch.db(this.db).openDoc(id,
-//             { success: function(response) { 
-//               sparks.sparksReportController.loadReport(response);
-//              }}
-//           );
-//         }
-//     };
-//     
-//     sparks.couchDS = new sparks.CouchDS();
-// })();

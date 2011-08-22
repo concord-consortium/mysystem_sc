@@ -55,18 +55,25 @@
       });
     });
    
-   function bothIframesLoaded() {
-     var dataStore = new msaPreview.CouchDS();
-    dataStore.setAuthorContentWindow(document.getElementById('mysystem2-authoring-iframe').contentWindow);
+    function bothIframesLoaded() {
+      var dataStore = new msaPreview.CouchDS();
+      dataStore.setAuthorContentWindow(document.getElementById('mysystem2-authoring-iframe').contentWindow);
+      dataStore.setLearnerContentWindow(document.getElementById('runtime-iframe').contentWindow);
+
+      var dataIds = window.location.hash;
+      if (dataIds) {
+        dataIds = dataIds.substring(1);    // rm hash
+        var data = dataIds.split("/");
+        if (!!data[0]){
+          dataStore.loadAuthoredData(data[0]);
+        }
+        if (data.length > 1 && !!data[1]){
+          dataStore.loadLearnerData(data[1]);
+        }
+      }
       
-     authoredDataId = window.location.hash;
-     if (authoredDataId) {
-       //rm hash
-       authoredDocId = authoredDataId.substring(1);
-       dataStore.loadAuthoredData(authoredDocId);
-     }
-     
-     $('#save_authoring').click(function(){dataStore.saveAuthoring()});
+      $('#save_authoring').click(function(){dataStore.saveAuthoring()});
+      $('#save_learner').click(function(){dataStore.saveLearner()});
    }
 
    
@@ -79,7 +86,8 @@
       <td width="50%" id="authoring_td">
         <button id="save_authoring">Save authored activity</button>
       </td>
-      <td width="50%" id="runtime_td">
+      <td width="50%" id="runtime_td" style="text-align: right">
+        <button id="save_learner">Save diagram</button>
       </td>
     </tr>
   </table>
