@@ -19,6 +19,11 @@ config :my_system,
   :required => [:sproutcore, "sproutcore/experimental/forms", 'raphael_views/raphael', 'raphael_views/raphael_views'],
   :css_theme => 'ace.mysystem-theme'
 
+# Proxies  
+# this is odd, and actually proxies /mysystem_designs to couchdb.cosmos.concord.org/mysystem_designs
+proxy '/mysystem_designs', :to => 'couchdb.cosmos.concord.org'
+
+
 namespace :build do
   desc "builds a jasmine unit test"
   build_task :test do

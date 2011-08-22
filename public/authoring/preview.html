@@ -4,11 +4,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
   <title>MySystem Authoring</title>
-  <script type="text/javascript" src="js/libs/jquery-1.6.1.min.js"></script>
+  <script type="text/javascript" src="js/libs/jquery-1.4.4.min.js"></script>
+  <script type="text/javascript" src="js/libs/jquery.couch.js"></script>
+  <script type="text/javascript" src="js/couch-ds.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {  
       
       var initialData = {modules:[],energy_types:[],diagram_rules:[]};
+      
+      var authorIframeId = 'mysystem2-authoring-iframe',
+          appIframeId = 'runtime-iframe',
+          authorIframeLoaded = false,
+          appIframeLoaded = false;
       
       function createIframe(url, id, $elem, callback) {
         $iframe = $('<iframe id='+id+'>').attr('src', url).attr('width', '100%').attr('height', 600);
@@ -21,7 +28,7 @@
       
       function updateRuntime(data) {
         if (!data.modules){
-          authoring_iframe = document.getElementById('mysystem2-authoring-iframe').contentWindow;
+          authoring_iframe = document.getElementById(authorIframeId).contentWindow;
           var data = authoring_iframe.MSA.data;
         }
         var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
@@ -31,15 +38,34 @@
         runtime_iframe.SC.RunLoop.end();
       }
       
-      createIframe('index.html', 'mysystem2-authoring-iframe', $('#authoring_td'), function(iframe){
+      createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
         iframe.contentWindow.MSA.setupParentIFrame(initialData, this, updateRuntime);
+        authorIframeLoaded = true;
+        if (authorIframeLoaded && appIframeLoaded){
+          bothIframesLoaded();
+        }
       });
       
       createIframe('../my_system', 'runtime-iframe', $('#runtime_td'), function(iframe){
         updateRuntime(initialData);
+        appIframeLoaded = true;
+        if (authorIframeLoaded && appIframeLoaded){
+          bothIframesLoaded();
+        }
       });
     });
    
+   function bothIframesLoaded() {
+     authoredDataId = window.location.hash;
+     if (authoredDataId) {
+       //rm hash
+       authoredDocId = authoredDataId.substring(1)
+       
+       var dataStore = new msaPreview.CouchDS();
+       dataStore.setAuthorContentWindow(document.getElementById('mysystem2-authoring-iframe').contentWindow);
+       dataStore.loadAuthoredData(authoredDocId);
+     }
+   }
 
    
   </script>

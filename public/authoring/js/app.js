@@ -10,14 +10,18 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
 
   // TODO: migrate objects to have uuids that don't already have them
 
+  MSA.loadData(dataHash);
+
+  MSA.dataController.addObserver('data', updateObject, updateFn);
+};
+
+MSA.loadData = function(dataHash) {
   MSA.data = dataHash;
 
   MSA.set('activity', MSA.ActivityModel.create({dataHash: MSA.data}));
   MSA.modulesController.setExternalContent(dataHash.modules);
   MSA.energyTypesController.setExternalContent(dataHash.energy_types);
   MSA.diagramRulesController.setExternalContent(dataHash.diagram_rules);
-
-  MSA.dataController.addObserver('data', updateObject, updateFn);
 };
 
 MSA.ActivityModel = SCUtil.ModelObject.extend({
