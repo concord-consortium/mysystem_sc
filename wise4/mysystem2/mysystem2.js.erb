@@ -47,6 +47,19 @@ Mysystem2.prototype.render = function() {
     SC.onReady.done();
   }
 
+  var lastRenewal = 0;
+  if (typeof eventManager != 'undefined') {
+    // watch for changes to the student data and renew the session whenever it changes
+    $('#my_system_state').bind("DOMSubtreeModified", function() {
+      var now = new Date().getTime();
+      if (now - lastRenewal > 15000) {  // only renew at most once every 15 seconds
+        SC.Logger.log("renewing session");
+        eventManager.fire('renewSession');
+        lastRenewal = now;
+      }
+    });
+  }
+
   if (this.content) {
     MySystem.loadWiseConfig(this.content,latestState);
   }
