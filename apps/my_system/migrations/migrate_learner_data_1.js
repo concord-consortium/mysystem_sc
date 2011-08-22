@@ -9,6 +9,8 @@ sc_require('migrations/migrations');
 /** @scope MySystem.migrations 
   
     Migrate learner data from format 1 to format 2  
+    
+    DO NOT CHANGE. A release of learner data version 2 has been made, freezing this migration.
 */
 MySystem.migrations.migrateLearnerData1 = function (data) {
 
