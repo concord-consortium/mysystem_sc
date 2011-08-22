@@ -56,15 +56,17 @@
     });
    
    function bothIframesLoaded() {
+     var dataStore = new msaPreview.CouchDS();
+    dataStore.setAuthorContentWindow(document.getElementById('mysystem2-authoring-iframe').contentWindow);
+      
      authoredDataId = window.location.hash;
      if (authoredDataId) {
        //rm hash
-       authoredDocId = authoredDataId.substring(1)
-       
-       var dataStore = new msaPreview.CouchDS();
-       dataStore.setAuthorContentWindow(document.getElementById('mysystem2-authoring-iframe').contentWindow);
+       authoredDocId = authoredDataId.substring(1);
        dataStore.loadAuthoredData(authoredDocId);
      }
+     
+     $('#save_authoring').click(function(){dataStore.saveAuthoring()});
    }
 
    
@@ -75,6 +77,7 @@
   <table width="100%">
     <tr>
       <td width="50%" id="authoring_td">
+        <button id="save_authoring">Save authored activity</button>
       </td>
       <td width="50%" id="runtime_td">
       </td>

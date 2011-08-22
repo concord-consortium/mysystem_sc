@@ -1,3 +1,5 @@
+/*globals msaPreview $ console*/
+
 msaPreview = {};
 
 msaPreview.CouchDS = function(authoredDocId) {
@@ -9,33 +11,76 @@ msaPreview.CouchDS.prototype =
 {
   db: null,
   authoredDocId: null,
+  authoredDocRev: null,
   authorContentWindow: null,
   
   loadAuthoredData: function (authoredDocId) {
-    this.authoredDocId = authoredDocId
+    this.authoredDocId = authoredDocId;
     var self = this;
-    this.loadData(function(ret){
-      if (ret.authored_data){
-        self.authorContentWindow.MSA.loadData(ret.authored_data)
+    this.loadData(function(response){
+      if (response.authored_data){
+        self.authoredDocRev = response._rev;
+        self.authorContentWindow.MSA.loadData(response.authored_data);
       }
     });
   },
   
   loadData: function (callback) {
-    this.db.openDoc(this.authoredDocId, 
+    var self = this;
+    this.db.openDoc(
+      this.authoredDocId, 
       {
         success: function (response) {
           callback(response);
+        },
+        error: function (response) {
+          alert("Could not find a document with the id '"+self.authoredDocId+"'");
+          window.location.hash = '';
         }
       }
     );
   },
   
+  saveData: function(data, callback) {
+    this.db.saveDoc(  
+      data,  
+      { 
+        success: function(response) { 
+          console.log("Saved ok, id = "+response.id);
+          callback(response);
+        }
+      }  
+    );
+  },
+  
   setAuthorContentWindow: function (contentWindow) {
     this.authorContentWindow = contentWindow;
+  },
+  
+  saveAuthoring: function () {
+    var authoredData = this.authorContentWindow.MSA.data,
+        authoredDataHash = JSON.parse(JSON.stringify(authoredData, null, 2));
+        
+    var data = {"authored_data": authoredDataHash};
+        
+    if (!!this.authoredDocId){
+      console.log("saving with known id "+this.authoredDocId);
+      data._id = this.authoredDocId;
+    }
+    if (!!this.authoredDocRev){
+      data._rev = this.authoredDocRev;
+    }
+    
+    var self = this;
+    this.saveData(data, function(response){
+      self.authoredDocId = response.id;
+      self.authoredDocRev = response.rev;
+      window.location.hash = self.authoredDocId;
+    });
+
   }
   
-}
+};
 
 // 
 // (function (){
