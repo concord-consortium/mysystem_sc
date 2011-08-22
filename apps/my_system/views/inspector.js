@@ -14,6 +14,7 @@
 */
 sc_require('core');
 sc_require('views/link_form');
+sc_require('views/node_form');
 
 MySystem.InspectorPane = SC.PalettePane.design({
   defaultResponder: 'MySystem.statechart',
@@ -24,13 +25,16 @@ MySystem.InspectorPane = SC.PalettePane.design({
   // the contenView property should be updated with the view that is correct
   // for the current object
   contentView: SC.View.design({
-    childViews: 'title form'.w(),
+    childViews: 'title linkForm nodeForm'.w(),
     title: SC.LabelView.design({
       value: "Pick an energy type for your new link",
       isVisibleBinding: '.parentView.parentView.isOptionsForNewLink',
       layout: {top: 0, left: 0, right: 0, height: 22}
     }),
-    form: MySystem.LinkFormView.design({
+    linkForm: MySystem.LinkFormView.design({
+      layout: {top: 22, left: 0, right: 0},
+    }),
+    nodeForm: MySystem.NodeFormView.design({
       layout: {top: 22, left: 0, right: 0}
     })
   })

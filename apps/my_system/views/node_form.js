@@ -14,6 +14,16 @@
 
 MySystem.NodeFormView = SC.FormView.extend({
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Node),
+  childViews: "title description".w(),
+  isVisible: NO,
+  contentChanged: function() {
+    var c = this.get('content');
+    if (!!c && c.instanceOf(MySystem.Node)) {
+      this.set('isVisible', YES);
+    } else {
+      this.set('isVisible', NO);
+    }
+  }.observes('*content.guid'),
   childViews: "image title".w(),
 
   image: SC.FormView.row("Image:", SC.TextFieldView.design({

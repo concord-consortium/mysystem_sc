@@ -16,6 +16,14 @@ MySystem.LinkFormView = SC.FormView.extend({
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Link),
   childViews: "energy".w(), // description field is disabled for now
   isVisible: NO,
+  contentChanged: function() {
+    var c = this.get('content');
+    if (!!c && c.instanceOf(MySystem.Link)) {
+      this.set('isVisible', YES);
+    } else {
+      this.set('isVisible', NO);
+    }
+  }.observes('*content.guid'),
 
   text: SC.FormView.row("Label:", SC.TextFieldView.design({
     layout: {width: 150, height: 20, centerY: 0 },
