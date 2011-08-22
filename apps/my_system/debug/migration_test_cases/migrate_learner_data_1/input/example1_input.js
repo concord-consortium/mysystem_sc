@@ -6,8 +6,9 @@ MySystem.migrations.testCases.push({
   name: "example1",
 
   // explicitly specify which version we're converting from, so that our test of a single migration method doesn't have 
-  // to know how to infer the learner data version from the input data (possibly doing it wrong)
-  version: 1,   
+  // to know how to infer the learner data version from the input data (which it shouldn't have to do; and besides
+  // which it might do wrong)
+  inputVersion: 1,
 
   input: {
     "MySystem.Link": {

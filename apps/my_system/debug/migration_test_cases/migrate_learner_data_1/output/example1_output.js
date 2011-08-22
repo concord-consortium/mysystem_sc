@@ -5,7 +5,9 @@ MySystem.migrations.testCases = MySystem.migrations.testCases || [];
 MySystem.migrations.testCases.push({
   name: "example1",
   
-  output: {
+  inputVersion: 1,
+  
+  expectedOutput: {
     "MySystem.Link": {
       "link1": {
         "guid": "link1",
