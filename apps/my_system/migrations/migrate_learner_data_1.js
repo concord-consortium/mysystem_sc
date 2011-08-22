@@ -25,9 +25,12 @@ MySystem.migrations.migrateLearnerData1 = function (data) {
   for (p in dataNodes) {
     if (!dataNodes.hasOwnProperty(p)) continue;
 
-    delete retNodes[p].position;               // to be replaced by x, y
-    retNodes[p].x = dataNodes[p].position.x;
-    retNodes[p].y = dataNodes[p].position.y;
+    // some versions of version 1 already had no position property
+    if(retNodes[p].position){
+      delete retNodes[p].position;               // to be replaced by x, y
+      retNodes[p].x = dataNodes[p].position.x;
+      retNodes[p].y = dataNodes[p].position.y;
+    }
     
     delete retNodes[p].transformer;           // no actual students used this field, don't save it for later
     delete retNodes[p].transformations;       // no actual students used this field, don't save it for later
