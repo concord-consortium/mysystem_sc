@@ -62,7 +62,7 @@ DiagramBuilder = SC.Object.extend({
     // select energy type
     var inspector = MySystem.getPath('mainPage.inspectorPane');
     if (inspector.isPaneAttached){
-      var radioGroupId = inspector.getPath('contentView.form.energy.childViews.1.layer.id');
+      var radioGroupId = inspector.getPath('contentView.linkForm.energy.childViews.1.layer.id');
 
       simulateClickOnSelector('#' + radioGroupId + ' div[role="radio"]:contains(' + energyTypeLabel + ')');
 
