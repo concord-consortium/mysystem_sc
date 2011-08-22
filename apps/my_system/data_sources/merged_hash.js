@@ -22,7 +22,6 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
   */
   handledRecordTypes: [],
   
-  
   /** 
     @property
     
@@ -31,11 +30,10 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
   */
   ignoreUndeclaredFields: NO,
   
-  
   /**
     @property
     
-    Fields on the data hash to ignore
+    Fields on the data hash to ignore (regardless of the value of the ignoreUndeclaredFields property)
   */
   fieldsToIgnore: ['version'],
   
@@ -207,7 +205,7 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
   },
   
   /**
-    Set the merged hash to the new value passed. Calls pushRetrieve() and pushDestroy() on the store to and, change, or
+    Set the merged hash to the new value passed. Calls pushRetrieve() and pushDestroy() on the store to add, change, or
     remove records to reflect the difference between the current data hash and the new data hash.
   */
   setDataHash: function (store, newDataHash) {
