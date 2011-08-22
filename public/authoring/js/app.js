@@ -54,10 +54,12 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
   otherNodeType: SCUtil.dataHashProperty,
   energyType: SCUtil.dataHashProperty,
   not: SCUtil.dataHashProperty,
-  shouldOption: "should",
-  updateNot: function() {
-    this.set('not', this.get('shouldOption') != "should");
-  }.observes('shouldOption'),
+  shouldOption: function(key, value) {
+    if (value){
+      this.set("not", value !== "should");
+    }
+    return (this.get("not") ? "should not" : "should");
+  }.property('not'),
   toggleHasLink: function(){
     this.set('hasLink', !this.get('hasLink'));
   }
