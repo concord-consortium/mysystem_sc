@@ -31,7 +31,8 @@ namespace :build do
   end
 end
 
-mode :no_minify
+mode :no_minify do
   config :all,
     :minify => false,
     :minify_css => false
+end
