@@ -44,6 +44,12 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   propertyEditing: function() {
     MySystem.statechart.sendEvent('diagramSelectionChanged', { });
   }.observes('selection'),
+
+  objectIsInspectable: function(obj) {
+    var inspectable = obj.instanceOf(MySystem.Link) || obj.instanceOf(MySystem.Node);
+    // SC.Logger.log("obj:", obj, " is inspectable", inspectable);
+    return inspectable;
+  },
   
   // If the selection changes on nodes or links, grab the top layer and call focus().
   // This forces the browser focus back onto the application, which ensures that

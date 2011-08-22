@@ -75,7 +75,7 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
   diagramSelectionChanged: function () {
     var newSelection = MySystem.nodesController.get('selection');
 
-    if (newSelection.get('length') === 1 && newSelection.firstObject().kindOf(MySystem.Link)) {
+    if (newSelection.get('length') === 1 && MySystem.nodesController.objectIsInspectable(newSelection.firstObject()) ) {
       // Update the property editor pane
       this.setUpInspectorPane();
     }
