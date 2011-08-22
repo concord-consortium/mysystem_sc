@@ -98,7 +98,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   // CHILD VIEWS
   
   titleView: MySystem.EditableLabelView.design({
-    isEditable:     YES,
+    isEditable:     NO,
     fontSize:       14,
     textColor:      '#000',
     textBinding:    '.parentView.title',

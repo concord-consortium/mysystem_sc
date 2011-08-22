@@ -117,7 +117,7 @@ describe("The Diagram", function () {
   });
 
   describe("editing a node title", function () {
-    it("should set the title of the node", function () {
+    xit("should set the title of the node", function () {
       var nodes = MySystem.store.find(MySystem.Node);
       expect(nodes.get('length')).toBe(0);
       diagramBuilder.add('obj1', 100, 100);

@@ -4,7 +4,7 @@
 
 defineJasmineHelpers();
 
-describe ("A node with an editable label", function() {
+xdescribe ("A node with an editable label", function() {
   var appPane, diagram, palette, node, nodeView, titleView;
   var leftX, topY, offset;
 
