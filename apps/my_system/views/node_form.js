@@ -24,15 +24,15 @@ MySystem.NodeFormView = SC.FormView.extend({
       this.set('isVisible', NO);
     }
   }.observes('*content.guid'),
-  childViews: "image title".w(),
 
-  image: SC.FormView.row("Image:", SC.TextFieldView.design({
-    layout: {width: 150, height: 20 },
-    contentValueKey: 'image'
-  })),
-
-  image: SC.FormView.row("Title:", SC.TextFieldView.design({
+  title: SC.FormView.row("Title:", SC.TextFieldView.design({
     layout: {width: 150, height: 20 },
     contentValueKey: 'title'
+  })),
+
+  description: SC.FormView.row("Description:", SC.TextFieldView.design({
+    layout: {width: 150, height: 60, centerY: 0 },
+    contentValueKey: 'description',
+    isTextArea: YES
   }))
 });

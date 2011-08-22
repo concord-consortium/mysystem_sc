@@ -18,6 +18,7 @@ MySystem.Node = MySystem.Diagrammable.extend(
 
   image: SC.Record.attr(String),
   title: SC.Record.attr(String),
+  description: SC.Record.attr(String),
   transformer: SC.Record.attr(Boolean, {defaultValue: true }),
   toolTip: SC.Record.attr(String, { defaultValue: null }),
 
