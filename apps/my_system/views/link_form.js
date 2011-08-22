@@ -14,7 +14,8 @@
 
 MySystem.LinkFormView = SC.FormView.extend({
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Link),
-  childViews: "energy".w(), // extended description field is disabled for now
+  childViews: "energy".w(), // description field is disabled for now
+  isVisible: NO,
 
   text: SC.FormView.row("Label:", SC.TextFieldView.design({
     layout: {width: 150, height: 20, centerY: 0 },
@@ -57,9 +58,9 @@ MySystem.LinkFormView = SC.FormView.extend({
     }
   })),
 
-  extended: SC.FormView.row("Description:", SC.TextFieldView.design({
+  description: SC.FormView.row("Description:", SC.TextFieldView.design({
     layout: {width: 150, height: 60, centerY: 0 },
-    contentValueKey: 'extendedText',
+    contentValueKey: 'description',
     isTextArea: YES
   }))
 
