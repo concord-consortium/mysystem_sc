@@ -65,6 +65,10 @@ MySystem.migrations = {
   
   isPositiveInteger: function (v) {
     return (typeof v === 'number' && Math.round(v) === v && v > 0);
+  },
+  
+  isValidReleaseVersion: function (v) {
+    return this.isPositiveInteger(v);
   }
 
 };

@@ -162,6 +162,10 @@ SC.setupBodyClassNames = function() {
      */
     function main() {
       MySystem.main();
+      
+      if (!MySystem.isLearnerDataVersionAReleaseVersion()) {
+        alert("WARNING: You are using a development version of the MySystem step. Student work saved using this version will become unreadable in the near future.");
+      }
 
       if (window.opener && divId) {
         // if this window is a popup (e.g. from a WISE gradingtool's 'enlarge' link),

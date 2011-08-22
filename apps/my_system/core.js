@@ -43,6 +43,10 @@ MySystem = SC.Application.create(
   
   loadLearnerData: function (data) {
     MySystem.store.setStudentStateDataHash(data);
+  },
+  
+  isLearnerDataVersionAReleaseVersion: function () {
+    return MySystem.migrations.isValidReleaseVersion(MySystem.learnerDataVersion);
   }
   
 });
