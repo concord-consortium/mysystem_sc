@@ -58,7 +58,7 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
     if (value){
       this.set("not", value !== "should");
     }
-    return (this.get("not") ? "should not" : "should");
+    return this.get("not") ? "should not" : "should";
   }.property('not'),
   toggleHasLink: function(){
     this.set('hasLink', !this.get('hasLink'));
