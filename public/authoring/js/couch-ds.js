@@ -44,19 +44,20 @@ msaPreview.CouchDS.prototype =
   },
 
   saveData: function(data, docId, revId, callback) {
+    if (!!docId){
+      console.log("saving with known id "+this.learnerDocId);
+      data._id = docId;
+    }
+    if (!!revId){
+      data._rev = revId;
+    }
+    
     var self = this;
     this.db.saveDoc(  
       data,  
       { 
         success: function(response) { 
           console.log("Saved ok, id = "+response.id);
-          if (!!docId){
-            console.log("saving with known id "+this.learnerDocId);
-            data._id = docId;
-          }
-          if (!!revId){
-            data._rev = revId;
-          }
           callback(response);
           window.location.hash = (self.authoredDocId || "") + (self.learnerDocId ? "/"+self.learnerDocId : "");
         }
@@ -87,10 +88,8 @@ msaPreview.CouchDS.prototype =
         if (response.learner_data){
           self.learnerDocRev = response._rev;
           
-          self.learnerContentWindow.SC.RunLoop.begin();
-          var data = self.learnerContentWindow.MySystem.migrations.migrateLearnerData(response.learner_data);
-          self.learnerContentWindow.MySystem.loadLearnerData(data);
-          self.learnerContentWindow.SC.RunLoop.end();
+          self.learnerContentWindow.$('#my_system_state').html(JSON.stringify(response.learner_data));
+          self.learnerContentWindow.MySystem.updateFromDOM();
         }
       }
     );
@@ -101,7 +100,7 @@ msaPreview.CouchDS.prototype =
         authoredDataHash = JSON.parse(JSON.stringify(authoredData, null, 2));
         
     var data = {"authored_data": authoredDataHash};
-    
+
     var self = this;
     this.saveData(
       data, 
