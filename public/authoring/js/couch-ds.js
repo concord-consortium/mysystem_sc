@@ -58,6 +58,10 @@ msaPreview.CouchDS.prototype =
       { 
         success: function(response) { 
           console.log("Saved ok, id = "+response.id);
+          $.gritter.add({
+            title: 'Data saved',
+            text: 'ID: '+response.id
+          });
           callback(response);
           window.location.hash = (self.authoredDocId || "") + (self.learnerDocId ? "/"+self.learnerDocId : "");
         }
