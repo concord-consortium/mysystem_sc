@@ -53,7 +53,7 @@ MySystem.migrations = {
         return data;
       }
       else {
-        throw new Error("Current MySystem.learnerDataVersion '%@' is behind the learner-data version '%@'. Down-migrations are not supported.".fmt(MySystem.learnerDataVersion, dataVersion));
+        throw new RangeError("Current MySystem.learnerDataVersion '%@' is behind the learner-data version '%@'. Down-migrations are not supported.".fmt(MySystem.learnerDataVersion, dataVersion));
       }
     }
   },
