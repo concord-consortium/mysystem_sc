@@ -94,8 +94,8 @@ describe("The Inspector Pane", function () {
       SC.run();
     });
 
-    it("should have 2 items", function(){
-      expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(2);
+    it("should have 1 item", function(){
+      expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(1);
     });
 
     it("should update the label", function() {
@@ -106,7 +106,7 @@ describe("The Inspector Pane", function () {
       expect(node1.get('title')).toBe('Something');
     });
 
-    it("should update the description", function() {
+    xit("should update the description", function() {
       var attribute = {key: 'description', type: 'text'};
       expect(diagramBuilder.getInspectorValue(attribute)).toBe(null);
       diagramBuilder.setInspectorValue(attribute, 'Something');
