@@ -1,6 +1,7 @@
 source :gemcutter
 
-gem "sproutcore", "~> 1.6"
+# this fork is so the tests run in the correct order on our CI server
+gem "sproutcore", "~> 1.6", :git => "git://github.com/concord-consortium/abbot", :branch => "sorted_tests"
 gem "lebowski"
 gem "daemon_controller"
 gem "capybara"
