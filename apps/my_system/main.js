@@ -18,6 +18,10 @@ sc_require('lib/old_format_json_parser');
 MySystem.studentMode = MySystem.ADVANCED_STUDENT;
 
 MySystem.setupStore = function (obj, ignoreUndeclaredFields) {
+  // clear the ids counters on the AutoId record types
+  // typically this won't matter at runtime but it will matter during testing
+  delete MySystem.Node._nextIdIndex;
+  delete MySystem.Link._nextIdIndex;
 
   if (typeof ignoreUndeclaredFields === 'undefined') ignoreUndeclaredFields = NO;
   

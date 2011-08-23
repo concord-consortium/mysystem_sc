@@ -6,9 +6,6 @@ describe("The Diagram", function () {
   beforeEach( function() {
     MySystem.setupStore(MySystem);
     
-    // reset the ids so they start at 1 again
-    delete MySystem.Node._nextIdIndex;
-    delete MySystem.Link._nextIdIndex;
     MySystem.statechart.initStatechart();
     
     appPane = SC.PanelPane.create({
