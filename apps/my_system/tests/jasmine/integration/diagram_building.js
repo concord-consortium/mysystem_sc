@@ -5,6 +5,10 @@ describe("The Diagram", function () {
   
   beforeEach( function() {
     MySystem.setupStore(MySystem);
+    
+    // reset the ids so they start at 1 again
+    delete MySystem.Node._nextIdIndex;
+    delete MySystem.Link._nextIdIndex;
     MySystem.statechart.initStatechart();
     
     appPane = SC.PanelPane.create({
@@ -107,6 +111,9 @@ describe("The Diagram", function () {
 
       expect(nodes.get('length')).toBe(2);
 
+      // This is assuming the nodes are in the same order that they were added
+      // this is not guarunteed, since the ids don't always order correctly.
+      // MySystem.Node-9 is after MySystem.Node-10
       var node1 = nodes.objectAt(0),
           node2 = nodes.objectAt(1);
       expect(node1.get('x')).toBe(100);
