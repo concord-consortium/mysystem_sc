@@ -742,10 +742,10 @@ describe("MergedHashDataSource", function () {
           beforeEach( function () {
             newDataHash = {
               "MyApp.HandledRecordType1": {
-                "MyApp.HandledRecordType1-1": { key: { nestedKey: "value" } }
+                "MyApp.HandledRecordType1-0001": { key: { nestedKey: "value" } }
               },
               "MyApp.HandledRecordType2": {
-                "MyApp.HandledRecordType2-999": { key: { nestedKey: "value" } }
+                "MyApp.HandledRecordType2-9999": { key: { nestedKey: "value" } }
               }
             };
             dataSource._dataHash = {};
@@ -753,8 +753,8 @@ describe("MergedHashDataSource", function () {
           });
 
           it("should be one more than maxium id of type", function () {
-             expect(handledRecordType1.getNextId()).toBe("MyApp.HandledRecordType1-2");
-             expect(handledRecordType2.getNextId()).toBe("MyApp.HandledRecordType2-1000");
+             expect(handledRecordType1.getNextId()).toBe("MyApp.HandledRecordType1-0002");
+             expect(handledRecordType2.getNextId()).toBe("MyApp.HandledRecordType2-10000");
           });
         });
       });
@@ -769,7 +769,7 @@ describe("MergedHashDataSource", function () {
       
       it("a record created without an id should have an id after commitRecords", function () {
         var record = dataStore.createRecord(handledRecordType1, {name: "hello"});
-        expect(record.get('id')).toBe('MyApp.HandledRecordType1-1');
+        expect(record.get('id')).toBe('MyApp.HandledRecordType1-0001');
       });
     });
   });

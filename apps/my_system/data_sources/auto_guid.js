@@ -27,13 +27,23 @@ MySystem.AutoGuidRecord.mixin({
     }
   },
   
+  // format a number with padded zeros
+  _formatNumberLength: function(num, length) {
+      var r = "" + num;
+      while (r.length < length) {
+          r = "0" + r;
+      }
+      return r;
+  },
+  
   getNextId: function () {
     var index = this._nextIdIndex;
     if (!index) {
       index = 1;
     }
     this._nextIdIndex = index + 1;
-    return this.toString() + "-" + index;
+    // we pad the number to make sure the ids are sorted by order
+    return this.toString() + "-" + this._formatNumberLength(index, 4);
   },
   
   // This is a hack inorder to get the ids to to be automatically created
