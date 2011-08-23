@@ -25,7 +25,10 @@ MSA.loadData = function(dataHash) {
 };
 
 MSA.ActivityModel = SCUtil.ModelObject.extend({
-  maxFeedbackItems: SCUtil.dataHashProperty
+  maxFeedbackItems: SCUtil.dataHashProperty,
+  enableNodeDescriptionEditing: SCUtil.dataHashProperty,
+  enableLinkDescriptionEditing: SCUtil.dataHashProperty,
+  enableLinkLabelEditing: SCUtil.dataHashProperty
 });
 
 MSA.Module = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
@@ -78,7 +81,10 @@ if (top === self) {
     "modules": [],
     "energy_types": [],
     "diagram_rules": [],
-    "maxFeedbackItems": 0
+    "maxFeedbackItems": 0,
+    "enableNodeDescriptionEditing": false,
+    "enableLinkDescriptionEditing": false,
+    "enableLinkLabelEditing": false
   };
 }
 
@@ -144,6 +150,9 @@ MSA.dataController = SC.Object.create({
              'MSA.modulesController.@each.rev', 
              'MSA.energyTypesController.@each.rev', 
              'MSA.diagramRulesController.@each.rev',
+             'MSA.activity.enableNodeDescriptionEditing',
+             'MSA.activity.enableLinkDescriptionEditing',
+             'MSA.activity.enableLinkLabelEditing',
              'MSA.activity.maxFeedbackItems')
 });
 

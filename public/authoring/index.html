@@ -20,6 +20,18 @@
 <body>
   <h1>MySystem</h1>
   <script type="text/html">
+  <h2>Options</h2>
+  <div style="padding-left: 10px;">
+    <h3>Link</h3>
+      <div style="padding-left: 10px;">
+      {{view SC.Checkbox title="Enable Label Editing" valueBinding="MSA.activity.enableLinkLabelEditing" id="linkLabelEditing"}}
+      {{view SC.Checkbox title="Enable Description Editing" valueBinding="MSA.activity.enableLinkDescriptionEditing" id="linkDescriptionEditing"}}
+      </div>
+    <h3>Node</h3>
+      <div style="padding-left: 10px;">
+        {{view SC.Checkbox title="Enable Description Editing" valueBinding="MSA.activity.enableNodeDescriptionEditing" id="nodeDescriptionEditing"}}
+      </div>
+  </div>
   <h2>Modules</h2>
   {{#collection contentBinding="MSA.modulesController" tagName="ul"}}
     {{view SC.TextField valueBinding="parentView.content.name" placeholder="name"}}
@@ -49,8 +61,7 @@
   {{/view}}
   <h2>Limit Feedback</h2>
     Only report 
-      {{view SC.TextField valueBinding="MSA.activity.maxFeedbackItems"
-placeholder="#" id="feedbackLimit"}}
+      {{view SC.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit"}}
     feedback items
   <h2>Diagram Rules</h2>
   

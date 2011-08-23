@@ -52,5 +52,8 @@ InitialMySystemData = {
     }
  ],
  "diagram_rules": [],
- "maxFeedbackItems": 0
+ "maxFeedbackItems": 0,
+ "enableNodeDescriptionEditing": false,
+ "enableLinkDescriptionEditing": false,
+ "enableLinkLabelEditing": false
 };
