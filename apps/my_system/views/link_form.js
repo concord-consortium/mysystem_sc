@@ -13,8 +13,18 @@
 */
 
 MySystem.LinkFormView = SC.FormView.extend({
+  layout: { top: 0, bottom: 0, left: 0, right: 0 },
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Link),
-  childViews: "energy".w(), // description and label fields are disabled for now
+  childViews: function() {
+    var children = ["energy"];
+    if (MySystem.activityController.get('enableLinkLabelEditing')) {
+      children.push("label");
+    }
+    if (MySystem.activityController.get('enableLinkDescriptionEditing')) {
+      children.push("description");
+    }
+    return children;
+  }.property(),
   isVisible: NO,
   contentChanged: function() {
     var c = this.get('content');

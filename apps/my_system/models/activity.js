@@ -29,6 +29,11 @@ MySystem.Activity = SC.Record.extend(
   // Rules for evaluating the digram
   diagramRules: SC.Record.toMany('MySystem.DiagramRule'),
 
+  // Toggle editing for various things
+  enableNodeDescriptionEditing: SC.Record.attr(Boolean, {defaultValue: false}),
+  enableLinkDescriptionEditing: SC.Record.attr(Boolean, {defaultValue: false}),
+  enableLinkLabelEditing: SC.Record.attr(Boolean, {defaultValue: false}),
+
   // The maximum number of pieces of feedback to give to the user
   maxFeedbackItems: SC.Record.attr(Number, {defaultValue: 0})
 });
@@ -65,12 +70,14 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
   var modules = wiseStepDef["modules"];
   var paletteItem = null;
   var module= null;
-  var maxFeedbackItems = wiseStepDef["maxFeedbackItems"] || 0
 
   var activity = MySystem.store.createRecord(
     MySystem.Activity, {
     assignmentText: wiseStepDef["prompt"],
-    maxFeedbackItems: maxFeedbackItems,
+    maxFeedbackItems: (wiseStepDef["maxFeedbackItems"] || 0),
+    enableNodeDescriptionEditing: (wiseStepDef["enableNodeDescriptionEditing"] || false),
+    enableLinkDescriptionEditing: (wiseStepDef["enableLinkDescriptionEditing"] || false),
+    enableLinkLabelEditing: (wiseStepDef["enableLinkLabelEditing"] || false),
     guid: MySystem.Activity.newGuid("activity")
   });
   var size = modules.length;
