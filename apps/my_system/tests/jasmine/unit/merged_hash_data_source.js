@@ -759,7 +759,145 @@ describe("MergedHashDataSource", function () {
         });
       });
     });
+    
+    
+    describe("handling of undeclared fields", function () {
+      
+      var recordType;
 
+      beforeEach( function () {
+        recordType = MySystem.AutoGuidRecord.extend({
+          declaredField: SC.Record.attr(String),
+          transientField: null
+        });
+        recordType._object_className = "MyApp.RecordType"; // normally set by SC on app init
+        
+        dataSource = MySystem.MergedHashDataSource.create({
+          handledRecordTypes: [recordType]
+        });
+
+        spyOn(dataSource, 'getRecordTypeFromName').andCallFake(function (recordTypeName) {
+          if (recordTypeName === "MyApp.RecordType") return recordType;
+          throw "record type not understood: " + recordTypeName;
+        });
+      });
+      
+      describe("ignoreUndeclaredFields property of data source", function () {
+        it("should be NO by default", function () {
+          expect(dataSource.get('ignoreUndeclaredFields')).toEqual(NO);
+        });
+      });
+    
+      describe("setDataHash method", function () {
+        
+        var store = SC.Object.create({
+          pushRetrieve: function () {},
+          pushDestroy: function () {}
+        });
+        
+        describe("when passed a hash containing data with a key for a field that is not declared on the record type", function () {          
+          var dataHash = {
+                "MyApp.RecordType": {
+                  "id1": { "declaredField":   "some value" },
+                  "id2": { "declaredField":   "some value",
+                           "undeclaredField": "some value" }
+                }
+              };
+              
+          it("should throw an error", function () {
+            expect(function () { dataSource.setDataHash(store, dataHash); }).toThrow();
+          });
+        });
+        
+        describe("when passed a hash containing data with a key for a field that is defined as transient on the record types", function () {
+          var dataHash = {
+                "MyApp.RecordType": {
+                  "id1": { "declaredField":   "some value" },
+                  "id2": { "declaredField":   "some value",
+                           "transientField":  "some value" }
+                }
+              };
+              
+          it("should throw an error", function () {
+            expect(function () { dataSource.setDataHash(store, dataHash); }).toThrow();
+          });
+        });
+      
+        describe("when passed a hash containing data only keys for fields that are declared on the record type", function () {
+          var dataHash = {
+                "MyApp.RecordType": {
+                  "id1": { "declaredField":   "some value" },
+                  "id2": { "declaredField":   "some value" }
+                }
+              };
+              
+          it("should not throw an error", function () {
+            expect(function () { dataSource.setDataHash(store, dataHash); }).not.toThrow();
+          });
+        });
+      });
+    });
+    
+    
+    describe("handling of top-level data hash keys to ignore", function () {
+      var recordType,
+          store = SC.Object.create({
+            pushRetrieve: function () {},
+            pushDestroy: function () {}
+          });
+
+      beforeEach( function () {
+        
+        recordType = MySystem.AutoGuidRecord.extend({
+          declaredField: SC.Record.attr(String)
+        });
+        recordType._object_className = "MyApp.RecordType"; // normally set by SC on app init
+        
+        dataSource = MySystem.MergedHashDataSource.create({
+          handledRecordTypes: [recordType]
+        });
+
+        spyOn(dataSource, 'getRecordTypeFromName').andCallFake(function (recordTypeName) {
+          if (recordTypeName === "MyApp.RecordType") return recordType;
+          throw "record type not understood: " + recordTypeName;
+        });
+      });
+      
+      describe("default value of keysToIgnore property of data source", function () {
+        it("should contain the single entry, 'version'", function () {
+          expect(dataSource.get('keysToIgnore').get('length')).toEqual(1);
+          expect(dataSource.get('keysToIgnore').objectAt(0)).toEqual('version');
+        });
+      });
+    
+    
+      describe("when keysToIgnore is set to ['keyToIgnore1', 'keyToIgnore2']", function () {
+
+        beforeEach( function () {
+          dataSource.set('keysToIgnore', ['keyToIgnore1', 'keyToIgnore2']);
+        });
+        
+        describe("and setDataHash is called with a data hash containing these keys", function () {
+          
+          var dataHash = {
+                "MyApp.RecordType": {
+                  "id1": { "declaredField": "some value" },
+                  "id2": { "declaredField": "some value" }
+                },
+                "keyToIgnore1": "value of keyToIgnore1 field",
+                "keyToIgnore2": "value of keyToIgnore2 field"
+              };
+              
+          it("should not throw an error", function () {
+            expect( function () { dataSource.setDataHash(store, dataHash); } ).not.toThrow();
+          });
+          
+        });
+      });
+      
+    });
+    
+    
     describe("with a real DataStore", function () {
       var dataStore;
       

@@ -35,7 +35,7 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     
     Fields on the data hash to ignore (regardless of the value of the ignoreUndeclaredFields property)
   */
-  fieldsToIgnore: ['version'],
+  keysToIgnore: ['version'],
   
   /**
     @property
@@ -218,7 +218,7 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     // destroys
     for (recordTypeName in oldDataHash) {
       if (!oldDataHash.hasOwnProperty(recordTypeName)) continue;
-      if (this.fieldsToIgnore.contains(recordTypeName)) continue;
+      if (this.keysToIgnore.contains(recordTypeName)) continue;
 
       recordType = this.getRecordTypeFromName(recordTypeName);
     
@@ -234,7 +234,7 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     // updates/creates
     for (recordTypeName in newDataHash) {
       if (!newDataHash.hasOwnProperty(recordTypeName)) continue;
-      if (this.fieldsToIgnore.contains(recordTypeName)) continue;      
+      if (this.keysToIgnore.contains(recordTypeName)) continue;      
       
       recordType = this.getRecordTypeFromName(recordTypeName);
       
