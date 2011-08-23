@@ -38,12 +38,7 @@ DiagramBuilder = SC.Object.extend({
         titleView = nodeView.get('titleView');
     
     simulateDoubleClick(titleView);
-    // figure out how many backspaces to press
-    var i, existingChars = titleView.getPath('text.length');
-    for (i = 0; i < existingChars; i++) {
-      simulateBackspace(titleView);
-    }
-    simulateTextEntry(titleView,title);
+    this._replaceText(titleView, title);
   },
   
   // Note: this will only work if there is 0 or 1 energy types
@@ -60,21 +55,84 @@ DiagramBuilder = SC.Object.extend({
     firePointerEvent(startTerminalView, 'mouseup', 0, 0);
     
     // select energy type
-    var inspector = MySystem.getPath('mainPage.inspectorPane');
-    if (inspector.isPaneAttached){
-      var radioGroupId = inspector.getPath('contentView.linkForm.energy.childViews.1.layer.id');
+    this.setInspectorValue({key: 'energy', type: 'radio'}, energyTypeLabel);
+  },
 
-      simulateClickOnSelector('#' + radioGroupId + ' div[role="radio"]:contains(' + energyTypeLabel + ')');
+  getInspector: function() {
+    return MySystem.getPath('mainPage.inspectorPane');
+  },
+
+  // attribute is a hash:
+  // { key: 'content value key', type: 'type value' }
+  // key is the attribute name in which a form view row is stored within the form.
+  // currently supported types: 'text', 'radio'
+  getInspectorValue: function(attribute) {
+    var ret = this._inspectorAttributeControl(attribute, function(inspector, control) {
+      if (attribute.type == 'text') {
+        return control.get('value');
+      } else if (attribute.type == 'radio') {
+        return control.get('value');
+      }
+    });
+    return ret;
+  },
+
+  setInspectorValue: function(attribute, value) {
+    return this._inspectorAttributeControl(attribute, function(inspector, control) {
+      SC.Logger.log("control: ", control, " type: ", attribute.type);
+      if (attribute.type == 'text') {
+        this._replaceText(control, value);
+      } else if (attribute.type == 'radio') {
+        var radioGroupId = control.getPath('layer.id');
+        simulateClickOnSelector('#' + radioGroupId + ' div[role="radio"]:contains(' + value + ')');
+      }
 
       // remove the inspector pane to avoid confusion
       inspector.remove();
+      return null;
+    });
+  },
+
+  _inspectorAttributeControl: function(attribute, callback) {
+    var inspector = this.getInspector();
+    var ret = null;
+    if (inspector.isPaneAttached){
+      // first, find the right one
+      var forms = inspector.getPath('contentView.childViews');
+      found:
+      for (var i = 0; i < forms.get('length'); i++) {
+        var controls = forms.objectAt(i).get('childViews');
+        for (var j = 0; j < controls.get('length'); j++) {
+          var attributeControl = controls.objectAt(j);
+          if (attributeControl.get('formKey') == attribute.key) {
+            SC.Logger.log("Found matching form control: ", attributeControl);
+            // call the callback with the actual control, not the form row
+            ret = callback.call(this, inspector, attributeControl.getPath('childViews.1'));
+            break found;
+          }
+        }
+      }
+    }
+    return ret;
+  },
+
+  _replaceText: function(view, text) {
+    if (view instanceof MySystem.EditableLabelView) {
+      // figure out how many backspaces to press
+      var i, existingChars = view.getPath('text.length');
+      for (i = 0; i < existingChars; i++) {
+        simulateBackspace(view);
+      }
+      simulateTextEntry(view, text);
+    } else {
+      view.set('value', text);
     }
   },
-  
+
   _nodeViewAtIndex: function(nodeIdx) {
     var diagramItemViews = this.diagramView.get('childViews'),
         nodeViews = diagramItemViews.filter(function(v){return v instanceof MySystem.NodeView;});
-        
+
     return nodeViews.objectAt(nodeIdx);
   }
 });

@@ -14,7 +14,7 @@
 
 MySystem.LinkFormView = SC.FormView.extend({
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Link),
-  childViews: "energy".w(), // description field is disabled for now
+  childViews: "energy".w(), // description and label fields are disabled for now
   isVisible: NO,
   contentChanged: function() {
     var c = this.get('content');
@@ -25,7 +25,7 @@ MySystem.LinkFormView = SC.FormView.extend({
     }
   }.observes('*content.guid'),
 
-  text: SC.FormView.row("Label:", SC.TextFieldView.design({
+  label: SC.FormView.row("Label:", SC.TextFieldView.design({
     layout: {width: 150, height: 20, centerY: 0 },
     contentValueKey: 'text'
   })),
