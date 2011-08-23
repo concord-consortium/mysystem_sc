@@ -25,7 +25,7 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
     var inspector = MySystem.getPath('mainPage.inspectorPane');
     inspector.set('isOptionsForNewLink', NO);
     inspector.set('isModal', NO);
-    inspector.set('layout', { top: 150, right: 5, width: 270, height: 200 });
+    inspector.set('layout', { top: 150, right: 5, width: 270, height: 275 });
     if (!inspector.isPaneAttached) {
       inspector.append();
     }

@@ -19,7 +19,7 @@ sc_require('views/node_form');
 MySystem.InspectorPane = SC.PalettePane.design({
   defaultResponder: 'MySystem.statechart',
   isOptionsForNewLink: NO,
-  layout: { top: 150, right: 5, width: 270, height: 200 },
+  layout: { top: 150, right: 5, width: 270, height: 275 },
   classNames: 'property-editor'.w(),
   
   // the contenView property should be updated with the view that is correct
