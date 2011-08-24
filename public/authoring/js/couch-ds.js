@@ -60,7 +60,8 @@ msaPreview.CouchDS.prototype =
           console.log("Saved ok, id = "+response.id);
           $.gritter.add({
             title: 'Data saved',
-            text: 'ID: '+response.id
+            text: 'ID: '+response.id,
+            time: 800
           });
           callback(response);
           window.location.hash = (self.authoredDocId || "") + (self.learnerDocId ? "/"+self.learnerDocId : "");
@@ -132,6 +133,7 @@ msaPreview.CouchDS.prototype =
       function(response){
         self.learnerDocId = response.id;
         self.learnerDocRev = response.rev;
+        self.learnerContentWindow.MySystem.externalSaveSuccessful(true);
       }
     );
   }
