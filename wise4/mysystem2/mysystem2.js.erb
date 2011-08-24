@@ -130,7 +130,7 @@ Mysystem2.prototype.save = function() {
 // we subscribe this function to the eventManager's processPostResponseComplete event,
 // so it ought to get called after postCurrentNodeVisit receives a success message from the post
 Mysystem2.prototype.saveSuccessful = function () {
-  // don't do anything yet, until we define a success message in MySystem
+  MySystem.externalSaveSuccessful(true);
 };
 
 
