@@ -42,6 +42,7 @@ MySystem.setupStore = function (obj, ignoreUndeclaredFields) {
         this.get('dataHash').version = MySystem.learnerDataVersion; 
         var textRep = JSON.stringify(this.get('dataHash'), null, 2);
         SC.$('#my_system_state').text(textRep);
+        MySystem.savingController.set("dataIsDirty", YES);
       }
     }),
 
@@ -137,5 +138,11 @@ MySystem.registerExternalSaveFunction = function(func, context) {
 // wants to save data and exit
 MySystem.preExternalSave = function() {
   this.statechart.sendAction('checkDiagramAgainstConstraints');
+};
+
+// Called by external app when an external save function returns.
+// @param successful {Boolean}      true if the data was successfully saved
+MySystem.externalSaveSuccessful = function(successful) {
+  MySystem.savingController.saveSuccessful(successful);
 };
 

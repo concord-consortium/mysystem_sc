@@ -103,6 +103,10 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       });
     },
     
+    saveButtonPressed: function () {
+      MySystem.savingController.save();
+    },
+    
     // runs the rules, saves the data and pops up a message to the user
     checkButtonPressed: function () {
       var results = this.checkDiagramAgainstConstraints(true);
