@@ -129,15 +129,25 @@ MySystem.loadWiseConfig = function(authoredContent,latestResponse) {
 // an external save function so that, when we are in an external application which can
 // save data (Wise2...), we can save our data externally whenever we want
 MySystem.registerExternalSaveFunction = function(func, context) {
-  MySystem.savingController.set('saveFunction', function(){
-    func.call(context);
-  });
+  if (!!func) {
+    MySystem.savingController.set('saveFunction', function(){
+      func.call(context);
+    });
+  } else {
+     MySystem.savingController.set('saveFunction', null);
+  }
+  
 };
 
 // Do any processing or cleanup that ought to be done before an external application 
 // wants to save data and exit
 MySystem.preExternalSave = function() {
   this.statechart.sendAction('checkDiagramAgainstConstraints');
+};
+
+// Set how frequently the save function is triggered, in ms. If < 0 it will never autosave
+MySystem.setAutoSaveFrequency = function(ms) {
+  MySystem.savingController.set('autoSaveFrequency', ms);
 };
 
 // Called by external app when an external save function returns.

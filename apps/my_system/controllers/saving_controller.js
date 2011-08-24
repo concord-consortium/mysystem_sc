@@ -36,6 +36,8 @@ MySystem.savingController = SC.Object.create({
       this.set('dataIsDirty', NO);
     }
   },
+  
+  autoSaveFrequency: 20000,
 	
 	// This timer will be scheduled to attempt to save every twenty seconds while
 	// data is dirty. Once data is clean, the timer will be cancelled.
@@ -48,14 +50,14 @@ MySystem.savingController = SC.Object.create({
 	  if (!this.get('saveFunction')){
 	    return;
 	  }
-	  
-	  if (this.get('dataIsDirty')) {
+
+	  if (this.get('dataIsDirty') && this.get('autoSaveFrequency') > 0) {
 	    if (!this.get('saveTimer')){  // if we already have a timer, don't make a new one
 	      // save ten seconds after data was first made dirty
 	      this.set('saveTimer', SC.Timer.schedule({
           target: this,
           action: 'save',
-          interval: 20000,
+          interval: this.get('autoSaveFrequency'),
           repeats: YES
         }));
 	    }
@@ -65,5 +67,5 @@ MySystem.savingController = SC.Object.create({
 	      this.set('saveTimer', null);
       }
 	  }
-	}.observes('dataIsDirty')
+	}.observes('dataIsDirty', 'autoSaveFrequency')
 });

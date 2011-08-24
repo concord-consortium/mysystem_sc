@@ -18,6 +18,8 @@ function Mysystem2(node,view) {
   
   MySystem.registerExternalSaveFunction(this.save, this);
   this.node.view.eventManager.subscribe('processPostResponseComplete', this.saveSuccessful);
+  // MySystem is set by default to save every 20 seconds. If we want to change that frequency, we can call
+  // MySystem.setAutoSaveFrequency(20000)
 };
 
 /**
