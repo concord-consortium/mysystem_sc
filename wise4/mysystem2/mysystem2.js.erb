@@ -16,7 +16,7 @@ function Mysystem2(node,view) {
     this.states = [];
   }
   
-  MySystem.registerExternalSaveFunction(this.save, this, true);
+  MySystem.registerExternalSaveFunction(this.save, this);
   this.node.view.eventManager.subscribe('processPostResponseComplete', this.saveSuccessful);
 };
 

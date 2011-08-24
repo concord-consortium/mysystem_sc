@@ -40,7 +40,7 @@ MySystem.InstructionView = SC.View.extend({
   saveButtonView: SC.ButtonView.design({
     layout: { right: 15, top: 5, height: 25, width: 80 },
     title: 'Save',
-    isEnabledBinding: 'MySystem.savingController.enableManualSave',
+    isEnabledBinding: 'MySystem.savingController.saveFunction',
     toolTip: 'Save your diagram',
     action: 'saveButtonPressed'
   }),
