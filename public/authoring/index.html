@@ -61,9 +61,11 @@
   {{/view}}
   <h2>Minimum Requirements</h2>
 
-  <span style="padding-left: 10px;">
-    {{view SC.TextField valueBinding="MSA.activity.minimumRequirementsFeedback" placeholder="Minimum requirements feedback" isVisibleBinding="MSA.minRequirementsController.hasRequirements"}}
-  </span>
+  {{#if MSA.minRequirementsController.hasRequirements}}
+    <span style="padding-left: 10px;">
+      Feedback: {{view SC.TextField valueBinding="MSA.activity.minimumRequirementsFeedback" placeholder="Minimum requirements feedback" }}
+    </span>
+  {{/if}}
   {{#collection contentBinding="MSA.minRequirementsController" tagName="ul"}}
       The diagram
       {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
