@@ -530,7 +530,84 @@ describe("DiagramRules", function () {
       expect(ruleFeedback.get('success')).toBe(false);
     });
   });
-  
+
+  describe("Minimum requirements", function() {
+    var ruleFeedback;
+
+    beforeEach(function() {
+      givenRequirements(
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2"
+          }
+        ],
+        [
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1",
+            "hasLink": true,
+            "energyType": "any",
+            "linkDirection": "-->",
+            "otherNodeType": "obj2"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2",
+            "hasLink": true,
+            "energyType": "any",
+            "linkDirection": "-->",
+            "otherNodeType": "obj1"
+          }
+        ]
+      );
+
+      MySystem.store.commitRecords();
+      ruleFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+    });
+
+    it('should fail if no requirements are met', function() {
+      expect(ruleFeedback.get('feedback')).toBeNull();
+
+      runRules({nodes: []});
+      expect(ruleFeedback.get('feedback')).toBe("Minimum requirements failed.");   // see givenRules() function
+      expect(ruleFeedback.get('success')).toBe(false);
+    });
+
+    it('should fail if only some requirements are met', function() {
+      expect(ruleFeedback.get('feedback')).toBeNull();
+
+      runRules({nodes: ['obj1']});
+      expect(ruleFeedback.get('feedback')).toBe("Minimum requirements failed.");   // see givenRules() function
+      expect(ruleFeedback.get('success')).toBe(false);
+    });
+
+    it('should fail normal rules if all requirements are met', function() {
+      expect(ruleFeedback.get('feedback')).toBeNull();
+
+      runRules({nodes: ['obj1','obj2']});
+      expect(ruleFeedback.get('feedback')).toBe("Failed rule 0 \nFailed rule 1");   // see givenRules() function
+      expect(ruleFeedback.get('success')).toBe(false);
+    });
+
+    it('should pass if all requirements and normal rules are met', function() {
+      expect(ruleFeedback.get('feedback')).toBeNull();
+
+      runRules({nodes: ['obj1','obj2'], links: ['obj1.0-->obj2.0:en1','obj2.0-->obj1.0:en1']});
+      expect(ruleFeedback.get('feedback')).toBe("Your diagram has no obvious problems.");   // see givenRules() function
+      expect(ruleFeedback.get('success')).toBe(true);
+    });
+
+  });
+
   givenRules = function (rules, maxFeedback) {
     $.each(rules, function(i, rule){
       if (!rule.suggestion){
@@ -543,6 +620,30 @@ describe("DiagramRules", function () {
     } else {
       authoredContent.maxFeedbackItems = 0;
     }
+    var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
+    MySystem.activityController.set('content',activity);
+  };
+
+  givenRequirements = function (reqs, rules) {
+    $.each(reqs, function(i, rule){
+      if (!rule.suggestion){
+        rule.suggestion = "Failed rule "+i;
+      }
+    });
+    if (!!rules) {
+      $.each(rules, function(i, rule){
+        if (!rule.suggestion){
+          rule.suggestion = "Failed rule "+i;
+        }
+      });
+      authoredContent.diagram_rules = rules;
+    } else {
+      authoredContent.diagram_rules = [];
+    }
+    authoredContent.minimum_requirements = reqs;
+    authoredContent.minimumRequirementsFeedback = "Minimum requirements failed.";
+    authoredContent.maxFeedbackItems = 0;
+
     var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
     MySystem.activityController.set('content',activity);
   };

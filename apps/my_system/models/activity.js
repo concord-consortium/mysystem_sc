@@ -112,7 +112,7 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     );
     activity.get('energyTypes').pushObject(newEnergyType);
   }
-  var minimum_requirements = wiseStepDef["minimum_requirements"];
+  var minimum_requirements = (wiseStepDef["minimum_requirements"] || []);
   size = minimum_requirements.length;
   var newDiagramRule = null;
   var rule = null;
