@@ -132,7 +132,12 @@ Mysystem2.prototype.save = function() {
 // we subscribe this function to the eventManager's processPostResponseComplete event,
 // so it ought to get called after postCurrentNodeVisit receives a success message from the post
 Mysystem2.prototype.saveSuccessful = function () {
-  MySystem.externalSaveSuccessful(true);
+  // it would be great if we could unsubscribe from the event manager when we leave the step.
+  // as we can't, our subscription hangs around, even if we are in some other step.
+  // Check we have a MySystem first
+  if (window['MySystem'] !== undefined){
+    window['MySystem'].externalSaveSuccessful(true);
+  }
 };
 
 
