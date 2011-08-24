@@ -28,6 +28,8 @@ MySystem.Activity = SC.Record.extend(
   
   // Rules for evaluating the digram
   diagramRules: SC.Record.toMany('MySystem.DiagramRule'),
+  minimumRequirements: SC.Record.toMany('MySystem.DiagramRule'),
+  minimumRequirementsFeedback: SC.Record.attr(String),
 
   // Toggle editing for various things
   enableNodeDescriptionEditing: SC.Record.attr(Boolean, {defaultValue: false}),
@@ -78,6 +80,7 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     enableNodeDescriptionEditing: (wiseStepDef["enableNodeDescriptionEditing"] || false),
     enableLinkDescriptionEditing: (wiseStepDef["enableLinkDescriptionEditing"] || false),
     enableLinkLabelEditing: (wiseStepDef["enableLinkLabelEditing"] || false),
+    minimumRequirementsFeedback: (wiseStepDef["minimumRequirementsFeedback"] || "Your diagram doesn't include enough detail."),
     guid: MySystem.Activity.newGuid("activity")
   });
   var size = modules.length;
@@ -109,10 +112,23 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     );
     activity.get('energyTypes').pushObject(newEnergyType);
   }
-  var diagram_rules = wiseStepDef["diagram_rules"];
-  size = diagram_rules.length;
+  var minimum_requirements = wiseStepDef["minimum_requirements"];
+  size = minimum_requirements.length;
   var newDiagramRule = null;
   var rule = null;
+  for (i=0; i < size; i++) {
+    rule = minimum_requirements[i];
+    newDiagramRule = MySystem.store.createRecord(
+      MySystem.DiagramRule,
+      rule,
+      MySystem.Activity.newGuid("diagramRule")
+    );
+    activity.get('minimumRequirements').pushObject(newDiagramRule);
+  }
+  var diagram_rules = wiseStepDef["diagram_rules"];
+  size = diagram_rules.length;
+  newDiagramRule = null;
+  rule = null;
   for (i=0; i < size; i++) {
     rule = diagram_rules[i];
     newDiagramRule = MySystem.store.createRecord(

@@ -52,7 +52,9 @@ InitialMySystemData = {
     }
  ],
  "diagram_rules": [],
+ "minimum_requirements": [],
  "maxFeedbackItems": 0,
+ "minimumRequirementsFeedback": "",
  "enableNodeDescriptionEditing": false,
  "enableLinkDescriptionEditing": false,
  "enableLinkLabelEditing": false

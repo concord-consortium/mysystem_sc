@@ -59,6 +59,50 @@
     action="createItem"}}
     Add New Energy Type
   {{/view}}
+  <h2>Minimum Requirements</h2>
+
+  <span style="padding-left: 10px;">
+    {{view SC.TextField valueBinding="MSA.activity.minimumRequirementsFeedback" placeholder="Minimum requirements feedback" isVisibleBinding="MSA.minRequirementsController.hasRequirements"}}
+  </span>
+  {{#collection contentBinding="MSA.minRequirementsController" tagName="ul"}}
+      The diagram
+      {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
+      {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.comparisons" valueBinding="parentView.content.comparison"}}
+      {{view SC.TextField valueBinding="parentView.content.number" placeholder="number"}}<br/>
+      {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.nodeTypes" valueBinding="parentView.content.type"}}
+      <!-- button to show/hide the rest of the options if we could use an if statement then we could
+           check for the status of the property, and show one button in one case and another button in another case
+
+           not exactly why we need parentView.parentView here, my guess is that the if wraps this in another view so we
+           need parentView.parentView to get all the way up to the itemView 
+
+           I tried adding a button to hide the link options again but the value bindings did not correctly update the views after they
+           were shown, hidden and shown again.  Changing the view after the show, hide, show did update the model object though
+      -->
+      {{#if "content.hasLink"}}
+        {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.linkDirections" valueBinding="parentView.parentView.content.linkDirection"}}
+        {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.nodeTypes" valueBinding="parentView.parentView.content.otherNodeType"}}
+        with energy type: {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.energyTypes" valueBinding="parentView.parentView.content.energyType"}}
+      {{else}}
+        {{#view SC.Button
+          targetBinding="parentView.parentView.content"
+          action="toggleHasLink"}}
+          Enable link conditions
+        {{/view}} 
+      {{/if}}
+      <br/>
+      {{#view SC.Button target="MSA.minRequirementsController" action="removeItem" itemBinding="parentView.content"}}
+      Remove Requirement
+      {{/view}}
+      {{#view SC.Button target="MSA.minRequirementsController" action="moveItemUp" itemBinding="parentView.content"}} ↑ {{/view}}
+      {{#view SC.Button target="MSA.minRequirementsController" action="moveItemDown" itemBinding="parentView.content"}} ↓ {{/view}}
+  {{/collection}}
+  {{#view SC.Button 
+    target="MSA.minRequirementsController"
+    action="createItem"}}
+    Add New Minimum Requirement
+  {{/view}}
+
   <h2>Limit Feedback</h2>
     Only report 
       {{view SC.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit"}}
