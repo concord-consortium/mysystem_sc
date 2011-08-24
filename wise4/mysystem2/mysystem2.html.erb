@@ -21,7 +21,14 @@
 
   <script type="text/javascript">
 
-
+// The following 2 lines added 8-24-11 to force SC to bootstrap itself in WISE4 every time the user navigates to
+// the MySystem step. (WISE4 dynamically inserts this file into an iframe, and does not clear the javascript context of
+// the iframe element when loading new files in. Thus navigating away from a MySystem step does not remove SC from the
+// iframe context; and, upone navigating back to the MySystem step, the SC bootstrap code is not loaded)
+//
+window.SC = undefined;
+window['__SC__'] = undefined;
+  
 /* >>>>>>>>>> BEGIN source/system/browser.js */
 // ==========================================================================
 // Project:   SproutCore - JavaScript Application Framework
