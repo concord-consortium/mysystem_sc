@@ -57,7 +57,8 @@ var events = [
   'mysystem2AddNewEnergyType',
   'mysystem2AuthoringIFrameLoaded',
   'templateUpdatePrompt',
-  'previewFrameLoaded'
+  'previewFrameLoaded',
+  'processPostResponseComplete'
 ];
 
 /*
