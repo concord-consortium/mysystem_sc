@@ -6,7 +6,7 @@
 
 /*globals MySystem  */
 MySystem.InstructionView = SC.View.extend({
-  childViews: 'assignmentView clearButtonView checkButtonView'.w(),
+  childViews: 'assignmentView clearButtonView checkButtonView saveButtonView saveStatusView '.w(),
   backgroundColor: '#eeefff',
   
   canCollapse: YES,
@@ -34,6 +34,20 @@ MySystem.InstructionView = SC.View.extend({
     title: 'Check Diagram',
     toolTip: 'Check your diagram',
     action: 'checkButtonPressed'
+  }),
+  
+  // this starts out not enabled so people don't think they can actually save
+  saveButtonView: SC.ButtonView.design({
+    layout: { right: 15, top: 5, height: 25, width: 80 },
+    title: 'Save',
+    isEnabledBinding: 'MySystem.savingController.enableManualSave',
+    toolTip: 'Save your diagram',
+    action: 'saveButtonPressed'
+  }),
+  
+  saveStatusView: SC.LabelView.design({
+    layout: { right: 95, top: 9, height: 25, width: 100 },
+    valueBinding: 'MySystem.savingController.saveStatusText'
   })
   
 });

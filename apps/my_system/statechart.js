@@ -107,9 +107,7 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     checkButtonPressed: function () {
       var results = this.checkDiagramAgainstConstraints(true);
       
-      if (!!MySystem.externalSaveFunction){
-        MySystem.externalSaveFunction();
-      }
+      MySystem.savingController.save();
       var showAlertPane = results[0] ? SC.AlertPane.info : SC.AlertPane.warn;
       
       // force focus of main pane, as author could have focus elsewhere, hit

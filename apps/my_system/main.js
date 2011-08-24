@@ -127,12 +127,10 @@ MySystem.loadWiseConfig = function(authoredContent,latestResponse) {
 
 // an external save function so that, when we are in an external application which can
 // save data (Wise2...), we can save our data externally whenever we want
-MySystem.externalSaveFunction = null;
-
 MySystem.registerExternalSaveFunction = function(func, context) {
-  MySystem.externalSaveFunction = function(){
+  MySystem.savingController.set('saveFunction', function(){
     func.call(context);
-  };
+  });
 };
 
 // Do any processing or cleanup that ought to be done before an external application 
