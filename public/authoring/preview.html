@@ -5,6 +5,7 @@
 
   <title>MySystem Authoring</title>
   <!-- <link rel="stylesheet" href="css/style.css?v=2"> -->
+  <link rel="stylesheet" href="css/custom.css">
   <link rel="stylesheet" href="css/jquery.gritter.css">
   <script type="text/javascript" src="js/libs/jquery-1.4.4.min.js"></script>
   <script type="text/javascript" src="js/libs/jquery.couch.js"></script>
@@ -86,9 +87,38 @@
         }
       }
       
-      
+      // register save function on Save Authored Activity button
       $('#save_authoring').click(function(){dataStore.saveAuthoring()});
-      runtimeContent.MySystem.registerExternalSaveFunction(dataStore.saveLearner, dataStore);
+      
+      // register save function on internal MySystem app's save button
+      // This is all complicated here just because we want to disable saving and autosaving
+      // by default, and turn them on using checkboxes. If we just wanted the save button to
+      // work always, we would simply need to call
+      // runtimeContent.MySystem.registerExternalSaveFunction(dataStore.saveLearner, dataStore);
+
+      $('#save_external').attr('disabled', false);
+      $('#save_external').parent('span').removeClass('options_disabled');
+      $('#save_external').click(function(){
+        $('#autosave_external').parent('span').toggleClass('options_disabled');
+        if (this.checked){
+          runtimeContent.MySystem.registerExternalSaveFunction(dataStore.saveLearner, dataStore);
+          $('#autosave_external').attr('disabled', false);
+          $('#autosave_time').attr('disabled', false);
+        } else {
+          runtimeContent.MySystem.registerExternalSaveFunction(null);
+          $('#autosave_external').attr('disabled', true);
+          $('#autosave_time').attr('disabled', true);
+        }
+      });
+      
+      runtimeContent.MySystem.setAutoSaveFrequency(-1); // start with no auto save
+      $('#autosave_external').click(function(){
+        if (this.checked){
+          runtimeContent.MySystem.setAutoSaveFrequency($('#autosave_time')[0].value * 1000);
+        } else {
+          runtimeContent.MySystem.setAutoSaveFrequency(-1);
+        }
+      });
       
    }
 
@@ -103,6 +133,13 @@
         <button id="save_authoring">Save authored activity</button>
       </td>
       <td width="50%" id="runtime_td" style="text-align: right">
+        <span class="options_disabled">
+          <input type="checkbox" id="save_external" disabled>Save diagram enabled &nbsp;&nbsp;
+          <span class="options_disabled">
+            <input type="checkbox" id="autosave_external" disabled>Autosave every
+            <input type="text" size="2" value="20" id="autosave_time" disabled> seconds
+          </span>
+        </span>
       </td>
     </tr>
   </table>

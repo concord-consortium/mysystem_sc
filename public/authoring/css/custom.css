@@ -1,0 +1,7 @@
+.options_disabled {
+  color: #999999;
+}
+
+input[disabled] {
+  color: #999999;
+}
