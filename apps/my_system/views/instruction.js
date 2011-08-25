@@ -15,7 +15,7 @@ MySystem.InstructionView = SC.View.extend({
     valueBinding: 'MySystem.storyController.content',
   
     anchorLocation: SC.ANCHOR_TOP,  
-    layout: { top: 5, right: 5, bottom: 5, left: 5 },
+    layout: { top: 5, right: 222, bottom: 5, left: 5 },
 
     tagName: "div",
     escapeHTML: NO,
