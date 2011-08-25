@@ -9,14 +9,15 @@ MySystem.savingController = SC.Object.create({
   saveFunction: null,
   saveTime: null,
   saveStatusText: 'not yet saved',
+  autoSaveFrequency: 20000,
 
-  timer: SC.Timer.schedule({ 
+  displayTimer: SC.Timer.schedule({ 
             target:   'MySystem.savingController',
-            action:   'tick',
+            action:   'updateStatusText',
             interval: 5000,
             repeats:  YES }),
 
-  tick: function() {
+  updateStatusText: function() {
     var timeNow  = new Date().getTime(),
         saveTime = this.get('saveTime'),
         seconds  = 0,
@@ -57,10 +58,10 @@ MySystem.savingController = SC.Object.create({
   saveSuccessful: function(successful) {
     if (successful){
       this.set('dataIsDirty', NO);
+      this.set('saveTime', new Date().getTime());
     }
   },
   
-  autoSaveFrequency: 20000,
 	
 	// This timer will be scheduled to attempt to save every twenty seconds while
 	// data is dirty. Once data is clean, the timer will be cancelled.
