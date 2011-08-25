@@ -6,7 +6,7 @@
 
 /*globals MySystem  */
 MySystem.InstructionView = SC.View.extend({
-  childViews: 'assignmentView clearButtonView checkButtonView saveButtonView saveStatusView '.w(),
+  childViews: 'assignmentView sankeyButtonView clearButtonView checkButtonView saveButtonView saveStatusView '.w(),
   backgroundColor: '#eeefff',
   
   canCollapse: YES,
@@ -22,6 +22,13 @@ MySystem.InstructionView = SC.View.extend({
     textAlign: SC.ALIGN_LEFT
   }),
   
+  sankeyButtonView: SC.ButtonView.design({
+    layout: { right: 240, bottom: 10, height: 25, width: 80 },
+    title: 'Sankey',
+    toolTip: 'Show a sankey representation of your diagram',
+    action: 'showSankey'
+  }),
+
   clearButtonView: SC.ButtonView.design({
     layout: { right: 150, bottom: 10, height: 25, width: 80 },
     title: 'Clear',

@@ -85,6 +85,15 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     */
     SENTENCE_OBJECT_LINKING: SC.State.plugin('MySystem.SENTENCE_OBJECT_LINKING'),
     
+    showSankey: function() {
+      var sankeyView = MySystem.SankeyPane.create().append();
+      SC.run();
+      var timer = SC.Timer.schedule({
+        interval: 500,
+        action: sankeyView.drawSankey
+      });
+    },
+
     // clears the canvas after asking the user
     clearCanvas: function () {
       SC.AlertPane.warn({
