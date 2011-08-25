@@ -48,7 +48,7 @@ MySystem.InstructionView = SC.View.extend({
   saveStatusView: SC.LabelView.design({
     layout: { right: 95, top: 9, height: 25, width: 200 },
     displayProperty: 'value',
-    textAlign: SC.ALIGN_RIGHT,
+    textAlign: SC.ALIGN_LEFT,
     valueBinding: 'MySystem.savingController.saveStatusText'
   })
   
