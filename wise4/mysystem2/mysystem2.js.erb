@@ -1,3 +1,4 @@
+/*globals MYSYSTEM2STATE MySystem eventManager */
 /**
  * This is the constructor for the object that will perform the logic for
  * the step when the students work on it. An instance of this object will
@@ -9,7 +10,7 @@ function Mysystem2(node,view) {
 
   this.domIO = document.getElementById('my_system_state');
 
-  if (node.studentWork != 'undefined' && node.studentWork != null) {
+  if (node.studentWork != 'undefined' && node.studentWork !== null) {
     this.states = node.studentWork; 
   } 
   else {
@@ -20,7 +21,7 @@ function Mysystem2(node,view) {
   this.node.view.eventManager.subscribe('processPostResponseComplete', this.saveSuccessful);
   // MySystem is set by default to save every 20 seconds. If we want to change that frequency, we can call
   // MySystem.setAutoSaveFrequency(20000)
-};
+}
 
 /**
  * This function renders everything the student sees when they visit the step.
