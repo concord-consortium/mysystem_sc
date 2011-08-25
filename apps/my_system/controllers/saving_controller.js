@@ -7,17 +7,40 @@
 MySystem.savingController = SC.Object.create({
   // this should be set 
   saveFunction: null,
-  
-  dataIsDirty: NO,
-  
-  saveTimer: null,
-  
-  saveStatusText: function(){
-    if(!this.get('saveFunction')){
-      return 'No External Saving';
+  saveTime: null,
+  saveStatusText: 'not yet saved',
+
+  timer: SC.Timer.schedule({ 
+            target:   'MySystem.savingController',
+            action:   'tick',
+            interval: 5000,
+            repeats:  YES }),
+
+  tick: function() {
+    var timeNow  = new Date().getTime(),
+        saveTime = this.get('saveTime'),
+        seconds  = 0,
+        minutes  = 0,
+        hours    = 0;
+    if (!!!saveTime) { return; }
+    seconds = (timeNow - saveTime) / 1000.0;
+    minutes = seconds / 60;
+    hours   = minutes / 60;
+
+    if (seconds < 10) {
+      this.set('saveStatusText', 'Saved: just now');
+      return;
     }
-    return this.get('dataIsDirty') ? 'Not saved' : "Saved";
-  }.property('saveFunction', 'dataIsDirty'),
+    if (seconds < 60) {
+      this.set('saveStatusText', 'Saved: ' + Math.round(seconds) + ' seconds ago');
+      return;
+    }
+    if (minutes < 60) {
+      this.set('saveStatusText', 'Saved: ' + Math.round(minutes) + ' minutes ago');
+      return;
+    }
+    this.set('saveStatusText',   'Saved: ' + Math.round(hours) +   ' hours ago');
+  },
   
   enableManualSave: function(){
     return !!this.get('saveFunction') && !!this.get('dataIsDirty');
@@ -68,4 +91,10 @@ MySystem.savingController = SC.Object.create({
       }
 	  }
 	}.observes('dataIsDirty', 'autoSaveFrequency')
+});  },
+
+  saveSuccess: function() {
+    var time = new Date().getTime();
+    this.set('saveTime',time);
+  }
 });
