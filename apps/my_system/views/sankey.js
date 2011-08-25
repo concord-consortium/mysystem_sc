@@ -42,7 +42,6 @@ MySystem.SankeyPane = SC.PalettePane.design(
   }),
 
   drawSankey: function() {
-    SC.Logger.log("Creating sankey representation");
     sankey = new Sankey();
     var stacks = [[],[],[]];
     var links = [];
@@ -70,7 +69,6 @@ MySystem.SankeyPane = SC.PalettePane.design(
       }
     }
 
-    SC.Logger.log("links: ", links, ", stacks: ", stacks);
     for (i = 0; i < stacks.length; i++) {
       if (!!stacks[i] && stacks[i].length > 0) {
         sankey.stack(i, stacks[i]);
