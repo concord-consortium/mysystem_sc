@@ -87,11 +87,7 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     
     showSankey: function() {
       var sankeyView = MySystem.SankeyPane.create().append();
-      SC.run();
-      var timer = SC.Timer.schedule({
-        interval: 500,
-        action: sankeyView.drawSankey
-      });
+      sankeyView.drawSankey();
     },
 
     // clears the canvas after asking the user

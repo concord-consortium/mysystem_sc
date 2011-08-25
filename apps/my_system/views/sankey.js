@@ -10,6 +10,10 @@
 
   @extends SC.View
 */
+// for some reason we have to assign the Sankey object to the sankey global,
+// or the library gets messed up...
+var sankey = null;
+
 MySystem.SankeyPane = SC.PalettePane.design(
 /** @scope MySystem.SankeyView.prototype */ {
   layout: { top: 5, left: 5, right: 5, bottom: 5 },
@@ -39,6 +43,7 @@ MySystem.SankeyPane = SC.PalettePane.design(
 
   drawSankey: function() {
     SC.Logger.log("Creating sankey representation");
+    sankey = new Sankey();
     var stacks = [[],[],[]];
     var links = [];
     var diagrammables = MySystem.nodesController.get('content');
@@ -66,13 +71,12 @@ MySystem.SankeyPane = SC.PalettePane.design(
     }
 
     SC.Logger.log("links: ", links, ", stacks: ", stacks);
-    var sankeyObj = new Sankey();
     for (i = 0; i < stacks.length; i++) {
       if (!!stacks[i] && stacks[i].length > 0) {
-        sankeyObj.stack(i, stacks[i]);
+        sankey.stack(i, stacks[i]);
       }
     }
-    sankeyObj.setData(links);
-    sankeyObj.draw();
+    sankey.setData(links);
+    sankey.draw();
   }
 });
