@@ -53,16 +53,20 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
   enterState: function () {
     SC.Logger.log("Entering state %s", this.get('name'));
     // Set up the property editor pane and attach it
-    
-    // for now, the inspector pane only exists to set energy type. If there is only one or
-    // zero energy types, don't bother showing it.
-    if (MySystem.activityController.get('energyTypes').length() > 1){
-      this.setUpInspectorPane();
-    } else {
+    var firstSelection = MySystem.nodesController.get('selection').firstObject();
+    if (firstSelection instanceof MySystem.Link && 
+        MySystem.activityController.get('energyTypes').length() < 2 &&
+        ! MySystem.activityController.get('enableLinkLabelEditing') &&
+        ! MySystem.activityController.get('enableLinkDescriptionEditing') ) {
+      // we're editing a link, there is only 1 energy type, and editing labels and descriptions is NOT enabled
+      // so skip showing the inspector
       this.gotoState('DIAGRAM_EDITING');
+    } else {
+      // for every other case, show the inspector
+      this.setUpInspectorPane();
     }
   },
-  
+
   exitState: function () {
     SC.Logger.log("Leaving state %s", this.get('name'));
     // Detatch property editor pane and clean it up
