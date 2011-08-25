@@ -21,16 +21,16 @@ MySystem.savingController = SC.Object.create({
         hours    = 0,
         timeNow  = new Date().getTime();
 
-    if (!!!saveTime) { return 'not yet saved'; }
+    if (!!!saveTime) { return 'Not saved yet.'; }
 
     seconds = (timeNow - saveTime) / 1000.0;
     minutes = seconds / 60;
     hours   = minutes / 60;
 
-    if (seconds < 10) { return ('Saved: just now'); }
-    if (seconds < 60) { return ('Saved: ' + Math.round(seconds) + ' seconds ago'); }
-    if (minutes < 60) { return ('Saved: ' + Math.round(minutes) + ' minutes ago'); }
-    return ('Saved: '                     + Math.round(hours)   + ' hours ago');
+    if (seconds < 10) { return ('Saved.'); }
+    if (seconds < 60) { return ('Saved  ' + Math.round(seconds) + ' seconds ago.'); }
+    if (minutes < 60) { return ('Saved '  + Math.round(minutes) + ' minutes ago.'); }
+    return ('Saved '                      + Math.round(hours)   + ' hours ago.');
 
   }.property('saveTime', 'displayTime'),
 
