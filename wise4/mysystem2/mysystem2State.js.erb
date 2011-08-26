@@ -1,3 +1,5 @@
+/*globals eventManager */
+
 /**
  * This is the constructor for the state object that will be used to represent the
  * student work. An instance of this object will be created each time the student
@@ -11,11 +13,11 @@ function MYSYSTEM2STATE(response) {
 	//the text response the student wrote
 	this.response = "";
 
-	if(response != null) {
+	if(response !== null) {
 		//set the response
 		this.response = response;
 	}
-};
+}
 
 /**
  * This function is used to reload previous work the student submitted for the step.
