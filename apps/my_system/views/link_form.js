@@ -14,6 +14,7 @@
 
 MySystem.LinkFormView = SC.FormView.extend({
   layout: { top: 0, bottom: 0, left: 0, right: 0 },
+  linkSelectionOnly: NO,
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Link),
   childViews: function() {
     var children = ["energy"];
@@ -34,6 +35,18 @@ MySystem.LinkFormView = SC.FormView.extend({
       this.set('isVisible', NO);
     }
   }.observes('*content.guid'),
+
+  linkOnlyChanged: function() {
+    var linkOnly = this.get('linkSelectionOnly');
+    // label and description may still be 'designs', in which case setPath will fail.
+    // That's ok, though. Just catch it and move on.
+    try {
+      this.setPath('label.isVisible', !linkOnly);
+    } catch(e) { }
+    try {
+      this.setPath('description.isVisible', !linkOnly);
+    } catch(e) { }
+  }.observes('linkSelectionOnly'),
 
   label: SC.FormView.row("Label:", SC.TextFieldView.design({
     layout: {width: 150, height: 20, centerY: 0 },

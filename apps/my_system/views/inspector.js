@@ -33,6 +33,7 @@ MySystem.InspectorPane = SC.PalettePane.design({
     }),
     linkForm: MySystem.LinkFormView.design({
       layout: {top: 22, left: 0, right: 0},
+      linkSelectionOnlyBinding: '.parentView.parentView.isOptionsForNewLink'
     }),
     nodeForm: MySystem.NodeFormView.design({
       layout: {top: 22, left: 0, right: 0}
