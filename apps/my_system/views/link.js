@@ -55,37 +55,40 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         startX    = 0,
         startY    = 0,
         endX      = 0,
-        endY      = 0;
+        endY      = 0,
+        startIdx  = 0,
+        endIdx    = 0,
+        startWidth = 10,
+        endWidth  = 10;
 
         if (!!startNode) { 
           startX = startNode.get('x');
           startY = startNode.get('y');
+          var sLinks = startNode.get('outLinks');
+          startIdx = sLinks.indexOf(content);
+          startWidth = sLinks.get('length') * this.get('lineWidth');
         }
-        
+
         if (!!endNode) {
           endX = endNode.get('x');
           endY = endNode.get('y');
-        }
-        
-        var startingAtTop = (content.get('startTerminal') === 'a'),
-            endingAtTop   = (content.get('endTerminal') === 'a');
-    
-        if (startingAtTop) {
-          startX = startX + 50;
-          startY = startY;
-        } else {
-          startX = startX + 50;
-          startY = startY + 110;
-        }
-        if (endingAtTop) {
-          endX = endX + 50;
-          endY = endY;
-        } else {
-          endX = endX + 50;
-          endY = endY + 110;
+          var eLinks = endNode.get('inLinks');
+          endIdx = eLinks.indexOf(content);
+          endWidth = eLinks.get('length') * this.get('lineWidth');
         }
 
-        var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY,startingAtTop,endingAtTop);
+        // Spread the links along the edge of the node, so they're not all pointing at the same spot
+        // always start on the bottom
+        var startLeft = startX + (100 - startWidth)/2;
+        startX = startLeft + (startIdx * this.get('lineWidth'));
+        startY = startY + 110;
+
+        // always end at the top
+        var endLeft = endX + (100 - endWidth)/2;
+        endX = endLeft + (endIdx * this.get('lineWidth'));
+        // endY = endY;
+
+        var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY,NO,YES);
         var lineColor = this.get('lineColor') || "#000099";
 
         var borderAttrs = {
@@ -154,12 +157,12 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     
     var center = path.getPointAtLength(path.getTotalLength() * (2/3));
     var text = this.get('content').get('text');
-     return {
+    return {
       'x':              center.x,
       'y':              center.y,
       'fill':           'black',
       'text':           !!text ? text : "" 
-    }
+    };
   },
 
   _getLabelBackgroundAttrs: function(canvas, label) {
