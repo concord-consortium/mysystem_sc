@@ -86,8 +86,32 @@ a:hover { color: #036; }
     \\ ========================================== //
 */
 
+h1 {
+  font-size: 130%;
+  padding: 4px;
+}
 
+h2 {
+  font-size: 110%;
+  padding: 3px;
+  padding-left: 6px;
+}
 
+h3 {
+  padding: 2px;
+  padding-left: 10px;
+}
+
+.add_button {
+  margin: 5px;
+  margin-left: 10px;
+  padding-left: 18px;
+  background: url(../images/add-15px.png) no-repeat left;
+}
+
+#correctFeedback {
+  width: 300px;
+}
 
 
 
