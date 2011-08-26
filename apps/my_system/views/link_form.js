@@ -14,6 +14,7 @@
 
 MySystem.LinkFormView = SC.FormView.extend({
   layout: { top: 0, bottom: 0, left: 0, right: 0 },
+  linkSelectionOnly: NO,
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Link),
   childViews: function() {
     var children = ["energy"];
@@ -35,6 +36,18 @@ MySystem.LinkFormView = SC.FormView.extend({
     }
   }.observes('*content.guid'),
 
+  linkOnlyChanged: function() {
+    var linkOnly = this.get('linkSelectionOnly');
+    // label and description may still be 'designs', in which case setPath will fail.
+    // That's ok, though. Just catch it and move on.
+    try {
+      this.setPath('label.isVisible', !linkOnly);
+    } catch(e) { }
+    try {
+      this.setPath('description.isVisible', !linkOnly);
+    } catch(e) { }
+  }.observes('linkSelectionOnly'),
+
   label: SC.FormView.row("Label:", SC.TextFieldView.design({
     layout: {width: 150, height: 20, centerY: 0 },
     contentValueKey: 'text'
@@ -42,7 +55,7 @@ MySystem.LinkFormView = SC.FormView.extend({
 
   energy: SC.FormView.row("Energy:", SC.RadioView.design({
     // apparently it is vitally important that width be speficied prior to height in the RadioView layout...
-    layout: { width: 150, height: 120, centerY: 0},
+    layout: { width: 150, height: 100, centerY: 0},
     itemsBinding: SC.Binding.oneWay('MySystem.activityController.energyTypes'),
     contentValueKey: 'energyType',
     itemTitleKey: 'label',

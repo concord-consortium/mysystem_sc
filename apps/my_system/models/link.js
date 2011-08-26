@@ -55,7 +55,7 @@ MySystem.Link = MySystem.Diagrammable.extend(
   energyTypeObjDidChange: function() {
     var energyType = this.get('energyTypeObj');
     
-    if(SC.none(energyType)){
+    if(SC.none(energyType) || this.isDestroyed()){
       return;
     }
     

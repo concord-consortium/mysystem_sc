@@ -42,4 +42,5 @@ MySystem.NodeFormView = SC.FormView.extend({
     contentValueKey: 'description',
     isTextArea: YES
   }))
+
 });

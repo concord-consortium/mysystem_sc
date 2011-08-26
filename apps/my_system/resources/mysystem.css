@@ -161,3 +161,18 @@
   background: #000;
   opacity: 0.2;  
 }
+
+/* save status */
+.save_clean_class {
+	font-size: 9px;
+	color: #000;
+}
+.save_dirty_class {
+	font-size: 9px;
+	color: #730C0C;
+}
+
+.deletelink {
+  color: blue;
+  text-decoration: underline;
+}

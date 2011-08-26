@@ -108,6 +108,7 @@ describe("The Inspector Pane", function () {
       });
 
       it("should have 1 item", function(){
+        // label
         expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(1);
       });
 
@@ -160,6 +161,7 @@ describe("The Inspector Pane", function () {
       });
 
       it("should have 2 items", function(){
+        // label, description
         expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(2);
       });
 
@@ -188,7 +190,7 @@ describe("The Inspector Pane", function () {
       });
 
       it("should have 3 items", function(){
-        // the energy radio buttons, label text field, and description text area
+        // the energy radio buttons, label text field, description text area
         expect(diagramBuilder.getInspector().getPath('contentView.linkForm.childViews.length')).toBe(3);
       });
 

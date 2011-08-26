@@ -5,67 +5,112 @@
 
 /*globals MySystem */
 MySystem.savingController = SC.Object.create({
-  // this should be set 
-  saveFunction: null,
-  
-  dataIsDirty: NO,
-  
-  saveTimer: null,
-  
-  saveStatusText: function(){
-    if(!this.get('saveFunction')){
-      return 'No External Saving';
+  // this should be set
+  saveFunction:      null,
+  saveTime:          null,
+  displayTime:       null,
+  saveTimer:         null,
+  autoSaveFrequency: 20000, // save every          20 seconds
+  displayFrequency:   5000, // update disaply every 5 seconds
+
+  // computes human-readable 'Saved: <when> text'
+  saveStatusText: function() {
+    var saveTime = this.get('saveTime'),
+        seconds  = 0,
+        minutes  = 0,
+        hours    = 0,
+        timeNow  = new Date().getTime();
+
+    if (!!!saveTime)              { return 'Not saved yet.'; } 
+    
+    if (!this.get('dataIsDirty')) { 
+      // if we aren't dirty, we are effectively saved:
+      this.set('saveTime', new Date().getTime()); 
+      return 'Saved.';
     }
-    return this.get('dataIsDirty') ? 'Not saved' : "Saved";
-  }.property('saveFunction', 'dataIsDirty'),
-  
+
+    seconds = (timeNow - saveTime) / 1000.0;
+    minutes = seconds / 60;
+    hours   = minutes / 60;
+
+    seconds = Math.round(seconds);
+    minutes = Math.round(minutes);
+    hours   = Math.round(hours);
+
+    if (seconds < 10) { return ('Saved seconds ago'); }
+    if (seconds < 60) { return ('Saved ' + seconds + ' seconds ago.'); }
+    if (minutes < 60) { return ('Saved ' + minutes + ' minutes ago.'); }
+    return ('Saved '                     + hours   + ' hours ago.');
+
+  }.property('saveTime', 'displayTime'),
+
   enableManualSave: function(){
     return !!this.get('saveFunction') && !!this.get('dataIsDirty');
   }.property('saveFunction', 'dataIsDirty'),
-  
+
+  // Called to attempt to save the diagram. Either by pressing 'save', navigating away,
+  // or when the save button is pressed.
+  // IMPORANT: dataSources must call: MySystem.savingController.set('dataIsDirty', YES); 
   save: function() {
-    if(this.get('saveFunction')) {
+    if(this.get('saveFunction') && this.get('dataIsDirty')) {
       this.get('saveFunction')();
     }
   },
-  
+
   // Called when save function returns.
   // @param successful {Boolean}      true if the data was successfully saved
   saveSuccessful: function(successful) {
     if (successful){
       this.set('dataIsDirty', NO);
+      this.set('saveTime', new Date().getTime());
     }
   },
-  
-  autoSaveFrequency: 20000,
-	
-	// This timer will be scheduled to attempt to save every twenty seconds while
-	// data is dirty. Once data is clean, the timer will be cancelled.
-	//
-	// From the point of view of the user, no data saving will happen until they modify their data,
-	// then after twenty seconds a save will be triggered. Assuming the save was successful,
-	// no more saving will happen until they modify their data again. If they are continuously changing
-	// the diagram, the system will save every twenty seconds.
-	scheduleTimer: function() {
-	  if (!this.get('saveFunction')){
-	    return;
-	  }
 
-	  if (this.get('dataIsDirty') && this.get('autoSaveFrequency') > 0) {
-	    if (!this.get('saveTimer')){  // if we already have a timer, don't make a new one
-	      // save ten seconds after data was first made dirty
-	      this.set('saveTimer', SC.Timer.schedule({
-          target: this,
-          action: 'save',
-          interval: this.get('autoSaveFrequency'),
-          repeats: YES
+  // Called when our dispayTimer reaches <displayFrequency> seconds
+  // this will have the side-effect of calling this.saveStatusText()
+  // which is observes 'displayTime'.
+  updateDisplayTime: function() {
+    this.set('displayTime', new Date().getTime());
+  },
+
+  setupTimers: function() {
+    var saveTimer    = null,
+        displayTimer = null;
+
+    // This timer will attempt to display the last save time every <displayFrequency> seconds
+    // unless the value for autoSaveFrequency is less than 1.
+    if (this.get('displayFrequency') > 0) {
+        this.set('displayTimer',SC.Timer.schedule({
+          target:   this,
+          action:   'updateDisplayTime',
+          interval: this.get('displayFrequency'),
+          repeats:  YES
         }));
-	    }
-	  } else {
-	    if (!!this.get('saveTimer')){
-	      this.get('saveTimer').invalidate();
-	      this.set('saveTimer', null);
-      }
-	  }
-	}.observes('dataIsDirty', 'autoSaveFrequency')
+    }
+
+    // This timer will attempt to save dataevery <autoSaveFrequency> seconds
+    // unless the value for autoSaveFrequency is less than 1.
+    if (this.get('autoSaveFrequency') > 0) {
+       this.set('saveTimer', SC.Timer.schedule({
+          target:   this,
+          action:   'save',
+          interval: this.get('autoSaveFrequency'),
+          repeats:  YES
+        }));
+    }
+  }.observes('displayFrequency','autoSaveFrequency'),
+
+  init: function() {
+    sc_super();
+    this.setupTimers();
+  },
+
+  destroy: function() {
+    // ensure that our timers are destroyed.
+    this.get('saveTimer').invalidate();
+    this.set('saveTimer', null);
+    this.get('displayTimer').invalidate();
+    this.set('displayTimer', null);
+    sc_super();
+  }
 });

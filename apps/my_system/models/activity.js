@@ -37,7 +37,10 @@ MySystem.Activity = SC.Record.extend(
   enableLinkLabelEditing: SC.Record.attr(Boolean, {defaultValue: false}),
 
   // The maximum number of pieces of feedback to give to the user
-  maxFeedbackItems: SC.Record.attr(Number, {defaultValue: 0})
+  maxFeedbackItems: SC.Record.attr(Number, {defaultValue: 0}),
+  
+  // Feedback to be shown if all rules pass
+  correctFeedback: SC.Record.attr(String, {defaultValue: "Your diagram has no obvious problems."})
 });
 
 MySystem.Activity.GuidCounter = 100;
@@ -81,6 +84,7 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     enableLinkDescriptionEditing: (wiseStepDef["enableLinkDescriptionEditing"] || false),
     enableLinkLabelEditing: (wiseStepDef["enableLinkLabelEditing"] || false),
     minimumRequirementsFeedback: (wiseStepDef["minimumRequirementsFeedback"] || "Your diagram doesn't include enough detail."),
+    correctFeedback: (wiseStepDef["correctFeedback"] || "Your diagram has no obvious problems."),
     guid: MySystem.Activity.newGuid("activity")
   });
   var size = modules.length;
