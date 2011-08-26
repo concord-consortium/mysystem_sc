@@ -76,6 +76,15 @@ MySystem.savingController = SC.Object.create({
   setupTimers: function() {
     var saveTimer    = null,
         displayTimer = null;
+        
+    if (!!this.get('displayTimer')){
+      this.get('displayTimer').invalidate();
+      this.set('displayTimer', null);
+    }
+    if (!!this.get('saveTimer')){
+      this.get('saveTimer').invalidate();
+      this.set('saveTimer', null);
+    }
 
     // This timer will attempt to display the last save time every <displayFrequency> seconds
     // unless the value for autoSaveFrequency is less than 1.
