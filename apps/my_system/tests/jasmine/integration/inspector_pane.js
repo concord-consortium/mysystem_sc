@@ -107,9 +107,9 @@ describe("The Inspector Pane", function () {
         SC.run();
       });
 
-      it("should have 2 items", function(){
-        // label and delete link
-        expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(2);
+      it("should have 1 item", function(){
+        // label
+        expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(1);
       });
 
       it("should update the label", function() {
@@ -127,9 +127,9 @@ describe("The Inspector Pane", function () {
         SC.run();
       });
 
-      it("should have 2 items", function(){
-        // the energy radio buttons and delete link
-        expect(diagramBuilder.getInspector().getPath('contentView.linkForm.childViews.length')).toBe(2);
+      it("should have 1 item", function(){
+        // the energy radio buttons
+        expect(diagramBuilder.getInspector().getPath('contentView.linkForm.childViews.length')).toBe(1);
       });
 
       it("should update the energy type", function() {
@@ -160,9 +160,9 @@ describe("The Inspector Pane", function () {
         SC.run();
       });
 
-      it("should have 3 items", function(){
-        // label, description, delete link
-        expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(3);
+      it("should have 2 items", function(){
+        // label, description
+        expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(2);
       });
 
       it("should update the label", function() {
@@ -189,9 +189,9 @@ describe("The Inspector Pane", function () {
         SC.run();
       });
 
-      it("should have 4 items", function(){
-        // the energy radio buttons, label text field, description text area, and delete link
-        expect(diagramBuilder.getInspector().getPath('contentView.linkForm.childViews.length')).toBe(4);
+      it("should have 3 items", function(){
+        // the energy radio buttons, label text field, description text area
+        expect(diagramBuilder.getInspector().getPath('contentView.linkForm.childViews.length')).toBe(3);
       });
 
       it("should update the energy type", function() {

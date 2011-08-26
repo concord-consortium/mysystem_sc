@@ -23,7 +23,6 @@ MySystem.LinkFormView = SC.FormView.extend({
     if (MySystem.activityController.get('enableLinkDescriptionEditing')) {
       children.push("description");
     }
-    children.push("deleteLink");
     return children;
   }.property(),
   isVisible: NO,
@@ -43,7 +42,7 @@ MySystem.LinkFormView = SC.FormView.extend({
 
   energy: SC.FormView.row("Energy:", SC.RadioView.design({
     // apparently it is vitally important that width be speficied prior to height in the RadioView layout...
-    layout: { width: 150, height: 120, centerY: 0},
+    layout: { width: 150, height: 100, centerY: 0},
     itemsBinding: SC.Binding.oneWay('MySystem.activityController.energyTypes'),
     contentValueKey: 'energyType',
     itemTitleKey: 'label',
@@ -81,21 +80,6 @@ MySystem.LinkFormView = SC.FormView.extend({
     layout: {width: 150, height: 60, centerY: 0 },
     contentValueKey: 'description',
     isTextArea: YES
-  })),
-
-  deleteLink: SC.FormView.row("", SC.LabelView.design({
-    layout: {width: 150, height: 30, centerY: 0 },
-    value: "Delete this link",
-    classNames: "deletelink".w(),
-
-    click: function() {
-      // Delete the currently selected link
-      // NOTE: This is safe as long as we don't show the form when multiple things are selected
-      if (!!MySystem.canvasView) {
-        MySystem.canvasView.deleteSelection();
-      }
-      return YES;
-    }
   }))
 
 });
