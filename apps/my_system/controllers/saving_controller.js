@@ -33,14 +33,16 @@ MySystem.savingController = SC.Object.create({
     minutes = seconds / 60;
     hours   = minutes / 60;
 
-    seconds = Math.round(seconds);
-    minutes = Math.round(minutes);
-    hours   = Math.round(hours);
+    seconds = Math.floor(seconds);
+    minutes = Math.floor(minutes);
+    hours   = Math.floor(hours);
 
-    if (seconds < 10) { return ('Saved seconds ago'); }
-    if (seconds < 60) { return ('Saved ' + seconds + ' seconds ago.'); }
-    if (minutes < 60) { return ('Saved ' + minutes + ' minutes ago.'); }
-    return ('Saved '                     + hours   + ' hours ago.');
+    if (seconds <  10) { return ('Saved seconds ago.'); }
+    if (seconds <  60) { return ('Saved ' + seconds + ' seconds ago.'); } 
+    if (minutes === 1) { return ('Saved ' + minutes + ' minute ago.' ); } 
+    if (minutes <  60) { return ('Saved ' + minutes + ' minutes ago.'); } 
+    if (hours   === 1) { return ('Saved ' + hours   + ' hour ago.' );   } 
+    return ('Saved '                      + hours    + ' hours ago.');
 
   }.property('saveTime', 'displayTime'),
 
