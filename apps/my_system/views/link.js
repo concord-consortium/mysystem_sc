@@ -28,6 +28,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   }.property('isSelected'),
 
   lineWidth: 6,
+  lineSpacing: 2,
   borderWidth: 3,
 
   // RENDER METHODS
@@ -59,14 +60,16 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         startIdx  = 0,
         endIdx    = 0,
         startWidth = 10,
-        endWidth  = 10;
+        endWidth  = 10,
+        lineWidth = this.get('lineWidth'),
+        lineSpacing = this.get('lineSpacing');
 
         if (!!startNode) { 
           startX = startNode.get('x');
           startY = startNode.get('y');
           var sLinks = startNode.get('outLinks');
           startIdx = sLinks.indexOf(content);
-          startWidth = sLinks.get('length') * this.get('lineWidth');
+          startWidth = sLinks.get('length') * (lineWidth + lineSpacing);
         }
 
         if (!!endNode) {
@@ -74,18 +77,18 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           endY = endNode.get('y');
           var eLinks = endNode.get('inLinks');
           endIdx = eLinks.indexOf(content);
-          endWidth = eLinks.get('length') * this.get('lineWidth');
+          endWidth = eLinks.get('length') * (lineWidth + lineSpacing);
         }
 
         // Spread the links along the edge of the node, so they're not all pointing at the same spot
         // always start on the bottom
         var startLeft = startX + (100 - startWidth)/2;
-        startX = startLeft + (startIdx * this.get('lineWidth'));
+        startX = startLeft + (startIdx * (lineWidth + lineSpacing));
         startY = startY + 110;
 
         // always end at the top
         var endLeft = endX + (100 - endWidth)/2;
-        endX = endLeft + (endIdx * this.get('lineWidth'));
+        endX = endLeft + (endIdx * (lineWidth + lineSpacing));
         // endY = endY;
 
         var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY,NO,YES);
