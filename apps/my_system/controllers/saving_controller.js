@@ -44,7 +44,6 @@ MySystem.savingController = SC.Object.create({
   save: function() {
     if(this.get('saveFunction') && this.get('dataIsDirty')) {
       this.get('saveFunction')();
-      this.set('saveTime', new Date().getTime());
     }
   },
 
