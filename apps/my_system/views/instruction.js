@@ -46,10 +46,19 @@ MySystem.InstructionView = SC.View.extend({
   }),
   
   saveStatusView: SC.LabelView.design({
-    layout: { right: 95, top: 9, height: 25, width: 200 },
-    displayProperty: 'value',
+    layout: { right: 85, top: 9, height: 25, width: 120 },
     textAlign: SC.ALIGN_LEFT,
-    valueBinding: 'MySystem.savingController.saveStatusText'
+		displayProperties: 'isDirty value'.w(),
+    valueBinding: 'MySystem.savingController.saveStatusText',
+		isDirtyBinding: 'MySystem.savingController.dataIsDirty',
+		render: function(context, firstTime) {
+			if (!this.get('isDirty')) {
+				context.addClass('save_clean_class');
+			} else {
+				context.addClass('save_dirty_class');
+			}
+			return sc_super();
+		}
   })
   
 });
