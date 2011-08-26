@@ -30,6 +30,7 @@ MSA.loadData = function(dataHash) {
 };
 
 MSA.ActivityModel = SCUtil.ModelObject.extend({
+  correctFeedback: SCUtil.dataHashProperty,
   maxFeedbackItems: SCUtil.dataHashProperty,
   minimumRequirementsFeedback: SCUtil.dataHashProperty,
   enableNodeDescriptionEditing: SCUtil.dataHashProperty,
@@ -87,6 +88,7 @@ if (top === self) {
     "modules": [],
     "energy_types": [],
     "diagram_rules": [],
+    "correctFeedback": "Your diagram has no obvious problems.",
     "minimum_requirements": [],
     "maxFeedbackItems": 0,
     "minimumRequirementsFeedback": "Your diagram doesn't have enough elements.",
@@ -170,6 +172,7 @@ MSA.dataController = SC.Object.create({
              'MSA.energyTypesController.@each.rev', 
              'MSA.diagramRulesController.@each.rev',
              'MSA.minRequirementsController.@each.rev',
+             'MSA.activity.correctFeedback',
              'MSA.activity.minimumRequirementsFeedback',
              'MSA.activity.enableNodeDescriptionEditing',
              'MSA.activity.enableLinkDescriptionEditing',

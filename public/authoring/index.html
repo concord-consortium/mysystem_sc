@@ -105,10 +105,16 @@
     Add New Minimum Requirement
   {{/view}}
 
-  <h2>Limit Feedback</h2>
-    Only report 
-      {{view SC.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit"}}
-    feedback items
+  <h2>Feedback</h2>
+    <div style="padding-left: 10px;">
+      Feedback if all rules pass:
+        <div style="padding-left: 10px; width: 800px;">
+          {{view SC.TextField valueBinding="MSA.activity.correctFeedback" placeholder="Your diagram has no obvious problems." id="correctFeedback"}}
+        </div>
+      Only report 
+        {{view SC.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit" style="width: 800px;"}}
+      feedback items
+    </div>
   <h2>Diagram Rules</h2>
   
   {{#collection contentBinding="MSA.diagramRulesController" tagName="ul"}}
