@@ -127,7 +127,7 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       
       // for now, we can assume that if there are no suggestions the diagram is good
       var success = (suggestions.get('length') === 0);
-      var feedback = success ? "Your diagram has no obvious problems." : suggestions.join(" \n");
+      var feedback = success ? MySystem.activityController.get('correctFeedback') : suggestions.join(" \n");
       
       this.saveFeedback(feedback, success);
       
