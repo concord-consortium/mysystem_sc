@@ -79,11 +79,30 @@ Mysystem2.prototype.render = function() {
  * work for this step
  */
 Mysystem2.prototype.getLatestState = function() {
-  var latestState = null;
-  
-  if (this.states && this.states.length > 0) {
-    latestState = this.states[this.states.length - 1];
+  var latestState = null,
+      state,
+      i,
+      numberOfOwnProperties = function (obj) {
+        var p, n = 0;
+
+        for (p in obj) {
+          if (obj.hasOwnProperty(p)) n++;
+        }
+        return n;
+      };
+      
+  if (this.states) {
+    for (i = this.states.length - 1; i >= 0; i--) {
+      state = this.states[i];
+      // because of WISE4 corruption issues, reject states that may have been saved to our states array
+      // by non-MySystem steps such as openresponse steps
+      if (state.type === "MySystem2" || (typeof state.type === 'undefined' && numberOfOwnProperties(state) === 1)) {
+        latestState = state;
+        break;
+      }
+    }
   }
+  
   return latestState;
 };
 

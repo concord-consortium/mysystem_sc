@@ -10,6 +10,9 @@
  * represent the student's work for your step type.
  */
 function MYSYSTEM2STATE(response) {
+  //remember the type to avoid corruption (i.e., loading a state saved by an openresponse WISE4 step)
+  this.type = "MySystem2";
+  
 	//the text response the student wrote
 	this.response = "";
 
