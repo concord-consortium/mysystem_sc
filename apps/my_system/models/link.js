@@ -16,6 +16,7 @@ MySystem.Link = MySystem.Diagrammable.extend(
   color: SC.Record.attr(String),
   text: SC.Record.attr(String),
   description: SC.Record.attr(String),
+  weight: SC.Record.attr(Number, {defaultValue: 1}),
 
   // uuid taken from the energy type of this
   // TODO figure out where this is setup

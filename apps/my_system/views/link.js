@@ -17,11 +17,12 @@ sc_require('mixins/arrow_drawing');
 MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.LinkView.prototype */ {
 
-  displayProperties: 'content.endNode.x content.endNode.y content.startNode.x content.startNode.y lineColor borderColor borderOpacity lineWidth borderWidth'.w(),
+  displayProperties: 'content.endNode.x content.endNode.y content.startNode.x content.startNode.y lineColor borderColor borderOpacity lineWidth borderWidth weight'.w(),
 
   // PROPERTIES
   lineColorBinding: '*content.color',
   borderColor: '#ADD8E6',
+  weightBinding: '*content.weight',
 
   borderOpacity: function () {
     return this.get('isSelected') ? 1.0 : 0;
@@ -64,31 +65,22 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         lineWidth = this.get('lineWidth'),
         lineSpacing = this.get('lineSpacing');
 
-        if (!!startNode) { 
-          startX = startNode.get('x');
-          startY = startNode.get('y');
+        if (!!startNode) {
           var sLinks = startNode.get('outLinks');
-          startIdx = sLinks.indexOf(content);
-          startWidth = sLinks.get('length') * (lineWidth + lineSpacing);
+          startX = this._getLinkPositioning(sLinks, startNode);
+          startY = startNode.get('y');
         }
 
         if (!!endNode) {
-          endX = endNode.get('x');
-          endY = endNode.get('y');
           var eLinks = endNode.get('inLinks');
-          endIdx = eLinks.indexOf(content);
-          endWidth = eLinks.get('length') * (lineWidth + lineSpacing);
+          endX = this._getLinkPositioning(eLinks, endNode);
+          endY = endNode.get('y');
         }
 
-        // Spread the links along the edge of the node, so they're not all pointing at the same spot
         // always start on the bottom
-        var startLeft = startX + (100 - startWidth)/2;
-        startX = startLeft + (startIdx * (lineWidth + lineSpacing));
         startY = startY + 110;
 
         // always end at the top
-        var endLeft = endX + (100 - endWidth)/2;
-        endX = endLeft + (endIdx * (lineWidth + lineSpacing));
         // endY = endY;
 
         var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY,NO,YES);
@@ -98,7 +90,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           'path':           pathStr.tail + pathStr.head,
           'stroke':         this.get('borderColor'),
           'opacity':        this.get('borderOpacity'),
-          'stroke-width':   this.get('lineWidth') + 2 + 2 * this.get('borderWidth'),  // the border "around" the line is really a fat line behind it
+          'stroke-width':   (this.get('lineWidth') * this.get('weight')) + 2 + 2 * this.get('borderWidth'),  // the border "around" the line is really a fat line behind it
           'stroke-linecap': 'round'
         },
         
@@ -106,14 +98,14 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           'path':           pathStr.tail + pathStr.head,
           'stroke':         '#FFFFFF',
           'opacity':        this.get('borderOpacity'),
-          'stroke-width':   this.get('lineWidth') + 3,
+          'stroke-width':   (this.get('lineWidth') * this.get('weight')) + 3,
           'stroke-linecap': 'round'
         },
 
         lineAttrs = {
           'path':           pathStr.tail,
           'stroke':         lineColor,
-          'stroke-width':   this.get('lineWidth'),
+          'stroke-width':   (this.get('lineWidth') * this.get('weight')),
           'stroke-linecap': 'round'
         },
         
@@ -121,7 +113,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           'path':           pathStr.head,
           'stroke':         lineColor,
           'fill':           lineColor,
-          'stroke-width':   this.get('lineWidth'),
+          'stroke-width':   (this.get('lineWidth') * this.get('weight')),
           'stroke-linecap': 'round'
         },
 
@@ -153,6 +145,22 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
       labelBg.toFront();
       label.toFront();
     }
+  },
+
+  // Spread the links along the edge of the node, so they're not all pointing at the same spot
+  _getLinkPositioning: function(links, node) {
+    var pos = 0;
+    var tot = 0;
+    for (var i = 0; i < links.get('length'); i++) {
+      var link = links.objectAt(i);
+      var w = link.get('weight') * this.get('lineWidth');
+      if (link == this.get('content')) {
+        pos = tot + (w/2);
+      }
+      tot += w;
+    }
+    pos = node.get('x') + pos + (100 - tot)/2;
+    return pos;
   },
   
   _getLabelAttrs: function(path) {

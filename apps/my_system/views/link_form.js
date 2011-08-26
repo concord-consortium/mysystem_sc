@@ -17,7 +17,7 @@ MySystem.LinkFormView = SC.FormView.extend({
   linkSelectionOnly: NO,
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Link),
   childViews: function() {
-    var children = ["energy"];
+    var children = ["energy", "weight"];
     if (MySystem.activityController.get('enableLinkLabelEditing')) {
       children.push("label");
     }
@@ -45,6 +45,9 @@ MySystem.LinkFormView = SC.FormView.extend({
     } catch(e) { }
     try {
       this.setPath('description.isVisible', !linkOnly);
+    } catch(e) { }
+    try {
+      this.setPath('weight.isVisible', !linkOnly);
     } catch(e) { }
   }.observes('linkSelectionOnly'),
 
@@ -87,6 +90,11 @@ MySystem.LinkFormView = SC.FormView.extend({
       }
       return null;
     }
+  })),
+
+  weight: SC.FormView.row("Weight:", SC.TextFieldView.design({
+    layout: {width: 150, height: 20, centerY: 0 },
+    contentValueKey: 'weight'
   })),
 
   description: SC.FormView.row("Description:", SC.TextFieldView.design({
