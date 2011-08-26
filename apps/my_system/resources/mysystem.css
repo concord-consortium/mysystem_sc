@@ -171,3 +171,8 @@
 	font-size: 9px;
 	color: #730C0C;
 }
+
+.deletelink {
+  color: blue;
+  text-decoration: underline;
+}
