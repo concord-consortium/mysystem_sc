@@ -21,8 +21,9 @@ MySystem.savingController = SC.Object.create({
         hours    = 0,
         timeNow  = new Date().getTime();
 
-    if (!!!saveTime)              { return 'Not saved yet.'; } 
-    
+    if (!!!this.get('saveFunction')){ return 'Saving disabled.'; }
+    if (!!!saveTime)                { return 'Not saved yet.'; } 
+
     if (!this.get('dataIsDirty')) { 
       // if we aren't dirty, we are effectively saved:
       this.set('saveTime', new Date().getTime()); 
@@ -33,14 +34,16 @@ MySystem.savingController = SC.Object.create({
     minutes = seconds / 60;
     hours   = minutes / 60;
 
-    seconds = Math.round(seconds);
-    minutes = Math.round(minutes);
-    hours   = Math.round(hours);
+    seconds = Math.floor(seconds);
+    minutes = Math.floor(minutes);
+    hours   = Math.floor(hours);
 
-    if (seconds < 10) { return ('Saved seconds ago'); }
-    if (seconds < 60) { return ('Saved ' + seconds + ' seconds ago.'); }
-    if (minutes < 60) { return ('Saved ' + minutes + ' minutes ago.'); }
-    return ('Saved '                     + hours   + ' hours ago.');
+    if (seconds <  10) { return ('Saved seconds ago.'); }
+    if (seconds <  60) { return ('Saved ' + seconds + ' seconds ago.'); } 
+    if (minutes === 1) { return ('Saved ' + minutes + ' minute ago.' ); } 
+    if (minutes <  60) { return ('Saved ' + minutes + ' minutes ago.'); } 
+    if (hours   === 1) { return ('Saved ' + hours   + ' hour ago.' );   } 
+    return ('Saved '                      + hours    + ' hours ago.');
 
   }.property('saveTime', 'displayTime'),
 
@@ -76,6 +79,15 @@ MySystem.savingController = SC.Object.create({
   setupTimers: function() {
     var saveTimer    = null,
         displayTimer = null;
+        
+    if (!!this.get('displayTimer')){
+      this.get('displayTimer').invalidate();
+      this.set('displayTimer', null);
+    }
+    if (!!this.get('saveTimer')){
+      this.get('saveTimer').invalidate();
+      this.set('saveTimer', null);
+    }
 
     // This timer will attempt to display the last save time every <displayFrequency> seconds
     // unless the value for autoSaveFrequency is less than 1.

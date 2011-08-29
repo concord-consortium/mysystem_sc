@@ -121,6 +121,12 @@
           runtimeContent.MySystem.setAutoSaveFrequency(-1);
         }
       });
+      $('#autosave_time').keyup(function(){
+        console.log("woo")
+        if ($('#autosave_external')[0].checked){
+          runtimeContent.MySystem.setAutoSaveFrequency(this.value * 1000);
+        }
+      });
       
    }
 

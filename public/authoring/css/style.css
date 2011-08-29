@@ -92,9 +92,10 @@ h1 {
 }
 
 h2 {
-  font-size: 110%;
+  font-size: 120%;
   padding: 3px;
   padding-left: 6px;
+  background-color: #DDDDDD;
 }
 
 h3 {
@@ -102,11 +103,22 @@ h3 {
   padding-left: 10px;
 }
 
+.options_block {
+  padding: 4px;
+  margin: 8px;
+  background-color: #EEEEEE;
+  border: 1px solid #DDDDDD;
+}
+
 .add_button {
   margin: 5px;
-  margin-left: 10px;
+  margin-left: 15px;
   padding-left: 18px;
   background: url(../images/add-15px.png) no-repeat left;
+}
+
+input {
+  margin: 2px;
 }
 
 #correctFeedback {

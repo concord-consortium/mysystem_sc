@@ -1,3 +1,5 @@
+/*globals eventManager */
+
 /**
  * This is the constructor for the state object that will be used to represent the
  * student work. An instance of this object will be created each time the student
@@ -8,14 +10,17 @@
  * represent the student's work for your step type.
  */
 function MYSYSTEM2STATE(response) {
+  //remember the type to avoid corruption (i.e., loading a state saved by an openresponse WISE4 step)
+  this.type = "MySystem2";
+  
 	//the text response the student wrote
 	this.response = "";
 
-	if(response != null) {
+	if(response !== null) {
 		//set the response
 		this.response = response;
 	}
-};
+}
 
 /**
  * This function is used to reload previous work the student submitted for the step.
