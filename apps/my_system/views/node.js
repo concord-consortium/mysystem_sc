@@ -25,6 +25,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   isSelected: NO,
   isDragging: NO,
+  isHovered:  NO,
   
   bodyWidth: 100,
   bodyHeight: 110,
@@ -95,14 +96,41 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   }.property('parentView').cacheable(),
 
 
+  
+  forceRemoveButtonToBeVisible: NO,
+  
   // CHILD VIEWS
   
   // TODO make this an explicitly-named class so we can reuse it for links.
   removeButtonView: RaphaelViews.RaphaelView.design({
-    displayProperties:      'cx cy circleStroke'.w(),
+    displayProperties:      'cx cy circleStroke circleFill'.w(),
+
+    isHovered: NO,
     
-    circleStroke:           '#999999',
-    circleFill:             '#FFFFFF',  
+    isParentHoveredBinding:   '.parentView.isHovered',
+    isVisiblityForcedBinding: '.parentView.forceRemoveButtonToBeVisible',
+    isVisible: function () {
+      return this.get('isParentHovered') || this.get('isVisiblityForced');
+    }.property('isParentHovered', 'isVisiblityForced'),
+    
+    normalCircleStroke:  '#CCC',
+    hoveredCircleStroke: '#666',
+    circleStroke: function () {
+      return this.get('isHovered') ? this.get('hoveredCircleStroke') : this.get('normalCircleStroke');
+    }.property('isHovered'),
+    
+    normalCircleFill:  '#FFF',
+    hoveredCircleFill: '#666',
+    circleFill: function () {
+      return this.get('isHovered') ? this.get('hoveredCircleFill') : this.get('normalCircleFill');
+    }.property('isHovered'),
+    
+    normalXStroke:  '#CCC',
+    hoveredXStroke: '#FFF',
+    xStroke:function () {
+      return this.get('isHovered') ? this.get('hoveredXStroke') : this.get('normalXStroke');
+    }.property('isHovered'),
+    
     r:                      12, 
     parentXBinding:         '.parentView.x',
     parentBodyWidthBinding: '.parentView.bodyWidth',
@@ -113,25 +141,64 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     
     cyBinding:               '.parentView.y',
     
-    renderCallback: function (raphaelCanvas, attrs) {
-      return raphaelCanvas.circle(attrs.cx, attrs.cy, attrs.r).attr(attrs);
+    renderCallback: function (raphaelCanvas, circleAttrs, xAttrs) {
+      return raphaelCanvas.set().push(
+        raphaelCanvas.circle().attr(circleAttrs),
+        raphaelCanvas.path().attr(xAttrs)
+      );
     },
     
     render: function (context, firstTime) {
-      var attrs = {
-        cx:     this.get('cx'),
-        cy:     this.get('cy'),
-        r:      this.get('r'),
-        stroke: this.get('circleStroke'),
-        fill:   this.get('circleFill')
-      };
-    
+      var cx = this.get('cx') || 0,
+          cy = this.get('cy') || 0,
+            
+          circleAttrs = {
+            cx:     cx,
+            cy:     cy,
+            r:      this.get('r'),
+            stroke: this.get('circleStroke'),
+            fill:   this.get('circleFill'),
+            'stroke-width':  3
+          },
+          
+          d = 5,
+          
+          xPath = ['M', cx - d, cy - d, 
+                   'L', cx + d, cy + d,
+                   'M', cx - d, cy + d, 
+                   'L', cx + d, cy - d].join(' '),
+
+          xAttrs = {
+            'path':         xPath,
+            'stroke':       this.get('xStroke'),
+            'stroke-width': 3
+          },
+      
+          raphaelObject,
+          raphaelCircle,
+          raphaelX;
+      
       if (firstTime) {
-        context.callback(this, this.renderCallback, attrs);
+        context.callback(this, this.renderCallback, circleAttrs, xAttrs);
       }
       else {
-        this.get('raphaelObject').attr(attrs);
+        raphaelObject = this.get('raphaelObject');
+        raphaelCircle = raphaelObject.items[0];
+        raphaelX      = raphaelObject.items[1];
+
+        raphaelCircle.attr(circleAttrs);
+        raphaelX.attr(xAttrs);
       }
+    },
+    
+    mouseEntered: function () {
+      this.set('isHovered', YES);
+      return YES;
+    },
+    
+    mouseExited: function () {
+      this.set('isHovered', NO);
+      return YES;
     }
     
   }),
@@ -240,9 +307,20 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         this.set('imageHeight', newHeight);
       SC.RunLoop.end();
     }
-  }
+  },
   
   // EVENT METHODS GO HERE:
+  
+  mouseEntered: function () {
+    this.set('isHovered', YES);
+    return YES;
+  },
+  
+  mouseExited: function () {
+    this.set('isHovered', NO);
+    return YES;
+  }
+  
 });
 
 MySystem.NodeView.mixin({
