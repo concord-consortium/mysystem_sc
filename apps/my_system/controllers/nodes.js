@@ -66,6 +66,13 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     if (this.contains(obj)) obj.destroy();
   },
   
+  deleteSelectedObjects: function () {
+    var sel = this.get('selection').toArray();
+    // Some links may be "pre-destroyed" if nodes they are attached to are destroyed first, but calling destroy()
+    // twice is not an error.
+    sel.invoke('destroy');
+  },        
+  
   // If the selection changes on nodes or links, grab the top layer and call focus().
   // This forces the browser focus back onto the application, which ensures that
   // keyboard and other events are properly directed here if we are embedding in an iframe.

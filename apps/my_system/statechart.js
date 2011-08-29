@@ -173,6 +173,11 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     deleteDiagramObject: function (sender, contentObject) {
       MySystem.nodesController.deleteObject(contentObject);
       return YES;
+    },
+    
+    deleteDiagramSelection: function () {
+      MySystem.nodesController.deleteSelectedObjects();
+      return YES;
     }
     
   })

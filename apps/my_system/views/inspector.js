@@ -26,35 +26,29 @@ MySystem.InspectorPane = SC.PalettePane.design({
   // for the current object
   contentView: SC.View.design({
     childViews: 'title linkForm nodeForm deleteButton'.w(),
+    
     title: SC.LabelView.design({
       value: "Pick an energy type for your new link",
       isVisibleBinding: '.parentView.parentView.isOptionsForNewLink',
       layout: {top: 0, left: 0, right: 0, height: 22}
     }),
+    
     linkForm: MySystem.LinkFormView.design({
       layout: {top: 22, left: 0, right: 0},
       linkSelectionOnlyBinding: '.parentView.parentView.isOptionsForNewLink'
     }),
+    
     nodeForm: MySystem.NodeFormView.design({
       layout: {top: 22, left: 0, right: 0}
     }),
 
     deleteButton: SC.ButtonView.design({
-      layout: {bottom: 0, right: 15, height: 30, width: 80 },
-      title: "Delete this",
-      notVisibleBinding: '.parentView.parentView.isOptionsForNewLink',
-      visibilityChanged: function() {
-        this.set('isVisible', !this.get('notVisible'));
-      }.observes('notVisible'),
-
-      action: function() {
-        // Delete the currently selected link
-        // NOTE: This is safe as long as we don't show the form when multiple things are selected
-        if (!!MySystem.canvasView) {
-          MySystem.canvasView.deleteSelection();
-        }
-        return YES;
-      }
+      layout: {  bottom: 0, right: 15, height: 30, width: 80 },
+      title:  "Delete this",
+      action: 'deleteDiagramSelection',
+      
+      isVisibleBindingDefault: SC.Binding.not(),
+      isVisibleBinding:        '.parentView.parentView.isOptionsForNewLink'
     })
 
   })
