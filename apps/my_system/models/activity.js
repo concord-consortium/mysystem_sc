@@ -40,7 +40,13 @@ MySystem.Activity = SC.Record.extend(
   maxFeedbackItems: SC.Record.attr(Number, {defaultValue: 0}),
   
   // Feedback to be shown if all rules pass
-  correctFeedback: SC.Record.attr(String, {defaultValue: "Your diagram has no obvious problems."})
+  correctFeedback: SC.Record.attr(String, {defaultValue: "Your diagram has no obvious problems."}),
+
+  // Allow custom JS evaluation of rules?
+  enableCustomRuleEvaluator: SC.Record.attr(Boolean, {defaultValue: false}),
+
+  // javascript text for evaluator function
+  customRuleEvaluator: SC.Record.attr(String),
 });
 
 MySystem.Activity.GuidCounter = 100;
@@ -70,6 +76,7 @@ MySystem.Activity.newGuid = function(type) { return type + MySystem.Activity.Gui
          ]
       }
 */
+
 MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
   var actguid = MySystem.Activity.newGuid("actvitiy");
   var modules = wiseStepDef["modules"];
@@ -85,7 +92,9 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     enableLinkLabelEditing: (wiseStepDef["enableLinkLabelEditing"] || false),
     minimumRequirementsFeedback: (wiseStepDef["minimumRequirementsFeedback"] || "Your diagram doesn't include enough detail."),
     correctFeedback: (wiseStepDef["correctFeedback"] || "Your diagram has no obvious problems."),
-    guid: MySystem.Activity.newGuid("activity")
+    guid: MySystem.Activity.newGuid("activity"),
+    enableCustomRuleEvaluator: (wiseStepDef["enableCustomRuleEvaluator"] || false),
+    customRuleEvaluator: (wiseStepDef["customRuleEvaluator"] || "" )
   });
   var size = modules.length;
   var i = 0;

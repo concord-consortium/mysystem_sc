@@ -13,17 +13,18 @@
   Tracks the current activity.
 
   @extends SC.ObjectController
-  @author Noah Paessel <knowuh@gmail.com>
 */
 
 
 MySystem.activityController = SC.ObjectController.create({
   
   runDiagramRules: function() {
-    var rules               = MySystem.activityController.get('diagramRules'),
-        minimumRequirements = MySystem.activityController.get('minimumRequirements'),
-        nodes               = MySystem.store.find(MySystem.Node),
-        suggestions         = [];
+    var rules                 = this.get('diagramRules'),
+    minimumRequirements       = this.get('minimumRequirements'),
+    customRuleEvaluator       = this.get('customRuleEvaluator'),
+    enableCustomRuleEvaluator = this.get('enableCustomRuleEvaluator'),
+    nodes                     = MySystem.store.find(MySystem.Node),
+    suggestions               = [];
 
     var reqFails = 0;
     minimumRequirements.forEach( function(rule) {
@@ -38,11 +39,35 @@ MySystem.activityController = SC.ObjectController.create({
       return suggestions;
     }
 
-    rules.forEach( function (rule) {
-      if (!rule.check(nodes)) {
-        suggestions.pushObject(rule.get('suggestion'));
+    // allow custom JS eval here in this context.
+    if (enableCustomRuleEvaluator) {
+      try {
+        // TODO: Sanatize or sandbox this!
+        eval(customRuleEvaluator);
       }
-    });
+      catch(e) {
+        if (console && typeof console.log == 'function') {
+          console.log("Error evaluating custom rule:");
+          console.log(e);
+          console.log(customRuleEvaluator);
+          // TODO: Should the end user see this error?
+          // For now, maybe yeah, we fail early.
+          suggestions.pushObject("The custom rule evaluator for this activity is causing an error.");
+          suggestions.pushObject("Check the console for more information.");
+        }
+        else {
+          alert('Error evaluating custom rule, please use firebug and have a look at the console.');
+        }
+      }
+    }
+
+    else {
+      rules.forEach( function (rule) {
+        if (!rule.check(nodes)) {
+          suggestions.pushObject(rule.get('suggestion'));
+        }
+      });
+    }
 
     var maxFeedback = this.get('maxFeedbackItems');
 

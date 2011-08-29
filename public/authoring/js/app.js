@@ -35,7 +35,9 @@ MSA.ActivityModel = SCUtil.ModelObject.extend({
   minimumRequirementsFeedback: SCUtil.dataHashProperty,
   enableNodeDescriptionEditing: SCUtil.dataHashProperty,
   enableLinkDescriptionEditing: SCUtil.dataHashProperty,
-  enableLinkLabelEditing: SCUtil.dataHashProperty
+  enableLinkLabelEditing: SCUtil.dataHashProperty,
+  enableCustomRuleEvaluator: SCUtil.dataHashProperty,
+  customRuleEvaluator: SCUtil.dataHashProperty
 });
 
 MSA.Module = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
@@ -94,7 +96,9 @@ if (top === self) {
     "minimumRequirementsFeedback": "Your diagram doesn't have enough elements.",
     "enableNodeDescriptionEditing": false,
     "enableLinkDescriptionEditing": false,
-    "enableLinkLabelEditing": false
+    "enableLinkLabelEditing": false,
+    "enableCustomRuleEvaluator": false,
+    "customRuleEvaluator": ""
   };
 }
 
@@ -177,7 +181,9 @@ MSA.dataController = SC.Object.create({
              'MSA.activity.enableNodeDescriptionEditing',
              'MSA.activity.enableLinkDescriptionEditing',
              'MSA.activity.enableLinkLabelEditing',
-             'MSA.activity.maxFeedbackItems')
+             'MSA.activity.maxFeedbackItems',
+             'MSA.activity.enableCustomRuleEvaluator',
+             'MSA.activity.customRuleEvaluator')
 });
 
 MSA.NodeTypesView = SC.CollectionView.extend({

@@ -58,5 +58,7 @@ InitialMySystemData = {
  "minimumRequirementsFeedback": "",
  "enableNodeDescriptionEditing": false,
  "enableLinkDescriptionEditing": false,
- "enableLinkLabelEditing": false
+ "enableLinkLabelEditing": false,
+ "enableCustomRuleEvaluator": false,
+ "customRuleEvaluator": ""
 };
