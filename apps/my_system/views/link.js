@@ -23,6 +23,15 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   lineColorBinding: '*content.color',
   borderColor: '#ADD8E6',
   weightBinding: '*content.weight',
+  oldWeight: 1,
+  _weightChanged: function() {
+    // weight changed. Trigger redrawing the canvas so that the link z-indexes will be recalculated
+    SC.Logger.log('link weight changed');
+    if (!!MySystem.canvasView) {
+      SC.Logger.log('triggering reload of canvas');
+      MySystem.canvasView.reload(null);
+    }
+  },
 
   borderOpacity: function () {
     return this.get('isSelected') ? 1.0 : 0;
@@ -40,6 +49,9 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         border2 = raphaelCanvas.path().attr(borderAttrs2),
         label = raphaelCanvas.text().attr(this._getLabelAttrs(tail)),
         labelBg = raphaelCanvas.rect().attr(this._getLabelBackgroundAttrs(raphaelCanvas, label));
+
+    this.set('oldWeight', this.get('weight'));
+
     return raphaelCanvas.set().push(
       border,
       border2,
@@ -144,6 +156,11 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
       labelBg.toFront();
       label.toFront();
+
+      if (this.get('weight') != this.get('oldWeight')) {
+        this.set('oldWeight', this.get('weight'));
+        this._weightChanged();
+      }
     }
   },
 

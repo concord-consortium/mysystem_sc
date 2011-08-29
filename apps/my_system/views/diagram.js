@@ -46,6 +46,38 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
   _isDragging: NO,
   
   
+  // Override this so that we can control the order in which things are drawn,
+  // which controls which objects get drawn on top of which other objects.
+  renderChildViews: function (context, firstTime) {
+    var cv = this.get('childViews');
+    var view;
+
+    var nodes = cv.filter(function(v) { return v.get('content') instanceof MySystem.Node; });
+    var links = cv.filter(function(v) { return v.get('content') instanceof MySystem.Link; });
+
+    // nodes first, so that links are always drawn on top of them
+    this._renderChildren(context, firstTime, nodes);
+
+    // sort the links by weight, descending, so that larger links don't obscure smaller links
+    var sortedLinks = links.sort(function(a,b) {
+      return (b.get('weight') - a.get('weight'));
+    });
+    this._renderChildren(context, firstTime, sortedLinks);
+
+    return context;
+  },
+
+  _renderChildren: function(context, firstTime, views) {
+    for (var i=0, ii=views.length; i<ii; ++i) {
+      view = views[i];
+      if (!view) continue;
+
+      context = context.begin(view.get('layer'));
+      view.prepareRaphaelContext(context, firstTime);
+      context = context.end();
+    }
+  },
+
   // SC.DropTarget
   //   The methods below are all part o the SC.DropTarget protocol
   //   and must be implemented to function as a drop target.
