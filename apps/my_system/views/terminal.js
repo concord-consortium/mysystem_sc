@@ -12,6 +12,7 @@ sc_require('mixins/arrow_drawing');
 */
 MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   childViews: 'inProgressLinkView'.w(),
+  canvasView: SC.outlet('parentView.parentView.parentView'),    // can't refer to MySystem.mainPage.mainPane.canvasView in tests...
   displayProperties: 'x y r isHovering dragLinkSrcTerminal stroke'.w(),
 
   x:                 0,
@@ -80,8 +81,8 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   mouseDown: function (evt) {
     MySystem.statechart.gotoState('ADDING_LINK');
     // calculate difference between svg coords and screen coords
-    this._xTransform = MySystem.mainPage.mainPane.canvasView.$().offset().left;
-    this._yTransform = MySystem.mainPage.mainPane.canvasView.$().offset().top;
+    this._xTransform = this.get('canvasView').$().offset().left;
+    this._yTransform = this.get('canvasView').$().offset().top;
     this.set('dragX', this.get('x'));
     this.set('dragY', this.get('y'));
     this.set('isLineDrag', YES);
