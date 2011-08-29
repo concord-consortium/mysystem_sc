@@ -17,7 +17,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.NodeView.prototype */ {
 
   childViews: 'removeButtonView titleView terminalA terminalB'.w(),
-  
+
   contentDisplayProperties: 'x y image title'.w(),
   displayProperties: 'bodyWidth bodyHeight bodyColor bodyOpacity borderColor borderOpacity borderWidth borderRadius imageWidth imageHeight'.w(),
     
@@ -98,12 +98,13 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     isHovered: NO,
     
     isVisibleBinding: '.parentView.isRemoveButtonVisible',
+    parentBorderColorBinding: '.parentView.borderColor',
     
-    normalCircleStroke:  '#CCC',
+    normalCircleStrokeBinding: '.parentBorderColor',
     hoveredCircleStroke: '#666',
     circleStroke: function () {
       return this.get('isHovered') ? this.get('hoveredCircleStroke') : this.get('normalCircleStroke');
-    }.property('isHovered'),
+    }.property('isHovered', 'normalCircleStroke'),
     
     normalCircleFill:  '#FFF',
     hoveredCircleFill: '#666',
@@ -111,11 +112,11 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
       return this.get('isHovered') ? this.get('hoveredCircleFill') : this.get('normalCircleFill');
     }.property('isHovered'),
     
-    normalXStroke:  '#CCC',
+    normalXStrokeBinding: '.parentBorderColor',
     hoveredXStroke: '#FFF',
     xStroke:function () {
       return this.get('isHovered') ? this.get('hoveredXStroke') : this.get('normalXStroke');
-    }.property('isHovered'),
+    }.property('isHovered', 'normalXStroke'),
     
     r:                      12, 
     parentXBinding:         '.parentView.x',
