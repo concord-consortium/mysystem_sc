@@ -5,13 +5,22 @@
 /*globals MySystem RaphaelViews */
 
 MySystem.RemoveButtonView = RaphaelViews.RaphaelView.extend({
-  displayProperties:      'cx cy circleStroke circleFill'.w(),
+  displayProperties:      'r cx cy circleStrokeWidth xStrokeWidth xDisplacement circleStroke circleFill xStroke'.w(),
 
   isHovered: NO,
   
   r:  12,
   cx: 0,
   cy: 0,
+  
+  circleStrokeWidth: 3,
+  xStrokeWidth: 3,
+  
+  hoveredXDisplacement: 6,
+  normalXDisplacement: 5,
+  xDisplacement: function () {
+    return this.get('isHovered') ? this.get('hoveredXDisplacement') : this.get('normalXDisplacement');
+  }.property('isHovered'),
   
   circleStroke: function () {
     return this.get('isHovered') ? this.get('hoveredCircleStroke') : this.get('normalCircleStroke');
@@ -42,11 +51,11 @@ MySystem.RemoveButtonView = RaphaelViews.RaphaelView.extend({
           r:      this.get('r'),
           stroke: this.get('circleStroke'),
           fill:   this.get('circleFill'),
-          'stroke-width':  3
+          'stroke-width':  this.get('circleStrokeWidth')
         },
         
-        d = 5,
-        
+        d = this.get('xDisplacement'),
+
         xPath = ['M', cx - d, cy - d, 
                  'L', cx + d, cy + d,
                  'M', cx - d, cy + d, 
@@ -55,7 +64,7 @@ MySystem.RemoveButtonView = RaphaelViews.RaphaelView.extend({
         xAttrs = {
           'path':         xPath,
           'stroke':       this.get('xStroke'),
-          'stroke-width': 3
+          'stroke-width': this.get('xStrokeWidth')
         },
     
         raphaelObject,
