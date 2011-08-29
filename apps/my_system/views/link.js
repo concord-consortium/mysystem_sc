@@ -93,7 +93,9 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         startY = startY + 110;
 
         // always end at the top
-        // endY = endY;
+        // adjust the ending Y by the thickness of the line, so that the drawn
+        // tip always ends at the same point, no matter the thickness
+        endY = endY-(this.get('lineWidth')*this.get('weight')*1.4);
 
         var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY,NO,YES);
         var lineColor = this.get('lineColor') || "#000099";
