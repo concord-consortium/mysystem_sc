@@ -55,7 +55,7 @@ MySystem.ArrowDrawing = {
     var len   = typeof _len !== "undefined" && _len !== null ? _len : 15,
         angle = typeof _angle !== "undefined" && _angle !== null ? _angle : 20,
         curvature = typeof _curvature !== "undefined" && _curvature !== null ? _curvature : 0.5,
-        nodeRadius = typeof _nodeRadius !== "undefined" && _nodeRadius !== null ?  _nodeRadius : 5
+        nodeRadius = typeof _nodeRadius !== "undefined" && _nodeRadius !== null ?  _nodeRadius : 5;
     arrowPathArrays = MySystem.ArrowDrawing.arrowPathArrays(startx,starty,endx,endy,startCurveUp,endCurveUp,len,angle,curvature,nodeRadius);
 		return {
 		  tail: arrowPathArrays[0].join(" "), 
@@ -96,16 +96,16 @@ MySystem.ArrowDrawing = {
     
     // calculate control points c2 and c3
     var curveDistance = (tip.x - start.x) * curvature,
-        startYCurveDistance = endYCurveDistance = curveDistance == 0 ? 1 : Math.max(Math.min(curveDistance, 100), -100),
+        startYCurveDistance = endYCurveDistance = (curveDistance === 0 ? 1 : Math.max(Math.min(curveDistance, 100), -100)),
         startUp = startCurveUp ? 1 : -1,
-        endUp = endCurveUp ? 1 : -1,
-        startYCurveDistance = (startYCurveDistance * startUp > 0) ? startYCurveDistance : startYCurveDistance * -1,
-        endYCurveDistance = (endYCurveDistance * endUp > 0) ? endYCurveDistance : endYCurveDistance * -1,
+        endUp = endCurveUp ? 1 : -1;
+    startYCurveDistance = (startYCurveDistance * startUp > 0) ? startYCurveDistance : startYCurveDistance * -1;
+    var endYCurveDistance = (endYCurveDistance * endUp > 0) ? endYCurveDistance : endYCurveDistance * -1,
         c2 = new this.coord(start.x, start.y+(-10*startUp)-startYCurveDistance),
         c3 = new this.coord(tip.x, tip.y+(-10*endUp)-endYCurveDistance),
         cDistance = Math.sqrt(Math.pow((curveDistance/2),2) + Math.pow(startYCurveDistance,2)),
         perimX = nodeRadius*(curveDistance/2)/cDistance, 
-        perimYstart = nodeRadius*startYCurveDistance/cDistance;
+        perimYstart = nodeRadius*startYCurveDistance/cDistance,
         perimYend = nodeRadius*endYCurveDistance/cDistance;
         
     // update tip
