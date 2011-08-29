@@ -118,7 +118,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           'path':           pathStr.tail,
           'stroke':         lineColor,
           'stroke-width':   (this.get('lineWidth') * this.get('weight')),
-          'stroke-linecap': 'round'
+          'stroke-linecap': 'butt'
         },
         
         headAttrs = {
