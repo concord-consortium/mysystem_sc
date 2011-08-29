@@ -16,7 +16,7 @@ sc_require('views/terminal');
 MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.NodeView.prototype */ {
 
-  childViews: 'titleView terminalA terminalB'.w(),
+  childViews: 'removeButtonView titleView terminalA terminalB'.w(),
   
   contentDisplayProperties: 'x y image title'.w(),
   displayProperties: 'bodyWidth bodyHeight bodyColor bodyOpacity borderColor borderOpacity borderWidth borderRadius imageWidth imageHeight'.w(),
@@ -96,6 +96,45 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
 
   // CHILD VIEWS
+  
+  // TODO make this an explicitly-named class so we can reuse it for links.
+  removeButtonView: RaphaelViews.RaphaelView.design({
+    displayProperties:      'cx cy circleStroke'.w(),
+    
+    circleStroke:           '#999999',
+    circleFill:             '#FFFFFF',  
+    r:                      12, 
+    parentXBinding:         '.parentView.x',
+    parentBodyWidthBinding: '.parentView.bodyWidth',
+    
+    cx: function () {
+      return this.get('parentX') + this.get('parentBodyWidth');
+    }.property('parentX', 'parentBodyWidth'),
+    
+    cyBinding:               '.parentView.y',
+    
+    renderCallback: function (raphaelCanvas, attrs) {
+      return raphaelCanvas.circle(attrs.cx, attrs.cy, attrs.r).attr(attrs);
+    },
+    
+    render: function (context, firstTime) {
+      var attrs = {
+        cx:     this.get('cx'),
+        cy:     this.get('cy'),
+        r:      this.get('r'),
+        stroke: this.get('circleStroke'),
+        fill:   this.get('circleFill')
+      };
+    
+      if (firstTime) {
+        context.callback(this, this.renderCallback, attrs);
+      }
+      else {
+        this.get('raphaelObject').attr(attrs);
+      }
+    }
+    
+  }),
   
   titleView: MySystem.EditableLabelView.design({
     isEditable:     NO,
