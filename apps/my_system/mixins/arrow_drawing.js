@@ -124,7 +124,8 @@ MySystem.ArrowDrawing = {
     arrowHeadData.push("M", tip.x, tip.y);
     arrowHeadData.push("L", baseA.x, baseA.y);  // line to baseA
     arrowHeadData.push("L", baseB.x, baseB.y);  // line to baseB
-    arrowHeadData.push("L", tip.x,   tip.y  );  // line back to the tip
+    // arrowHeadData.push("L", tip.x,   tip.y  );  // line back to the tip -- this will create a rounded tip if the stroke-linecap is 'round'
+    arrowHeadData.push("Z" );  // close path - line back to the tip -- this will create a pointed tip no matter the stroke-linecap
 
     return [pathData, arrowHeadData];
   },
