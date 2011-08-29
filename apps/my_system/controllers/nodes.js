@@ -62,6 +62,10 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     return inspectable;
   },
   
+  deleteObject: function (obj) {
+    if (this.contains(obj)) obj.destroy();
+  },
+  
   // If the selection changes on nodes or links, grab the top layer and call focus().
   // This forces the browser focus back onto the application, which ensures that
   // keyboard and other events are properly directed here if we are embedding in an iframe.

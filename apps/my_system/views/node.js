@@ -186,6 +186,10 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     mouseExited: function () {
       this.set('isHovered', NO);
       return YES;
+    },
+    
+    mouseDown: function () {
+      return this.get('parentView').removeButtonClicked();
     }
     
   }),
@@ -305,6 +309,11 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   mouseExited: function () {
     this.set('isHovered', NO);
+    return YES;
+  },
+  
+  removeButtonClicked: function () {
+    MySystem.statechart.sendAction('deleteDiagramObject', this, this.get('content'));
     return YES;
   }
   

@@ -165,6 +165,14 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       } else {
         return NO;
       }
+    },
+    
+    /**
+      Delete the specified diagram object (node or link)
+    */
+    deleteDiagramObject: function (sender, contentObject) {
+      MySystem.nodesController.deleteObject(contentObject);
+      return YES;
     }
     
   })
