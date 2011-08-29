@@ -1,4 +1,4 @@
-/*globals jasmine describe it expect xit xdescribe beforeEach afterEach spyOn runs waits waitsFor clickOn fillIn window SC $ dataHelper*/
+/*globals jasmine describe it expect xit xdescribe beforeEach afterEach spyOn runs waits waitsFor clickOn MySystem fillIn window SC $ dataHelper*/
 
 function defineJasmineHelpers() {
 
@@ -32,6 +32,7 @@ function defineJasmineHelpers() {
       // and set it to the MySystem store.
       setStudentStateDataHash: function(_data) {
         var studentData = this.createStudentDataHash(_data);
+        studentData = MySystem.migrations.migrateLearnerData(studentData);
         MySystem.store.setStudentStateDataHash(studentData);
       },
       
@@ -56,7 +57,7 @@ function defineJasmineHelpers() {
             objectTypesCount[nodeType] = objectTypesCount[nodeType] + 1;
           }
           var guid = nodeType+'.'+objectTypesCount[nodeType];
-          studentData['MySystem.Node'][guid] = {guid: guid, nodeType: nodeType};
+          studentData['MySystem.Node'][guid] = {guid: guid, nodeType: nodeType, inLinks: [], outLinks: []};
         });
 
         // we add a series of links. For simplicity, all links are defined as -->, with
@@ -73,9 +74,13 @@ function defineJasmineHelpers() {
             linkDesc = linkDesc.split(":")[0];
           }
           var startNode = linkDesc.split("-->")[0],
-              endNode = linkDesc.split("-->")[1];
+              endNode = linkDesc.split("-->")[1],
+              guid = 'link'+i;
+          // add to inlinks and outlinks of nodes
+          studentData['MySystem.Node'][startNode].outLinks.push(guid);
+          studentData['MySystem.Node'][endNode].inLinks.push(guid);
           studentData['MySystem.Link']['link'+i] = {
-            guid: 'link'+i,
+            guid: guid,
             startNode: startNode,
             endNode: endNode,
             startTerminal: 'a',
