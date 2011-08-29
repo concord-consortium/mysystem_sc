@@ -21,8 +21,9 @@ MySystem.savingController = SC.Object.create({
         hours    = 0,
         timeNow  = new Date().getTime();
 
-    if (!!!saveTime)              { return 'Not saved yet.'; } 
-    
+    if (!!!this.get('saveFunction')){ return 'Saving disabled.'; }
+    if (!!!saveTime)                { return 'Not saved yet.'; } 
+
     if (!this.get('dataIsDirty')) { 
       // if we aren't dirty, we are effectively saved:
       this.set('saveTime', new Date().getTime()); 
