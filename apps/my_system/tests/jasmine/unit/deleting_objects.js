@@ -98,6 +98,23 @@ describe("Deleting objects", function (){
       expect(MySystem.store.find(MySystem.Node).length()).toBe(2);
       expect(MySystem.store.find(MySystem.Link).length()).toBe(0);
     });
+    
+    it("should be able to clear diagram with the clear function", function () {
+      dataHelper.setStudentStateDataHash(
+        {
+          nodes: ['obj1','obj2','obj3'], 
+          links: ['obj1.0-->obj2.0','obj3.0-->obj2.0','obj2.0-->obj3.0']
+        }
+      );
+      
+      expect(MySystem.store.find(MySystem.Node).length()).toBe(3);
+      expect(MySystem.store.find(MySystem.Link).length()).toBe(3);
+      
+      MySystem.clearCanvas();
+      
+      expect(MySystem.store.find(MySystem.Node).length()).toBe(0);
+      expect(MySystem.store.find(MySystem.Link).length()).toBe(0);
+    });
   });
 });
 
