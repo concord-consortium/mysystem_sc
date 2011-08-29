@@ -4,7 +4,7 @@ describe("MySystem.savingController", function () {
   var controller  = MySystem.savingController;
   var successSave = function() { controller.saveSuccessful(YES);    };
   var failingSave = function() { console.log("saving aborted --"); };
-  
+
 
   beforeEach( function() {
   });
@@ -46,12 +46,10 @@ describe("MySystem.savingController", function () {
     describe("when a save succeeds", function() {
       beforeEach(function() {
         controller.set('saveFunction',successSave);
-        spyOn(controller,'saveSuccessful');
         SC.run();
       });
-      xit("should be NO after save", function() {
+      it("should be NO after save", function() {
         controller.save();
-        expect(controller.saveSuccessful).toHaveBeenCalled();
         expect(controller.get('dataIsDirty')).toBe(NO);
       });
     });
@@ -64,6 +62,7 @@ describe("MySystem.savingController", function () {
         controller.set('saveFunction', null);
       });
       it("is blank", function() {
+        expect(controller.get('saveStatusText')).toEqual('Saving disabled.');
       });
     });
 
@@ -72,8 +71,10 @@ describe("MySystem.savingController", function () {
         controller.set('saveFunction', successSave);
       });
 
-      describe("When data is not dirty", function() {
-        controller.set('dataIsDirty',NO);
+      describe("When data hasn't been saved.", function() {
+        beforeEach(function () {
+          controller.set('saveTime', null);
+        });
         it("displays 'Not saved yet.'", function() {
           expect(controller.get('saveStatusText')).toEqual('Not saved yet.');
         });
@@ -84,64 +85,64 @@ describe("MySystem.savingController", function () {
           controller.set('dataIsDirty',YES);
         });
         describe("If the lastSaveTime as less than 10 seconds", function() {
-          beforeEach(function() { 
-            controller.set('saveTime', new Date().getTime() - 9 * 1000); 
+          beforeEach(function() {
+            controller.set('saveTime', new Date().getTime() - 9 * 1000);
           });
           it("displays 'saved seconds ago'", function() {
             expect(controller.get('saveStatusText')).toEqual('Saved seconds ago.');
           });
         });
         describe("If the lastSaveTime is 40 seconds", function() {
-          beforeEach(function() { 
-            controller.set('saveTime', new Date().getTime() - 40 * 1000); 
+          beforeEach(function() {
+            controller.set('saveTime', new Date().getTime() - 40 * 1000);
           });
           it("displays '40 seconds ago.'", function() {
             expect(controller.get('saveStatusText')).toEqual('Saved 40 seconds ago.');
           });
         });
         describe("if the lastSaveTime is 60 seconds", function() {
-          beforeEach(function() { 
-            controller.set('saveTime', new Date().getTime() - 60 * 1000); 
+          beforeEach(function() {
+            controller.set('saveTime', new Date().getTime() - 60 * 1000);
           });
           it("displays '1 minute ago'", function() {
             expect(controller.get('saveStatusText')).toEqual('Saved 1 minute ago.');
           });
         });
         describe("if the lastSaveTime is 90 seconds", function() {
-          beforeEach(function() { 
-            controller.set('saveTime', new Date().getTime() - 90 * 1000); 
+          beforeEach(function() {
+            controller.set('saveTime', new Date().getTime() - 90 * 1000);
           });
           it("displays '1 minute ago'", function() {
             expect(controller.get('saveStatusText')).toEqual('Saved 1 minute ago.');
           });
         });
         describe("if the lastSave time is 120 second", function() {
-          beforeEach(function() { 
-            controller.set('saveTime', new Date().getTime() - 120 * 1000); 
+          beforeEach(function() {
+            controller.set('saveTime', new Date().getTime() - 120 * 1000);
           });
           it("displays '2 minutes  ago'", function() {
             expect(controller.get('saveStatusText')).toEqual('Saved 2 minutes ago.');
           });
         });
         describe("if the lastSave time is 140 seconds", function() {
-          beforeEach(function() { 
-            controller.set('saveTime', new Date().getTime() - 140 * 1000); 
+          beforeEach(function() {
+            controller.set('saveTime', new Date().getTime() - 140 * 1000);
           });
           it("displays '2 minutes ago'", function() {
             expect(controller.get('saveStatusText')).toEqual('Saved 2 minutes ago.');
           });
         });
         describe("if the lastSave time is 3600 seconds", function() {
-          beforeEach(function() { 
-            controller.set('saveTime', new Date().getTime() - 3600 * 1000); 
+          beforeEach(function() {
+            controller.set('saveTime', new Date().getTime() - 3600 * 1000);
           });
           it("displays '1 hour ago'", function() {
             expect(controller.get('saveStatusText')).toEqual('Saved 1 hour ago.');
           });
         });
         describe("if the lastSave time is 7200 seconds", function() {
-          beforeEach(function() { 
-            controller.set('saveTime', new Date().getTime() - 7200 * 1000); 
+          beforeEach(function() {
+            controller.set('saveTime', new Date().getTime() - 7200 * 1000);
           });
           it("displays '2 hours ago'", function() {
             expect(controller.get('saveStatusText')).toEqual('Saved 2 hours ago.');
