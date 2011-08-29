@@ -94,16 +94,18 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   removeButtonView: MySystem.RemoveButtonView.design({
     isVisibleBinding:          '.parentView.isRemoveButtonVisible',
+
     parentBorderColorBinding:  '.parentView.borderColor',
+    parentXBinding:            '.parentView.x',
+    parentBodyWidthBinding:    '.parentView.bodyWidth',    
+    
     normalCircleStrokeBinding: '.parentBorderColor',
     hoveredCircleStroke:       '#666',
     normalCircleFill:          '#FFF',
     hoveredCircleFill:         '#666',
     normalXStrokeBinding:      '.parentBorderColor',
     hoveredXStroke:            '#FFF',
-    parentXBinding:            '.parentView.x',
-    parentBodyWidthBinding:    '.parentView.bodyWidth',
-
+    
     cx: function () {
       return this.get('parentX') + this.get('parentBodyWidth');
     }.property('parentX', 'parentBodyWidth'),

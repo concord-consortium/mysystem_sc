@@ -17,7 +17,14 @@ MySystem.RemoveButtonView = RaphaelViews.RaphaelView.extend({
   xStrokeWidth: 3,
   
   hoveredXDisplacement: 6,
-  normalXDisplacement: 5,
+  normalXDisplacement:  5,
+  normalCircleStroke:   '#CCC',
+  hoveredCircleStroke:  '#666',
+  normalCircleFill:     '#FFF',
+  hoveredCircleFill:    '#666',
+  normalXStroke:        '#CCC',
+  hoveredXStroke:       '#FFF',
+  
   xDisplacement: function () {
     return this.get('isHovered') ? this.get('hoveredXDisplacement') : this.get('normalXDisplacement');
   }.property('isHovered'),
