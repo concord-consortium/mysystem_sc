@@ -27,8 +27,8 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   strokeWidth:       '1',
   strokeOpacity:     '0.2',
   isLineDrag:        NO,
-  deltaX:            null,
-  deltaY:            null,
+  dragX:            null,
+  dragY:            null,
   _raphaelCircle:    null,
 
   dragLinkSrcTerminalBinding: 'MySystem.nodesController.dragLinkSrcTerminal',
@@ -79,10 +79,11 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
 
   mouseDown: function (evt) {
     MySystem.statechart.gotoState('ADDING_LINK');
-    this._downX = evt.pageX;
-    this._downY = evt.pageY;
-    this.set('deltaX', 0);
-    this.set('deltaY', 0);
+    // calculate difference between svg coords and screen coords
+    this._xTransform = MySystem.mainPage.mainPane.canvasView.$().offset().left;
+    this._yTransform = MySystem.mainPage.mainPane.canvasView.$().offset().top;
+    this.set('dragX', this.get('x'));
+    this.set('dragY', this.get('y'));
     this.set('isLineDrag', YES);
     this.set('dragLinkSrcTerminal', this);
     this.set('dragLinkEndTerminal', null);
@@ -117,8 +118,8 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     if (!this.get('isLineDrag')) {
       return NO;
     }
-    this.set('deltaX', evt.pageX - this._downX);
-    this.set('deltaY', evt.pageY - this._downY);
+    this.set('dragX', evt.pageX - this._xTransform);
+    this.set('dragY', evt.pageY - this._yTransform);
     return YES;
   },
 
@@ -162,22 +163,22 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   //
   //
   inProgressLinkView:  RaphaelViews.RaphaelView.design({
-    displayProperties: 'startX startY deltaX deltaY isVisible'.w(),
+    displayProperties: 'startX startY endX endY isVisible'.w(),
     startXBinding:     '.parentView.x',
     startYBinding:     '.parentView.y',
+    endXBinding:       '.parentView.dragX',
+    endYBinding:       '.parentView.dragY',
     isVisibleBinding:  '.parentView.isLineDrag',
     strokeWidth:       3,
     strokeColor:       "#0000FF",
-    deltaXBinding:     '.parentView.deltaX',
-    deltaYBinding:     '.parentView.deltaY',
-    _arrowPath:       null,
-    _arrowHead:       null,
+    _arrowPath:        null,
+    _arrowHead:        null,
 
     path: function() {
       var x1 = this.get('startX'),
-      x2 = this.get('deltaX') + x1,
+      x2 = this.get('endX'),
       y1 = this.get('startY'),
-      y2 = this.get('deltaY') + y1,
+      y2 = this.get('endY'),
       isTopTerminal = this.get('parentView') == this.getPath('parentView.parentView.terminalA');
       return MySystem.ArrowDrawing.arrowPath(x1,y1,x2,y2,isTopTerminal,isTopTerminal,null,null,null,0);
     },
