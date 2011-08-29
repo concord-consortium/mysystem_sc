@@ -52,12 +52,11 @@ MySystem.ArrowDrawing = {
     @params nodeRadius {Number} distance away from the end point we want the arrow tip to end
   */
   arrowPath: function(startx,starty,endx,endy,startCurveUp,endCurveUp,_len,_angle,_curvature, _nodeRadius) { 
-    var len   = typeof _len !== "undefined" && _len !== null ? _len : 15,
-        angle = typeof _angle !== "undefined" && _angle !== null ? _angle : 20,
-        curvature = typeof _curvature !== "undefined" && _curvature !== null ? _curvature : 0.5,
-        nodeRadius = typeof _nodeRadius !== "undefined" && _nodeRadius !== null ?  _nodeRadius : 10
+    var len   = _len !== null ? _len : 15,
+        angle = _angle !== null ? _angle : 20,
+        curvature = _curvature !== null ? _curvature : 0.5,
+        nodeRadius = _nodeRadius !== null ?  _nodeRadius : 10
     arrowPathArrays = MySystem.ArrowDrawing.arrowPathArrays(startx,starty,endx,endy,startCurveUp,endCurveUp,len,angle,curvature,nodeRadius);
-		console.log("nodeRadius = "+nodeRadius)
 		return {
 		  tail: arrowPathArrays[0].join(" "), 
 		  head: arrowPathArrays[1].join(" ")
