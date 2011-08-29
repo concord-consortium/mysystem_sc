@@ -103,18 +103,12 @@ MySystem.ArrowDrawing = {
     var endYCurveDistance = (endYCurveDistance * endUp > 0) ? endYCurveDistance : endYCurveDistance * -1,
         c2 = new this.coord(start.x, start.y+(-10*startUp)-startYCurveDistance),
         c3 = new this.coord(tip.x, tip.y+(-10*endUp)-endYCurveDistance),
-        cDistance = Math.sqrt(Math.pow((curveDistance/2),2) + Math.pow(startYCurveDistance,2)),
-        perimX = nodeRadius*(curveDistance/2)/cDistance, 
-        perimYstart = nodeRadius*startYCurveDistance/cDistance,
-        perimYend = nodeRadius*endYCurveDistance/cDistance;
-        
-    // update tip
-    tip = new this.coord(tip.x - perimX, tip.y - perimYend);
+        cDistance = Math.sqrt(Math.pow((curveDistance/2),2) + Math.pow(startYCurveDistance,2));
         
     // draw arrow path
     
-    pathData.push("M", start.x + perimX, start.y - perimYstart);  // move to start of line
-    pathData.push("L", start.x + perimX, start.y - perimYstart + (-10 * startUp));
+    pathData.push("M", start.x, start.y);  // move to start of line
+    pathData.push("L", start.x, start.y + (-10 * startUp));
     pathData.push("C", c2.x, c2.y, c3.x, c3.y, tip.x, tip.y + (-10 * endUp)); // curve line to the tip
     pathData.push("L", tip.x, tip.y);
     
