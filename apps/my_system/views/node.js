@@ -78,26 +78,16 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   // this is the nodes 'border' essentially.
   _raphaelRect: null,
 
-  collectionView: function () {
-    var ret = this.get('parentView');
-    
-    if (ret && ret.kindOf && ret.kindOf(SC.CollectionView)) {
-      return ret;
-    }
-    else {
-      ret = ret.get('parentView');
-      if (ret && ret.kindOf && ret.kindOf(SC.CollectionView)) {
-        return ret;
-      }
-      else {
-        return null;
-      }
-    }
-  }.property('parentView').cacheable(),
-
-
+  diagramControllerBinding: 'MySystem.nodesController',
+  onlySelectedDiagramObjectBinding: '*diagramController.onlySelectedObject',
   
-  forceRemoveButtonToBeVisible: NO,
+  isOnlySelectedDiagramObject: function () {
+    return this.get('onlySelectedDiagramObject') === this.get('content');
+  }.property('onlySelectedDiagramObject', 'content'),
+  
+  isRemoveButtonVisible: function () {
+    return this.get('isHovered') || this.get('isOnlySelectedDiagramObject');
+  }.property('isHovered', 'isOnlySelectedDiagramObject'),    
   
   // CHILD VIEWS
   
@@ -107,11 +97,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
     isHovered: NO,
     
-    isParentHoveredBinding:   '.parentView.isHovered',
-    isVisiblityForcedBinding: '.parentView.forceRemoveButtonToBeVisible',
-    isVisible: function () {
-      return this.get('isParentHovered') || this.get('isVisiblityForced');
-    }.property('isParentHovered', 'isVisiblityForced'),
+    isVisibleBinding: '.parentView.isRemoveButtonVisible',
     
     normalCircleStroke:  '#CCC',
     hoveredCircleStroke: '#666',

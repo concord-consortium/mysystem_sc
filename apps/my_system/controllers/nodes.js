@@ -17,6 +17,17 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
   dragLinkSrcTerminal:     null,
   dragLinkEndTerminal:     null,
 
+  /**
+    If only one object in the collection is selected, this will be that object.
+    Otherwise, this will be null.
+    
+    @property {MySystem.Node|MySystem.Link|null}
+  */
+  onlySelectedObject: function () {
+    var sel = this.get('selection'); 
+    return sel && sel.get('length') === 1 ? sel.firstObject() : null;
+  }.property('selection'),
+  
   // FIXME dummy method for backward compatibility
   unselectAll: function() {
     this.deselectObjects(this.get('selection'));
