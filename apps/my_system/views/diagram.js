@@ -88,6 +88,10 @@ MySystem.DiagramView = RaphaelViews.RaphaelCollectionView.extend(
   
   
   mouseDown: function (evt) {
+    if (!!evt.shiftKey){
+      evt.shiftKey = NO;
+      evt.ctrlKey = YES;
+    }
     var handledBySuper = sc_super();
     
     if (handledBySuper) {
