@@ -122,8 +122,10 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         raphaelObject,
         border,
         border2,
+        head,
         line,
-        head;
+        labelBg,
+        label;
 
     if (firstTime) {
       context.callback(this, this.renderCallback, lineAttrs, headAttrs, borderAttrs, borderAttrs2);
@@ -154,12 +156,13 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     
     var center = path.getPointAtLength(path.getTotalLength() * (2/3));
     var text = this.get('content').get('text');
-     return {
+    
+    return {
       'x':              center.x,
       'y':              center.y,
       'fill':           'black',
       'text':           !!text ? text : "" 
-    }
+    };
   },
 
   _getLabelBackgroundAttrs: function(canvas, label) {
