@@ -49,12 +49,15 @@ MySystem.ArrowDrawing = {
       between the line and each wing of the arrowhead. 
       Should be less than 90.
     @params curvature {Number} strength of the curve, 0.5 is an easy smooth curve, > 1 is very curved
+    @params nodeRadius {Number} distance away from the end point we want the arrow tip to end
   */
-  arrowPath: function(startx,starty,endx,endy,startCurveUp,endCurveUp,_len,_angle,_curvature) { 
-    var len   = _len || 15,
-        angle = _angle || 20,
-        curvature = _curvature || 0.5;
-    arrowPathArrays = MySystem.ArrowDrawing.arrowPathArrays(startx,starty,endx,endy,startCurveUp,endCurveUp,len,angle,curvature);
+  arrowPath: function(startx,starty,endx,endy,startCurveUp,endCurveUp,_len,_angle,_curvature, _nodeRadius) { 
+    var len   = typeof _len !== "undefined" && _len !== null ? _len : 15,
+        angle = typeof _angle !== "undefined" && _angle !== null ? _angle : 20,
+        curvature = typeof _curvature !== "undefined" && _curvature !== null ? _curvature : 0.5,
+        nodeRadius = typeof _nodeRadius !== "undefined" && _nodeRadius !== null ?  _nodeRadius : 10
+    arrowPathArrays = MySystem.ArrowDrawing.arrowPathArrays(startx,starty,endx,endy,startCurveUp,endCurveUp,len,angle,curvature,nodeRadius);
+		console.log("nodeRadius = "+nodeRadius)
 		return {
 		  tail: arrowPathArrays[0].join(" "), 
 		  head: arrowPathArrays[1].join(" ")
@@ -81,7 +84,7 @@ MySystem.ArrowDrawing = {
       Should be less than 90.
 
 	**/
-  arrowPathArrays: function(startx,starty,endx,endy,startCurveUp,endCurveUp,len,angle,curvature) { 
+  arrowPathArrays: function(startx,starty,endx,endy,startCurveUp,endCurveUp,len,angle,curvature,nodeRadius) { 
     
     if (startx === endx && starty === endy){
       return [[""],[""]];
@@ -102,10 +105,9 @@ MySystem.ArrowDrawing = {
         c2 = new this.coord(start.x+(curveDistance/2), start.y-startYCurveDistance),
         c3 = new this.coord(tip.x-(curveDistance/2), tip.y-endYCurveDistance),
         cDistance = Math.sqrt(Math.pow((curveDistance/2),2) + Math.pow(startYCurveDistance,2)),
-        radius = 10, 
-        perimX = radius*(curveDistance/2)/cDistance, 
-        perimYstart = radius*startYCurveDistance/cDistance;
-        perimYend = radius*endYCurveDistance/cDistance;
+        perimX = nodeRadius*(curveDistance/2)/cDistance, 
+        perimYstart = nodeRadius*startYCurveDistance/cDistance;
+        perimYend = nodeRadius*endYCurveDistance/cDistance;
         
     // update tip
     tip = new this.coord(tip.x - perimX, tip.y - perimYend);
