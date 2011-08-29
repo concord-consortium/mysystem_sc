@@ -88,5 +88,29 @@ MySystem.Node = MySystem.Diagrammable.extend(
 
   addOutLink: function(link) {
     this.get('inLinks').pushObject(link);
+  },
+
+  orderedInLinks: function() {
+    var inLinks = this.get('inLinks').toArray();
+    return inLinks.sort(this._linkOrderSort);
+  }.property('inLinks'),
+
+  orderedOutLinks: function() {
+    var outLinks = this.get('outLinks').toArray();
+    return outLinks.sort(this._linkOrderSort);
+  }.property('outLinks'),
+
+  _linkOrderSort: function(a, b) {
+    // if we're the same energy type, sort by weight, descending
+    var aEn = a.get('energyTypeObj');
+    var bEn = b.get('energyTypeObj');
+    if (aEn == bEn) {
+      return (b.get('weight') - a.get('weight'));
+    } else {
+      var enTypes = MySystem.activityController.get('energyTypes');
+      var aIdx = enTypes.indexOf(aEn);
+      var bIdx = enTypes.indexOf(bEn);
+      return aIdx - bIdx;
+    }
   }
 });

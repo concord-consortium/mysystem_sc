@@ -78,13 +78,13 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         lineSpacing = this.get('lineSpacing');
 
         if (!!startNode) {
-          var sLinks = startNode.get('outLinks');
+          var sLinks = startNode.get('orderedOutLinks');
           startX = this._getLinkPositioning(sLinks, startNode);
           startY = startNode.get('y');
         }
 
         if (!!endNode) {
-          var eLinks = endNode.get('inLinks');
+          var eLinks = endNode.get('orderedInLinks');
           endX = this._getLinkPositioning(eLinks, endNode);
           endY = endNode.get('y');
         }
