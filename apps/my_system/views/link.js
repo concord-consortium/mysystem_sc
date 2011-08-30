@@ -42,9 +42,11 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     return this.get('onlySelectedDiagramObject') === this.get('content');
   }.property('onlySelectedDiagramObject', 'content'),
   
+  isRemoveButtonOccluded: NO,
+  
   isRemoveButtonVisible: function () {
-    return this.get('isHovered') || this.get('isOnlySelectedDiagramObject');
-  }.property('isHovered', 'isOnlySelectedDiagramObject'),
+    return (this.get('isHovered') || this.get('isOnlySelectedDiagramObject')) && !this.get('isRemoveButtonOccluded');
+  }.property('isHovered', 'isOnlySelectedDiagramObject', 'isRemoveButtonOccluded'),
 
   removeButtonX: 0,
   removeButtonY: 0,
@@ -220,27 +222,36 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   },
   
   _setRemoveButtonLocation: function (raphaelObject) {
-    var line  = raphaelObject.items[2],
-        len, p1, p2, dx, dy, x, y;
+    var line = raphaelObject.items[2],
+        distanceAlongLine   = 35,
+        distanceAlongNormal = 20,
+        len, p1, p2, scale, dx, dy, x, y, occluded;
         
-    if (line.attr('path').length < 1) return;
+    if (line.attr('path').length < 1) return;     // this can happen after our content is destroyed
     
-    len   = line.getTotalLength();
-    p2    = line.getPointAtLength(len);
+    len = line.getTotalLength();
+    p2  = line.getPointAtLength(len);
     
-    if (len > 35) {
-      p1 = line.getPointAtLength(len - 35);
+    if (len > 50) {
+      p1 = line.getPointAtLength(len - distanceAlongLine);
+      
+      scale = distanceAlongNormal / distanceAlongLine;
+      dx = p2.x - p1.x;
+      dy = p2.y - p1.y;
 
-      x = p1.x;
-      y = p1.y;
+      x = p1.x + scale * dy;
+      y = p1.y - scale * dx;
+      occluded = NO;
     }
     else {
-      x = p2.x + 15;
-      y = p2.y - 15;
+      x = 0;
+      y = 0;
+      occluded = YES;
     }
         
     this.set('removeButtonX', x);
     this.set('removeButtonY', y);
+    this.set('isRemoveButtonOccluded', occluded);
   },
   
   mouseEntered: function () {
