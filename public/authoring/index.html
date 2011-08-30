@@ -22,19 +22,19 @@
   <script type="text/html">
   <div class="options_block">
     <h2>Options</h2>
-    <h3>Link</h3>
+    <h3>Links</h3>
       <div style="padding-left: 20px;">
       {{view SC.Checkbox title="Enable Label Editing" valueBinding="MSA.activity.enableLinkLabelEditing" id="linkLabelEditing"}}
       {{view SC.Checkbox title="Enable Description Editing" valueBinding="MSA.activity.enableLinkDescriptionEditing" id="linkDescriptionEditing"}}
       </div>
-    <h3>Node</h3>
+    <h3>Nodes</h3>
       <div style="padding-left: 20px;">
         {{view SC.Checkbox title="Enable Description Editing" valueBinding="MSA.activity.enableNodeDescriptionEditing" id="nodeDescriptionEditing"}}
       </div>
   </div>
   
   <div class="options_block">
-    <h2>Modules</h2>
+    <h2>Node Types</h2>
     {{#collection contentBinding="MSA.modulesController" tagName="ul"}}
       {{view SC.TextField valueBinding="parentView.content.name" placeholder="name"}}
       {{view SC.TextField valueBinding="parentView.content.image" placeholder="image"}}
@@ -45,7 +45,7 @@
     {{#view SC.Button 
       target="MSA.modulesController"
       action="createItem" class="add_button"}}
-      Add New Module
+      Add New Node Type
     {{/view}}
   </div>
   
