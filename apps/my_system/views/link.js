@@ -31,7 +31,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   }.property('isSelected'),
 
   lineWidth: 6,
-  borderWidth: 3,
+  borderWidth: 4,
 
   isHovered: NO,
   showRemoveButtonForHover: NO,
