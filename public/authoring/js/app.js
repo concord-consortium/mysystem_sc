@@ -24,6 +24,7 @@ if (top === self) {
 }
 
 MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
+  debugger
   if (typeof dataHash === "undefined" || dataHash === null){
     dataHash = MSA.data;
   }
@@ -31,6 +32,27 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
   // migration from old content format
   if (!dataHash.diagram_rules) {
     dataHash.diagram_rules = [];
+  } 
+  if (typeof dataHash.correctFeedback === "undefined" || dataHash.correctFeedback === null){
+    dataHash.correctFeedback = "";
+  }
+  if (typeof dataHash.minimumRequirementsFeedback === "undefined" || dataHash.minimumRequirementsFeedback === null){
+    dataHash.minimumRequirementsFeedback = "";
+  }
+  if (typeof dataHash.enableNodeDescriptionEditing === "undefined" || dataHash.enableNodeDescriptionEditing === null){
+    dataHash.enableNodeDescriptionEditing = false;
+  }
+  if (typeof dataHash.enableLinkDescriptionEditing === "undefined" || dataHash.enableLinkDescriptionEditing === null){
+    dataHash.enableLinkDescriptionEditing = false;
+  }
+  if (typeof dataHash.enableLinkLabelEditing === "undefined" || dataHash.enableLinkLabelEditing === null){
+    dataHash.enableLinkLabelEditing = false;
+  }
+  if (typeof dataHash.enableCustomRuleEvaluator === "undefined" || dataHash.enableCustomRuleEvaluator === null){
+    dataHash.enableCustomRuleEvaluator = false;
+  }
+  if (typeof dataHash.customRuleEvaluator === "undefined" || dataHash.customRuleEvaluator === null){
+    dataHash.customRuleEvaluator = "";
   }
 
   if (!dataHash.minimum_requirements) {
