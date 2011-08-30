@@ -6,6 +6,7 @@
 
 sc_require('views/editable_label');
 sc_require('views/terminal');
+sc_require('views/remove_button');
 sc_require('mixins/arrow_drawing');
 
 /** @class
@@ -19,6 +20,8 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
   displayProperties: 'content.endNode.x content.endNode.y content.startNode.x content.startNode.y lineColor borderColor borderOpacity lineWidth borderWidth'.w(),
 
+  childViews: 'removeButtonView'.w(),
+  
   // PROPERTIES
   lineColorBinding: '*content.color',
   borderColor: '#ADD8E6',
@@ -30,22 +33,50 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   lineWidth: 6,
   borderWidth: 3,
 
+  isHovered: NO,
+  
+  diagramControllerBinding: 'MySystem.nodesController',
+  onlySelectedDiagramObjectBinding: '*diagramController.onlySelectedObject',
+  
+  isOnlySelectedDiagramObject: function () {
+    return this.get('onlySelectedDiagramObject') === this.get('content');
+  }.property('onlySelectedDiagramObject', 'content'),
+  
+  isRemoveButtonVisible: function () {
+    return this.get('isHovered') || this.get('isOnlySelectedDiagramObject');
+  }.property('isHovered', 'isOnlySelectedDiagramObject'),
+
+  removeButtonX: 0,
+  removeButtonY: 0,
+  
+  removeButtonView: MySystem.RemoveButtonView.design({
+    isVisibleBinding: '.parentView.isRemoveButtonVisible', 
+    normalCircleStrokeBinding: '.parentView.lineColor',
+    normalXStrokeBinding: '.parentView.lineColor',   
+    cxBinding: '.parentView.removeButtonX',
+    cyBinding: '.parentView.removeButtonY'
+  }),
+  
   // RENDER METHODS
   renderCallback: function (raphaelCanvas, lineAttrs, headAttrs, borderAttrs, borderAttrs2) {
-    var tail = raphaelCanvas.path().attr(lineAttrs),
-        head = raphaelCanvas.path().attr(headAttrs),
-        border = raphaelCanvas.path().attr(borderAttrs),
+    var tail    = raphaelCanvas.path().attr(lineAttrs),
+        head    = raphaelCanvas.path().attr(headAttrs),
+        border  = raphaelCanvas.path().attr(borderAttrs),
         border2 = raphaelCanvas.path().attr(borderAttrs2),
-        label = raphaelCanvas.text().attr(this._getLabelAttrs(tail)),
-        labelBg = raphaelCanvas.rect().attr(this._getLabelBackgroundAttrs(raphaelCanvas, label));
-    return raphaelCanvas.set().push(
-      border,
-      border2,
-      tail,
-      head,
-      labelBg,
-      label.toFront()
-    );
+        label   = raphaelCanvas.text().attr(this._getLabelAttrs(tail)),
+        labelBg = raphaelCanvas.rect().attr(this._getLabelBackgroundAttrs(raphaelCanvas, label)),
+
+        ret     = raphaelCanvas.set().push(
+          border,
+          border2,
+          tail,
+          head,
+          labelBg,
+          label.toFront()
+        );
+        
+    this._setRemoveButtonLocation(ret);
+    return ret;
   },
 
   render: function (context, firstTime) {
@@ -129,6 +160,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
     if (firstTime) {
       context.callback(this, this.renderCallback, lineAttrs, headAttrs, borderAttrs, borderAttrs2);
+      this.renderChildViews(context, firstTime);
     }
     else {
       raphaelObject = this.get('raphaelObject');
@@ -148,6 +180,8 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 
       labelBg.toFront();
       label.toFront();
+      
+      this._setRemoveButtonLocation(raphaelObject);
     }
   },
   
@@ -183,6 +217,45 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
       'stroke-width':   1,
       'stroke-opacity': 0.5
     };
+  },
+  
+  _setRemoveButtonLocation: function (raphaelObject) {
+    var line  = raphaelObject.items[2],
+        len, p1, p2, dx, dy, x, y;
+        
+    if (line.attr('path').length < 1) return;
+    
+    len   = line.getTotalLength();
+    p2    = line.getPointAtLength(len);
+    
+    if (len > 35) {
+      p1 = line.getPointAtLength(len - 35);
+
+      x = p1.x;
+      y = p1.y;
+    }
+    else {
+      x = p2.x + 15;
+      y = p2.y - 15;
+    }
+        
+    this.set('removeButtonX', x);
+    this.set('removeButtonY', y);
+  },
+  
+  mouseEntered: function () {
+    this.set('isHovered', YES);
+    return YES;
+  }, 
+  
+  mouseExited: function () {
+    this.set('isHovered', NO);
+    return YES;
+  },
+  
+  removeButtonClicked: function () {
+    MySystem.statechart.sendAction('deleteDiagramObject', this, this.get('content'));
   }
+  
 });
 
