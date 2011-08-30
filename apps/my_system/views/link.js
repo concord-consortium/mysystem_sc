@@ -224,7 +224,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   _setRemoveButtonLocation: function (raphaelObject) {
     var line = raphaelObject.items[2],
         distanceAlongLine   = 35,
-        distanceAlongNormal = 20,
+        distanceAlongNormal = 18,
         len, p1, p2, scale, dx, dy, x, y, occluded;
         
     if (line.attr('path').length < 1) return;     // this can happen after our content is destroyed
