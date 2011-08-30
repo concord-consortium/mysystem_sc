@@ -96,8 +96,8 @@ describe("MySystem.savingController", function () {
           beforeEach(function() {
             controller.set('saveTime', new Date().getTime() - 40 * 1000);
           });
-          it("displays '40 seconds ago.'", function() {
-            expect(controller.get('saveStatusText')).toEqual('Saved 40 seconds ago.');
+          it("displays 'Saved seconds ago.'", function() {
+            expect(controller.get('saveStatusText')).toEqual('Saved seconds ago.');
           });
         });
         describe("if the lastSaveTime is 60 seconds", function() {

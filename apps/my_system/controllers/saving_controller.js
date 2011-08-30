@@ -38,8 +38,7 @@ MySystem.savingController = SC.Object.create({
     minutes = Math.floor(minutes);
     hours   = Math.floor(hours);
 
-    if (seconds <  10) { return ('Saved seconds ago.'); }
-    if (seconds <  60) { return ('Saved ' + seconds + ' seconds ago.'); } 
+    if (seconds <  60) { return ('Saved seconds ago.'); }
     if (minutes === 1) { return ('Saved ' + minutes + ' minute ago.' ); } 
     if (minutes <  60) { return ('Saved ' + minutes + ' minutes ago.'); } 
     if (hours   === 1) { return ('Saved ' + hours   + ' hour ago.' );   } 
