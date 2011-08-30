@@ -14,18 +14,6 @@
   <script type="text/javascript">
     $(document).ready(function() {  
 
-      var initialData = {
-        modules:[],
-        energy_types:[],
-        diagram_rules:[],
-        minimum_requirements:[],
-        maxFeedbackItems: 0,
-        minimumRequirementsFeedback: "",
-        enableNodeDescriptionEditing: false,
-        enableLinkDescriptionEditing: false,
-        enableLinkLabelEditing: false
-      };
-
       var authorIframeId = 'mysystem2-authoring-iframe',
           appIframeId = 'runtime-iframe',
           authorIframeLoaded = false,
@@ -53,7 +41,7 @@
       }
       
       createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
-        iframe.contentWindow.MSA.setupParentIFrame(initialData, this, updateRuntime);
+        iframe.contentWindow.MSA.setupParentIFrame(null, this, updateRuntime);
         authorIframeLoaded = true;
         if (authorIframeLoaded && appIframeLoaded){
           bothIframesLoaded();
@@ -61,76 +49,75 @@
       });
       
       createIframe('../my_system', 'runtime-iframe', $('#runtime_td'), function(iframe){
-        updateRuntime(initialData);
         appIframeLoaded = true;
         if (authorIframeLoaded && appIframeLoaded){
           bothIframesLoaded();
         }
       });
+      
+      function bothIframesLoaded() {
+        var dataStore = new msaPreview.CouchDS(),
+            authorContent = document.getElementById('mysystem2-authoring-iframe').contentWindow,
+            runtimeContent = document.getElementById('runtime-iframe').contentWindow;
+
+        updateRuntime(authorContent.MSA.data);
+
+        dataStore.setAuthorContentWindow(authorContent);
+        dataStore.setLearnerContentWindow(runtimeContent);
+
+        var dataIds = window.location.hash;
+        if (dataIds) {
+          dataIds = dataIds.substring(1);    // rm hash
+          var data = dataIds.split("/");
+          if (!!data[0]){
+            dataStore.loadAuthoredData(data[0]);
+          }
+          if (data.length > 1 && !!data[1]){
+            dataStore.loadLearnerData(data[1]);
+          }
+        }
+
+        // register save function on Save Authored Activity button
+        $('#save_authoring').click(function(){dataStore.saveAuthoring()});
+
+        // register save function on internal MySystem app's save button
+        // This is all complicated here just because we want to disable saving and autosaving
+        // by default, and turn them on using checkboxes. If we just wanted the save button to
+        // work always, we would simply need to call
+        // runtimeContent.MySystem.registerExternalSaveFunction(dataStore.saveLearner, dataStore);
+
+        $('#save_external').attr('disabled', false);
+        $('#save_external').parent('span').removeClass('options_disabled');
+        $('#save_external').click(function(){
+          $('#autosave_external').parent('span').toggleClass('options_disabled');
+          if (this.checked){
+            runtimeContent.MySystem.registerExternalSaveFunction(dataStore.saveLearner, dataStore);
+            $('#autosave_external').attr('disabled', false);
+            $('#autosave_time').attr('disabled', false);
+          } else {
+            runtimeContent.MySystem.registerExternalSaveFunction(null);
+            $('#autosave_external').attr('disabled', true);
+            $('#autosave_time').attr('disabled', true);
+          }
+        });
+
+        runtimeContent.MySystem.setAutoSaveFrequency(-1); // start with no auto save
+        $('#autosave_external').click(function(){
+          if (this.checked){
+            runtimeContent.MySystem.setAutoSaveFrequency($('#autosave_time')[0].value * 1000);
+          } else {
+            runtimeContent.MySystem.setAutoSaveFrequency(-1);
+          }
+        });
+        $('#autosave_time').keyup(function(){
+          console.log("woo")
+          if ($('#autosave_external')[0].checked){
+            runtimeContent.MySystem.setAutoSaveFrequency(this.value * 1000);
+          }
+        });
+
+     }
     });
-   
-    function bothIframesLoaded() {
-      var dataStore = new msaPreview.CouchDS(),
-          authorContent = document.getElementById('mysystem2-authoring-iframe').contentWindow,
-          runtimeContent = document.getElementById('runtime-iframe').contentWindow;
-      // console.log()
-      dataStore.setAuthorContentWindow(authorContent);
-      dataStore.setLearnerContentWindow(runtimeContent);
-
-      var dataIds = window.location.hash;
-      if (dataIds) {
-        dataIds = dataIds.substring(1);    // rm hash
-        var data = dataIds.split("/");
-        if (!!data[0]){
-          dataStore.loadAuthoredData(data[0]);
-        }
-        if (data.length > 1 && !!data[1]){
-          dataStore.loadLearnerData(data[1]);
-        }
-      }
-      
-      // register save function on Save Authored Activity button
-      $('#save_authoring').click(function(){dataStore.saveAuthoring()});
-      
-      // register save function on internal MySystem app's save button
-      // This is all complicated here just because we want to disable saving and autosaving
-      // by default, and turn them on using checkboxes. If we just wanted the save button to
-      // work always, we would simply need to call
-      // runtimeContent.MySystem.registerExternalSaveFunction(dataStore.saveLearner, dataStore);
-
-      $('#save_external').attr('disabled', false);
-      $('#save_external').parent('span').removeClass('options_disabled');
-      $('#save_external').click(function(){
-        $('#autosave_external').parent('span').toggleClass('options_disabled');
-        if (this.checked){
-          runtimeContent.MySystem.registerExternalSaveFunction(dataStore.saveLearner, dataStore);
-          $('#autosave_external').attr('disabled', false);
-          $('#autosave_time').attr('disabled', false);
-        } else {
-          runtimeContent.MySystem.registerExternalSaveFunction(null);
-          $('#autosave_external').attr('disabled', true);
-          $('#autosave_time').attr('disabled', true);
-        }
-      });
-      
-      runtimeContent.MySystem.setAutoSaveFrequency(-1); // start with no auto save
-      $('#autosave_external').click(function(){
-        if (this.checked){
-          runtimeContent.MySystem.setAutoSaveFrequency($('#autosave_time')[0].value * 1000);
-        } else {
-          runtimeContent.MySystem.setAutoSaveFrequency(-1);
-        }
-      });
-      $('#autosave_time').keyup(function(){
-        console.log("woo")
-        if ($('#autosave_external')[0].checked){
-          runtimeContent.MySystem.setAutoSaveFrequency(this.value * 1000);
-        }
-      });
-      
-   }
-
-   
   </script>
 </head>
 <body>
