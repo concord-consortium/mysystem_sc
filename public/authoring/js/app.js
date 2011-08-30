@@ -24,7 +24,6 @@ if (top === self) {
 }
 
 MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
-  debugger
   if (typeof dataHash === "undefined" || dataHash === null){
     dataHash = MSA.data;
   }
