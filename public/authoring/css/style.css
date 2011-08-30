@@ -121,7 +121,7 @@ input {
   margin: 2px;
 }
 
-#correctFeedback {
+#correctFeedback, #minimumFeedback {
   width: 300px;
 }
 
