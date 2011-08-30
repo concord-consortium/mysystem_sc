@@ -74,11 +74,11 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   removeButtonY: 0,
   
   removeButtonView: MySystem.RemoveButtonView.design({
-    isVisibleBinding: '.parentView.isRemoveButtonVisible', 
+    isVisibleBinding:          '.parentView.isRemoveButtonVisible', 
     normalCircleStrokeBinding: '.parentView.lineColor',
-    normalXStrokeBinding: '.parentView.lineColor',   
-    cxBinding: '.parentView.removeButtonX',
-    cyBinding: '.parentView.removeButtonY'
+    normalXStrokeBinding:      '.parentView.lineColor',   
+    cxBinding:                 '.parentView.removeButtonX',
+    cyBinding:                 '.parentView.removeButtonY'
   }),
   
   // RENDER METHODS
