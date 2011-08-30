@@ -30,6 +30,10 @@ describe("DiagramRules", function () {
           {
             "name": "obj2",
             "uuid": "obj2"
+          },
+          {
+            "name": "obj3",
+            "uuid": "obj3"
           }
         ],
         "energy_types": [
@@ -608,6 +612,99 @@ describe("DiagramRules", function () {
       expect(ruleFeedback.get('success')).toBe(true);
     });
 
+  });
+
+  describe("Custom Rule Evaluation", function() {
+    var customEvaluationString;
+    var ruleFeedback;
+    beforeEach(function() {
+       givenRules([
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj1",
+            "suggestion": "failed rule_a"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj2",
+            "suggestion": "failed rule_b"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "type": "obj3",
+            "suggestion": "failed rule_c"
+          }
+      ]);
+      customEvaluationString = "";
+      customEvaluationString += "var rule_a = rules.objectAt(0).check(nodes);";
+      customEvaluationString += "var rule_b = rules.objectAt(1).check(nodes);";
+      customEvaluationString += "var rule_c = rules.objectAt(2).check(nodes);";
+      customEvaluationString += "if(! ((rule_a && rule_b) || rule_c)) {";
+      customEvaluationString += "   suggestions.pushObject('custom rule evaluation failed.');";
+      customEvaluationString += "}";
+    });
+
+    describe("Using a custom Evaluator ((a & b) || c) => succuess function", function() {
+      beforeEach(function() {
+        MySystem.activityController.set('enableCustomRuleEvaluator',YES);
+        MySystem.activityController.set('customRuleEvaluator', customEvaluationString);
+        MySystem.store.commitRecords();
+        ruleFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+      });
+      
+      describe("failing systems", function() {
+        it("should fail diagrams only containing just one 'a' node", function() {
+          runRules({nodes: ['obj1'], links: []});
+          expect(ruleFeedback.get('feedback')).toBe('custom rule evaluation failed.');
+        });
+        it("should fail diagrams containing just one 'b' node", function() {
+          runRules({nodes: ['obj2'], links: []});
+          expect(ruleFeedback.get('feedback')).toBe('custom rule evaluation failed.');
+        });
+      });
+
+      describe("passing systems", function() {
+        it("should pass systems containg one 'a' node & one 'b' node", function() {
+          runRules({nodes: ['obj1','obj2'], links: []});
+          expect(ruleFeedback.get('feedback')).toBe("Your diagram has no obvious problems.");   // see givenRules() function
+          expect(ruleFeedback.get('success')).toBe(true);
+        });
+        it("should pass systems a single 'c' node", function() {
+          runRules({nodes: ['obj3'], links: []});
+          expect(ruleFeedback.get('feedback')).toBe("Your diagram has no obvious problems.");   // see givenRules() function
+          expect(ruleFeedback.get('success')).toBe(true);
+        });
+      });
+    });
+
+    describe("Without a custom rule evaluator", function() {
+      beforeEach(function() {
+        MySystem.activityController.set('enableCustomRuleEvaluator',NO);
+        MySystem.activityController.set('customRuleEvaluator', customEvaluationString);
+        MySystem.activityController.set('maxFeedbackItems',1);
+        MySystem.store.commitRecords();
+        ruleFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+      });
+
+      it("should fail diagrams for which the simple conditions are not met", function() {
+        // fail (no obj2)
+        runRules({nodes: ['obj1'], links: []});
+        expect(ruleFeedback.get('feedback')).toBe('failed rule_b');
+        // fail (no obj1)
+        runRules({nodes: ['obj2'], links: []});
+        expect(ruleFeedback.get('feedback')).toBe('failed rule_a');
+      });
+
+      it("should pass diagrams for which the simple conditions are met", function() {
+        // succeed (obj1 & obj2)
+        runRules({nodes: ['obj1','obj2','obj3'], links: []});
+        expect(ruleFeedback.get('feedback')).toBe("Your diagram has no obvious problems.");   // see givenRules() function
+        expect(ruleFeedback.get('success')).toBe(true);
+      });
+    });
   });
 
   givenRules = function (rules, maxFeedback) {
