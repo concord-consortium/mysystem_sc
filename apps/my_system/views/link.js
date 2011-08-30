@@ -235,10 +235,10 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     if (len > 50) {
       p1 = line.getPointAtLength(len - distanceAlongLine);
       
-      scale = distanceAlongNormal / distanceAlongLine;
       dx = p2.x - p1.x;
       dy = p2.y - p1.y;
-
+      scale = distanceAlongNormal / distanceAlongLine * (dx > 0 ? 1 : -1);
+      
       x = p1.x + scale * dy;
       y = p1.y - scale * dx;
       occluded = NO;
