@@ -34,6 +34,28 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   borderWidth: 3,
 
   isHovered: NO,
+  showRemoveButtonForHover: NO,
+  unhoverInterval: 500,
+  _unhoverTimer: null,
+  
+  isHoveredDidChange: function () {
+    if (this._unhoverTimer) this._unhoverTimer.invalidate();
+    
+    if (this.get('isHovered')) {
+      this.set('showRemoveButtonForHover', YES);
+    }
+    else {
+      this._unhoverTimer = SC.Timer.schedule({
+        target: this,
+        action: 'unhoverTimeout',
+        interval: this.get('unhoverInterval')
+      });
+    }
+  }.observes('isHovered'),
+  
+  unhoverTimeout: function () {
+    this.set('showRemoveButtonForHover', NO);
+  },
   
   diagramControllerBinding: 'MySystem.nodesController',
   onlySelectedDiagramObjectBinding: '*diagramController.onlySelectedObject',
@@ -45,8 +67,8 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   isRemoveButtonOccluded: NO,
   
   isRemoveButtonVisible: function () {
-    return (this.get('isHovered') || this.get('isOnlySelectedDiagramObject')) && !this.get('isRemoveButtonOccluded');
-  }.property('isHovered', 'isOnlySelectedDiagramObject', 'isRemoveButtonOccluded'),
+    return (this.get('showRemoveButtonForHover') || this.get('isOnlySelectedDiagramObject')) && !this.get('isRemoveButtonOccluded'); 
+  }.property('showRemoveButtonForHover', 'isOnlySelectedDiagramObject', 'isRemoveButtonOccluded'),
 
   removeButtonX: 0,
   removeButtonY: 0,
