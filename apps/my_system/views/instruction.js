@@ -31,8 +31,10 @@ MySystem.InstructionView = SC.View.extend({
   
   checkButtonView: SC.ButtonView.design({
     layout: { right: 15, bottom: 10, height: 25, width: 120 },
-    title: 'Check Diagram',
-    toolTip: 'Check your diagram',
+    // NP Sept. 1, 2011: Kelley in Berkeley wanted this label changed
+    // from Check to Submit.
+    title: 'Submit Diagram',
+    toolTip: 'Submit your diagram',
     action: 'checkButtonPressed'
   }),
   
