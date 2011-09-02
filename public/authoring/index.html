@@ -127,7 +127,7 @@
   
   <div class="options_block">
     <h2>Diagram Rules</h2>
-    {{#collection contentBinding="MSA.diagramRulesController" tagName="ul"}}
+    {{#collection contentBinding="MSA.diagramRulesController" tagName="ol" attributeBindings="start" start="0"}}
         The diagram 
         {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
         {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.comparisons" valueBinding="parentView.content.comparison"}}
