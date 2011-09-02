@@ -25,7 +25,7 @@ MySystem.InspectorPane = SC.PalettePane.design({
   // the contenView property should be updated with the view that is correct
   // for the current object
   contentView: SC.View.design({
-    childViews: 'title linkForm nodeForm deleteButton'.w(),
+    childViews: 'title linkForm nodeForm'.w(),
     
     title: SC.LabelView.design({
       value: "Pick an energy type for your new link",
@@ -42,7 +42,12 @@ MySystem.InspectorPane = SC.PalettePane.design({
       layout: {top: 22, left: 0, right: 0}
     }),
 
-    deleteButton: SC.ButtonView.design({
+    /*
+     * Sept 1, 2011: Kelly from Bekeley:
+     * This delete button will confuse students, 
+     * they will use it to dismiss the window.
+     *
+     deleteButton: SC.ButtonView.design({
       layout: {  bottom: 0, right: 15, height: 30, width: 80 },
       title:  "Delete this",
       action: 'deleteDiagramSelection',
@@ -50,6 +55,7 @@ MySystem.InspectorPane = SC.PalettePane.design({
       isVisibleBindingDefault: SC.Binding.not(),
       isVisibleBinding:        '.parentView.parentView.isOptionsForNewLink'
     })
+    */
 
   })
 });
