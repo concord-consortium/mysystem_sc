@@ -16,16 +16,7 @@ MySystem.LinkFormView = SC.FormView.extend({
   layout: { top: 0, bottom: 0, left: 0, right: 0 },
   linkSelectionOnly: NO,
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Link),
-  childViews: function() {
-    var children = ["energy"];
-    if (MySystem.activityController.get('enableLinkLabelEditing')) {
-      children.push("label");
-    }
-    if (MySystem.activityController.get('enableLinkDescriptionEditing')) {
-      children.push("description");
-    }
-    return children;
-  }.property(),
+  childViews: "energy label description".w(),
   isVisible: NO,
   contentChanged: function() {
     var c = this.get('content');
@@ -35,23 +26,6 @@ MySystem.LinkFormView = SC.FormView.extend({
       this.set('isVisible', NO);
     }
   }.observes('*content.guid'),
-
-  linkOnlyChanged: function() {
-    var linkOnly = this.get('linkSelectionOnly');
-    // label and description may still be 'designs', in which case setPath will fail.
-    // That's ok, though. Just catch it and move on.
-    try {
-      this.setPath('label.isVisible', !linkOnly);
-    } catch(e) { }
-    try {
-      this.setPath('description.isVisible', !linkOnly);
-    } catch(e) { }
-  }.observes('linkSelectionOnly'),
-
-  label: SC.FormView.row("Label:", SC.TextFieldView.design({
-    layout: {width: 150, height: 20, centerY: 0 },
-    contentValueKey: 'text'
-  })),
 
   energy: SC.FormView.row("Energy:", SC.RadioView.design({
     // apparently it is vitally important that width be speficied prior to height in the RadioView layout...
@@ -89,10 +63,30 @@ MySystem.LinkFormView = SC.FormView.extend({
     }
   })),
 
+
+  label: SC.FormView.row("Label:", SC.TextFieldView.design({
+    layout: {width: 150, height: 20, centerY: 0 },
+    contentValueKey: 'text',
+    isEditableBinding: SC.Binding.oneWay('MySystem.activityController.enableLinkLabelEditing'),
+    linkSelectionOnlyBinding: SC.Binding.oneWay('.parentView.linkSelectionOnly'),
+    isVisible: function() {
+      var linkSelectionOnly = this.getPath('.parentView.linkSelectionOnly');
+      var editable = this.get('isEditable');
+      return (editable && (!linkSelectionOnly));
+    }.property('isEditable','.parentView.linkSelectionOnly')
+  })),
+
   description: SC.FormView.row("Description:", SC.TextFieldView.design({
     layout: {width: 150, height: 60, centerY: 0 },
+    isEditableBinding: SC.Binding.oneWay('MySystem.activityController.enableLinkDescriptionEditing'),
+    linkSelectionOnlyBinding: SC.Binding.oneWay('.parentView.linkSelectionOnly'),
     contentValueKey: 'description',
-    isTextArea: YES
+    isTextArea: YES,
+    isVisible: function() {
+      var linkSelectionOnly = this.getPath('.parentView.linkSelectionOnly');
+      var editable = this.get('isEditable');
+      return (editable && (!linkSelectionOnly));
+    }.property('isEditable','.parentView.linkSelectionOnly')
   }))
 
 });
