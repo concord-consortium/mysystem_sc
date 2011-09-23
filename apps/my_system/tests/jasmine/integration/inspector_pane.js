@@ -181,12 +181,13 @@ describe("The Inspector Pane", function () {
         SC.run();
       });
 
-      it("should have 2 items", function(){
-        // label, description
-        expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(2);
+      it("should have 1 items", function(){
+        // 2011-09-23 New Default is that Label is not editable
+        // description
+        expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(1);
       });
 
-      it("should update the label", function() {
+      xit("should update the label", function() {
         var attribute = {key: 'title', type: 'text'};
         var val = diagramBuilder.getInspectorValue(attribute);
         expect(val).toBe('obj1');
@@ -195,6 +196,8 @@ describe("The Inspector Pane", function () {
       });
 
       // FIXME: This should work. It's exactly like the link description editing test below...
+      // 2011-09-23 -- still not working and NP is confused about it
+      // too.
       xit("should update the description", function() {
         var attribute = {key: 'description', type: 'text'};
         var val = diagramBuilder.getInspectorValue(attribute);
