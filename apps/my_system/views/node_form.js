@@ -16,9 +16,13 @@ MySystem.NodeFormView = SC.FormView.extend({
   layout: { top: 0, bottom: 0, left: 0, right: 0 },
   contentBinding: SC.Binding.oneWay('MySystem.nodesController.selection').firstIfType(MySystem.Node),
   childViews: function() {
-    var children = ["title"];
+    // var children = ["title"];
+    var children = [];
     if (MySystem.activityController.get('enableNodeDescriptionEditing')) {
       children.push("description");
+    }
+    if (MySystem.activityController.get('enableNodeLabelEditing')) {
+      children.push("title");
     }
     return children;
   }.property(),
