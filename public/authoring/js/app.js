@@ -15,6 +15,7 @@ if (top === self) {
     "minimum_requirements": [],
     "maxFeedbackItems": 0,
     "minimumRequirementsFeedback": "Your diagram doesn't have enough elements.",
+    "enableNodeLabelEditing": false,
     "enableNodeDescriptionEditing": false,
     "enableLinkDescriptionEditing": false,
     "enableLinkLabelEditing": false,
@@ -37,6 +38,9 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
   }
   if (typeof dataHash.minimumRequirementsFeedback === "undefined" || dataHash.minimumRequirementsFeedback === null){
     dataHash.minimumRequirementsFeedback = "";
+  }
+  if (typeof dataHash.enableNodeLabelEditing === "undefined" || dataHash.enableNodeLabelEditing === null){
+    dataHash.enableNodeLabelEditing = false;
   }
   if (typeof dataHash.enableNodeDescriptionEditing === "undefined" || dataHash.enableNodeDescriptionEditing === null){
     dataHash.enableNodeDescriptionEditing = false;
@@ -79,6 +83,7 @@ MSA.ActivityModel = SCUtil.ModelObject.extend({
   correctFeedback: SCUtil.dataHashProperty,
   maxFeedbackItems: SCUtil.dataHashProperty,
   minimumRequirementsFeedback: SCUtil.dataHashProperty,
+  enableNodeLabelEditing: SCUtil.dataHashProperty,
   enableNodeDescriptionEditing: SCUtil.dataHashProperty,
   enableLinkDescriptionEditing: SCUtil.dataHashProperty,
   enableLinkLabelEditing: SCUtil.dataHashProperty,
@@ -203,6 +208,7 @@ MSA.dataController = SC.Object.create({
              'MSA.minRequirementsController.@each.rev',
              'MSA.activity.correctFeedback',
              'MSA.activity.minimumRequirementsFeedback',
+             'MSA.activity.enableNodeLabelEditing',
              'MSA.activity.enableNodeDescriptionEditing',
              'MSA.activity.enableLinkDescriptionEditing',
              'MSA.activity.enableLinkLabelEditing',
