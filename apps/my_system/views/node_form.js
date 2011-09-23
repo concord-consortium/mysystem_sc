@@ -32,12 +32,13 @@ MySystem.NodeFormView = SC.FormView.extend({
 
   title: SC.FormView.row("Title:", SC.TextFieldView.design({
     layout: {width: 150, height: 20 },
+    isVisibleBinding: SC.Binding.oneWay('MySystem.activityController.enableNodeLabelEditing'),
     contentValueKey: 'title'
   })),
 
   description: SC.FormView.row("Description:", SC.TextFieldView.design({
     layout: {width: 150, height: 60, centerY: 0 },
-    isVisibleBinding: 'MySystem.activityController.enableNodeDescriptionEditing',
+    isVisibleBinding: SC.Binding.oneWay('MySystem.activityController.enableNodeDescriptionEditing'),
     contentValueKey: 'description',
     isTextArea: YES
   }))
