@@ -107,17 +107,12 @@ describe("The Inspector Pane", function () {
         SC.run();
       });
 
-      it("should have 1 item", function(){
-        // label
-        expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(1);
-      });
-
-      it("should update the label", function() {
-        var attribute = {key: 'title', type: 'text'};
-        var val = diagramBuilder.getInspectorValue(attribute);
-        expect(val).toBe('obj1');
-        diagramBuilder.setInspectorValue(attribute, 'Something');
-        expect(node1.get('title')).toBe('Something');
+      it("shouldn't be available", function(){
+        // the default app settings include not allowing 
+        // for Node Description Editing, which turns off the
+        // inspector for nodes.
+        var inspector = diagramBuilder.getInspector();
+        expect(inspector.isPaneAttached).toBe(false);
       });
     });
 
@@ -137,6 +132,32 @@ describe("The Inspector Pane", function () {
         expect(diagramBuilder.getInspectorValue(attribute)).toBe('en2');
         diagramBuilder.setInspectorValue(attribute, 'en1');
         expect(link1.get('energyType')).toBe('en1');
+      });
+    });
+  });
+
+  describe("Node description editing disabled", function() {
+    beforeEach( function() {
+      setupStuff({
+        "enableNodeDescriptionEditing": false,
+        "enableLinkDescriptionEditing": true,
+        "enableLinkLabelEditing": true
+      });
+    });
+
+    afterEach(function() {
+      appPane.remove();
+    });
+
+    describe("the node inspector", function (){
+      beforeEach(function() {
+        MySystem.nodesController.selectObject(node1);
+        SC.run();
+      });
+
+      it("shouldn't be available", function(){
+        var inspector = diagramBuilder.getInspector();
+        expect(inspector.isPaneAttached).toBe(false);
       });
     });
   });

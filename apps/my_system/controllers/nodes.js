@@ -62,6 +62,34 @@ MySystem.nodesController = SC.ArrayController.create( SC.CollectionViewDelegate,
     return inspectable;
   },
   
+  selectionIsInspectable: function() {
+    // Set up the property editor pane and attach it
+    var selection = MySystem.nodesController.get('selection');
+    var selected  = null;
+    if (selection.get('length') !== 1) {
+      return NO;
+    }
+    selected = selection.firstObject();
+    if (!this.objectIsInspectable(selected)) {
+      return NO;
+    }
+    if (selected instanceof MySystem.Link                          &&
+       MySystem.activityController.get('energyTypes').length() < 2 &&
+      !MySystem.activityController.get('enableLinkLabelEditing')   &&
+      !MySystem.activityController.get('enableLinkDescriptionEditing')) {
+      // we're editing a link, there is only 1 energy type,
+      // and editing labels and descriptions is NOT enabled
+      // so skip showing the inspector
+      return NO;
+    }
+    if (selected instanceof MySystem.Node &&
+      !MySystem.activityController.get('enableNodeDescriptionEditing')) {
+      // 20110921 khryoo@berkeley.edu: no node inspector unless descriptions R editable
+        return NO;
+    }
+    return YES;
+  }.property('selection'),
+
   deleteObject: function (obj) {
     if (this.contains(obj)) obj.destroy();
   },

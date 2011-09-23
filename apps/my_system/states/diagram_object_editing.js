@@ -52,19 +52,13 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
 
   enterState: function () {
     SC.Logger.log("Entering state %s", this.get('name'));
-    // Set up the property editor pane and attach it
-    var firstSelection = MySystem.nodesController.get('selection').firstObject();
-    if (firstSelection instanceof MySystem.Link && 
-        MySystem.activityController.get('energyTypes').length() < 2 &&
-        ! MySystem.activityController.get('enableLinkLabelEditing') &&
-        ! MySystem.activityController.get('enableLinkDescriptionEditing') ) {
-      // we're editing a link, there is only 1 energy type, and editing labels and descriptions is NOT enabled
-      // so skip showing the inspector
-      this.gotoState('DIAGRAM_EDITING');
-    } else {
-      // for every other case, show the inspector
+    if (MySystem.nodesController.get('selectionIsInspectable')) {
       this.setUpInspectorPane();
     }
+    else {
+      this.tearDownInspectorPane();
+      this.gotoState('DIAGRAM_EDITING');
+    } 
   },
 
   exitState: function () {
@@ -77,13 +71,11 @@ MySystem.DIAGRAM_OBJECT_EDITING = SC.State.design({
     Deal with diagram selection update events.
   */
   diagramSelectionChanged: function () {
-    var newSelection = MySystem.nodesController.get('selection');
-
-    if (newSelection.get('length') === 1 && MySystem.nodesController.objectIsInspectable(newSelection.firstObject()) ) {
-      // Update the property editor pane
+    if (MySystem.nodesController.get('selectionIsInspectable')) {
       this.setUpInspectorPane();
     }
     else {
+      this.tearDownInspectorPane();
       this.gotoState('DIAGRAM_EDITING');
     }
     return YES;
