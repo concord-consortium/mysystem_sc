@@ -122,9 +122,17 @@ describe("The Inspector Pane", function () {
         SC.run();
       });
 
-      it("should have 1 item", function(){
-        // the energy radio buttons
-        expect(diagramBuilder.getInspector().getPath('contentView.linkForm.childViews.length')).toBe(1);
+      // It has 3 subviews
+      it("should have 3 item", function(){
+        var childviews = diagramBuilder.getInspector().getPath('contentView.linkForm.childViews');
+        expect(diagramBuilder.getInspector().getPath('contentView.linkForm.childViews.length')).toBe(3);
+      });
+
+      // TODO: I can see in the console the subviews 'isVisible'
+      // property is 'true' for all three -- but the panel shows only
+      // the buttons... ?  NP 2011-09-23
+      xit("the label view and discription view should be hidden", function() {
+
       });
 
       it("should update the energy type", function() {
@@ -162,9 +170,40 @@ describe("The Inspector Pane", function () {
     });
   });
 
+  describe("Description editing *only* enabled", function() {
+    beforeEach( function() {
+      setupStuff({
+        "enableNodeLabelEditing": true,
+        "enableNodeDescriptionEditing": true,
+        "enableLinkDescriptionEditing": true,
+        "enableLinkLabelEditing": true
+      });
+    });
+
+    describe("the node inspector", function (){
+      beforeEach(function() {
+        MySystem.nodesController.selectObject(node1);
+        SC.run();
+      });
+      // TODO: isVibile detection seems hard to test in our forms?
+      xit("we should have a way to select only visible items", function() {});
+    });
+
+    describe("the link inspector", function (){
+      beforeEach(function() {
+        MySystem.nodesController.selectObject(link1);
+        SC.run();
+      });
+      // TODO: isVibile detection seems hard to test in our forms?
+      xit("we should have a way to select only visible items", function() {});
+    });
+
+  });
+
   describe("Label and description editing enabled", function() {
     beforeEach( function() {
       setupStuff({
+        "enableNodeLabelEditing": true,
         "enableNodeDescriptionEditing": true,
         "enableLinkDescriptionEditing": true,
         "enableLinkLabelEditing": true
@@ -183,8 +222,8 @@ describe("The Inspector Pane", function () {
 
       it("should have 1 items", function(){
         // 2011-09-23 New Default is that Label is not editable
-        // description
-        expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(1);
+        // label, description
+        expect(diagramBuilder.getInspector().getPath('contentView.nodeForm.childViews.length')).toBe(2);
       });
 
       xit("should update the label", function() {
