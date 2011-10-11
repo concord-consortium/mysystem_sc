@@ -109,7 +109,7 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     
     // runs the rules, saves the data and pops up a message to the user
     checkButtonPressed: function () {
-      var results = this.checkDiagramAgainstConstraints(true);
+      var results = MySystem.activityController.getDiagramFeedback();
       
       MySystem.savingController.save();
       var showAlertPane = results[0] ? SC.AlertPane.info : SC.AlertPane.warn;
@@ -118,36 +118,6 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       // checkDiagram, and then hit delete key...
       MySystem.nodesController.focusMainPane();
       showAlertPane.call(SC.AlertPane, {description: results[1]});
-    },
-    
-    // runs the diagram rules, saves the results to the learner data and returns
-    // an array containing a success boolean and a feedback string
-    checkDiagramAgainstConstraints: function () {
-      var suggestions = MySystem.activityController.runDiagramRules();
-      
-      // for now, we can assume that if there are no suggestions the diagram is good
-      var success = (suggestions.get('length') === 0);
-      var feedback = success ? MySystem.activityController.get('correctFeedback') : suggestions.join(" \n");
-      
-      this.saveFeedback(feedback, success);
-      
-      return [success, feedback];
-    },
-    
-    saveFeedback: function(feedback, success){
-      SC.RunLoop.begin();
-      var lastFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
-      
-      // check if it's previously been created.
-      if (lastFeedback && lastFeedback.get('status') & SC.Record.READY){
-        lastFeedback.set({feedback: feedback, success: success});
-      } else {
-        MySystem.store.createRecord(
-          MySystem.RuleFeedback, 
-          {feedback: feedback, success: success}, 
-          MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
-      }
-      SC.RunLoop.end();
     },
     
     // The delete key should generally be handled before this, but if not this is the place

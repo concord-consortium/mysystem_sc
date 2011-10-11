@@ -18,6 +18,8 @@
 
 MySystem.activityController = SC.ObjectController.create({
   
+  // runs the diagram rules, saves the results to the learner data and returns
+  // an array containing a success boolean and a feedback string
   runDiagramRules: function() {
     var rules                 = this.get('diagramRules'),
     minimumRequirements       = this.get('minimumRequirements'),
@@ -74,8 +76,20 @@ MySystem.activityController = SC.ObjectController.create({
     if (maxFeedback && maxFeedback > 0 && suggestions.length > maxFeedback) {
       return suggestions.slice(0,maxFeedback);
     }
+    
     return suggestions;
-  }
+  },
   
+  getDiagramFeedback: function () {
+    var suggestions = this.runDiagramRules();
+    
+    // for now, we can assume that if there are no suggestions the diagram is good
+    var success = (suggestions.get('length') === 0);
+    var feedback = success ? this.get('correctFeedback') : suggestions.join(" \n");
+    
+    MySystem.RuleFeedback.saveFeedback(MySystem.store, feedback, success);
+    
+    return [success, feedback];
+  }
 }) ;
 
