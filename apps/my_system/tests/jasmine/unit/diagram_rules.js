@@ -1,4 +1,4 @@
-/*globals MySystem describe it expect xit xdescribe beforeEach afterEach spyOn runs waits waitsFor NO YES*/
+/*globals MySystem defineJasmineHelpers describe it expect xit xdescribe beforeEach afterEach spyOn runs waits waitsFor NO YES*/
 
 defineJasmineHelpers();
 
@@ -51,7 +51,7 @@ describe("DiagramRules", function () {
   
   describe("Counting Nodes", function () {
   
-    it("should be correctly grade EXACTLY with a named type", function () {
+    it("should correctly grade EXACTLY with a named type", function () {
       givenRules(
         [
           {
@@ -76,7 +76,7 @@ describe("DiagramRules", function () {
     
     });
   
-    it("should be correctly grade EXACTLY with a generic type", function () {
+    it("should correctly grade EXACTLY with a generic type", function () {
       givenRules(
         [
           {
@@ -94,7 +94,7 @@ describe("DiagramRules", function () {
     
     });
   
-    it("should be correctly grade MORE THAN with a named type", function () {
+    it("should correctly grade MORE THAN with a named type", function () {
       givenRules(
         [
           {
@@ -113,7 +113,7 @@ describe("DiagramRules", function () {
     
     });
   
-    it("should be correctly grade MORE THAN with a generic type", function () {
+    it("should correctly grade MORE THAN with a generic type", function () {
       givenRules(
         [
           {
@@ -132,7 +132,7 @@ describe("DiagramRules", function () {
     
     });
   
-    it("should be correctly grade LESS THAN with a named type", function () {
+    it("should correctly grade LESS THAN with a named type", function () {
       givenRules(
         [
           {
@@ -150,7 +150,7 @@ describe("DiagramRules", function () {
     
     });
   
-    it("should be correctly grade LESS THAN with a generic type", function () {
+    it("should correctly grade LESS THAN with a generic type", function () {
       givenRules(
         [
           {
@@ -171,7 +171,7 @@ describe("DiagramRules", function () {
   
   describe("Counting Nodes with Links", function () {
   
-    it("should be correctly grade --> between named nodes", function () {
+    it("should correctly grade --> between named nodes", function () {
       givenRules(
         [
           {
@@ -197,7 +197,7 @@ describe("DiagramRules", function () {
     
     });
     
-    it("should be correctly grade --> between generic nodes ", function () {
+    it("should correctly grade --> between generic nodes ", function () {
       givenRules(
         [
           {
@@ -220,7 +220,7 @@ describe("DiagramRules", function () {
     
     });
     
-    it("should be correctly grade <-- between named nodes", function () {
+    it("should correctly grade <-- between named nodes", function () {
       givenRules(
         [
           {
@@ -240,7 +240,7 @@ describe("DiagramRules", function () {
     
     });
     
-    it("should be correctly grade --> between nodes with a set energy", function () {
+    it("should correctly grade --> between nodes with a set energy", function () {
       givenRules(
         [
           {
@@ -266,7 +266,7 @@ describe("DiagramRules", function () {
   
   describe("Handling NOT rules", function () {
   
-    it("should be correctly grade NOT rules", function () {
+    it("should correctly grade NOT rules", function () {
       givenRules(
         [
           {
@@ -488,7 +488,6 @@ describe("DiagramRules", function () {
 
       var ruleFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
       expect(ruleFeedback.get('feedback')).toBeNull();
-
       runRules({nodes: ['obj1']});
       expect(ruleFeedback.get('feedback')).toBe("Failed rule 1 \nFailed rule 2");   // see givenRules() function
       expect(ruleFeedback.get('success')).toBe(false);
