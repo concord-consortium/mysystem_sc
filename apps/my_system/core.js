@@ -22,7 +22,7 @@ MySystem = SC.Application.create(
   ADVANCED_STUDENT: 'advanced',
   DEVELOPMENT_HEAD: 'head',
   
-  learnerDataVersion: 2,
+  learnerDataVersion: 'head',
   
   /**
     Callback provided so that external applications, like WISE4, can let MySystem know to read the student state from
