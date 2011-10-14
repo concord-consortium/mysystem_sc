@@ -62,6 +62,10 @@ Mysystem2Node.prototype.translateStudentWork = function(studentWork) {
 };
 
 /**
+ * Note: it seems this method isn't needed on the Node anymore
+ *   but since this step type is currently needs to work in old versions of Wise4
+ *   we have to be careful deleting it.
+ *
  * This function is called when the student exits the step. It is mostly
  * used for error checking.
  * 
