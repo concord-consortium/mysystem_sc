@@ -57,11 +57,14 @@ function simulateClickOnSelector(selector) {
   SC.Event.trigger(target, 'mouseup');
 }
 
-function simulateDoubleClick(view, offX, offY) {
+function simulateClick(view, offX, offY) {
   if(!!!offX) { offX = 10; }
   if(!!!offY) { offY = 10; }
   firePointerEvent(view, 'mousedown', offX, offY);
   firePointerEvent(view, 'mouseup',   offX, offY);
-  firePointerEvent(view, 'mousedown', offX, offY);
-  firePointerEvent(view, 'mouseup',   offX, offY);
+}
+
+function simulateDoubleClick(view, offX, offY) {
+  simulateClick(view, offX, offY);
+  simulateClick(view, offX, offY);
 }
