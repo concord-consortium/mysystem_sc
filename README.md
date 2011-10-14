@@ -70,6 +70,38 @@ From the top-level mysystem_sc directory:
 5. Run the tests
 `bundle exec ruby run-unit-tests.rb -i -o reports`
 
+### Running Wise4 Glue tests in browser ###
+1. make sure the gems are installed:
+`bundle install --binstubs`
+
+2. Go into the wise4 directory
+`cd wise4`
+
+3. Run the jasmine test server
+`rake jasmine`
+
+4. Follow directions, open browser: http://localhost:8888/
+
+### Running Wise4 Glue tests on commandline or CI server ###
+1. make sure the gems are installed:
+`bundle install --binstubs`
+
+2. Go into the wise4 directory
+`cd wise4`
+
+3. Run the jasmine ci task
+`../bin/rake jasmine:ci`
+
+If you want run this in a CI server that supports JUnit formatting, that can be done with:
+
+1. Remove reports from default location
+`rm -r spec/reports`
+
+2. Run tests with junit formatter
+`../bin/rake jasmine:ci JASMINE_SPEC_FORMAT=CI::Reporter::RSpec`
+
+The default location for the output can be changed by setting the env variable CI_REPORTS.
+
 ### Running in Wise4 using vagrant ###
 
 0. Install prerequisites: git, vagrant, and virtualbox
