@@ -35,7 +35,8 @@ describe("Mysystem2", function(){
     window.MySystem = {
       registerExternalSaveFunction: function(){},
       updateFromDOM: function(){},
-      loadWiseConfig: function(){}
+      loadWiseConfig: function(){},
+      preExternalSave: function(){}
     };
 
     // Add empty learner data dom element
@@ -137,6 +138,26 @@ describe("Mysystem2", function(){
     it("can be called without error", function(){
       var mysys = new Mysystem2(node, null);
       mysys.save();
+    });
+  });
+  
+  describe("lifecycle", function(){
+    it("should complete without error", function(){
+      // after the scripts are loaded the window.loadContentAfterScriptsLoad (defined in mysystem2.html)
+      // this then calls
+      var mysystem2 = new Mysystem2(node, node.view);
+      mysystem2.render();
+      
+      // now the step is used by the user
+      // which might result in some callbacks being called
+      // TODO call some of them
+      
+      // now the user leaves the step
+      // this apparently calls Mysystem2Node#onExit which is in the outer iframe
+      // Mysystem2Node implements this to call window.save on the inner frame
+      // that then calls the following methods
+      mysystem2.preSave();
+      mysystem2.save();
     });
   });
 });
