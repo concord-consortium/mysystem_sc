@@ -1,9 +1,4 @@
 beforeEach(function() {
-  this.addMatchers({
-    toBePlaying: function(expectedSong) {
-      var player = this.actual;
-      return player.currentlyPlayingSong === expectedSong && 
-             player.isPlaying;
-    }
-  });
+  // This can contain code that should run for all specs
+  // for example adding custom matchers
 });
