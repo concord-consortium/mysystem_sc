@@ -143,7 +143,7 @@ MySystem.registerExternalSaveFunction = function(func, context) {
 // wants to save data and exit
 MySystem.preExternalSave = function() {
   SC.RunLoop.begin();
-  MySystem.activityController.getDiagramFeedback();
+  MySystem.activityController.getDiagramFeedback({isSubmit: NO});
   SC.RunLoop.end();
 };
 

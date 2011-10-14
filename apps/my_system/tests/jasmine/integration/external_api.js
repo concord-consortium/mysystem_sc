@@ -1,8 +1,34 @@
-/*globals MySystem describe beforeEach afterEach it defineJasmineHelpers*/
-
-defineJasmineHelpers();
+/*globals MySystem describe beforeEach afterEach it IntegrationTestHelper */
 
 describe("The External API", function () {
+  var helper = IntegrationTestHelper.create({
+    authoredContent: {
+       "type": "mysystem2",
+       "prompt": "",
+       "modules": [
+         {
+           "name": "obj1",
+           "uuid": "obj1"
+         }
+       ],
+       "energy_types": [
+         {
+           "label": "en1",
+           "uuid": "en1"
+         }
+       ],
+       "diagram_rules": []
+     }
+  });
+  
+  beforeEach(function(){
+    helper.setupApp();
+  });
+  
+  afterEach(function(){
+    helper.teardownApp();
+  });
+  
   ["preExternalSave", 
    "setAutoSaveFrequency", 
    "registerExternalSaveFunction", 
@@ -15,40 +41,28 @@ describe("The External API", function () {
    });
    
   describe("preExternalSave method", function () {
-    it("should save the result of running the feedback rules even if the submit button hasn't been push", function() {
-
-      // setup App:
-      MySystem.setupStore(MySystem);
-      MySystem.statechart.initStatechart();
-
-      var authoredContent = 
-        {
-          "type": "mysystem2",
-          "prompt": "",
-          "modules": [
-            {
-              "name": "obj1",
-              "uuid": "obj1"
-            }
-          ],
-          "energy_types": [
-            {
-              "label": "en1",
-              "uuid": "en1"
-            }
-          ],
-          "diagram_rules": []
-        };
-
-      var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
-      MySystem.activityController.set('content',activity);
-
+    it("should not call the external save function since it was an externally triggered save", function(){
       MySystem.preExternalSave();
 
-      var lastFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
-      expect(lastFeedback).toNotBe(null);
-      expect(lastFeedback.get('success')).toBe(true);
-      expect(lastFeedback.get('feedback')).toBe("Your diagram has no obvious problems.");
+      helper.expectProperty('externalSaveCount').toBe(0);
     });
+
+    it("should not call the external save function even if the diagram is modified", function(){
+      helper.addNode('obj1');
+      expect(MySystem.savingController.get('dataIsDirty')).toBe(YES);
+      MySystem.preExternalSave();
+
+      helper.expectProperty('externalSaveCount').toBe(0);
+    });
+
+    it("should save the result of running the feedback rules even if the submit button hasn't been push", function() {
+      // this is duplicated in the diagram_feedback file
+      MySystem.preExternalSave();
+
+      expect(helper.lastFeedback()).toBeDefined();
+      expect(helper.lastFeedback().success).toBe(true);
+      expect(helper.lastFeedback().feedback).toBe("Your diagram has no obvious problems.");
+    });
+    
   });
 });

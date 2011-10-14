@@ -80,14 +80,14 @@ MySystem.activityController = SC.ObjectController.create({
     return suggestions;
   },
   
-  getDiagramFeedback: function () {
+  getDiagramFeedback: function (options) {
     var suggestions = this.runDiagramRules();
     
     // for now, we can assume that if there are no suggestions the diagram is good
     var success = (suggestions.get('length') === 0);
     var feedback = success ? this.get('correctFeedback') : suggestions.join(" \n");
     
-    MySystem.RuleFeedback.saveFeedback(MySystem.store, feedback, success);
+    MySystem.RuleFeedback.saveFeedback(MySystem.store, feedback, success, options.isSubmit);
     
     return [success, feedback];
   }

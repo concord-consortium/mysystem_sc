@@ -109,7 +109,8 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     
     // runs the rules, saves the data and pops up a message to the user
     checkButtonPressed: function () {
-      var results = MySystem.activityController.getDiagramFeedback();
+      
+      var results = MySystem.activityController.getDiagramFeedback({isSubmit: YES});
       
       MySystem.savingController.save();
       var showAlertPane = results[0] ? SC.AlertPane.info : SC.AlertPane.warn;
