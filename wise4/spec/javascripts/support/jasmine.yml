@@ -12,6 +12,7 @@
 #
 src_files:
     - mysystem2/mysystem2.js.erb
+    - mysystem2/mysystem2State.js.erb
 
 # stylesheets
 #

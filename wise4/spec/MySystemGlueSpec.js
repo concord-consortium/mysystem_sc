@@ -1,27 +1,51 @@
-/*global describe it beforeEach spyOn Mysystem2 MySystem*/
+/*global describe it beforeEach afterEach spyOn Mysystem2 MySystem eventManager*/
 describe("Mysystem2", function(){
-  var node;
+  var node,
+      nodeContent,
+      learnerDataElement;
   
   beforeEach(function(){
-    // mock the node
+    // mock the Wise4 eventManager
+    window.eventManager = {
+      fire: function (){},
+      subscribe: function() {}
+    };
+    
+    // mock the Wise4 Node
+    nodeContent = {
+      getContentJSON: function() {
+        return {};
+      }
+    };
     node = {
       getContent: function() {
-        return {
-          getContentJSON: function() {}
-        };
+        return nodeContent;
       },
       studentWork: [],
       view: {
-        eventManager: {
-          subscribe: function() {}
+        eventManager: eventManager,
+        postCurrentNodeVisit: function(){},
+        state : {
+          getCurrentNodeVisit: function(){}
         }
       }
     };
     
     // mock the MySystem object
     window.MySystem = {
-      registerExternalSaveFunction: function(){}
+      registerExternalSaveFunction: function(){},
+      updateFromDOM: function(){},
+      loadWiseConfig: function(){}
     };
+
+    // Add empty learner data dom element
+    learnerDataElement = document.createElement('div');
+    learnerDataElement.id = 'my_system_state';
+    document.getElementsByTagName('body')[0].appendChild(learnerDataElement);
+  });
+  
+  afterEach(function(){
+    document.getElementsByTagName('body')[0].removeChild(learnerDataElement);
   });
   
   it("can be instanciated without error", function(){
@@ -76,15 +100,43 @@ describe("Mysystem2", function(){
     var mysys;
     
     beforeEach(function(){
-      mysys = new Mysystem2(node, null);
+      // setup a valid student work state to test the dom population
+      node.studentWork = [ { type: 'MySystem2' } ];
       
       window.SC = {
         isReady: true
       };
+
     });
     
     it("can be called without error", function(){
+      mysys = new Mysystem2(node, null);
       mysys.render();
+    });
+    
+    it("calls loadWiseConfig if there is authored content", function(){
+      spyOn(MySystem, 'loadWiseConfig');
+      mysys = new Mysystem2(node, null);
+      mysys.render();
+      
+      expect(MySystem.loadWiseConfig).toHaveBeenCalled();
+    });
+    
+    it("does not call loadWiseConfig if there is no authored content", function(){
+      spyOn(MySystem, 'loadWiseConfig');
+      spyOn(nodeContent, 'getContentJSON').andReturn(null);
+      mysys = new Mysystem2(node, null);
+      mysys.render();
+      
+      expect(MySystem.loadWiseConfig).not.toHaveBeenCalled();
+    });
+    
+  });
+  
+  describe("#save", function(){
+    it("can be called without error", function(){
+      var mysys = new Mysystem2(node, null);
+      mysys.save();
     });
   });
 });
