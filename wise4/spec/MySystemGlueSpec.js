@@ -1,4 +1,4 @@
-/*global describe it beforeEach afterEach spyOn Mysystem2 MySystem eventManager*/
+/*global describe it beforeEach afterEach spyOn Mysystem2 MySystem eventManager mockEventManager mockNode*/
 describe("Mysystem2", function(){
   var node,
       nodeContent,
@@ -6,34 +6,20 @@ describe("Mysystem2", function(){
   
   beforeEach(function(){
     // mock the Wise4 eventManager
-    window.eventManager = {
-      fire: function (){},
-      subscribe: function() {}
-    };
+    window.eventManager = mockEventManager();
     
     // mock the Wise4 Node
-    nodeContent = {
-      getContentJSON: function() {
-        return {};
-      }
-    };
-    node = {
-      getContent: function() {
-        return nodeContent;
-      },
-      studentWork: [],
-      view: {
-        eventManager: eventManager,
-        postCurrentNodeVisit: function(){},
-        state : {
-          getCurrentNodeVisit: function(){}
-        }
-      }
-    };
+    node = mockNode(eventManager);
+    nodeContent = node.getContent();
     
     // mock the MySystem object
     window.MySystem = {
-      registerExternalSaveFunction: function(){},
+      externalSaveFunction: null,
+      externalSaveFunctionContext: null,
+      registerExternalSaveFunction: function(f, context){
+        MySystem.externalSaveFunction = f;
+        MySystem.externalSaveFunctionContext = context;
+      },
       updateFromDOM: function(){},
       loadWiseConfig: function(){},
       preExternalSave: function(){}
@@ -138,6 +124,29 @@ describe("Mysystem2", function(){
     it("can be called without error", function(){
       var mysys = new Mysystem2(node, null);
       mysys.save();
+    });
+    
+    it("does not post the current node visit", function(){
+      spyOn(node.view,'postCurrentNodeVisit');
+      var mysys = new Mysystem2(node, null);
+      mysys.save();
+      
+      expect(node.view.postCurrentNodeVisit).not.toHaveBeenCalled();
+    });
+  });
+  
+  describe("the external save function", function(){
+    it("runs without error", function(){
+      var mysys = new Mysystem2(node, null);
+      MySystem.externalSaveFunction.call(MySystem.externalSaveFunctionContext);
+    });
+    
+    it("calls save and posts the current node visit", function(){
+      spyOn(node.view, 'postCurrentNodeVisit');
+      var mysys = new Mysystem2(node, null);
+      MySystem.externalSaveFunction.call(MySystem.externalSaveFunctionContext);
+      
+      expect(node.view.postCurrentNodeVisit).toHaveBeenCalled();
     });
   });
   

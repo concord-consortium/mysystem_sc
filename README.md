@@ -74,22 +74,34 @@ From the top-level mysystem_sc directory:
 1. make sure the gems are installed:
 `bundle install --binstubs`
 
-2. Go into the wise4 directory
+2. process the wise4 glue and MySystem SproutCore files
+`bin/rake build`
+
+3. copy the created vle folder into the wise4 folder
+`cp -r vle wise4/`
+
+4. Go into the wise4 directory
 `cd wise4`
 
-3. Run the jasmine test server
+5. Run the jasmine test server
 `rake jasmine`
 
-4. Follow directions, open browser: http://localhost:8888/
+6. Follow directions, open browser: http://localhost:8888/
 
 ### Running Wise4 Glue tests on commandline or CI server ###
 1. make sure the gems are installed:
 `bundle install --binstubs`
 
-2. Go into the wise4 directory
+2. process the wise4 glue and MySystem SproutCore files
+`bin/rake build`
+
+3. copy the created vle folder into the wise4 folder
+`cp -r vle wise4/`
+
+4. Go into the wise4 directory
 `cd wise4`
 
-3. Run the jasmine ci task
+5. Run the jasmine ci task
 `../bin/rake jasmine:ci`
 
 If you want run this in a CI server that supports JUnit formatting, that can be done with:

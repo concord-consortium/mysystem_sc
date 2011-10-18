@@ -13,7 +13,14 @@ function Mysystem2(node,view) {
   if (typeof node.studentWork != 'undefined' && node.studentWork !== null) {
     this.states = node.studentWork; 
     
-    MySystem.registerExternalSaveFunction(this.save, this);
+    MySystem.registerExternalSaveFunction(function(){
+      this.save();
+
+      // save back to the server. In a single node visit, this will use the same
+      // node visit id each time, so it will save the (growing) stack back to the same
+      // place each time. 
+      this.node.view.postCurrentNodeVisit(this.node.view.state.getCurrentNodeVisit());
+    }, this);
     this.node.view.eventManager.subscribe('processPostResponseComplete', this.saveSuccessful);
     // MySystem is set by default to save every 20 seconds. If we want to change that frequency, we can call
     // MySystem.setAutoSaveFrequency(20000)
@@ -140,11 +147,6 @@ Mysystem2.prototype.save = function() {
 
   // push the state object into this or object's own copy of states
   this.states.push(state);
-  
-  // save back to the server. In a single node visit, this will use the same
-  // node visit id each time, so it will save the (growing) stack back to the same
-  // place each time. 
-  this.node.view.postCurrentNodeVisit(this.node.view.state.getCurrentNodeVisit());
 };
 
 // we subscribe this function to the eventManager's processPostResponseComplete event,
