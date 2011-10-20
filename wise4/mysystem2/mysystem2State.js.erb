@@ -9,7 +9,7 @@
  * is just used as an example. you can add any variables that will help you 
  * represent the student's work for your step type.
  */
-function MYSYSTEM2STATE(response) {
+function MYSYSTEM2STATE(response, isSubmit) {
   //remember the type to avoid corruption (i.e., loading a state saved by an openresponse WISE4 step)
   this.type = "MySystem2";
   
@@ -20,6 +20,8 @@ function MYSYSTEM2STATE(response) {
 		//set the response
 		this.response = response;
 	}
+	
+	this.isSubmit = isSubmit;
 }
 
 /**

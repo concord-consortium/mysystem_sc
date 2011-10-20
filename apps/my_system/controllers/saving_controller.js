@@ -54,8 +54,18 @@ MySystem.savingController = SC.Object.create({
   // or when the save button is pressed.
   // IMPORANT: dataSources must call: MySystem.savingController.set('dataIsDirty', YES); 
   save: function() {
+    var isSubmit = NO;
     if(this.get('saveFunction') && this.get('dataIsDirty')) {
-      this.get('saveFunction')();
+      this.get('saveFunction')(isSubmit);
+    }
+  },
+
+  // submit the diagram which tells the saving code to make sure to lock the saved
+  // state so it won't be overriden
+  submit: function(){
+    var isSubmit = YES;
+    if(this.get('saveFunction')) {
+      this.get('saveFunction')(isSubmit);
     }
   },
 

@@ -130,8 +130,8 @@ MySystem.loadWiseConfig = function(authoredContent,latestResponse) {
 // save data (Wise2...), we can save our data externally whenever we want
 MySystem.registerExternalSaveFunction = function(func, context) {
   if (!!func) {
-    MySystem.savingController.set('saveFunction', function(){
-      func.call(context);
+    MySystem.savingController.set('saveFunction', function(isSubmit){
+      func.call(context, isSubmit);
     });
   } else {
      MySystem.savingController.set('saveFunction', null);

@@ -13,14 +13,8 @@ function Mysystem2(node,view) {
   if (typeof node.studentWork != 'undefined' && node.studentWork !== null) {
     this.states = node.studentWork; 
     
-    MySystem.registerExternalSaveFunction(function(){
-      this.save();
-
-      // save back to the server. In a single node visit, this will use the same
-      // node visit id each time, so it will save the (growing) stack back to the same
-      // place each time. 
-      this.node.view.postCurrentNodeVisit(this.node.view.state.getCurrentNodeVisit());
-    }, this);
+    MySystem.registerExternalSaveFunction(this.saveTriggeredByMySystem, this);
+    
     this.node.view.eventManager.subscribe('processPostResponseComplete', this.saveSuccessful);
     // MySystem is set by default to save every 20 seconds. If we want to change that frequency, we can call
     // MySystem.setAutoSaveFrequency(20000)
@@ -28,7 +22,18 @@ function Mysystem2(node,view) {
   else {
     this.states = [];
   }
+  
+  this.mostRecentSavedState = null;
 }
+
+Mysystem2.prototype.saveTriggeredByMySystem = function(isSubmit) {
+  this.save(isSubmit);
+
+  // save back to the server. In a single node visit, this will use the same
+  // node visit id each time, so it will save the (growing) stack back to the same
+  // place each time. 
+  this.node.view.postCurrentNodeVisit(this.node.view.state.getCurrentNodeVisit());
+};
 
 /**
  * This function renders everything the student sees when they visit the step.
@@ -128,25 +133,43 @@ Mysystem2.prototype.preSave = function() {
  * provided as examples. you may create your own html ui elements in
  * the .html file for this step (look at mysystem.html).
  */
-Mysystem2.prototype.save = function() {
-  // We use a simple dom element for our data passing
-  var response =this.domIO.textContent;
-  
-  /*
-   * create a student state object that will store the new work the student
-   * just submitted
-   */
-  var state = new MYSYSTEM2STATE(response);
-  
-  /*
-   * fire the event to push this state to the global view.states object.
-   * the student work is saved to the server once they move on to the
-   * next step.
-   */
-  eventManager.fire('pushStudentWork', state);
+Mysystem2.prototype.save = function(isSubmit) {
+  var response,
+      state;
 
-  // push the state object into this or object's own copy of states
-  this.states.push(state);
+  // We use a simple dom element for our data passing
+  response =this.domIO.textContent;
+  
+  /*
+   * only create a new student state object 
+   * if there isn't one already or if the last one was a submit so it
+   * shouldn't be changed. 
+   */
+  if(!this.mostRecentSavedState || this.mostRecentSavedState.isSubmit) {
+    this.mostRecentSavedState = state = new MYSYSTEM2STATE(response, isSubmit);
+
+    /*
+     * fire the event to push this state to the global view.states object.
+     * the student work is saved to the server once they move on to the
+     * next step.
+     */
+    eventManager.fire('pushStudentWork', state);
+
+    // push the state object into this or object's own copy of states
+    this.states.push(state);
+  } else {
+    this.mostRecentSavedState.response = response;
+    this.mostRecentSavedState.isSubmit = isSubmit;
+  }
+
+};
+
+Mysystem2.prototype.wise4InitiatedSave = function() {
+  // only save a new state if the data has changed
+  if(window['MySystem'] !== undefined && MySystem.savingController.get("dataIsDirty")){
+    mysystem2.preSave();
+    mysystem2.save(false);
+  }
 };
 
 // we subscribe this function to the eventManager's processPostResponseComplete event,

@@ -1,3 +1,4 @@
+/*globals beforeEach */
 beforeEach(function() {
   // This can contain code that should run for all specs
   // for example adding custom matchers
@@ -5,11 +6,16 @@ beforeEach(function() {
 
 window.mockEventManager = function(){
   // mock the Wise4 eventManager
-  return {
+  var _eventManager = {
+    subscriptions: {},
     fire: function (){},
-    subscribe: function() {}
+    subscribe: function(key, fn) {
+      _eventManager.subscriptions[key] = fn;
+    }
   };
-}
+  
+  return _eventManager;
+};
 
 window.mockNode = function(eventManager){
   // mock the Wise4 Node
@@ -31,4 +37,4 @@ window.mockNode = function(eventManager){
       }
     }
   };  
-}
+};

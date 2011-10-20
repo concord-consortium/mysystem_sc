@@ -156,12 +156,10 @@ SC.setupBodyClassNames = function() {
      * Called by WISE4 when we leave the step
      */
     window.onExit = function () {
-      mysystem2.preSave();
-      mysystem2.save();
+      mysystem2.wise4InitiatedSave();
     };
     window.save = function()    {
-      mysystem2.preSave();
-      mysystem2.save();
+      mysystem2.wise4InitiatedSave();
     };
     
     // this line is changed by the integration tester as it loads in the file.

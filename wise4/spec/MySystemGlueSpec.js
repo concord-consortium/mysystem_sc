@@ -138,13 +138,13 @@ describe("Mysystem2", function(){
   describe("the external save function", function(){
     it("runs without error", function(){
       var mysys = new Mysystem2(node, null);
-      MySystem.externalSaveFunction.call(MySystem.externalSaveFunctionContext);
+      MySystem.externalSaveFunction.call(MySystem.externalSaveFunctionContext, false);
     });
     
     it("calls save and posts the current node visit", function(){
       spyOn(node.view, 'postCurrentNodeVisit');
       var mysys = new Mysystem2(node, null);
-      MySystem.externalSaveFunction.call(MySystem.externalSaveFunctionContext);
+      MySystem.externalSaveFunction.call(MySystem.externalSaveFunctionContext, false);
       
       expect(node.view.postCurrentNodeVisit).toHaveBeenCalled();
     });

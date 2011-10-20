@@ -112,7 +112,7 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       
       var results = MySystem.activityController.getDiagramFeedback({isSubmit: YES});
       
-      MySystem.savingController.save();
+      MySystem.savingController.submit();
       var showAlertPane = results[0] ? SC.AlertPane.info : SC.AlertPane.warn;
       
       // force focus of main pane, as author could have focus elsewhere, hit

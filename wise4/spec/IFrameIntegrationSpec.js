@@ -1,19 +1,13 @@
 /*global describe it beforeEach afterEach spyOn Mysystem2 MySystem eventManager mockNode mockEventManager runs waits waitsFor*/
 describe("Mysystem2 in an iframe", function(){
   var node,
+      eventManager,
       contentPanel,
-      iframeId;
-  
-  function addScript(doc, src){
-    var script = doc.createElement("script");
-    script.type = "text/javascript";
-    script.src = src;
-    doc.body.appendChild(script);
-  }
+      iframeId,
+      newNodeIndex = 0;
   
   beforeEach(function(){
     var contentDoc,
-        eventManager,
         htmlTemplate = null;
         
     runs(function(){
@@ -40,7 +34,7 @@ describe("Mysystem2 in an iframe", function(){
     runs(function(){
       iframeId = Math.floor(Math.random() * 1000000);
       $('body').append("<iframe id='" + iframeId + "' name='" + iframeId + "' width='100%'>[Sorry, your browser does not support iFrames.]</iframe>");
-      contentPanel = document.getElementById("" + iframeId).contentWindow
+      contentPanel = document.getElementById("" + iframeId).contentWindow;
       contentDoc = contentPanel.document;
 
       // need to inject the base tag so relative references can be found
@@ -100,22 +94,94 @@ describe("Mysystem2 in an iframe", function(){
       return contentPanel.loadContentAfterScriptsLoad && contentPanel.MYSYSTEM2STATE;
     }, 1000, "Iframe scripts haven't been run");
     
+    runs(function(){
+      contentPanel.loadContentAfterScriptsLoad(node);
+    });
   });
 
   afterEach(function(){
     $('#' + iframeId).remove();
   });
   
-  it("loads", function(){
+  it("does not add a nodeSate if there are no changes", function(){
     runs(function(){
-      contentPanel.loadContentAfterScriptsLoad(node);
+      expect(contentPanel.MySystem.savingController.get('dataIsDirty')).toBeFalsy();
+      contentPanel.save();
+
+      expect(contentPanel.MySystem.savingController.get('dataIsDirty')).toBeFalsy();
+      expect(node.studentWork.length).toBe(0);
+    });
+  });
+
+  it("adds a nodeState after making a change and wise4 initiated save", function(){
+    runs(function(){
+      makeAChange();
+      
+      contentPanel.save();
+      expect(contentPanel.MySystem.savingController.get('dataIsDirty')).toBe(true);
+      expect(node.studentWork.length).toBe(1);
+    });
+  });
+
+  it("adds only 1 nodeState after making a change hitting the save button and a wise4 initiated save", function(){
+    runs(function(){
+      makeAChange();
+      pressSaveButton();
+      
+      expect(contentPanel.MySystem.savingController.get('dataIsDirty')).toBe(false);
+
+      contentPanel.save();
+      expect(node.studentWork.length).toBe(1);
+    });
+  });
+
+  it("adds only 1 nodeState after making a change hitting the save button and then the submit button", function(){
+    runs(function(){
+      makeAChange();
+      pressSaveButton();
+      pressSubmitButton();
+
+      expect(node.studentWork.length).toBe(1);
+    });
+  });
+
+  it("adds only 1 nodeState after making a change, saving, making a change, and saving", function(){
+    runs(function(){
+      makeAChange();
+      pressSaveButton();
+      makeAChange();
+      pressSaveButton();
+      
+      expect(node.studentWork.length).toBe(1);
     });
   });
   
-  it("saving after a load does not add a nodeState", function(){
-    runs(function(){
-      contentPanel.loadContentAfterScriptsLoad(node);
-      contentPanel.save();
+  // this is a hacky way to make a change
+  // it would be better to drag something onto the diagram
+  function makeAChange(){
+    contentPanel.SC.run(function(){
+      contentPanel.MySystem.store.createRecord(contentPanel.MySystem.Node, { 'title': 'Test node ' + newNodeIndex, 'image': '/lightbulb_tn.png' });
     });
-  });
+    newNodeIndex += 1;
+  }
+  
+  function pressSaveButton(){
+    contentPanel.SC.run(function(){
+      contentPanel.MySystem.statechart.sendAction('saveButtonPressed');
+    });
+
+    // let MySystem know the save was successful Wise4 will call this after a
+    // node.view.postCurrentNodeVisit call
+    eventManager.subscriptions['processPostResponseComplete']();
+  }
+  
+  function pressSubmitButton(){
+    contentPanel.SC.run(function(){
+      contentPanel.MySystem.statechart.sendAction('checkButtonPressed');
+    });
+
+    // let MySystem know the save was successful Wise4 will call this after a
+    // node.view.postCurrentNodeVisit call
+    eventManager.subscriptions['processPostResponseComplete']();
+  }
 });
