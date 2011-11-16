@@ -13,4 +13,5 @@ gem "sc-testdriver", "0.1.1", :git => "git://github.com/concord-consortium/capyb
 gem "cucumber"
 
 # this can probably be moved back from git reference once the gem is available
-gem "jasmine", "1.1.1", :git => "git://github.com/pivotal/jasmine-gem.git"
+
+gem "jasmine",  "1.1.1", :git => "git://github.com/pivotal/jasmine-gem.git", :tag => 'v1.1.1'
