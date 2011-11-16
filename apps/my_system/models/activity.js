@@ -48,6 +48,10 @@ MySystem.Activity = SC.Record.extend(
 
   // javascript text for evaluator function
   customRuleEvaluator: SC.Record.attr(String),
+  
+  // Limit the number of user submissions
+  maxSubmissionClicks: SC.Record.attr(Number, {defaultValue: 0}),
+  maxSubmissionFeedback: SC.Record.attr(String, {defaultValue: "You have clicked 'submit' too many times. Please continue working without hints."})
 });
 
 MySystem.Activity.GuidCounter = 100;
@@ -96,7 +100,9 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     correctFeedback: (wiseStepDef["correctFeedback"] || "Your diagram has no obvious problems."),
     guid: MySystem.Activity.newGuid("activity"),
     enableCustomRuleEvaluator: (wiseStepDef["enableCustomRuleEvaluator"] || false),
-    customRuleEvaluator: (wiseStepDef["customRuleEvaluator"] || "" )
+    customRuleEvaluator: (wiseStepDef["customRuleEvaluator"] || "" ),
+    maxSubmissionClicks: (wiseStepDef["maxSubmissionClicks"] || 0),
+    maxSubmissionFeedback: (wiseStepDef["maxSubmissionFeedback"] || "You have clicked 'submit' too many times. Please continue working without hints.")
   });
   var size = modules.length;
   var i = 0;

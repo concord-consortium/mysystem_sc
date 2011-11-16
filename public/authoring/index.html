@@ -116,14 +116,39 @@
   <div class="options_block">
     <h2>Feedback</h2>
     <div style="padding-left: 10px;">
-      Feedback if all rules pass:
-        <div style="padding-left: 10px; width: 800px;">
+      <p>
+        Feedback if all rules pass:
           {{view SC.TextField valueBinding="MSA.activity.correctFeedback" placeholder="Your diagram has no obvious problems." id="correctFeedback"}}
-        </div>
-      Only report 
-        {{view SC.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit" style="width: 800px;"}}
-      feedback items
+      </p>
     </div>
+    <div style="padding-left: 10px;">
+      <p>
+        Only report 
+        {{view SC.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit"}}
+        feedback items
+      </p>
+    </div>
+
+    <div style="padding-left: 10px;">
+      <p>
+        Maximum student submissions:
+          {{
+            view SC.TextField 
+            valueBinding = "MSA.activity.maxSubmissionClicks"
+            placeholder  = "#"
+            id           = "maxSubmissionClicks"
+          }}
+      </p>
+      <p>
+      Maximum submissions exceeded feedback:
+        {{
+          view SC.TextField
+          valueBinding = "MSA.activity.maxSubmissionFeedback"
+          placeholder  = "You have clicked 'submit' too many times. Please continue working without hints."
+          id           = "maxSubmissionFeedback"
+          style        = "width: 800px;"
+        }}
+    </p>
   </div>
   
   <div class="options_block">

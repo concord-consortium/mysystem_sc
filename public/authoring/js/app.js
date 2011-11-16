@@ -20,7 +20,9 @@ if (top === self) {
     "enableLinkDescriptionEditing": false,
     "enableLinkLabelEditing": false,
     "enableCustomRuleEvaluator": false,
-    "customRuleEvaluator": ""
+    "customRuleEvaluator": "",
+    "maxSubmissionClicks": 0,
+    "maxSubmissionFeedback":  "You have clicked 'submit' too many times. Please continue working without hints."
   };
 }
 
@@ -88,7 +90,9 @@ MSA.ActivityModel = SCUtil.ModelObject.extend({
   enableLinkDescriptionEditing: SCUtil.dataHashProperty,
   enableLinkLabelEditing: SCUtil.dataHashProperty,
   enableCustomRuleEvaluator: SCUtil.dataHashProperty,
-  customRuleEvaluator: SCUtil.dataHashProperty
+  customRuleEvaluator: SCUtil.dataHashProperty,
+  maxSubmissionClicks: SCUtil.dataHashProperty,
+  maxSubmissionFeedback: SCUtil.dataHashProperty
 });
 
 MSA.Module = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
@@ -214,7 +218,9 @@ MSA.dataController = SC.Object.create({
              'MSA.activity.enableLinkLabelEditing',
              'MSA.activity.maxFeedbackItems',
              'MSA.activity.enableCustomRuleEvaluator',
-             'MSA.activity.customRuleEvaluator')
+             'MSA.activity.customRuleEvaluator',
+             'MSA.activity.maxSubmissionClicks',
+             'MSA.activity.maxSubmissionFeedback')
 });
 
 MSA.NodeTypesView = SC.CollectionView.extend({
