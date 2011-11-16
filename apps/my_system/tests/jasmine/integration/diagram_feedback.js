@@ -91,3 +91,49 @@ describe("The diagram feedback", function(){
   });
 
 });
+
+describe("maximum feedback exceeded", function(){
+  var clickLimit = 3;
+  var tooManyClicks = "You clicked 'submit' too many times";
+  var helper = IntegrationTestHelper.create({
+    authoredContent: {
+       "type": "mysystem2",
+       "prompt": "",
+       "modules": [
+         {
+           "name": "obj1",
+           "uuid": "obj1"
+         }
+       ],
+       "energy_types": [
+         {
+           "label": "en1",
+           "uuid": "en1"
+         }
+       ],
+       "diagram_rules": [],
+       "maxSubmissionClicks": clickLimit,
+       "maxSubmissionFeedback": tooManyClicks
+     }
+  });
+  
+  beforeEach(function(){
+    helper.setupApp();
+  });
+  
+  afterEach(function(){
+    helper.teardownApp();
+  });
+  
+  it("should limit the number of submits", function(){
+    var i = 0;
+    helper.addNode('obj1');
+    for (i = 0; i < 10; i++) {
+      helper.submitDiagram();
+    }
+    // we expect submit to still save:
+    expect(helper.get('externalSaveCount')).toBe(10);
+    // but it shoudn't resubmit
+    expect(helper.lastFeedback().numOfSubmits).toBe(clickLimit);
+  });
+});
