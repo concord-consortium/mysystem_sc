@@ -120,6 +120,6 @@ describe("The learner data", function(){
     var parsedLearnerData = JSON.parse(savedLearnerData);
     
     // This should be updated if you change the learner data version
-    expect(parsedLearnerData.version).toBe(3);
+    expect(parsedLearnerData.version).toBe(4);
   });
 });

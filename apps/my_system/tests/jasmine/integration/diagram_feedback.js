@@ -136,4 +136,49 @@ describe("maximum feedback exceeded", function(){
     // but it shoudn't resubmit
     expect(helper.lastFeedback().numOfSubmits).toBe(clickLimit);
   });
+describe("submit timestamp", function(){
+  var helper = IntegrationTestHelper.create({
+    authoredContent: {
+       "type": "mysystem2",
+       "prompt": "",
+       "modules": [
+         {
+           "name": "obj1",
+           "uuid": "obj1"
+         }
+       ],
+       "energy_types": [
+         {
+           "label": "en1",
+           "uuid": "en1"
+         }
+       ],
+       "diagram_rules": [],
+     }
+  });
+  beforeEach(function(){
+    helper.setupApp();
+  });
+  
+  afterEach(function(){
+    helper.teardownApp();
+  });
+
+  it("should update the timestamp on submit", function() {
+    var milliesNow       = new Date().getTime();
+    var firstSubmitTime  = null;
+    var secondSubmitTime = null;
+    var self             = this;
+
+    helper.addNode('obj1');
+
+    helper.submitDiagram();
+    console.log(helper.lastFeedback().numOfSubmits);
+    firstSubmitTime = helper.lastFeedback().timeStampMs;
+    expect(firstSubmitTime > milliesNow).toBeTruthy();
+  
+    helper.submitDiagram();
+    secondSubmitTime = helper.lastFeedback().timeStampMs;
+    expect(secondSubmitTime > firstSubmitTime).toBeTruthy();
+  });
 });
