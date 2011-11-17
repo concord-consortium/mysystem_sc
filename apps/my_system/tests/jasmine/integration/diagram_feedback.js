@@ -90,6 +90,15 @@ describe("The diagram feedback", function(){
     expect(helper.lastFeedback().numOfSubmits).toBe(2);
   });
 
+  it("the feedback should not include the number of submits", function() {
+    helper.
+      addNode('obj1').
+      saveDiagram().
+      submitDiagram();
+    
+    expect(helper.lastFeedback().feedback).not.toMatch('submission:');
+    
+  });
 });
 
 describe("maximum feedback exceeded", function(){
@@ -136,6 +145,20 @@ describe("maximum feedback exceeded", function(){
     // but it shoudn't resubmit
     expect(helper.lastFeedback().numOfSubmits).toBe(clickLimit);
   });
+
+  it ("should include feedback about the number of submits made", function() {
+    helper.
+      addNode('obj1').
+      saveDiagram().
+      submitDiagram();
+    
+    expect(helper.lastFeedback().feedback).toMatch('submission:');
+  });
+
+
+});
+
+
 describe("submit timestamp", function(){
   var helper = IntegrationTestHelper.create({
     authoredContent: {

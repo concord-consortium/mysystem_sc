@@ -76,17 +76,29 @@ MySystem.activityController = SC.ObjectController.create({
     if (maxFeedback && maxFeedback > 0 && suggestions.length > maxFeedback) {
       return suggestions.slice(0,maxFeedback);
     }
-    
+		
     return suggestions;
   },
-  
+	
   getDiagramFeedback: function (options) {
     var suggestions = this.runDiagramRules();
     
     // for now, we can assume that if there are no suggestions the diagram is good
-    var success = (suggestions.get('length') === 0);
-    var feedback = success ? this.get('correctFeedback') : suggestions.join(" \n");
+    var success             = (suggestions.get('length') === 0);
+    var feedback            = success ? this.get('correctFeedback') : suggestions.join(" \n");
+		var maxSubmissionClicks = this.get('maxSubmissionClicks');
+		var submitCount         = 0;
+    var lastFeedback        = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
     
+		// if maximum submissions are enabled for the activity,
+		// display the count to the student.
+		if (maxSubmissionClicks && maxSubmissionClicks > 0) {
+			if (lastFeedback) {
+				submitCount = lastFeedback.get('numOfSubmits') + 1|| 1;
+				feedback    = "submission: %@ / %@\n%@".fmt(submitCount,maxSubmissionClicks,feedback);
+			}
+		}
+
     MySystem.RuleFeedback.saveFeedback(MySystem.store, feedback, success, options.isSubmit);
     
     return [success, feedback];
