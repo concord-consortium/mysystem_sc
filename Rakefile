@@ -117,12 +117,12 @@ task :copy_authoring do
 end
 
 namespace :demos do
-	base_dir = File.join(File.dirname(__FILE__),'debug')
-	desc "snapshot demo"
-	task :snapshot_demo do
-		dest_dir = File.join(base_dir,'snapshot_demo/app/')
-		src_dir = @output_directory
-		%x[ mkdir -p #{dest_dir}]
-		%x[ cp -r #{src_dir} #{dest_dir}]
-	end
+  base_dir = File.join(File.dirname(__FILE__),'debug')
+  desc "snapshot demo"
+  task :snapshot_demo do
+    dest_dir = File.join(base_dir,'snapshot_demo/app/')
+    src_dir = @output_directory
+    %x[ mkdir -p #{dest_dir}]
+    %x[ cp -r #{src_dir} #{dest_dir}]
+  end
 end
