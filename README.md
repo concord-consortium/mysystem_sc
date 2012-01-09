@@ -152,6 +152,8 @@ The files put into $CATALINA_HOME/webapps/vlewrapper/vle/node/mysystem_sc are de
 ### More information: ###
 
 * Slightly outdated demo: <http://mysystem_sc.dev.concord.org/>
+* Authoring for same:  <http://mysystem_sc.dev.concord.org/authoring/>
+* With saving enabled: <http://mysystem_sc.dev.concord.org/demos/latest/authoring/preview.html>
 * GITHUB <https://github.com/concord-consortium/mysystem_sc/>
 * CI server at: <http://hudson.dev.concord.org/hudson/job/MySystem_SproutCore/>
 * To understand user interaction with the application, understand the Ki statechart system (see link below).
