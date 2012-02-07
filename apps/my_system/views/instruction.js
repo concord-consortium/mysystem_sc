@@ -5,8 +5,10 @@
 // ==========================================================================
 
 /*globals MySystem  */
+require('views/sumbissions_feedback_label');
+
 MySystem.InstructionView = SC.View.extend({
-  childViews: 'assignmentView clearButtonView checkButtonView saveButtonView saveStatusView '.w(),
+  childViews: 'assignmentView clearButtonView numSubmissions checkButtonView saveButtonView saveStatusView '.w(),
   backgroundColor: '#eeefff',
   
   canCollapse: YES,
@@ -28,7 +30,14 @@ MySystem.InstructionView = SC.View.extend({
     toolTip: 'Clear everything from your diagram',
     action: 'clearCanvas'
   }),
-  
+  numSubmissions: MySystem.SubmissionsFeedbackLabel.design({
+  // numSubmissions: SC.LabelView.design({
+    layout: { right: 15, bottom: 40, height: 20, width: 220},
+    value: 'test',
+    textAlign: SC.ALIGN_RIGHT,
+    valueBinding: 'MySystem.activityController.submissionFeedbackInfo',
+    visible:  YES
+  }),
   checkButtonView: SC.ButtonView.design({
     layout: { right: 15, bottom: 10, height: 25, width: 120 },
     // NP Sept. 1, 2011: Kelley in Berkeley wanted this label changed
