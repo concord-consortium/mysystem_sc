@@ -18,6 +18,8 @@
 
 MySystem.activityController = SC.ObjectController.create({
   
+  lastFeedback: '',
+  numOfSubmits: 0,
   // runs the diagram rules, saves the results to the learner data and returns
   // an array containing a success boolean and a feedback string
   runDiagramRules: function() {
@@ -80,27 +82,33 @@ MySystem.activityController = SC.ObjectController.create({
     return suggestions;
   },
 	
+  
+  submissionFeedbackInfo: function(_feedback) {
+    var maxSubmissionClicks = this.get('maxSubmissionClicks');
+    var submitCount         = 0;
+    var lastFeedback        = this.get('lastFeedback');
+    var feedback            = '';
+    // if maximum submissions are enabled for the activity,
+    // display the count to the student.
+    if (maxSubmissionClicks && maxSubmissionClicks > 0) {
+      submitCount =  this.get('numOfSubmits');
+      feedback    = "# of submissions: %@/%@".fmt(submitCount,maxSubmissionClicks);
+    }
+    return feedback;
+  }.property('lastFeedback','maxSubmissionClicks','numOfSubmits'),
+
   getDiagramFeedback: function (options) {
     var suggestions = this.runDiagramRules();
     
     // for now, we can assume that if there are no suggestions the diagram is good
     var success             = (suggestions.get('length') === 0);
     var feedback            = success ? this.get('correctFeedback') : suggestions.join(" \n");
-		var maxSubmissionClicks = this.get('maxSubmissionClicks');
-		var submitCount         = 0;
-    var lastFeedback        = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
-    
-		// if maximum submissions are enabled for the activity,
-		// display the count to the student.
-		if (maxSubmissionClicks && maxSubmissionClicks > 0) {
-			if (lastFeedback) {
-				submitCount = lastFeedback.get('numOfSubmits') + 1|| 1;
-				feedback    = "submission: %@ / %@\n%@".fmt(submitCount,maxSubmissionClicks,feedback);
-			}
-		}
 
     MySystem.RuleFeedback.saveFeedback(MySystem.store, feedback, success, options.isSubmit);
     
+    var lastFeedback        = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+    this.set('lastFeedback',lastFeedback.get('feedback'));
+    this.set('numOfSubmits',lastFeedback.get('numOfSubmits'));
     return [success, feedback];
   }
 }) ;

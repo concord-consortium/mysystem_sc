@@ -123,6 +123,9 @@ MySystem.loadWiseConfig = function(authoredContent,latestResponse) {
     var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
     MySystem.activityController.set('content',activity);
     MySystem.updateFromDOM();
+    var lastFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+    MySystem.activityController.set('lastFeedback',lastFeedback.get('feedback'));
+    MySystem.activityController.set('numOfSubmits',lastFeedback.get('numOfSubmits'));
   });
 };
 
