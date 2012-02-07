@@ -5,7 +5,7 @@
 
 /*globals MySystem */
 
-/** 
+/**
   @class
 
   Description:
@@ -17,7 +17,7 @@
 
 
 MySystem.activityController = SC.ObjectController.create({
-  
+
   lastFeedback: '',
   numOfSubmits: 0,
   // runs the diagram rules, saves the results to the learner data and returns
@@ -78,11 +78,11 @@ MySystem.activityController = SC.ObjectController.create({
     if (maxFeedback && maxFeedback > 0 && suggestions.length > maxFeedback) {
       return suggestions.slice(0,maxFeedback);
     }
-		
+
     return suggestions;
   },
-	
-  
+
+
   submissionFeedbackInfo: function(_feedback) {
     var maxSubmissionClicks = this.get('maxSubmissionClicks');
     var submitCount         = 0;
@@ -99,13 +99,13 @@ MySystem.activityController = SC.ObjectController.create({
 
   getDiagramFeedback: function (options) {
     var suggestions = this.runDiagramRules();
-    
+
     // for now, we can assume that if there are no suggestions the diagram is good
     var success             = (suggestions.get('length') === 0);
     var feedback            = success ? this.get('correctFeedback') : suggestions.join(" \n");
 
     MySystem.RuleFeedback.saveFeedback(MySystem.store, feedback, success, options.isSubmit);
-    
+
     var lastFeedback        = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
     this.set('lastFeedback',lastFeedback.get('feedback'));
     this.set('numOfSubmits',lastFeedback.get('numOfSubmits'));
