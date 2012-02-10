@@ -83,7 +83,7 @@ MySystem.activityController = SC.ObjectController.create({
   },
 
 
-  submissionFeedbackInfo: function(_feedback) {
+  submissionInfo: function(_feedback) {
     var maxSubmissionClicks = this.get('maxSubmissionClicks');
     var submitCount         = 0;
     var lastFeedback        = this.get('lastFeedback');
@@ -110,6 +110,27 @@ MySystem.activityController = SC.ObjectController.create({
     this.set('lastFeedback',lastFeedback.get('feedback'));
     this.set('numOfSubmits',lastFeedback.get('numOfSubmits'));
     return [success, feedback];
+  },
+
+  // TODO: These probably should be moved to their own controller perhaps..
+  // Related to a floating PalettePan showing last feedback.
+  feedbackPalette: null,
+  showFeedbackPalette: function() {
+    var palette = this.get('feedbackPalette');
+    if(!!! palette) {
+      palette = MySystem.SubmissionsFeedbackPallet.create({});
+      this.set('feedbackPalette', palette);
+    }
+    palette.append();
+  },
+
+  // TODO: These probably should be moved to their own controller perhaps..
+  // Related to a floating PalettePan showing last feedback.
+  hideFeedbackPalette: function() {
+    var palette = this.get('feedbackPalette');
+    if(palette) {
+      palette.remove();
+    }
   }
 }) ;
 

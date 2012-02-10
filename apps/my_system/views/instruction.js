@@ -35,7 +35,7 @@ MySystem.InstructionView = SC.View.extend({
     layout: { right: 15, bottom: 40, height: 20, width: 220},
     value: 'test',
     textAlign: SC.ALIGN_RIGHT,
-    valueBinding: 'MySystem.activityController.submissionFeedbackInfo',
+    valueBinding: 'MySystem.activityController.submissionInfo',
     visible:  YES
   }),
   checkButtonView: SC.ButtonView.design({

@@ -184,3 +184,21 @@
   text-align: right;
   color: blue;
 }
+.feedbackpaelletcontent {
+  overflow: hidden;
+}
+.feedbackpaelletcontent .sumbission_info {
+  color: #222;
+  display: block;
+  clear: both;
+  font-size: 15px;
+  font-weight: bold;
+  margin: 1em;
+}
+.feedbackpaelletcontent  .last_feedback{
+  color: #222;
+  font-size: 13px;
+  display: block;
+  margin: 1em;
+}
+
