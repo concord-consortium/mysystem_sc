@@ -49,7 +49,7 @@ MySystem.InstructionView = SC.View.extend({
   
   // this starts out not enabled so people don't think they can actually save
   saveButtonView: SC.ButtonView.design({
-    layout: { right: 15, top: 5, height: 25, width: 80 },
+    layout: { right: 150, top: 5, height: 25, width: 80 },
     title: 'Save',
     isEnabledBinding: 'MySystem.savingController.enableManualSave',
     toolTip: 'Save your diagram',
@@ -57,7 +57,7 @@ MySystem.InstructionView = SC.View.extend({
   }),
   
   saveStatusView: SC.LabelView.design({
-    layout: { right: 100, top: 9, height: 25, width: 115 },
+    layout: { right: 100 , top: 40, height: 25, width: 130 },
     textAlign: SC.ALIGN_LEFT,
 		displayProperties: 'isDirty value'.w(),
     valueBinding: 'MySystem.savingController.saveStatusText',
