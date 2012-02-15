@@ -21,6 +21,7 @@ MySystem.ADDING_LINK = SC.State.design({
   exitState: function () {
     SC.Logger.log("Leaving state %s", this.get('name'));
     // // Detatch property editor pane and clean it up
+    MySystem.nodesController.deselectObject(this._newLink);
     this.tearDownInspectorPane();
   },
   
