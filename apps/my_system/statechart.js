@@ -128,8 +128,10 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       else {
         results = MySystem.activityController.getDiagramFeedback({isSubmit: YES});
         MySystem.savingController.submit();
-        alertPane = results[0] ? SC.AlertPane.info : SC.AlertPane.warn;
-        alertPane.call(SC.AlertPane, {description: results[1]});
+        hasProblems = results[0];
+        MySystem.activityController.showFeedbackPalette();
+        //alertPane = results[0] ? SC.AlertPane.info : SC.AlertPane.warn;
+        //alertPane.call(SC.AlertPane, {description: results[1], classNames: ['feedback']});
       }
     },
     

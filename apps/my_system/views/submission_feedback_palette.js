@@ -14,7 +14,8 @@
 sc_require('core');
 
 MySystem.SubmissionsFeedbackPallet = SC.PalettePane.extend({
-  layout: { width: 400, height: 200, right: 200, top: 200 }, 
+  layout: { width: 400, height: 200, right: 200, top: 200 },
+  error: false,
   click: function(e) {
     //MySystem.activityController.hideFeedbackPalette();
   },
@@ -28,7 +29,7 @@ MySystem.SubmissionsFeedbackPallet = SC.PalettePane.extend({
       console.log("update")
       console.log(this.get('submissionInfo'))
       jquery.find('.sumbission_info').text(this.get('submissionInfo'));
-      jquery.find('.last_feedback').text(this.get('lastFeedback'));
+      jquery.find('.last_feedback').html(this.get('lastFeedback').split("\n").join("<br/>"));
     }
   }).design({
     layout: { width: 400, height: 200, right: 0, top: 0 }, 
