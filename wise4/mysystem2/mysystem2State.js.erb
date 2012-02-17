@@ -43,6 +43,11 @@ MYSYSTEM2STATE.prototype.parseDataJSONObj = function(stateJSONObj) {
 	//create a state object with the student work
 	var mysystemState = new MYSYSTEM2STATE(response);
 	
+	//populate the isSubmit field if it exists
+	if(stateJSONObj.isSubmit != null) {
+		mysystemState.isSubmit = stateJSONObj.isSubmit;
+	}
+	
 	//return the state object
 	return mysystemState;
 };

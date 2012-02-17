@@ -99,9 +99,6 @@ Mysystem2Node.prototype.onExit = function() {
  * requires additional processing
  */
 Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivIdPrefix, workgroupId) {
-	//Get the latest student state object for this step
-	var MYSYSTEM2STATE = nodeVisit.getLatestWork();
-	
 	/*
 	 * get the step work id from the node visit in case we need to use it in
 	 * a DOM id. we don't use it in this case but I have retrieved it in case
@@ -109,29 +106,106 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
 	 * how one might use it.
 	 */
 	var stepWorkId = nodeVisit.id;
-	
-	// get student work (string)
-	var studentWork = MYSYSTEM2STATE.getStudentWork().response;
-	
+
 	// get content
-    var content = this.getContent().getContentString();
+    var contentString = this.getContent().getContentString();
+    var contentJSON = this.getContent().getContentJSON();
 
 	// get content baseurl (e.g. 'http://localhost:8080/curriculum/897')
 	var contentBaseUrl = this.view.config.getConfigParam('getContentBaseUrl');	
 
     // prepend contentbaseurl in front of "assets" to content
-    content = this.view.utils.prependContentBaseUrlToAssets(contentBaseUrl,content);
+    contentString = this.view.utils.prependContentBaseUrlToAssets(contentBaseUrl,contentString);
     
-    // prepend contentbaseurl in front of "assets" to student's work
-    var studentWork = this.view.utils.prependContentBaseUrlToAssets(contentBaseUrl, studentWork);
-	
-	// put the student work and content in a hidden element
-    // add enlarge link to show student's diagram in a popup window
-	var divContent = "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
-		"onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"\"'>enlarge</a>" +
-    	"<span id='content_"+divId+"' style='display:none'>"+content+"</span>" +
-    	"<span id='studentwork_"+divId+"' style='display:none'>"+studentWork+"</span>";
-	
+    var divContent = "";
+    
+    if(contentJSON != null) {
+    	if(contentJSON.customRuleEvaluator == null || contentJSON.customRuleEvaluator == ""){
+    		//only display the latest node state
+    		
+    		//Get the latest student state object for this step
+    		var MYSYSTEM2STATE = nodeVisit.getLatestWork();
+    		
+    		// get student work (string)
+    		var studentWork = MYSYSTEM2STATE.getStudentWork().response;
+    		
+    	    // prepend contentbaseurl in front of "assets" to student's work
+    	    var studentWork = this.view.utils.prependContentBaseUrlToAssets(contentBaseUrl, studentWork);
+    		
+    		// put the student work and content in a hidden element
+    	    // add enlarge link to show student's diagram in a popup window
+    		divContent = "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
+    			"onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"\"'>enlarge</a>" +
+    	    	"<span id='content_"+divId+"' style='display:none'>"+contentString+"</span>" +
+    	    	"<span id='studentwork_"+divId+"' style='display:none'>"+studentWork+"</span>";
+    	} else {
+    		/*
+    		 * display all the node states because this step utilizes automated feedback
+    		 * when students submit their diagrams.
+    		 */
+    		
+    		//loop through all the node states from newest to oldest
+    		for(var x=nodeVisit.nodeStates.length - 1; x>=0; x--) {
+    			//get a node state
+    			var nodeState = nodeVisit.nodeStates[x];
+    			
+    			var studentWork = nodeState.response;
+    			var isSubmit = nodeState.isSubmit;
+    			var feedback = "";
+    			var timestamp = "";
+    			
+    			//get the response string
+    			var responseString = nodeState.response;
+    			
+    			//remove all the \n
+    			responseString = responseString.replace(/\n/g, "");
+    			
+    			//create a JSON object from the response
+    			var responseJSON = JSON.parse(responseString);
+    			
+    			if(responseJSON["MySystem.RuleFeedback"] != null &&
+    					responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK != null) {
+    				
+    				if(responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.feedback != null) {
+    					//get the feedback
+    					feedback = responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.feedback;    					
+    				}
+    				
+    				if(responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.timeStampMs != null) {
+    					//get the timestamp
+    					var timestampMS = responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.timeStampMs;
+    					timestamp = new Date(timestampMS);
+    				}
+    			}
+    			
+        	    // prepend contentbaseurl in front of "assets" to student's work
+        	    var studentWork = this.view.utils.prependContentBaseUrlToAssets(contentBaseUrl, studentWork);
+        		
+        	    if(x != nodeVisit.nodeStates.length - 1) {
+        	    	//divide each node state with an hr
+        			divContent += "<hr style='border:1px solid lightgrey'>";
+        		}
+        	    
+        	    divContent += "Diagram: ";
+        	    
+        		// put the student work and content in a hidden element
+        	    // add enlarge link to show student's diagram in a popup window
+        		divContent += "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
+        			"onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"_"+x+"\"'>enlarge</a>" +
+        	    	"<span id='content_"+divId+"_"+x+"' style='display:none'>"+contentString+"</span>" +
+        	    	"<span id='studentwork_"+divId+"_"+x+"' style='display:none'>"+studentWork+"</span>";
+        		
+        		divContent += "<br>";
+        		divContent += "Is Submit: " + isSubmit;
+        		divContent += "<br>";
+        		divContent += "Feedback: " + feedback;
+        		divContent += "<br>";
+        		divContent += "Timestamp: " + timestamp;
+        		divContent += "<br>";
+    		}
+    	}
+    }
+    
 	$('#' + divId).html(divContent);
 };
 

@@ -181,6 +181,29 @@ SC.setupBodyClassNames = function() {
         // get the content and data from the parent window and load them into MySystem
         var data = window.opener.$("#studentwork_"+divId).html();
         var contentString = window.opener.$("#content_"+divId).html();
+
+        /** 
+        From: geoffreykwan
+        https://github.com/WISE-Community/WISE-VLE/commit/0870430bb831b97677d3c824a02f6a981d69a168
+
+        we need to replace all instances of "\&quot; with ' and  \&quot;" with '
+
+        "\&quot; and \&quot;" show up when the prompt contains a double quote ".
+        when the prompt is placed into the JSON it is converted to \"
+        when the prompt is then placed in the grading div it is converted to \&quot;
+
+        here is an example of the change progression
+        <style type="text/css">
+        <style type=\"text/css\">
+        <style type="\&quot;text/css\&quot;">
+
+        to resolve this, we will replace "\&quot; and \&quot;" with '
+        to end up with  <style type='text/css'>
+        **/
+
+        contentString = contentString.replace(/"\\&quot;/g, "'");
+        contentString = contentString.replace(/\\&quot;"/g, "'");
+
         var domIO = document.getElementById('my_system_state');
         domIO.textContent = data;
         MySystem.loadWiseConfig(JSON.parse(contentString),null);
