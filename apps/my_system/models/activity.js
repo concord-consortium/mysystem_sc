@@ -96,7 +96,7 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     enableNodeDescriptionEditing: (wiseStepDef["enableNodeDescriptionEditing"] || false),
     enableLinkDescriptionEditing: (wiseStepDef["enableLinkDescriptionEditing"] || false),
     enableLinkLabelEditing: (wiseStepDef["enableLinkLabelEditing"] || false),
-    minimumRequirementsFeedback: (wiseStepDef["minimumRequirementsFeedback"] || "Your diagram doesn't include enough detail."),
+    minimumRequirementsFeedback: (wiseStepDef["minimumRequirementsFeedback"] || "You need to work more on your diagram to get feedback!"),
     correctFeedback: (wiseStepDef["correctFeedback"] || "Your diagram has no obvious problems."),
     guid: MySystem.Activity.newGuid("activity"),
     enableCustomRuleEvaluator: (wiseStepDef["enableCustomRuleEvaluator"] || false),

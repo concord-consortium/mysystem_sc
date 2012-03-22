@@ -14,7 +14,7 @@ if (top === self) {
     "correctFeedback": "Your diagram has no obvious problems.",
     "minimum_requirements": [],
     "maxFeedbackItems": 0,
-    "minimumRequirementsFeedback": "Your diagram doesn't have enough elements.",
+    "minimumRequirementsFeedback": "You need to work more on your diagram to get feedback!",
     "enableNodeLabelEditing": false,
     "enableNodeDescriptionEditing": false,
     "enableLinkDescriptionEditing": false,

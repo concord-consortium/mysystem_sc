@@ -70,7 +70,7 @@
     <h2>Minimum Requirements</h2>
     {{#if MSA.minRequirementsController.hasRequirements}}
       <span style="padding-left: 10px;">
-        Feedback: {{view SC.TextField valueBinding="MSA.activity.minimumRequirementsFeedback" placeholder="Your diagram doesn't include enough detail" id="minimumFeedback"}}
+        Feedback: {{view SC.TextField valueBinding="MSA.activity.minimumRequirementsFeedback" placeholder="You need to work more on your diagram to get feedback!" id="minimumFeedback"}}
       </span>
     {{/if}}
     {{#collection contentBinding="MSA.minRequirementsController" tagName="ul"}}
