@@ -114,6 +114,39 @@ If you want run this in a CI server that supports JUnit formatting, that can be 
 
 The default location for the output can be changed by setting the env variable CI_REPORTS.
 
+### Deploying to the demo site ###
+
+To build [the demo](http://mysystem_sc.dev.concord.org/) 
+you will have to start a special [jenkins job](http://hudson.dev.concord.org/hudson/view/SproutCore/job/MySystemDeployDemo)
+
+  # After the jenkins build is done
+  # on otto got to the demo site directory
+  cd /web/mysystem_sc.dev.concord.org/public
+  
+  # make a copy of the last deployment
+  sudo rm -rf ./previous
+  sudo mv ./latest/ ./previous
+  sudo cp -r 97a4bfe19433bc905d7187033fc20fd84e5a029b latest
+
+  cd /web/mysystem_sc.dev.concord.org/
+
+  rm ./index.html
+  ln -s demos/latest/my_system/en/<build identifier>/index.html ./index.html
+
+  rm authoring
+  ln -s demos/latest/authoring/ authoring
+
+This could certainly be improved.  When its done:
+you can [Author](http://mysystem_sc.dev.concord.org/authoring/preview.html)
+(click save and copy the url)
+eg `http://mysystem_sc.dev.concord.org/authoring/preview.html#c3d85f04b7bcca97253b8726f7044908`
+
+Now people can run it here: `http://mysystem_sc.dev.concord.org/authoring/run.html#c3d85f04b7bcca97253b8726f7044908`
+
+If people save data, they can review it at a similarly long url eg: `http://mysystem_sc.dev.concord.org/authoring/run.html#c3d85f04b7bcca97253b8726f7044908/c3d85f04b7bcca97253b8726f7045819`
+
+
+
 ### Running in Wise4 using vagrant ###
 
 0. Install prerequisites: git, vagrant, and virtualbox
@@ -136,7 +169,6 @@ if you've only been making changes to the files in the wise4 folder, you can jus
 `bundle exec rake copy_templates`
 
 ### Building as WISE4 step ###
-
 
 0. Install WISE4. See [the docs](http://code.google.com/p/wise4/wiki/StableWISEDeploymentModel) for the gory details. [Check with the wise4-dev google group  ]( http://groups.google.com/group/wise4-dev ) if you run into problems.
 1. Make sure $CATALINA_HOME is points to the directory where Tomcat is installed.
