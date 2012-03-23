@@ -72,7 +72,7 @@ MySystem.ADDING_LINK = SC.State.design({
     var inspector = MySystem.getPath('mainPage.inspectorPane');
     inspector.set('isOptionsForNewLink', YES);
     inspector.set('isModal', YES);
-    inspector.set('layout', { centerX: 0, centerY: 0, width: 270, height: 155 });
+    // inspector.set('layout', { centerX: 0, centerY: 0, width: 270, height: 155 });
     if (!inspector.isPaneAttached) {
       inspector.append();
     }
