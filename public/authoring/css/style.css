@@ -125,8 +125,19 @@ input {
   width: 300px;
 }
 
+textarea {
+  border: 2px #ccc solid;
+  overflow: auto;
+  vertical-align: top;
+}
 
-
+.diagram_rule {
+  margin-top: 1.2em;
+  border-bottom: 3px solid #aaa;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1em;
+}
 
 
 
