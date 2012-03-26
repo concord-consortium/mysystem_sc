@@ -19,6 +19,7 @@
 </head>
 <body>
   <h1>MySystem Authoring</h1>
+  
   <script type="text/html">
   <div class="options_block">
     <h2>Options</h2>
@@ -37,8 +38,8 @@
   <div class="options_block">
     <h2>Node Types</h2>
     {{#collection contentBinding="MSA.modulesController" tagName="ul"}}
-      {{view SC.TextField valueBinding="parentView.content.name" placeholder="name"}}
-      {{view SC.TextField valueBinding="parentView.content.image" placeholder="image"}}
+      {{view MSA.TextField valueBinding="parentView.content.name" placeholder="name"}}
+      {{view MSA.TextField valueBinding="parentView.content.image" placeholder="image"}}
       {{#view SC.Button target="MSA.modulesController" action="removeItem" itemBinding="parentView.content"}}
       remove
       {{/view}}
@@ -53,8 +54,8 @@
   <div class="options_block">
     <h2>Energy Types</h2>
     {{#collection contentBinding="MSA.energyTypesController" tagName="ul"}}
-      {{view SC.TextField valueBinding="parentView.content.label" placeholder="label"}}
-      {{view SC.TextField valueBinding="parentView.content.color" placeholder="color"}}
+      {{view MSA.TextField valueBinding="parentView.content.label" placeholder="label"}}
+      {{view MSA.TextField valueBinding="parentView.content.color" placeholder="color"}}
       {{#view SC.Button target="MSA.energyTypesController" action="removeItem" itemBinding="parentView.content"}}
       remove
       {{/view}}
@@ -69,15 +70,23 @@
   <div class="options_block">
     <h2>Minimum Requirements</h2>
     {{#if MSA.minRequirementsController.hasRequirements}}
-      <span style="padding-left: 10px;">
-        Feedback: {{view SC.TextField valueBinding="MSA.activity.minimumRequirementsFeedback" placeholder="You need to work more on your diagram to get feedback!" id="minimumFeedback"}}
-      </span>
+      <p style="padding-left: 10px;">
+        Feedback: 
+        <br/>
+        {{
+          view MSA.TextArea 
+          valueBinding = "MSA.activity.minimumRequirementsFeedback" 
+          placeholder  = "You need to work more on your diagram to get feedback!" 
+          id           = "minimumFeedback"
+        }}
+        <br/><br/>
+      </p>
     {{/if}}
     {{#collection contentBinding="MSA.minRequirementsController" tagName="ul"}}
         The diagram
         {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
         {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.comparisons" valueBinding="parentView.content.comparison"}}
-        {{view SC.TextField valueBinding="parentView.content.number" placeholder="number"}}<br/>
+        {{view MSA.TextField valueBinding="parentView.content.number" placeholder="number" size="1"}}<br/>
         {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.nodeTypes" valueBinding="parentView.content.type"}}
         <!-- button to show/hide the rest of the options if we could use an if statement then we could
              check for the status of the property, and show one button in one case and another button in another case
@@ -118,13 +127,20 @@
     <div style="padding-left: 10px;">
       <p>
         Feedback if all rules pass:
-          {{view SC.TextField valueBinding="MSA.activity.correctFeedback" placeholder="Your diagram has no obvious problems." id="correctFeedback"}}
+          <br/>
+          {{ 
+            view MSA.TextArea 
+            valueBinding ="MSA.activity.correctFeedback" 
+            placeholder  = "Your diagram has no obvious problems." 
+            id           = "correctFeedback"
+          }}
+          <br/><br/>
       </p>
     </div>
     <div style="padding-left: 10px;">
       <p>
         Only report 
-        {{view SC.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit"}}
+        {{view MSA.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit" size = "1" }}
         feedback items
       </p>
     </div>
@@ -133,60 +149,70 @@
       <p>
         Maximum student submissions:
           {{
-            view SC.TextField 
+            view MSA.TextField 
             valueBinding = "MSA.activity.maxSubmissionClicks"
             placeholder  = "#"
             id           = "maxSubmissionClicks"
+            size         = "2"
           }}
       </p>
       <p>
-      Maximum submissions exceeded feedback:
+        Maximum submissions exceeded feedback:
+        <br/>
         {{
-          view SC.TextField
+          view MSA.TextArea
           valueBinding = "MSA.activity.maxSubmissionFeedback"
           placeholder  = "You have clicked 'submit' too many times. Please continue working without hints."
           id           = "maxSubmissionFeedback"
-          style        = "width: 800px;"
         }}
-    </p>
+        <br/><br/>
+      </p>
+    </div>
   </div>
   
   <div class="options_block">
     <h2>Diagram Rules</h2>
     {{#collection contentBinding="MSA.diagramRulesController" tagName="ol" attributeBindings="start" start="0"}}
-        The diagram 
-        {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
-        {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.comparisons" valueBinding="parentView.content.comparison"}}
-        {{view SC.TextField valueBinding="parentView.content.number" placeholder="number"}}<br/>
-        {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.content.type"}}
-        <!-- button to show/hide the rest of the options if we could use an if statement then we could
-             check for the status of the property, and show one button in one case and another button in another case
+        <div class="diagram_rule">
+          The diagram 
+          {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
+          {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.comparisons" valueBinding="parentView.content.comparison"}}
+          {{view MSA.TextField valueBinding="parentView.content.number" placeholder="number" size="1"}}<br/>
+          {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.content.type"}}
+          <!-- button to show/hide the rest of the options if we could use an if statement then we could
+               check for the status of the property, and show one button in one case and another button in another case
 
-             not exactly why we need parentView.parentView here, my guess is that the if wraps this in another view so we
-             need parentView.parentView to get all the way up to the itemView 
-           
-             I tried adding a button to hide the link options again but the value bindings did not correctly update the views after they
-             were shown, hidden and shown again.  Changing the view after the show, hide, show did update the model object though
-        -->
-        {{#if "content.hasLink"}}
-          {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.linkDirections" valueBinding="parentView.parentView.content.linkDirection"}}
-          {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.parentView.content.otherNodeType"}}
-          with energy type: {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.energyTypes" valueBinding="parentView.parentView.content.energyType"}}
-        {{else}}
-          {{#view SC.Button
-            targetBinding="parentView.parentView.content"
-            action="toggleHasLink"}}
-            Enable link conditions
-          {{/view}} 
-        {{/if}}
-        <br/>
-        if not then show the user:
-        {{view SC.TextField valueBinding="parentView.content.suggestion"}}
-        {{#view SC.Button target="MSA.diagramRulesController" action="removeItem" itemBinding="parentView.content"}}
-        Remove Diagram Rule
-        {{/view}}
-        {{#view SC.Button target="MSA.diagramRulesController" action="moveItemUp" itemBinding="parentView.content"}} ↑ {{/view}}
-        {{#view SC.Button target="MSA.diagramRulesController" action="moveItemDown" itemBinding="parentView.content"}} ↓ {{/view}}
+               not exactly why we need parentView.parentView here, my guess is that the if wraps this in another view so we
+               need parentView.parentView to get all the way up to the itemView 
+             
+               I tried adding a button to hide the link options again but the value bindings did not correctly update the views after they
+               were shown, hidden and shown again.  Changing the view after the show, hide, show did update the model object though
+          -->
+          {{#if "content.hasLink"}}
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.linkDirections" valueBinding="parentView.parentView.content.linkDirection"}}
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.parentView.content.otherNodeType"}}
+            with energy type: {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.energyTypes" valueBinding="parentView.parentView.content.energyType"}}
+          {{else}}
+            {{#view SC.Button
+              targetBinding="parentView.parentView.content"
+              action="toggleHasLink"}}
+              Enable link conditions
+            {{/view}} 
+          {{/if}}
+          <br/><br/>
+          if not then show the user: 
+          <br/>
+          {{
+            view MSA.TextArea 
+            valueBinding = "parentView.content.suggestion"
+          }}
+          <br/><br/>
+          {{#view SC.Button target="MSA.diagramRulesController" action="removeItem" itemBinding="parentView.content"}}
+          Remove Diagram Rule
+          {{/view}}
+          {{#view SC.Button target="MSA.diagramRulesController" action="moveItemUp" itemBinding="parentView.content"}} ↑ {{/view}}
+          {{#view SC.Button target="MSA.diagramRulesController" action="moveItemDown" itemBinding="parentView.content"}} ↓ {{/view}}
+        </div>
     {{/collection}}
     {{#view SC.Button 
       target="MSA.diagramRulesController"
@@ -203,18 +229,26 @@
 
 Javascipt for custom rules. e.g.
 <br/>
-<code><pre>
-var rule_a = rules.objectAt(0).check(nodes);
-var rule_b = rules.objectAt(1).check(nodes);
-var rule_c = rules.objectAt(2).check(nodes);
-if(! ((rule_a && rule_b) || rule_c)) {
-  suggestions.pushObject(rules.objectAt(2).get('suggestion'));
-}
-</pre></code>
+<pre>
+  <code>
+    var rule_a = rules.objectAt(0).check(nodes);
+    var rule_b = rules.objectAt(1).check(nodes);
+    var rule_c = rules.objectAt(2).check(nodes);
+    if(! ((rule_a && rule_b) || rule_c)) {
+      suggestions.pushObject(rules.objectAt(2).get('suggestion'));
+    }
+  </code>
+</pre>
 
         <br/>
         <div id="customRuleEvaluator">
-          {{view SC.TextArea valueBinding="MSA.activity.customRuleEvaluator"}}
+          {{
+            view MSA.TextArea 
+            valueBinding  = "MSA.activity.customRuleEvaluator"
+            wrap          = "off" 
+            rows          = "20"
+            cols          = "72" 
+          }}
         </div>
       {{/if}}
     </div>
