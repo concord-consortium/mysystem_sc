@@ -51,7 +51,9 @@ MySystem.Activity = SC.Record.extend(
   
   // Limit the number of user submissions
   maxSubmissionClicks: SC.Record.attr(Number, {defaultValue: 0}),
-  maxSubmissionFeedback: SC.Record.attr(String, {defaultValue: "You have clicked 'submit' too many times. Please continue working without hints."})
+  maxSubmissionFeedback: SC.Record.attr(String, {defaultValue: "You have clicked 'submit' too many times. Please continue working without hints."}),
+  feedbackPanelWidth:  SC.Record.attr(Number, {defaultValue: 500}),
+  feedbackPanelHeight: SC.Record.attr(Number, {defaultValue: 250})
 });
 
 MySystem.Activity.GuidCounter = 100;
@@ -102,7 +104,9 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     enableCustomRuleEvaluator: (wiseStepDef["enableCustomRuleEvaluator"] || false),
     customRuleEvaluator: (wiseStepDef["customRuleEvaluator"] || "" ),
     maxSubmissionClicks: (wiseStepDef["maxSubmissionClicks"] || 0),
-    maxSubmissionFeedback: (wiseStepDef["maxSubmissionFeedback"] || "You have clicked 'submit' too many times. Please continue working without hints.")
+    maxSubmissionFeedback: (wiseStepDef["maxSubmissionFeedback"] || "You have clicked 'submit' too many times. Please continue working without hints."),
+    feedbackPanelWidth:  (wiseStepDef["feedbackPanelWidth"]  || 500),
+    feedbackPanelHeight: (wiseStepDef["feedbackPanelHeight"] || 250)
   });
   var size = modules.length;
   var i = 0;

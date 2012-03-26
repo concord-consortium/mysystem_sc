@@ -22,7 +22,9 @@ if (top === self) {
     "enableCustomRuleEvaluator": false,
     "customRuleEvaluator": "",
     "maxSubmissionClicks": 0,
-    "maxSubmissionFeedback":  "You have clicked 'submit' too many times. Please continue working without hints."
+    "maxSubmissionFeedback":  "You have clicked 'submit' too many times. Please continue working without hints.",
+    "feedbackPanelWidth": 500,
+    "feedbackPanelHeight": 250
   };
 }
 
@@ -59,9 +61,20 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
   if (typeof dataHash.customRuleEvaluator === "undefined" || dataHash.customRuleEvaluator === null){
     dataHash.customRuleEvaluator = "";
   }
-
   if (!dataHash.minimum_requirements) {
     dataHash.minimum_requirements = [];
+  }
+  if (typeof dataHash.maxSubmissionClicks === "undefined" || dataHash.maxSubmissionClicks === null){
+    dataHash.maxSubmissionClicks = 0;
+  }
+  if (typeof dataHash.maxSubmissionFeedback === "undefined" || dataHash.maxSubmissionFeedback === null){
+    dataHash.maxSubmissionFeedback = "You have clicked 'submit' too many times. Please continue working without hints.";
+  }
+  if (typeof dataHash.feedbackPanelHeight === "undefined" || dataHash.feedbackPanelHeight === null){
+    dataHash.feedbackPanelHeight = 250;
+  }
+  if (typeof dataHash.feedbackPanelWidth === "undefined" || dataHash.feedbackPanelWidth === null){
+    dataHash.feedbackPanelWidth = 500;
   }
 
   // TODO: migrate objects to have uuids that don't already have them
@@ -92,7 +105,9 @@ MSA.ActivityModel = SCUtil.ModelObject.extend({
   enableCustomRuleEvaluator: SCUtil.dataHashProperty,
   customRuleEvaluator: SCUtil.dataHashProperty,
   maxSubmissionClicks: SCUtil.dataHashProperty,
-  maxSubmissionFeedback: SCUtil.dataHashProperty
+  maxSubmissionFeedback: SCUtil.dataHashProperty,
+  feedbackPanelWidth: SCUtil.dataHashProperty,
+  feedbackPanelHeight: SCUtil.dataHashProperty
 });
 
 MSA.Module = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
@@ -220,7 +235,9 @@ MSA.dataController = SC.Object.create({
              'MSA.activity.enableCustomRuleEvaluator',
              'MSA.activity.customRuleEvaluator',
              'MSA.activity.maxSubmissionClicks',
-             'MSA.activity.maxSubmissionFeedback')
+             'MSA.activity.maxSubmissionFeedback',
+             'MSA.activity.feedbackPanelWidth',
+             'MSA.activity.feedbackPanelHeight')
 });
 
 MSA.NodeTypesView = SC.CollectionView.extend({

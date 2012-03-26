@@ -146,6 +146,27 @@
     </div>
 
     <div style="padding-left: 10px;">
+
+      <p>
+        Feedback panel size:
+          width:
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.feedbackPanelWidth"
+            placeholder  = "500"
+            id           = "feedbackPanelWidth"
+            size         = "3"
+          }}
+          height: 
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.feedbackPanelHeight"
+            placeholder  = "250"
+            id           = "feedbackPanelHeight"
+            size         = "3"
+          }}
+      </p>
+      
       <p>
         Maximum student submissions:
           {{
@@ -227,18 +248,18 @@
         id="customRuleEvaluator"}}
     {{#if "MSA.activity.enableCustomRuleEvaluator"}}
 
-Javascipt for custom rules. e.g.
-<br/>
-<pre>
-  <code>
-    var rule_a = rules.objectAt(0).check(nodes);
-    var rule_b = rules.objectAt(1).check(nodes);
-    var rule_c = rules.objectAt(2).check(nodes);
-    if(! ((rule_a && rule_b) || rule_c)) {
-      suggestions.pushObject(rules.objectAt(2).get('suggestion'));
-    }
-  </code>
-</pre>
+        Javascipt for custom rules. e.g.
+        <br/>
+        <pre>
+          <code>
+            var rule_a = rules.objectAt(0).check(nodes);
+            var rule_b = rules.objectAt(1).check(nodes);
+            var rule_c = rules.objectAt(2).check(nodes);
+            if(! ((rule_a && rule_b) || rule_c)) {
+              suggestions.pushObject(rules.objectAt(2).get('suggestion'));
+            }
+          </code>
+        </pre>
 
         <br/>
         <div id="customRuleEvaluator">
@@ -250,14 +271,16 @@ Javascipt for custom rules. e.g.
             cols          = "72" 
           }}
         </div>
-      {{/if}}
-    </div>
-  
+    {{/if}}
+  </div>
+
+<div class="options_block">
   <h2>State</h2>
   <pre style="font-size: 80%">
   {{MSA.dataController.data}}
   </pre>
-  </script>
+</div>
+</script>
   
 
 

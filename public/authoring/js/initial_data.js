@@ -60,5 +60,7 @@ InitialMySystemData = {
  "enableLinkDescriptionEditing": false,
  "enableLinkLabelEditing": false,
  "enableCustomRuleEvaluator": false,
- "customRuleEvaluator": ""
+ "customRuleEvaluator": "",
+ "feedbackPanelWidth": 500,
+ "feedbackPanelHeight": 250
 };
