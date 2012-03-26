@@ -124,31 +124,15 @@
   
   <div class="options_block">
     <h2>Feedback</h2>
-    <div style="padding-left: 10px;">
-      <p>
-        Feedback if all rules pass:
-          <br/>
-          {{ 
-            view MSA.TextArea 
-            valueBinding ="MSA.activity.correctFeedback" 
-            placeholder  = "Your diagram has no obvious problems." 
-            id           = "correctFeedback"
-          }}
-          <br/><br/>
-      </p>
-    </div>
-    <div style="padding-left: 10px;">
-      <p>
-        Only report 
-        {{view MSA.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit" size = "1" }}
-        feedback items
-      </p>
-    </div>
-
-    <div style="padding-left: 10px;">
-
-      <p>
-        Feedback panel size:
+      <div style="padding-left: 10px;">
+        <p>
+          Only report 
+          {{view MSA.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit" size = "1" }}
+          feedback items
+        </p>
+    
+        <p>
+          Feedback panel size:
           width:
           {{
             view MSA.TextField 
@@ -165,10 +149,26 @@
             id           = "feedbackPanelHeight"
             size         = "3"
           }}
-      </p>
-      
+        </p>
+        <p>
+          Feedback if all rules pass:
+          <br/>
+          {{ 
+            view MSA.TextArea 
+            valueBinding ="MSA.activity.correctFeedback" 
+            placeholder  = "Your diagram has no obvious problems." 
+            id           = "correctFeedback"
+          }}
+          <br/><br/>
+        </p>
+    </div>
+  </div>
+
+  <div class="options_block">
+    <h2>Maximum submissions</h2>
+    <div style="padding-left: 10px;">
       <p>
-        Maximum student submissions:
+        Limit the number of student submissions to:
           {{
             view MSA.TextField 
             valueBinding = "MSA.activity.maxSubmissionClicks"
@@ -178,7 +178,7 @@
           }}
       </p>
       <p>
-        Maximum submissions exceeded feedback:
+        If the student has submitted too many time, display:
         <br/>
         {{
           view MSA.TextArea
