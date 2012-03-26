@@ -228,3 +228,18 @@ MSA.NodeTypesView = SC.CollectionView.extend({
   contentBinding: "MSA.diagramRulesController.nodeTypes"
 });
 
+// add missing textarea tag attributes
+MSA.TextArea = SC.TextArea.extend({
+  attributeBindings: ['rows', 'cols', 'wrap'],
+  // reasonable defaults?
+  cols: 50,
+  rows: 4,
+  wrap: "off"
+});
+
+// add size attribute to text field
+MSA.TextField = SC.TextField.extend({
+  attributeBindings: ['type', 'value', 'size'],
+  type: "text",
+  size: null
+});
