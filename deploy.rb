@@ -45,16 +45,16 @@ doit %[cp -r public/authoring #{RELEASE_DIR}]
 # symlink top level files for convinience:
 doit %[ln -sf #{RELEASE_DIR}/#{APP_NAME}/en/#{COMMIT_HASH}/index.html #{RELEASE_DIR}/#{APP_NAME}/index.html]
 doit %[ln -sf #{RELEASE_DIR}/#{APP_NAME}/index.html #{RELEASE_DIR}/index.html]
-doit %[ln -sf #{RELEASE_DIR}/#{APP_NAME}/authoring #{RELEASE_DIR}/authoring]
+doit %[ln -sf #{RELEASE_DIR}/#{APP_NAME}/authoring/ #{RELEASE_DIR}/authoring]
 
 # link to current release:
 doit %[ln -sf #{RELEASE_DIR} #{PROJECT_DIR}/#{APP_NAME}/current]
 
 # convinience links:
 doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/current/index.html #{PROJECT_DIR}/#{APP_NAME}/index.html]
-doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/current/authoring #{PROJECT_DIR}/#{APP_NAME}/authoring]
-doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/current #{PROJECT_DIR}/#{APP_NAME}/#{APP_NAME}] 
-doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/authoring #{PROJECT_DIR}/authoring]
+doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/current/authoring/ #{PROJECT_DIR}/#{APP_NAME}/authoring]
+doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/current/ #{PROJECT_DIR}/#{APP_NAME}/#{APP_NAME}] 
+doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/authoring/ #{PROJECT_DIR}/authoring]
 doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/index.html #{PROJECT_DIR}/index.html]
 
 # TODO: Maybe Actually delete old checkouts?
