@@ -20,14 +20,18 @@ end
 # need to rerun bundle install probably because of git checkout -f
 %x[bundle install]
 
-def doit(command)
-  puts command
+def doit(command, fail_quietly = false, verbose = true)
+  puts command if verbose
   %x[#{command}]
+  unless fail_quietly or $?.success?
+    raise "Exception in shell command: #{$?.to_s}"
+  end
 end
 
+
 # clean
-doit %[rm -rf   #{BUILD_DIR}]
-doit %[rm -rf   #{RELEASE_DIR}]
+doit %[rm -rf   #{BUILD_DIR}],   true
+doit %[rm -rf   #{RELEASE_DIR}], true
 doit %[mkdir -p #{RELEASE_DIR}]
 
 # build
