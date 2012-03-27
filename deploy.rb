@@ -1,4 +1,6 @@
 #! env ruby
+# For use in Jenkins: Build a locally deployed demo app.
+
 checkout_result = %x[git checkout -f]
 
 PROJECT_DIR     = ENV['PROJECT_DIR'] || "/tmp"
