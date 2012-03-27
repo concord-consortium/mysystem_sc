@@ -50,10 +50,12 @@ doit %[ln -sf #{RELEASE_DIR}/#{APP_NAME}/authoring #{RELEASE_DIR}/authoring]
 # link to current release:
 doit %[ln -sf #{RELEASE_DIR} #{PROJECT_DIR}/#{APP_NAME}/current]
 
-# convience links:
+# convinience links:
 doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/current/index.html #{PROJECT_DIR}/#{APP_NAME}/index.html]
 doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/current/authoring #{PROJECT_DIR}/#{APP_NAME}/authoring]
-doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/current #{PROJECT_DIR}/#{APP_NAME}/#{APP_NAME}]
+doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/current #{PROJECT_DIR}/#{APP_NAME}/#{APP_NAME}] 
+doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/authoring #{PROJECT_DIR}/authoring]
+doit %[ln -sf #{PROJECT_DIR}/#{APP_NAME}/index.html #{PROJECT_DIR}/index.html]
 
 # TODO: Maybe Actually delete old checkouts?
 old_files = %x[ls -t #{PROJECT_DIR}/#{APP_NAME}/releases | tail -n +5]
