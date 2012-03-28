@@ -145,17 +145,6 @@ describe("maximum feedback exceeded", function(){
     // but it shoudn't resubmit
     expect(helper.lastFeedback().numOfSubmits).toBe(clickLimit);
   });
-
-  it ("should include feedback about the number of submits made", function() {
-    helper.
-      addNode('obj1').
-      saveDiagram().
-      submitDiagram();
-    
-    expect(helper.lastFeedback().feedback).toMatch('submission:');
-  });
-
-
 });
 
 

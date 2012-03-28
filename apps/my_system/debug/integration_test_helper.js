@@ -62,8 +62,9 @@ IntegrationTestHelper = SC.Object.extend({
   
   submitDiagram: function() {
     simulateClickOnSelector(".button:contains('Submit Diagram')");
-    // click the ok button on the dialog
-    simulateClickOnSelector(".button:contains('OK')");
+    // click on the close buttons of the resultant feedback 
+    // or click 'ok' in the vent of too many submits.
+    simulateClickOnSelector(".button:contains('close')",".button:contains('OK')");
     return this;
   },
   
@@ -83,7 +84,8 @@ IntegrationTestHelper = SC.Object.extend({
     var parsedLearnerData = JSON.parse(savedLearnerData);
     return parsedLearnerData["MySystem.RuleFeedback"].LAST_FEEDBACK;
   },
-  
+
+
   expectProperty: function(property) {
     return expect(this.get(property));
   }

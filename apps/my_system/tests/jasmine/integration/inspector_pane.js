@@ -137,6 +137,7 @@ describe("The Inspector Pane", function () {
 
       it("should update the energy type", function() {
         var attribute = {key: 'energy', type: 'radio'};
+        diagramBuilder.openInspector(link1);
         expect(diagramBuilder.getInspectorValue(attribute)).toBe('en2');
         diagramBuilder.setInspectorValue(attribute, 'en1');
         expect(link1.get('energyType')).toBe('en1');
@@ -259,6 +260,7 @@ describe("The Inspector Pane", function () {
 
       it("should update the energy type", function() {
         var attribute = {key: 'energy', type: 'radio'};
+        diagramBuilder.openInspector(link1);
         expect(diagramBuilder.getInspectorValue(attribute)).toBe('en2');
         diagramBuilder.setInspectorValue(attribute, 'en1');
         expect(link1.get('energyType')).toBe('en1');
@@ -266,6 +268,7 @@ describe("The Inspector Pane", function () {
 
       it("should update the label", function() {
         var attribute = {key: 'label', type: 'text'};
+        diagramBuilder.openInspector(link1);
         var val = diagramBuilder.getInspectorValue(attribute);
         expect(val).toBe("en2");
         diagramBuilder.setInspectorValue(attribute, 'Some label');

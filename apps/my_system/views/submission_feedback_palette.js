@@ -26,10 +26,14 @@ MySystem.SubmissionsFeedbackPallet = SC.PalettePane.extend({
       context.push('<div class="last_feedback">', this.get('lastFeedback'), '</div>');
     },
     update: function (jquery) {
+      var lastFeedback = "";
       console.log("update")
       console.log(this.get('submissionInfo'))
       jquery.find('.sumbission_info').text(this.get('submissionInfo'));
-      jquery.find('.last_feedback').html(this.get('lastFeedback').split("\n").join("<br/>"));
+      var lastFeedback = this.get('lastFeedback');
+      if(lastFeedback) {
+        jquery.find('.last_feedback').html(lastFeedback.split("\n").join("<br/>"));
+      }
     }
   }).design({
     layout: { width: 500, height: 250, right: 0, top: 0 }, 

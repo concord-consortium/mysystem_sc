@@ -10,9 +10,6 @@ describe("DiagramRules", function () {
       toFail: toFail
     });
     
-    spyOn(SC.AlertPane, 'warn');
-    spyOn(SC.AlertPane, 'info');
-      
     MySystem.setupStore(MySystem);
     MySystem.statechart.initStatechart();
     
@@ -756,16 +753,11 @@ describe("DiagramRules", function () {
     return !(rulesPassed(this.actual));
   };
   
-  rulesPassed = function(data) {
-    SC.AlertPane.info.reset();
-    SC.AlertPane.warn.reset();
-    
+  rulesPassed = function(data) {  
     runRules(data);
-    
-    var infoWasCalled = SC.AlertPane.info.callCount > 0;
-    var warnWasCalled = SC.AlertPane.warn.callCount > 0;
-    
-    return (infoWasCalled && !warnWasCalled);
+  
+    results = MySystem.activityController.getDiagramFeedback({isSubmit: false})[0];
+    return results;
   };
   
   runRules = function(data) {

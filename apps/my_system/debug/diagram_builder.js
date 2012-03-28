@@ -62,6 +62,19 @@ DiagramBuilder = SC.Object.extend({
     return MySystem.getPath('mainPage.inspectorPane');
   },
 
+  openInspector: function(selected_object) {
+    var inspector = MySystem.getPath('mainPage.inspectorPane');
+    inspector.set('isOptionsForNewLink', NO);
+    inspector.set('isModal', NO);
+    // inspector.set('layout', { top: 150, right: 5, width: 270, height: 275 });
+    if (!inspector.isPaneAttached) {
+      inspector.append();
+    }
+    if (selected_object) {
+      MySystem.nodesController.selectObject(selected_object);
+    }
+  },
+
   // attribute is a hash:
   // { key: 'content value key', type: 'type value' }
   // key is the attribute name in which a form view row is stored within the form.
@@ -86,35 +99,28 @@ DiagramBuilder = SC.Object.extend({
         var radioGroupId = control.getPath('layer.id');
         simulateClickOnSelector('#' + radioGroupId + ' div[role="radio"]:contains(' + value + ')');
       }
-
-      // remove the inspector pane to avoid confusion
-      inspector.remove();
       return null;
     });
   },
 
+  // unfortunately some controlls can't follow the form
+  // pattern. Use excplicit view paths now.
   _inspectorAttributeControl: function(attribute, callback) {
     var inspector = this.getInspector();
-    var ret = null;
-    if (inspector.isPaneAttached){
-      // first, find the right one
-      var forms = inspector.getPath('contentView.childViews');
-      found:
-      for (var i = 0; i < forms.get('length'); i++) {
-        var controls = forms.objectAt(i).get('childViews');
-        for (var j = 0; j < controls.get('length'); j++) {
-          var attributeControl = controls.objectAt(j);
-          if (attributeControl.get('formKey') == attribute.key) {
-            SC.Logger.log("Found matching form control: ", attributeControl);
-            // call the callback with the actual control, not the form row
-            ret = callback.call(this, inspector, attributeControl.getPath('childViews.1'));
-            break found;
-          }
-        }
-      }
+    var ret       = null;
+    var childPath = null;
+    if (attribute.key === 'energy') {
+      childPath = inspector.getPath('contentView.linkForm.contentView.energy.childViews.1');
+    }
+    if (attribute.key === 'node') {
+      childPath = inspector.getPath('contentView.nodeForm.childViews.1');
+    }
+    if (childPath) {
+      ret = callback.call(this,inspector,childPath);
     }
     return ret;
   },
+
 
   _replaceText: function(view, text) {
     if (view instanceof MySystem.EditableLabelView) {
