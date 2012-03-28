@@ -1,6 +1,8 @@
 #! env ruby
 # For use in Jenkins: Build a locally deployed demo app.
 
+
+checkout_result = %x[git stash]
 checkout_result = %x[git checkout -f]
 
 PROJECT_DIR     = ENV['PROJECT_DIR'] || "/tmp"
@@ -24,10 +26,19 @@ def doit(command, fail_quietly = false, verbose = true)
   puts command if verbose
   %x[#{command}]
   unless fail_quietly or $?.success?
+    clean_up
     raise "Exception in shell command: #{$?.to_s}"
   end
 end
 
+# remove modifications to the working directory
+# includding uncommitted changes and modifications
+# to the build file.
+def clean_up
+  %x[rm -rf   #{BUILD_DIR}]
+  checkout_result = %x[git checkout -f]
+  checkout_result = %x[git stash apply]
+end
 
 # clean
 doit %[rm -rf   #{BUILD_DIR}],   true
@@ -67,3 +78,5 @@ old_files.split.each do |old_file|
   puts "deleting #{old_file}"
   puts "rm -rf #{PROJECT_DIR}/#{APP_NAME}/releases/#{old_file}  (just kidding)"
 end
+
+clean_up()
