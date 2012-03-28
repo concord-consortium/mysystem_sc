@@ -17,7 +17,6 @@ MySystem.SubmissionsFeedbackLabel = SC.View.extend({
   displayProperties: ['value'],
   classNames: 'sumbissions_feedback_label'.w(),
   click: function(e) {
-    console.log('click')
     MySystem.activityController.showFeedbackPalette();
   },
   render: function (context) {

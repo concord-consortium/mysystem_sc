@@ -27,8 +27,6 @@ MySystem.SubmissionsFeedbackPallet = SC.PalettePane.extend({
     },
     update: function (jquery) {
       var lastFeedback = "";
-      console.log("update")
-      console.log(this.get('submissionInfo'))
       jquery.find('.sumbission_info').text(this.get('submissionInfo'));
       var lastFeedback = this.get('lastFeedback');
       if(lastFeedback) {

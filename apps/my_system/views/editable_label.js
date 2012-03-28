@@ -51,7 +51,6 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
   }.property('isEnabled').cacheable(),
 
   willLoseFirstResponder: function () {
-    console.log("loosing first responder");
     this.set('isEditing', NO);
     this.set('isAllSelected', NO);
   },
