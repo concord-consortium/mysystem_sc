@@ -250,6 +250,7 @@ describe("The Inspector Pane", function () {
     describe("the link inspector", function (){
       beforeEach(function() {
         MySystem.nodesController.selectObject(link1);
+        diagramBuilder.openInspector();
         SC.run();
       });
 
@@ -268,10 +269,10 @@ describe("The Inspector Pane", function () {
 
       it("should update the label", function() {
         var attribute = {key: 'label', type: 'text'};
-        diagramBuilder.openInspector(link1);
         var val = diagramBuilder.getInspectorValue(attribute);
         expect(val).toBe("en2");
         diagramBuilder.setInspectorValue(attribute, 'Some label');
+        diagramBuilder.openInspector();
         expect(link1.get('text')).toBe('Some label');
       });
 

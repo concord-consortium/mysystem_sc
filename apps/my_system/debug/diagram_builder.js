@@ -112,6 +112,12 @@ DiagramBuilder = SC.Object.extend({
     if (attribute.key === 'energy') {
       childPath = inspector.getPath('contentView.linkForm.contentView.energy.childViews.1');
     }
+    if (attribute.key === 'label') {
+      childPath = inspector.getPath('contentView.linkForm.contentView.label.childViews.1');
+    }
+    if (attribute.key === 'description') {
+      childPath = inspector.getPath('contentView.linkForm.contentView.description.childViews.1');
+    }
     if (attribute.key === 'node') {
       childPath = inspector.getPath('contentView.nodeForm.childViews.1');
     }
