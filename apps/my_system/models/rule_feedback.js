@@ -32,17 +32,20 @@ MySystem.RuleFeedback = SC.Record.extend(
   timeStamp:    SC.Record.attr(String),
   timeStampMs:  SC.Record.attr(Number),
   svg:          SC.Record.attr(String),  // svg markup
-  png:          SC.Record.attr(String)  // base64 encoded png data (big)
+  png:          SC.Record.attr(String),  // base64 encoded png data (big)
 
-  // updateImage: function() {
-  //   var data = [];
-  //   data.push("submit time: " + this.get('timeStamp').toLocaleString());
-  //   data.push("No. Sumbits: " + this.get('numOfSubmits'));
-  //   data.push("Feedback:    " + this.get('feedback'))
-  //   var exporter = new ImageExporter(data);
-  //   this.set('svg', exporter.get_svg());
-  //   this.set('png', exporter.get_png());
-  // }
+  /**
+  An image preview of the diagram in SVG and PNG formats
+  **/
+  updateImages: function() {
+    var data = [], exporter;
+    data.push("submit time: " + this.get('timeStamp').toLocaleString());
+    data.push("No. Sumbits: " + this.get('numOfSubmits'));
+    data.push("Feedback:    " + this.get('feedback'))
+    exporter = new ImageExporter(data);
+    this.set('svg', escape(exporter.get_svg()));
+    this.set('png', exporter.get_png());
+  }
 
 });
 
@@ -53,27 +56,14 @@ MySystem.RuleFeedback.saveFeedback = function(store, feedback, success, isSubmit
   var lastFeedback = store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
   var timeStamp = new Date();
   var timeStampMs = timeStamp.getTime();
-  var exporter, png, svg, data = [];
-
-  data.push("submit time: " + timeStamp.toLocaleString());
-  data.push("Feedback:    " + feedback);
-  if (lastFeedback && (lastFeedback.get('status') & SC.Record.READY)){
-    data.push("No. Sumbits: " + lastFeedback.get('numOfSubmits'));
-  }
   
-  exporter = new ImageExporter();
-  svg = escape(exporter.get_svg());
-  png = exporter.get_png();
-
   // check if it's previously been created.
   if (lastFeedback && (lastFeedback.get('status') & SC.Record.READY)){
     lastFeedback.set({
       feedback: feedback, 
       success: success,
       timeStamp: timeStamp,
-      timeStampMs: timeStampMs,
-      svg: svg,
-      png: png
+      timeStampMs: timeStampMs
     });
     if(isSubmit) {
       lastFeedback.set('numOfSubmits', lastFeedback.get('numOfSubmits') + 1);
@@ -86,12 +76,13 @@ MySystem.RuleFeedback.saveFeedback = function(store, feedback, success, isSubmit
         success: success, 
         numOfSubmits: (isSubmit ? 1 : 0),
         timeStamp: timeStamp,
-        timeStampMs: timeStampMs,
-        svg: svg,
-        png: png
+        timeStampMs: timeStampMs
       }, 
       MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
   }
+  
+  // generate diagram state images:
+  lastFeedback.updateImages();
 
   // need to flush here otherwise the lastFeedback Record won't be updated in some cases 
   // until the end of of the runloop.  At least one case where this can happen and be a problem
