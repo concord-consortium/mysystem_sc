@@ -29,9 +29,22 @@ MySystem.RuleFeedback = SC.Record.extend(
     @property {Number}
   */
   numOfSubmits: SC.Record.attr(Number, {defaultValue: 0}),
-  timeStamp: SC.Record.attr(String),
-  timeStampMs: SC.Record.attr(Number)
-}) ;
+  timeStamp:    SC.Record.attr(String),
+  timeStampMs:  SC.Record.attr(Number),
+  svg:          SC.Record.attr(String),  // svg markup
+  png:          SC.Record.attr(String)  // base64 encoded png data (big)
+
+  // updateImage: function() {
+  //   var data = [];
+  //   data.push("submit time: " + this.get('timeStamp').toLocaleString());
+  //   data.push("No. Sumbits: " + this.get('numOfSubmits'));
+  //   data.push("Feedback:    " + this.get('feedback'))
+  //   var exporter = new ImageExporter(data);
+  //   this.set('svg', exporter.get_svg());
+  //   this.set('png', exporter.get_png());
+  // }
+
+});
 
 // we only ever want a single of these records to exist
 MySystem.RuleFeedback.LAST_FEEDBACK_GUID = "LAST_FEEDBACK";
@@ -40,6 +53,17 @@ MySystem.RuleFeedback.saveFeedback = function(store, feedback, success, isSubmit
   var lastFeedback = store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
   var timeStamp = new Date();
   var timeStampMs = timeStamp.getTime();
+  var exporter, png, svg, data = [];
+
+  data.push("submit time: " + timeStamp.toLocaleString());
+  data.push("Feedback:    " + feedback);
+  if (lastFeedback && (lastFeedback.get('status') & SC.Record.READY)){
+    data.push("No. Sumbits: " + lastFeedback.get('numOfSubmits'));
+  }
+  
+  exporter = new ImageExporter();
+  svg = escape(exporter.get_svg());
+  png = exporter.get_png();
 
   // check if it's previously been created.
   if (lastFeedback && (lastFeedback.get('status') & SC.Record.READY)){
@@ -47,8 +71,10 @@ MySystem.RuleFeedback.saveFeedback = function(store, feedback, success, isSubmit
       feedback: feedback, 
       success: success,
       timeStamp: timeStamp,
-      timeStampMs: timeStampMs
-      });
+      timeStampMs: timeStampMs,
+      svg: svg,
+      png: png
+    });
     if(isSubmit) {
       lastFeedback.set('numOfSubmits', lastFeedback.get('numOfSubmits') + 1);
     }
@@ -60,8 +86,10 @@ MySystem.RuleFeedback.saveFeedback = function(store, feedback, success, isSubmit
         success: success, 
         numOfSubmits: (isSubmit ? 1 : 0),
         timeStamp: timeStamp,
-        timeStampMs: timeStampMs
-        }, 
+        timeStampMs: timeStampMs,
+        svg: svg,
+        png: png
+      }, 
       MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
   }
 
