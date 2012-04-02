@@ -35,9 +35,6 @@
               var feedback = "could not load feedback data";
               try {
                 feedback = response.learner_data['MySystem.RuleFeedback'].LAST_FEEDBACK || "no feedback";
-            
-                $('#last_feedback').html(feedback.feedback);
-                $('#time').html(feedback.timeStamp);
                 $('#svg_preview').append($(unescape(feedback.svg)));
               } catch(err) {
                 alert("missing image previews from data, see console for more info");
@@ -58,10 +55,6 @@
   </script>
 </head>
 <body>
-  <h1>MySystem Feedback for <span id="learner_id"></span>:</h1>
-  <h1 id="time"></h1>
-  <br/>
-  <div id="last_feedback"></div>
   <div id="svg_preview"></div>
 </body>
 </html>
