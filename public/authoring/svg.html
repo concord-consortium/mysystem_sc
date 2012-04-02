@@ -34,7 +34,7 @@
             success: function (response) {
               var feedback = "could not load feedback data";
               try {
-                feedback = response.learner_data['MySystem.RuleFeedback'].LAST_FEEDBACK || "no feedback";
+                feedback = response.learner_data['MySystem.GraphicPreview'].LAST_GRAPHIC_PREVIEW || "no feedback";
                 $('#svg_preview').append($(unescape(feedback.svg)));
               } catch(err) {
                 alert("missing image previews from data, see console for more info");

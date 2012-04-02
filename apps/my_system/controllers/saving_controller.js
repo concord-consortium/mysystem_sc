@@ -55,6 +55,7 @@ MySystem.savingController = SC.Object.create({
   // IMPORANT: dataSources must call: MySystem.savingController.set('dataIsDirty', YES); 
   save: function() {
     var isSubmit = NO;
+    MySystem.GraphicPreview.makePreview(MySystem.store);
     if(this.get('saveFunction') && this.get('dataIsDirty')) {
       this.get('saveFunction')(isSubmit);
     }
@@ -64,6 +65,7 @@ MySystem.savingController = SC.Object.create({
   // state so it won't be overriden
   submit: function(){
     var isSubmit = YES;
+    MySystem.GraphicPreview.makePreview(MySystem.store);
     if(this.get('saveFunction')) {
       this.get('saveFunction')(isSubmit);
     }

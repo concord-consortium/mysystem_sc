@@ -34,7 +34,7 @@
             success: function (response) {
               var feedback = "could not load feedback data";
               try {
-                feedback = response.learner_data['MySystem.RuleFeedback'].LAST_FEEDBACK || "no feedback";
+                feedback = response.learner_data['MySystem.GraphicPreview'].LAST_GRAPHIC_PREVIEW || "no feedback";
                 var img = $("<img>").attr('src',feedback.png);
                 $('#png_preview').append(img);
               } catch(err) {
