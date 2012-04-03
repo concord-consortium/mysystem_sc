@@ -119,32 +119,19 @@ The default location for the output can be changed by setting the env variable C
 To build [the demo](http://mysystem_sc.dev.concord.org/) 
 you will have to start a special [jenkins job](http://hudson.dev.concord.org/hudson/view/SproutCore/job/MySystemDeployDemo)
 
-  # After the jenkins build is done
-  # on otto got to the demo site directory
-  cd /web/mysystem_sc.dev.concord.org/public
-  
-  # make a copy of the last deployment
-  sudo rm -rf ./previous
-  sudo mv ./latest/ ./previous
-  sudo cp -r 97a4bfe19433bc905d7187033fc20fd84e5a029b latest
+The Jenkins build should automatically create a new release and point it to at the correct locations.  The last 5 releases will be kept on the demo server.
 
-  cd /web/mysystem_sc.dev.concord.org/
-
-  rm ./index.html
-  ln -s demos/latest/my_system/en/<build identifier>/index.html ./index.html
-
-  rm authoring
-  ln -s demos/latest/authoring/ authoring
-
-This could certainly be improved.  When its done:
 you can [Author](http://mysystem_sc.dev.concord.org/authoring/preview.html)
 (click save and copy the url)
 eg `http://mysystem_sc.dev.concord.org/authoring/preview.html#c3d85f04b7bcca97253b8726f7044908`
 
 Now people can run it here: `http://mysystem_sc.dev.concord.org/authoring/run.html#c3d85f04b7bcca97253b8726f7044908`
 
-If people save data, they can review it at a similarly long url eg: `http://mysystem_sc.dev.concord.org/authoring/run.html#c3d85f04b7bcca97253b8726f7044908/c3d85f04b7bcca97253b8726f7045819`
+If people save data, they can review it at a similarly long URL eg: `http://mysystem_sc.dev.concord.org/authoring/run.html#c3d85f04b7bcca97253b8726f7044908/c3d85f04b7bcca97253b8726f7045819`
 
+SVG Diagram previews can be found at yet another long URL eg: `http://mysystem_sc.dev.concord.org/authoring/svg.html#c3d85f04b7bcca97253b8726f7044908/c3d85f04b7bcca97253b8726f7045819`
+
+PNG Diagram previews are of questionable value, and will probably be removed.  They can be found at URLS like this: `http://mysystem_sc.dev.concord.org/authoring/png.html#c3d85f04b7bcca97253b8726f7044908/c3d85f04b7bcca97253b8726f7045819`
 
 
 ### Running in Wise4 using vagrant ###
@@ -159,7 +146,7 @@ If people save data, they can review it at a similarly long url eg: `http://mysy
 4. Run vagrant up in the wise4-vagrant folder, or if you already started vagrant, run vagrant reload
 5. open a web browser to http://localhost:8080/webapp/index.html
 6. login as admin:pass
-7. NEED HELP fininishing these steps, this page has more instuctions on getting started
+7. NEED HELP finishing these steps, this page has more instructions on getting started
      http://code.google.com/p/wise4/wiki/WISE4AdministratorResources
    But we need to customize that for mysystem2.
 
@@ -167,6 +154,16 @@ If you've been making changes to the MySystem runtime that you want to see updat
 `bundle exec rake build`
 if you've only been making changes to the files in the wise4 folder, you can just run
 `bundle exec rake copy_templates`
+
+### Learner Data Versioning and Migrations ###
+
+If you create or modify persistent properties, you will also want to create a migrations for them. Even if you only introduce new parameters, you should create a mostly empty migration, explaining the changes. If you are changing, or renaming attributes, you will need to code up a transformation. Here are the steps for either case:
+
+0. Increment the MySytem.learnerData version found `./apps/my_system/core.js`
+1. Create the appropriate migration file in `./apps/my_system/migrations/migrate_learner_data_*.js`, this file should document the model changes.
+2. Ensure that the migration tests in `tests/jasmine/migrations` runs without error:
+    * http://localhost:4020/sproutcore/tests#my_system&test=jasmine/migrations/migrate_learner_data_behavior
+    * 
 
 ### Building as WISE4 step ###
 
