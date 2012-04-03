@@ -61,12 +61,16 @@
     ImageExporter.prototype.get_svg = function() {
       var svg_div, svg_element;
       svg_element = $(this.svg_element.parentElement.innerHTML);
+      svg_element.attr({
+        width: 1000,
+        height: 1000
+      });
       $(svg_element.find('g')[0]).attr({
         'transform': 'translate(0,120)'
       });
       this._add_meta_data(svg_element);
       svg_div = $('<div>').append(svg_element);
-      return svg_div.html().replace(/href=/g, 'xlink:href=');
+      return svg_div.html().replace(/\s+href=/g, 'xlink:href=');
     };
 
     ImageExporter.prototype.get_png = function() {
