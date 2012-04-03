@@ -151,6 +151,8 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
     			
     			var studentWork = nodeState.response;
     			var isSubmit = nodeState.isSubmit;
+                var svg = null; 
+                var png = null;
     			var feedback = "";
     			var timestamp = "";
     			
@@ -164,7 +166,7 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
     			var responseJSON = JSON.parse(responseString);
     			
     			if(responseJSON["MySystem.RuleFeedback"] != null &&
-    					responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK != null) {
+    			   responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK != null) {
     				
     				if(responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.feedback != null) {
     					//get the feedback
@@ -176,6 +178,14 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
     					var timestampMS = responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.timeStampMs;
     					timestamp = new Date(timestampMS);
     				}
+                    if(responseJSON["MySystem.GraphicPreview"] != null &&
+                       responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW != null) {
+
+                        svg = responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW.svg;
+                        if (svg != null) { svg = unescape(svg); }
+                        png = responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW.png;
+                        if (png != null) { png = "<img src='" + png + "'' />"; }
+                    }
     			}
     			
         	    // prepend contentbaseurl in front of "assets" to student's work
@@ -188,14 +198,25 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
         	    
         	    divContent += "Diagram: ";
         	    
-        		// put the student work and content in a hidden element
-        	    // add enlarge link to show student's diagram in a popup window
-        		divContent += "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
-        			"onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"_"+x+"\"'>enlarge</a>" +
-        	    	"<span id='content_"+divId+"_"+x+"' style='display:none'>"+contentString+"</span>" +
-        	    	"<span id='studentwork_"+divId+"_"+x+"' style='display:none'>"+studentWork+"</span>";
-        		
-        		divContent += "<br>";
+                // svg is probably the easiest to view here:
+        		if (svg != null) {
+                    divContent += "<div class='preview svg image'" + 
+                    " style='display: block; overflow: auto; width: 100%; height:500px;'> " + 
+                    svg + "</div>";
+                }
+                else if (png != null) {
+                     divContent += "<span class='preview png image'> " + png + "</span>";
+                }
+                // fall back to the old 'click to enlarge' method.
+                else {
+                    // put the student work and content in a hidden element
+                    // add enlarge link to show student's diagram in a popup window
+                    divContent += "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
+                    "onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"_"+x+"\"'>enlarge</a>" +
+                    "<span id='content_"+divId+"_"+x+"' style='display:none'>"+contentString+"</span>" +
+                    "<span id='studentwork_"+divId+"_"+x+"' style='display:none'>"+studentWork+"</span>";
+                }
+                divContent += "<br>";
         		divContent += "Is Submit: " + isSubmit;
         		divContent += "<br>";
         		divContent += "Feedback: " + feedback;
