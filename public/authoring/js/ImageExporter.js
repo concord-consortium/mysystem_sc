@@ -1,5 +1,5 @@
 (function() {
-  var ImageExporter;
+  var ImageExporter, root;
 
   ImageExporter = (function() {
 
@@ -102,6 +102,8 @@
 
   })();
 
-  window.ImageExporter = ImageExporter;
+  root = typeof exports !== "undefined" && exports !== null ? exports : this;
+
+  root.ImageExporter = ImageExporter;
 
 }).call(this);

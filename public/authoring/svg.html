@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/jquery.gritter.css">
   <script type="text/javascript" src="js/libs/jquery-1.4.4.min.js"></script>
   <script type="text/javascript" src="js/libs/jquery.couch.js"></script>
+  <script type="text/javascript" src="js/libs/lz77.js"></script>
   <script type="text/javascript" src="js/libs/jquery.gritter.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
@@ -19,7 +20,6 @@
       var authorData;
       var learnerData;
       var data;
-      console.log("I live");
 
       if (dataIds) {
         dataIds = dataIds.substring(1);    // rm hash
@@ -33,9 +33,13 @@
           this.db.openDoc(data[1], {
             success: function (response) {
               var feedback = "could not load feedback data";
+              var svg = ""
               try {
                 feedback = response.learner_data['MySystem.GraphicPreview'].LAST_GRAPHIC_PREVIEW || "no feedback";
-                $('#svg_preview').append($(unescape(feedback.svg)));
+                svg = unescape(feedback.svg);
+                svg = new LZ77().decompress(svg);
+                
+                $('#svg_preview').append($(svg));
               } catch(err) {
                 alert("missing image previews from data, see console for more info");
                 console.log(feedback);
@@ -46,9 +50,6 @@
               window.location.hash = '';
             }
           });
-        }
-        else {
-          console.log("destiny");
         }
       }
     });

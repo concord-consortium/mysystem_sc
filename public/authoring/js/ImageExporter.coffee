@@ -73,4 +73,6 @@ class ImageExporter
   append_svg: (target=@root_dom) ->
     $(target).append(@get_svg());
 
-window.ImageExporter = ImageExporter
+# export to global namespace
+root = exports ? this
+root.ImageExporter = ImageExporter
