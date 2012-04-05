@@ -110,7 +110,6 @@
           }
         });
         $('#autosave_time').keyup(function(){
-          console.log("woo")
           if ($('#autosave_external')[0].checked){
             runtimeContent.MySystem.setAutoSaveFrequency(this.value * 1000);
           }
