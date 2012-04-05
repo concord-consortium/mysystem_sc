@@ -31,9 +31,13 @@ MySystem.GraphicPreview = SC.Record.extend(
       data.push("No. Sumbits: " + feedback.get('numOfSubmits'));
       data.push("Feedback:    " + feedback.get('feedback'));
     }
-    exporter = new ImageExporter(data);
+    exporter = this.getExporter(data);
     this.set('svg', escape(new LZ77().compress(exporter.get_svg())));
     // this.set('png', exporter.get_png());
+  },
+
+  getExporter: function(data) {
+    return new ImageExporter(data);
   }
 
 });
@@ -41,7 +45,8 @@ MySystem.GraphicPreview = SC.Record.extend(
 // we only ever want a single of these records to exist
 MySystem.GraphicPreview.LAST_FEEDBACK_GUID = "LAST_GRAPHIC_PREVIEW";
 
-MySystem.GraphicPreview.instance = function(store) {
+MySystem.GraphicPreview.instance = function() {
+  var store = MySystem.store;
   var lastPreview  = store.find(MySystem.GraphicPreview,MySystem.GraphicPreview.LAST_FEEDBACK_GUID);
   if (lastPreview && (lastPreview.get('status') & SC.Record.READY)){
     return lastPreview;
