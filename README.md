@@ -162,8 +162,9 @@ If you create or modify persistent properties, you will also want to create a mi
 0. Increment the MySytem.learnerData version found `./apps/my_system/core.js`
 1. Create the appropriate migration file in `./apps/my_system/migrations/migrate_learner_data_*.js`, this file should document the model changes.
 2. Ensure that the migration tests in `tests/jasmine/migrations` runs without error:
-    * http://localhost:4020/sproutcore/tests#my_system&test=jasmine/migrations/migrate_learner_data_behavior
-    * 
+    * http://localhost:4020/sproutcore/tests#my_system&test=jasmine/migrations/migrate_learner_data_behavior.js
+    * http://localhost:4020/sproutcore/tests#my_system&test=jasmine/migrations/migrate_learner_data_test_cases.js
+3. update the test here: ./apps/my_system/tests/jasmine/integration/round_trip_learner.js
 
 ### Building as WISE4 step ###
 
