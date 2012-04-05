@@ -60,7 +60,7 @@
 
     ImageExporter.prototype.get_svg = function() {
       var svg_div, svg_element;
-      svg_element = $(this.svg_element.parentElement.innerHTML);
+      svg_element = $(this.svg_element).clone();
       svg_element.attr({
         width: 1000,
         height: 1000

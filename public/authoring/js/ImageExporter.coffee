@@ -4,7 +4,7 @@ class ImageExporter
     @root_dom    = $(@root_dom)
     @width       = 500
     @height      = 500
-    @svg_element    = @root_dom.find(svg_selector)[0]
+    @svg_element  = @root_dom.find(svg_selector)[0]
     @_populate_data() if @meta_data is null
 
   ###
@@ -47,7 +47,7 @@ class ImageExporter
     svg_elem.append(text_box)
 
   get_svg: () ->
-    svg_element    = $(@svg_element.parentElement.innerHTML)
+    svg_element = $(@svg_element).clone()
     svg_element.attr({width: 1000, height:1000}) 
     $(svg_element.find('g')[0]).attr({'transform': 'translate(0,120)'})
     @_add_meta_data(svg_element)
