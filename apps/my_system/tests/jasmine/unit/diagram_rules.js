@@ -308,7 +308,7 @@ describe("DiagramRules", function () {
             "comparison": "exactly",
             "number": "1",
             "type": "obj3",
-            "hasLink": false,
+            "hasLink": false
           }
         ]
       );
@@ -366,7 +366,7 @@ describe("DiagramRules", function () {
             "comparison": "exactly",
             "number": "1",
             "type": "obj2",
-            "hasLink": false,
+            "hasLink": false
           }
         ]
       );
@@ -391,13 +391,13 @@ describe("DiagramRules", function () {
             "comparison": "exactly",
             "number": "1",
             "type": "obj2",
-            "hasLink": false,
+            "hasLink": false
           }
         ]
       );
       
       var callCount = 0;
-      MySystem.registerExternalSaveFunction(function() {callCount++});
+      MySystem.registerExternalSaveFunction(function() {callCount++;});
       
       expect(callCount).toBe(0);
       runRules({nodes: ['obj1']});
