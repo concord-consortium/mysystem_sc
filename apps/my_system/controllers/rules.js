@@ -12,7 +12,6 @@
 */
 MySystem.rulesController = SC.ObjectController.create({
 
-  rulesBinding: SC.Binding.oneWay('MySystem.activityController.diagramRules'),
   success     : false,
   feedback    : "(empty feedback)",
   suggestions : [],
@@ -20,6 +19,11 @@ MySystem.rulesController = SC.ObjectController.create({
 
   addSuggestion: function(suggestion) {
     this.suggestions.push(suggestion);
+  },
+
+  addRuleSuggestion: function(rule_select) {
+    var rule = this.findRule(rule_select);
+    this.addSuggestion(rule.get('suggestion'));
   },
 
   checkMinimumFeedback: function() {
@@ -42,48 +46,76 @@ MySystem.rulesController = SC.ObjectController.create({
     return true;
   },
 
-  findRule: function(name) {
-    var rules = this.get('rules'),
-    rule      = null,
-    i         = 0;
-
-    for(i=0; i< rules.length; i++) {
-      rule = rules[i];
-      if (rule.get('name') == name) return rule;
-    }
-    return null;
+  rules: function() {
+    return MySystem.activityController.get('diagramRules').toArray();
   },
 
-  // run one rule:
-  runRule: function(rule) {
-    if (typeof rule == "string") {
-      rule = this.findRule(rule);
+  findRule: function(exampleRule) {
+    var rules = this.rules(),
+    rule      = null,
+    found     = null,
+    i         = 0;
+    
+    // assume that this a real rule
+    if (typeof exampleRule == "object") { 
+      found = exampleRule; 
+    }
+    
+    // search by number
+    if (typeof exampleRule == "number") {
+      found = rules[exampleRule];
     }
 
+    // search by name
+    if (typeof exampleRule == "string") {
+      for(i=0; i< rules.length; i++) {
+        rule = rules[i];
+        if (rule.get("name") == exampleRule) {
+          found = rule;
+        }
+      }
+    }
+
+    // TODO: report something to the console, or to the user or something:
+    if (null === found) {
+      this.addSuggestion("can't find rule named " + exampleRule);
+    }
+    return found;
+  },
+
+  // return the eval result of the
+  check: function(_rule) {
+    var rule = this.findRule(_rule);
     var nodes = this.nodes;
-    if (!rule.check(nodes)) {
+    return rule.check(nodes);
+  },
+  
+  // run one rule, adding suggestion if
+  run: function(_rule) {
+    var rule = this.findRule(_rule);
+    if (!this.check(rule)) {
       this.addSuggestion(rule.get('suggestion'));
     }
   },
 
-  runAllRules: function() {
-    var rules = MySystem.activityController.get('diagramRules'),
+  runAll: function() {
+    var rules = this.rules(),
     self      = this;
 
     rules.forEach( function (rule) {
-      self.runRule(rule);
+      self.run(rule);
     });
   },
 
   // runDiagramRules: runs the diagram rules
   // updates "success" and "feedback" properties
   runDiagramRules: function() {
-    var rules                 = this.get('rules'),
+    var rules                 = this.rules(),
     enableCustomRuleEvaluator = MySystem.activityController.get('enableCustomRuleEvaluator'),
     correctFeedback           = MySystem.activityController.get('correctFeedback'),
     success                   = this.get('success'),
     feedback                  = this.get('feedback');
-
+    
     // clear out previous data:
     var suggestions = this.suggestions = [];
 
@@ -92,10 +124,12 @@ MySystem.rulesController = SC.ObjectController.create({
     
     if (this.checkMinimumFeedback()) {
       if (enableCustomRuleEvaluator) {
-        this._evaluateCustomRules(this.suggestions);
+        // run custom evaluator, normal rules ignored.
+        this._evaluateCustomRules();
       }
       else {
-        this.runAllRules();
+        // just run the rules in order
+        this.runAll();
       }
     }
 
@@ -117,15 +151,24 @@ MySystem.rulesController = SC.ObjectController.create({
   },
 
   _evaluateCustomRules: function() {
+    (function() {
       // provide context to the evaluator:
       var customRuleEvaluator       = MySystem.activityController.get('customRuleEvaluator');
       var nodes                     = MySystem.store.find(MySystem.Node);
       var correctFeedback           = MySystem.activityController.get('correctFeedback');
       var suggestions               = this.suggestions;
-
+      var rules = this.get('rules');
       var lines = customRuleEvaluator.split(/\r\n|\r|\n/);
       current_line = "";
       counter   = 0;
+
+      // vars for convinience:
+      var run   = this.run;
+      var runAll = this.runAll;
+      var check = this.check;
+      var echo  = this.echo;
+      var eva = this;
+
       try {
         for (counter=0; counter < lines.length; counter++) {
           current_line = lines[counter];
@@ -137,13 +180,17 @@ MySystem.rulesController = SC.ObjectController.create({
           console.log("Error evaluating custom rule, line:" + counter + 1);
           console.log("'" + current_line + "'");
           console.log(e);
-          console.log(customRuleEvaluator);  // so that it can be inspected.
         }
         // WARNING:  Errors will be dispalyed to users:
         suggestions.pushObject("Rule Evaluation Error: line " + (counter + 1));
         suggestions.pushObject("'" + current_line + "'");
         suggestions.pushObject("Check the console for more information.");      
       }
+    }).call(this); // need to ourselves in here.
+  },
+
+  echo: function(message){
+    alert(message);
   }
 
 });
