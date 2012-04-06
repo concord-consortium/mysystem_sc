@@ -6,11 +6,9 @@
 /*globals MySystem SCUI Forms */
 
 /** 
- * @class
-
-
+  @class MySystem.InspectorPane
   @extends SC.View
-*/
+**/
 sc_require('core');
 
 MySystem.SubmissionsFeedbackPallet = SC.PalettePane.extend({
@@ -28,24 +26,24 @@ MySystem.SubmissionsFeedbackPallet = SC.PalettePane.extend({
     update: function (jquery) {
       var lastFeedback = "";
       jquery.find('.sumbission_info').text(this.get('submissionInfo'));
-      var lastFeedback = this.get('lastFeedback');
+      lastFeedback = this.get('lastFeedback');
       if(lastFeedback) {
         jquery.find('.last_feedback').html(lastFeedback.split("\n").join("<br/>"));
       }
     }
   }).design({
     layout: { width: 500, height: 250, right: 0, top: 0 }, 
-    displayProperties: 'lastFeedback submissionInfo feedbackPanelWidth feedbackPanelHeight'.w(),
-    lastFeedback: 'no Feedback yet',
-    lastFeedbackBinding: 'MySystem.activityController.lastFeedback',
-    submissionInfoBinding: 'MySystem.activityController.submissionInfo',
-    feedbackPanelWidthBinding:    'MySystem.activityController.feedbackPanelWidth',
-    feedbackPanelHeightBinding:   'MySystem.activityController.feedbackPanelHeight',
+    displayProperties         : 'lastFeedback submissionInfo feedbackPanelWidth feedbackPanelHeight'.w(),
+    lastFeedback              : 'no Feedback yet',
+    lastFeedbackBinding       : 'MySystem.activityController.lastFeedback',
+    submissionInfoBinding     : 'MySystem.activityController.submissionInfo',
+    feedbackPanelWidthBinding : 'MySystem.activityController.feedbackPanelWidth',
+    feedbackPanelHeightBinding: 'MySystem.activityController.feedbackPanelHeight',
 
     adjustSize: function() {
-      var parent = this.get('parentView');
-      var feedbackPanelWidth = this.get('feedbackPanelWidth');
-      var feedbackPanelHeight = this.get('feedbackPanelHeight');
+      var parent          = this.get('parentView'),
+      feedbackPanelWidth  = this.get('feedbackPanelWidth'),
+      feedbackPanelHeight = this.get('feedbackPanelHeight');
 
       parent.adjust('width',  feedbackPanelWidth);
       parent.adjust('height', feedbackPanelHeight);
@@ -56,9 +54,10 @@ MySystem.SubmissionsFeedbackPallet = SC.PalettePane.extend({
     }.observes('feedbackPanelWidth','feedbackPanelHeight'),
 
     childViews: 'closeButton'.w(),
+
     closeButton: SC.ButtonView.design({
       layout: { width: 100, height: 30, centerX: 0, bottom: 10 }, 
-      title: 'close',
+      title : 'close',
       action: 'MySystem.activityController.hideFeedbackPalette'
     })
   })
