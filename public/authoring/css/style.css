@@ -139,6 +139,17 @@ textarea {
   padding: 1em;
 }
 
+.diagram_rule_name {
+  margin-bottom: 1em;
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid #aaa;
+  vertical-align: bottom;
+}
+
+.diagram_rule_name .value {
+  font-size: 16px;
+}
 
 
 

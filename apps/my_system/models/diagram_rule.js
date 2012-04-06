@@ -17,7 +17,7 @@ MySystem.DiagramRule = SC.Record.extend(
   suggestion: SC.Record.attr(String),
   comparison: SC.Record.attr(String),
   number: SC.Record.attr(Number),
-  name: SC.Record.attr(Number),
+  name: SC.Record.attr(String),
   type: SC.Record.attr(String),
   hasLink: SC.Record.attr(Boolean),
   linkDirection: SC.Record.attr(String),

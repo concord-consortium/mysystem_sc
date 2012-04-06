@@ -132,6 +132,7 @@ MSA.EnergyType = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
 // so there are different types of rule 
 MSA.DiagramRule = SCUtil.ModelObject.extend({
   suggestion: SCUtil.dataHashProperty,
+  name: SCUtil.dataHashProperty,
   comparison: SCUtil.dataHashProperty,
   number: SCUtil.dataHashProperty,
   type: SCUtil.dataHashProperty,

@@ -193,6 +193,12 @@
     <h2>Diagram Rules</h2>
     {{#collection contentBinding="MSA.diagramRulesController" tagName="ol" attributeBindings="start" start="0"}}
         <div class="diagram_rule">
+          <div class="diagram_rule_name">
+            <span class="label">Rule Name:</span>
+            <span class="value">
+              {{view MSA.TextField valueBinding="parentView.content.name" placeholder="name"}}
+            </span>
+          </div>
           The diagram 
           {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
           {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.comparisons" valueBinding="parentView.content.comparison"}}
