@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   MySystem.DiagramRule
-// Copyright: ©2011 My Company, Inc.
+// Copyright: ©2011 My Concord Consortium
 // ==========================================================================
 /*globals MySystem */
 
@@ -17,6 +17,7 @@ MySystem.DiagramRule = SC.Record.extend(
   suggestion: SC.Record.attr(String),
   comparison: SC.Record.attr(String),
   number: SC.Record.attr(Number),
+  name: SC.Record.attr(Number),
   type: SC.Record.attr(String),
   hasLink: SC.Record.attr(Boolean),
   linkDirection: SC.Record.attr(String),
