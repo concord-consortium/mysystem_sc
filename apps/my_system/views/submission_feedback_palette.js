@@ -14,9 +14,6 @@ sc_require('core');
 MySystem.SubmissionsFeedbackPallet = SC.PalettePane.extend({
   layout: { width: 500, height: 250, right: 200, top: 200 },
   error: false,
-  click: function(e) {
-    //MySystem.activityController.hideFeedbackPalette();
-  },
   contentView: SC.View.extend({
     classNames: "feedbackpaelletcontent".w(),
     render: function (context) {
