@@ -1,0 +1,110 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Custom JS Authoring</title>
+  <!-- <link rel="stylesheet" href="css/style.css?v=2"> -->
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/codemirror.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.6.1.min.js"%3E%3C/script%3E'))</script>
+  <script type="text/javascript">
+    $(document).ready(function() {  
+        var myCodeMirror = CodeMirror.fromTextArea($('#code_editor')[0], {
+          value: "function myScript(){return 100;}\n",
+          mode:  "javascript",
+          lineNumbers: true,
+          gutter: true,
+          fixedGutter: true,
+          matchBrackets: true,
+          autofocus: true
+        });
+        var last_marker = null;
+        var origin = null;
+
+        var checkSyntax = function() {
+          var src = myCodeMirror.getValue();
+          var result = JSHINT(src);
+          if (!result) {
+            var error = JSHINT.errors[0];
+            var line  = error.line;
+            var character = error.character;
+            var reason = error.reason;
+            $('#js_errors').html("<span>line: " + line + ":" + character + ": " + reason + "</span>");
+            $('#js_errors').addClass("error");
+            myCodeMirror.setCursor(line,character);
+            myCodeMirror.setSelection(
+              {line: line, character: character},
+              {line: line, character: character+1} );
+            if (last_marker) { myCodeMirror.clearMarker(last_marker); };
+            last_marker = myCodeMirror.setMarker(line, "☹→");
+            myCodeMirror.focus();
+          }
+          else {
+            // clear errors
+            if (last_marker) { myCodeMirror.clearMarker(last_marker); };
+            $('#js_errors').removeClass('error');
+            $('#js_errors').html('');
+            if (origin) {
+              origin.postMessage(myCodeMirror.getValue(),"*");
+              debugger;
+            }
+          }
+        };
+        $("#save_authoring").bind('click', function() { checkSyntax(); });
+        var updateMessage = function(event) {
+          myCodeMirror.setValue(event.data);
+          origin = event.origin;
+          debugger;
+        };
+        window.addEventListener("message", updateMessage, false);
+    });
+  </script>
+  <style type="text/css">
+    #editor_cell {
+      border: 1px solid #aaa;
+      margin: 1em;
+    }
+    #js_errors {
+      font-family: Lucidatypewriter, monospace;
+    }
+    .error {
+      background-color: #d79d95;
+    }
+    #js_help {
+      font-family: Lucidatypewriter, monospace;
+      white-space: pre;
+    }
+    table {
+      margin: 1em;
+      padding: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>MySystem Authoring Preview</h1>
+  <table width="90%">
+    <tr>
+      <td id="editor_cell" width="80%">
+        <textarea id="code_editor"></textarea>
+      </td>
+      <td id="help_cell">
+        <div id="js_errors"></div>
+        <div id="js_help">
+        </div>
+      </td>
+    </tr><tr>
+      <td id="authoring_td">
+        <button id="save_authoring">Save Javascript</button>
+      </td>
+      <td></td>
+    </tr>
+  <table>
+
+  <script src="js/libs/codemirror.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/libs/javascript.js" type="text/javascript" charset="utf-8"></script>
+  <script src="js/libs/jshint.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

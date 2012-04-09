@@ -261,3 +261,22 @@ MSA.TextField = SC.TextField.extend({
   type: "text",
   size: null
 });
+
+MSA.customRuleController = SC.Object.create({
+  editorWindow: null,
+
+  editCustomRule: function() {
+    var features  = "menubar=no,location=no,resizable=yes,scrollbars=yes,status=no"; 
+    var newWindow = window.open("ace.html", 'editorwindow', features);
+    this.set('editorWindow', newWindow);
+    newWindow.postMessage(MSA.activity.get('customRuleEvaluator'),"*");
+        $("#save_authoring").bind('click', function() { checkSyntax(); });
+        var updateMessage = function(event) {
+          MSA.activity.customRuleEvaluator.set('value',event.data);
+          myCodeMirror.setValue(event.data);
+          origin = event.origin;
+        };
+        window.addEventListener("message", updateMessage, false);
+  }
+
+});
