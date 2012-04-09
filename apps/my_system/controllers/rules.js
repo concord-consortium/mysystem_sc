@@ -170,10 +170,11 @@ MySystem.rulesController = SC.ObjectController.create({
       var eva = this;
 
       try {
-        for (counter=0; counter < lines.length; counter++) {
-          current_line = lines[counter];
-          eval(current_line);
-        }
+        // for (counter=0; counter < lines.length; counter++) {
+        //   current_line = lines[counter];
+        //   eval(current_line);
+        // }
+        eval(customRuleEvaluator);
       }
       catch(e) {
         if (console && typeof console.log == 'function') {
