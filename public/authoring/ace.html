@@ -52,12 +52,19 @@
             $('#js_errors').removeClass('error');
             $('#js_errors').html('');
             if (window.originParent) {
-              window.originParent.postMessage(myCodeMirror.getValue(),"*");
-              window.close();
+              var message = {'windowClosed': false, 'javascript': myCodeMirror.getValue() };
+              window.originParent.postMessage(JSON.stringify(message),"*");
             }
           }
         };
         $("#save_authoring").bind('click',checkSyntax);
+        $(window).unload(function() {
+          if(window.originParent) {
+            var message = {'windowClosed': true, 'javascript': myCodeMirror.getValue() };
+            window.originParent.postMessage(JSON.stringify(message),"*");
+          }
+        });
+        window.addEventListener("message", function(evt) {myCodeMirror.setValue(evt.data);}, false);
     });
   </script>
   <style type="text/css">

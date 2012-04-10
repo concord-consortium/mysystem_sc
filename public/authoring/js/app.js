@@ -266,17 +266,32 @@ MSA.customRuleController = SC.Object.create({
   editorWindow: null,
 
   editCustomRule: function() {
-    var features  = "menubar=no,location=no,resizable=yes,scrollbars=yes,status=no,width=400,height=600"; 
-    var newWindow = window.open("ace.html", 'editorwindow', features);
+    var editorWindow = this.get('editorWindow');
+    var features  = "menubar=no,location=no,titlebar=no,toolbar=no,resizable=yes,scrollbars=yes,status=no,width=400,height=600"; 
     var javascript = MSA.activity.get('customRuleEvaluator');
-    this.set('editorWindow', newWindow);
 
-    newWindow.srcText = javascript;
-    newWindow.originParent = window;
-    // newWindow.postMessage(javascript,"*");
+    // reuse existing window:
+    if (editorWindow) {
+      editorWindow.postMessage(javascript,"*");
+      editorWindow.focus();
+    }
 
+    // or create a new one:
+    else {
+      editorWindow = window.open("ace.html", 'editorwindow', features);
+      this.set('editorWindow', editorWindow);
+      editorWindow.srcText = javascript;
+      editorWindow.originParent = window;
+    }
+    var self = this;
     var updateMessage = function(event) {
-      MSA.activity.set('customRuleEvaluator',event.data);
+      var message = JSON.parse(event.data);
+      if (message.javascript) {
+        MSA.activity.set('customRuleEvaluator',message.javascript);
+      }
+      if (message.windowClosed) {
+        self.set('editorWindow',null);
+      }
     };
 
     window.addEventListener("message", updateMessage, false);
