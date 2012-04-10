@@ -24,7 +24,7 @@ desc "package sproutcore for for a wise4 deployment"
 task :wise => [:build, :install] 
 
 desc "package sproutcore for Wise4 but don't copy"
-task :build => [:repackage, :inject_javascript, :copy_templates, :copy_authoring]
+task :build => [:repackage, :inject_javascript, :copy_templates, :copy_authoring, :copy_icons]
 
 desc "copy the files to the Wise4 vle directory dir"
 task :install do
@@ -114,6 +114,13 @@ task :copy_authoring do
   dest_dir = "#{@output_directory}/authoring"
   %x[ mkdir -p #{dest_dir} ]
   %x[ cp -r public/authoring/* #{dest_dir} ]
+end
+
+desc "Copy icons"
+task :copy_icons do
+  icons = File.join(@template_directory,'icons')
+  %x[ mkdir -p #{@output_directory} ]
+  %x[ cp -r #{icons} #{@output_directory} ]
 end
 
 namespace :demos do
