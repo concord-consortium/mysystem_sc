@@ -179,7 +179,7 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
     					timestamp = new Date(timestampMS);
     				}
                     if(responseJSON["MySystem.GraphicPreview"] != null &&
-                       responseJSON["Mysystem2Nodestem.GraphicPreview"].LAST_GRAPHIC_PREVIEW != null) {
+                       responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW != null) {
                         svg = responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW.svg;
                         if (svg != null) {
                             svg = unescape(svg);
