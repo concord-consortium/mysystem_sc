@@ -200,7 +200,13 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
         	    
         	    divContent += "Diagram: ";
         	    
-                // svg is probably the easiest to view here:
+                // put the student work and content in a hidden element
+                // add enlarge link to show student's diagram in a popup window
+                divContent += "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
+                    "onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"_"+x+"\"'>enlarge</a>" +
+                    "<span id='content_"+divId+"_"+x+"' style='display:none'>"+contentString+"</span>" +
+                    "<span id='studentwork_"+divId+"_"+x+"' style='display:none'>"+studentWork+"</span>";
+
         		if (svg != null) {
                     divContent += "<div class='preview svg image'" + 
                     " style='display: block; overflow: auto; width: 100%; height:500px;'> " + 
@@ -209,15 +215,7 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
                 else if (png != null) {
                      divContent += "<span class='preview png image'> " + png + "</span>";
                 }
-                // fall back to the old 'click to enlarge' method.
-                else {
-                    // put the student work and content in a hidden element
-                    // add enlarge link to show student's diagram in a popup window
-                    divContent += "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
-                    "onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"_"+x+"\"'>enlarge</a>" +
-                    "<span id='content_"+divId+"_"+x+"' style='display:none'>"+contentString+"</span>" +
-                    "<span id='studentwork_"+divId+"_"+x+"' style='display:none'>"+studentWork+"</span>";
-                }
+            
                 divContent += "<br>";
         		divContent += "Is Submit: " + isSubmit;
         		divContent += "<br>";
