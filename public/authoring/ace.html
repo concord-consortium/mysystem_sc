@@ -11,7 +11,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.6.1.min.js"%3E%3C/script%3E'))</script>
   <script type="text/javascript">
-    $(document).ready(function() {  
+    $(document).ready(function() {
         var myCodeMirror = CodeMirror.fromTextArea($('#code_editor')[0], {
           value: "function myScript(){return 100;}\n",
           mode:  "javascript",
@@ -21,8 +21,12 @@
           matchBrackets: true,
           autofocus: true
         });
+        if (window.srcText) {
+          myCodeMirror.setValue(window.srcText);
+        }
+
         var last_marker = null;
-        var origin = null;
+        
 
         var checkSyntax = function() {
           var src = myCodeMirror.getValue();
@@ -47,19 +51,13 @@
             if (last_marker) { myCodeMirror.clearMarker(last_marker); };
             $('#js_errors').removeClass('error');
             $('#js_errors').html('');
-            if (origin) {
-              origin.postMessage(myCodeMirror.getValue(),"*");
-              debugger;
+            if (window.originParent) {
+              window.originParent.postMessage(myCodeMirror.getValue(),"*");
+              window.close();
             }
           }
         };
-        $("#save_authoring").bind('click', function() { checkSyntax(); });
-        var updateMessage = function(event) {
-          myCodeMirror.setValue(event.data);
-          origin = event.origin;
-          debugger;
-        };
-        window.addEventListener("message", updateMessage, false);
+        $("#save_authoring").bind('click',checkSyntax);
     });
   </script>
   <style type="text/css">
