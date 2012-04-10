@@ -47,11 +47,12 @@ MySystem.rulesController = SC.ObjectController.create({
   },
 
   rules: function() {
-    return MySystem.activityController.get('diagramRules').toArray();
+    var rules = MySystem.activityController.get('diagramRules');
+    return rules;
   },
 
   find: function(exampleRule) {
-    var rules = this.rules(),
+    var rules = this.rules().toArray(),
     rule      = null,
     found     = null,
     i         = 0;
@@ -133,20 +134,21 @@ MySystem.rulesController = SC.ObjectController.create({
       }
     }
 
-    this._trimFeedback(suggestions);
+    this.suggestions = suggestions;
+    this._trimFeedback();
 
     success  = (this.suggestions.get('length') === 0);
-    feedback = success ? correctFeedback : suggestions.join(" \n");
+    feedback = success ? correctFeedback : this.suggestions.join(" \n");
 
     this.set('success', success);
     this.set('feedback', feedback);
   },
 
 
-  _trimFeedback: function(suggestions){
+  _trimFeedback: function(){
     var maxFeedback = MySystem.activityController.get('maxFeedbackItems');
-    if (maxFeedback && maxFeedback > 0 && suggestions.length > maxFeedback) {
-      suggestions = suggestions.slice(0,maxFeedback);
+    if (maxFeedback && maxFeedback > 0 && this.suggestions.length > maxFeedback) {
+      this.suggestions = this.suggestions.slice(0,maxFeedback);
     }
   },
 
@@ -157,7 +159,7 @@ MySystem.rulesController = SC.ObjectController.create({
       var nodes                     = MySystem.store.find(MySystem.Node);
       var correctFeedback           = MySystem.activityController.get('correctFeedback');
       var suggestions               = this.suggestions;
-      var rules = this.get('rules');
+      var rules = this.rules();
 
       var Rules = this;
 
