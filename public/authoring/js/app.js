@@ -267,7 +267,7 @@ MSA.customRuleController = SC.Object.create({
 
   editCustomRule: function() {
     var editorWindow = this.get('editorWindow');
-    var features  = "menubar=no,location=no,titlebar=no,toolbar=no,resizable=yes,scrollbars=yes,status=no,width=400,height=600"; 
+    var features  = "menubar=no,location=no,titlebar=no,toolbar=no,resizable=yes,scrollbars=yes,status=no,width=750,height=650"; 
     var javascript = MSA.activity.get('customRuleEvaluator');
 
     // reuse existing window:
