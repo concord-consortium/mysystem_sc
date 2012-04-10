@@ -114,7 +114,16 @@ View.prototype.Mysystem2Node.populatePrompt = function() {
  * Updates the html with the user entered prompt
  */
 View.prototype.Mysystem2Node.updatePrompt = function(){
-  this.content.prompt = document.getElementById('promptInput').value;
+  //get the prompt content
+  var promptContent = '';
+  if(typeof tinymce != 'undefined' && $('#promptInput').tinymce()){
+    promptContent = $('#promptInput').tinymce().getContent();
+  } else {
+    promptContent = $('#promptInput').val();
+  }
+
+  //set the prompt content
+  this.content.prompt = promptContent;
 
   /* fire source updated event */
   this.view.eventManager.fire('sourceUpdated');
