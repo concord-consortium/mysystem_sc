@@ -38,6 +38,7 @@
             var reason = error.reason;
             $('#js_errors').html("<span>line: " + line + ":" + character + ": " + reason + "</span>");
             $('#js_errors').addClass("error");
+            $('#js_error_labels').show();
             myCodeMirror.setCursor(line,character);
             myCodeMirror.setSelection(
               {line: line, character: character},
@@ -50,6 +51,7 @@
             // clear errors
             if (last_marker) { myCodeMirror.clearMarker(last_marker); };
             $('#js_errors').removeClass('error');
+            $('#js_error_labels').hide();
             $('#js_errors').html('');
             if (window.originParent) {
               var message = {'windowClosed': false, 'javascript': myCodeMirror.getValue() };
@@ -68,19 +70,39 @@
     });
   </script>
   <style type="text/css">
+    table {
+      width: 100%;
+      overflow: auto;
+    }
+
+    td {
+      padding: 1em;
+    }
+
     #editor_cell {
       border: 1px solid #aaa;
       margin: 1em;
+      width: 50%;
     }
+
+
     #js_errors {
       font-family: Lucidatypewriter, monospace;
     }
     .error {
       background-color: #d79d95;
     }
+    .label {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
     #js_help {
       font-family: Lucidatypewriter, monospace;
       white-space: pre;
+      font-size: 0.75em;
+      width: 400px;
+      overflow: auto;
     }
     table {
       margin: 1em;
@@ -90,15 +112,44 @@
 </head>
 <body>
   <h1>MySystem Authoring Preview</h1>
-  <table width="90%">
+  <table>
     <tr>
-      <td id="editor_cell" width="80%">
-        <textarea id="code_editor"></textarea>
+      <td id="editor_cell">
+        <textarea id="code_editor"></textarea>  
       </td>
       <td id="help_cell">
-        <div id="js_errors"></div>
+
+        <div class="label">Sample functions:</div>
         <div id="js_help">
+  Rules.addSuggestion(string);      // add 'string' to the suggestions.
+  Rules.addRuleSuggestion(rule_id); // add the suggestion from rule named 'rule_id'
+  Rules.check(rule_id);             // check 'rule_id' without feedback. (true|false)
+  Rules.run(rule_id);               // run 'rule_id' rule, adding feedback.
+  Rules.runAll();                   // run all the rules, adding feedback.
+  Rules.hasTransformation();        // true if the diagram has transformations
+  Rules.iconsUsedOnce();            // true if the icons were only used one time.
+  Rules.extraLinks(rules);          // true if there are links present not defined in 'rules'.
+  Rules.extraLinks();               // true if there are links present not defined in any rule.
+
+  // sample use:
+  if (Rules.extraLinks()) {
+    Rules.addSuggestion("You have some extra links!");
+  }
+  if (!Rules.iconsUsedOnce()) {
+    Rules.addSuggestion("You can only use each icon once.");
+  }
+  if (!Rules.hasTransformation()) {
+    Rules.addSuggestion("How is energy transformed?");
+  }
+
+  // Expert only:
+  Rules.find(rule_id);              // find a rule with a specific name.
+  rules;                            // [] all the rules.
+  nodes;                            // [] all of the nodes.
+  suggestions;                      // [] the suggestion list.
         </div>
+        <div id="js_error_labels" class="label" style="display: none;"> Javascript Errors:</div>
+        <div id="js_errors"></div>
       </td>
     </tr><tr>
       <td id="authoring_td">
