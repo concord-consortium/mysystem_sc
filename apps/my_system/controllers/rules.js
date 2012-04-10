@@ -22,7 +22,7 @@ MySystem.rulesController = SC.ObjectController.create({
   },
 
   addRuleSuggestion: function(rule_select) {
-    var rule = this.findRule(rule_select);
+    var rule = this.find(rule_select);
     this.addSuggestion(rule.get('suggestion'));
   },
 
@@ -50,7 +50,7 @@ MySystem.rulesController = SC.ObjectController.create({
     return MySystem.activityController.get('diagramRules').toArray();
   },
 
-  findRule: function(exampleRule) {
+  find: function(exampleRule) {
     var rules = this.rules(),
     rule      = null,
     found     = null,
@@ -85,14 +85,14 @@ MySystem.rulesController = SC.ObjectController.create({
 
   // return the eval result of the
   check: function(_rule) {
-    var rule = this.findRule(_rule);
+    var rule = this.find(_rule);
     var nodes = this.nodes;
     return rule.check(nodes);
   },
   
   // run one rule, adding suggestion if
   run: function(_rule) {
-    var rule = this.findRule(_rule);
+    var rule = this.find(_rule);
     if (!this.check(rule)) {
       this.addSuggestion(rule.get('suggestion'));
     }
@@ -158,41 +158,131 @@ MySystem.rulesController = SC.ObjectController.create({
       var correctFeedback           = MySystem.activityController.get('correctFeedback');
       var suggestions               = this.suggestions;
       var rules = this.get('rules');
-      var lines = customRuleEvaluator.split(/\r\n|\r|\n/);
-      current_line = "";
-      counter   = 0;
 
-      // vars for convinience:
-      var run   = this.run;
-      var runAll = this.runAll;
-      var check = this.check;
-      var echo  = this.echo;
-      var eva = this;
+      var Rules = this;
 
+      // existing:
+      // Rules.addSuggestion(string);      // add string to the suggestions.
+      // Rules.addRuleSuggestion(rule_id); // add the suggestion from rule_id.
+      // Rules.find(rule_id);              // find a rule with a specific name.
+      // Rules.check(rule_id);             // check the given rule, dont add feedback.
+      // Rules.run(rule_id);               // run the given rule, adding feedback.
+      // Rules.runAll();                   // run all the rules, adding feedback.
+      // Rules.hasTransformation();        // true if the diagram has transformations
+      // Rules.iconsUsedOnce();            // true if the icons were only used one time.
+      // Rules.extraLinks(rules=all);      // true if there are links present not defined in rules.
+      
+  
+      // proposed:
+      // Rules.any([rule-ida,rule-idb,...]);  // true if one of the named rules pass
+      // Rules.all([rule-ida,rule-idb,...]);  // true if all of the named rules pass
+      // Rules.none([rule-ida,rule-idb,..]);  // true if none of the named rules pass
+      // Rules.iconsUnusedIcons();            // true if some icons weren't used.
+      // Rules.allIconsUsed();                // true if all the icons were used.
+      
       try {
-        // for (counter=0; counter < lines.length; counter++) {
-        //   current_line = lines[counter];
-        //   eval(current_line);
-        // }
         eval(customRuleEvaluator);
       }
       catch(e) {
         if (console && typeof console.log == 'function') {
-          console.log("Error evaluating custom rule, line:" + counter + 1);
-          console.log("'" + current_line + "'");
-          console.log(e);
+          console.log("Error evaluating custom rule: " + e);
         }
         // WARNING:  Errors will be dispalyed to users:
-        suggestions.pushObject("Rule Evaluation Error: line " + (counter + 1));
-        suggestions.pushObject("'" + current_line + "'");
-        suggestions.pushObject("Check the console for more information.");      
+        suggestions.pushObject("Rule Evaluation Error: " + e);
       }
-    }).call(this); // need to ourselves in here.
+    }).call(this);
   },
 
-  echo: function(message){
-    alert(message);
+
+  // true if the diagram has transformations
+  // transformations are any nodes which output
+  // energytypes other than their input... (berk_req.)
+  hasTransformation: function() {
+    var nodes = this.nodes;
+
+    // returns uuids for energytypes or 'unidenitfied_type'
+    var linkTypes = function(node,linkTypes) {
+      var links = node.get(linkTypes);
+      return links.map( function (link) {
+        return link.get('energyType') || 'unidenitfied_type';
+        });
+    };
+
+    var hasTransform = function (node) {
+      var inLinks = linkTypes(node,'inLinks').toArray();
+      var outLinks = linkTypes(node,'outLinks').toArray();
+      
+      // we must have in and outlinks to transform
+      if (inLinks.length < 1) { return false; }
+      if (outLinks.length < 1) { return false; }
+      
+      // search for an outlink not in inlinks.
+      for (var i = outLinks.length - 1; i >= 0; i--) {
+        if (inLinks.indexOf(outLinks[i]) < 0) { return true; }
+      }
+      return false;
+    };
+    return (nodes.filter(hasTransform).length > 1);
+  },
+
+  // true if the icons were only used at most once.
+  iconsUsedOnce: function() {
+    var nodes = this.nodes.toArray();
+    var types = {};
+    var duplicates = false;
+    for(i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      var nodeType = node.get('nodeType');
+      if (typeof types[nodeType] === 'undefined') {
+        types[nodeType] = 0;
+      }
+      else {
+        types[nodeType] = types[nodeType] + 1;
+        duplicates = true;
+      }
+    }
+    return (!duplicates);
+  },
+
+  // true if there were links not defined in rules.
+  extraLinks: function(rule_names) {
+    // Look for links that don't match one of the 'should' link rules
+    var links          = MySystem.store.find(MySystem.Link);
+    var notAllowedLink = null;
+    var rules          = MySystem.activityController.get('diagramRules');
+
+    if (rule_names !== null && typeof rule_names !== 'undefined' && rule_names.length > 0) {
+      rules = rules.filter( function(rule) {
+        return (rule_names.indexOf(rule.get('name')) > -1);
+      });
+    }
+    
+    links = links.filter(function (link) {return link.isComplete();});
+    notAllowedLink = links.find(function (link) {
+      var positiveLinkRules = rules.filterProperty('hasLink').filter(function(rule){return !rule.get('not');});
+      var matchingRule = positiveLinkRules.find(function (rule) {
+        // need to handle the link check here, in the future this should be moved into the core code
+        var paletteItem = rule.paletteItem(rule.get('type')),
+            otherPaletteItem = rule.paletteItem(rule.get('otherNodeType'));
+        
+        switch(rule.get('linkDirection')) {
+          case '-->':
+            return rule.checkLink(link, paletteItem, otherPaletteItem);
+          case '<--':
+            return rule.checkLink(link, otherPaletteItem, paletteItem);
+          case '---':
+            return rule.checkLink(link, paletteItem, otherPaletteItem) || rule.checkLink(link, otherPaletteItem, paletteItem);
+          default:
+            throw "Invalid linkDirection value for diagram rule.";
+        }
+      });
+      if(!matchingRule){ return YES; }
+    });
+
+    return (notAllowedLink !== null && notAllowedLink !== 'undefined');
   }
+
+
 
 });
 
