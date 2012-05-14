@@ -133,14 +133,16 @@ SC.setupBodyClassNames = function() {
   <script type="text/javascript" src="js/00_my_system_javascript-packed.js"></script>
   <script type="text/javascript">
     String.preferredLanguage = "en";
-    var mysystem2;
+    var mysystem2 = null;
 
     /**
      * Called back when ... some part of this thing loads.
      */
     window.loadContentAfterScriptsLoad = function (node) {
       // mysystem = new Mysystem(node, node.view);
-      mysystem2 = new Mysystem2(node, node.view);
+      if (mysystem2 === null) {
+        mysystem2 = new Mysystem2(node, node.view);
+      }
       mysystem2.render();
     };
 

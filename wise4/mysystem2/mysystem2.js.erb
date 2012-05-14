@@ -24,6 +24,7 @@ function Mysystem2(node,view) {
   }
   
   this.mostRecentSavedState = null;
+  this.hasRegisteredDomListeners = false;
 }
 
 Mysystem2.prototype.saveTriggeredByMySystem = function(isSubmit) {
@@ -63,24 +64,38 @@ Mysystem2.prototype.render = function() {
     SC.onReady.done();
   }
 
-  var lastRenewal = 0;
-  if (typeof eventManager != 'undefined') {
-    // watch for changes to the student data and renew the session whenever it changes
-    $('#my_system_state').bind("DOMSubtreeModified", function() {
-      var now = new Date().getTime();
-      if (now - lastRenewal > 15000) {  // only renew at most once every 15 seconds
-        SC.Logger.log("renewing session");
-        eventManager.fire('renewSession');
-        lastRenewal = now;
-      }
-    });
-  }
-
   if (this.content) {
     MySystem.loadWiseConfig(this.content,latestState);
   }
+
   if (latestState) {
     MySystem.updateFromDOM();
+  }
+
+  // TODO: Do we know if we are in preview mode?
+  this.keepStudentLogedIn();
+};
+
+Mysystem2.prototype.keepStudentLogedIn = function() {
+  // only register dom listeners once...
+  if (!this.hasRegisteredDomListeners) {
+    var lastRenewal = 0;
+    var interval    = 30; // 5 seconds
+      if (typeof eventManager != 'undefined') {
+      // watch for changes to the student data and renew the session whenever it changes
+      $('#my_system_state').bind("DOMSubtreeModified", function() {
+        var now = new Date().getTime();
+        var state = $('#my_system_state').text();
+        var elapsed = (now - lastRenewal) / 1000;
+        if (elapsed > interval) {  // only renew at most once every interval seconds
+          SC.Logger.log("renewing session (" + elapsed + "s)");
+          lastSate = state;
+          eventManager.fire('renewSession');
+          lastRenewal = now;
+        }
+      });
+    }
+    this.hasRegisteredDomListeners = true;
   }
 };
 
