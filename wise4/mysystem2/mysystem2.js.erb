@@ -80,7 +80,7 @@ Mysystem2.prototype.keepStudentLogedIn = function() {
   // only register dom listeners once...
   if (!this.hasRegisteredDomListeners) {
     var lastRenewal = 0;
-    var interval    = 30; // 5 seconds
+    var interval    = 30; // seconds
       if (typeof eventManager != 'undefined') {
       // watch for changes to the student data and renew the session whenever it changes
       $('#my_system_state').bind("DOMSubtreeModified", function() {
