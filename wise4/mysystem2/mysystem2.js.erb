@@ -4,7 +4,7 @@
  * the step when the students work on it. An instance of this object will
  * be created in the .html for this step (look at mysystem.html)
  */
-function Mysystem2(node,view) {
+function Mysystem2(node,view,secondTime) {
   this.node = node;
   this.content = node.getContent().getContentJSON();
 
@@ -25,6 +25,9 @@ function Mysystem2(node,view) {
   
   this.mostRecentSavedState = null;
   this.hasRegisteredDomListeners = false;
+  if(secondTime == true) {
+    this.hasRegisteredDomListeners = true;
+  }
 }
 
 Mysystem2.prototype.saveTriggeredByMySystem = function(isSubmit) {

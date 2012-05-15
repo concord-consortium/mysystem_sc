@@ -143,6 +143,10 @@ SC.setupBodyClassNames = function() {
       if (mysystem2 === null) {
         mysystem2 = new Mysystem2(node, node.view);
       }
+      else {
+        // create a new one, but don't register dom listeners(!)
+        mysystem2 = new Mysystem2(node, node.view, true); 
+      }
       mysystem2.render();
     };
 
