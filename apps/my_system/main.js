@@ -147,6 +147,7 @@ MySystem.registerExternalSaveFunction = function(func, context) {
 MySystem.preExternalSave = function() {
   SC.RunLoop.begin();
   MySystem.activityController.getDiagramFeedback({isSubmit: NO});
+  MySystem.GraphicPreview.makePreview(MySystem.store);
   SC.RunLoop.end();
 };
 
