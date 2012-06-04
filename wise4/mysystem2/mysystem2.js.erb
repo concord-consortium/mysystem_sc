@@ -68,7 +68,11 @@ Mysystem2.prototype.render = function() {
   }
 
   if (this.content) {
-    MySystem.loadWiseConfig(this.content,latestState);
+    // not sure why we are getting called when its not a
+    // mysystem 2 state -- but it happens.
+    if (this.content['type'] === "mysystem2") {
+      MySystem.loadWiseConfig(this.content,latestState);
+    }
   }
 
   if (latestState) {
