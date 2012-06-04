@@ -17,7 +17,7 @@ MySystem.InstructionView = SC.View.extend({
     canScrollHorizontal: NO,
     canScrollVertical: YES,
     anchorLocation: SC.ANCHOR_TOP,  
-    layout:  { top: 5, width: 370, bottom: 5, left: 5 },
+    layout:  { top: this.margin, width: 390, bottom: 5, left: 5 },
     contentView: SC.LabelView.design({
       valueBinding: 'MySystem.storyController.content',
       useStaticLayout: YES, 
@@ -38,14 +38,16 @@ MySystem.InstructionView = SC.View.extend({
 
   numSubmissions: MySystem.SubmissionsFeedbackLabel.design({
   // numSubmissions: SC.LabelView.design({
-    layout: { right: 15, bottom: 40, height: 20, width: 220},
+    layout: { left: 400, bottom: 40, height: 20, width: 220},
     value: 'test',
-    textAlign: SC.ALIGN_RIGHT,
+    textAlign: SC.ALIGN_LEFT,
     valueBinding: 'MySystem.activityController.submissionInfo',
     visible:  YES
   }),
+  
   checkButtonView: SC.ButtonView.design({
-    layout: { right: 15, bottom: 10, height: 25, width: 120 },
+    //layout: { right: 15, bottom: 10, height: 25, width: 120 },
+    layout: { left: 400, top: 5, height: 25, width: 125 },
     // NP Sept. 1, 2011: Kelley in Berkeley wanted this label changed
     // from Check to Submit.
     title: 'Submit Diagram',
@@ -56,7 +58,8 @@ MySystem.InstructionView = SC.View.extend({
   
   // this starts out not enabled so people don't think they can actually save
   saveButtonView: SC.ButtonView.design({
-    layout: { right: 150, top: 5, height: 25, width: 80 },
+    //layout: { right: 150, top: 5, height: 25, width: 80 },
+    layout: { left: 485, bottom: 10, height: 25, width: 80 },
     title: 'Save',
     isEnabledBinding: 'MySystem.savingController.enableManualSave',
     toolTip: 'Save your diagram',
@@ -64,7 +67,7 @@ MySystem.InstructionView = SC.View.extend({
   }),
   
   saveStatusView: SC.LabelView.design({
-    layout: { right: 100 , top: 40, height: 25, width: 130 },
+    layout: { left: 400 , top: 40, height: 25, width: 130 },
     textAlign: SC.ALIGN_LEFT,
 		displayProperties: 'isDirty value'.w(),
     valueBinding: 'MySystem.savingController.saveStatusText',
