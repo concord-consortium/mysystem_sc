@@ -8,28 +8,34 @@
 require('views/sumbissions_feedback_label');
 
 MySystem.InstructionView = SC.View.extend({
-  childViews: 'assignmentView clearButtonView numSubmissions checkButtonView saveButtonView saveStatusView '.w(),
+  childViews: 'scroller clearButtonView numSubmissions checkButtonView saveButtonView saveStatusView '.w(),
   backgroundColor: '#eeefff',
   
   canCollapse: YES,
   
-  assignmentView: SC.LabelView.design({
-    valueBinding: 'MySystem.storyController.content',
-  
+  scroller: SC.ScrollView.design({
+    canScrollHorizontal: NO,
+    canScrollVertical: YES,
     anchorLocation: SC.ANCHOR_TOP,  
-    layout: { top: 5, right: 222, bottom: 5, left: 5 },
-
-    tagName: "div",
-    escapeHTML: NO,
-    textAlign: SC.ALIGN_LEFT
+    layout:  { top: 5, width: 370, bottom: 5, left: 5 },
+    contentView: SC.LabelView.design({
+      valueBinding: 'MySystem.storyController.content',
+      useStaticLayout: YES, 
+      anchorLocation: SC.ANCHOR_TOP,  
+      layout: { top: 0, right: 0},
+      tagName: "div",
+      escapeHTML: NO,
+      textAlign: SC.ALIGN_LEFT
+    })
   }),
-  
+
   clearButtonView: SC.ButtonView.design({
-    layout: { right: 150, bottom: 10, height: 25, width: 80 },
+    layout: { left: 400, bottom: 10, height: 25, width: 80 },
     title: 'Clear',
     toolTip: 'Clear everything from your diagram',
     action: 'clearCanvas'
   }),
+
   numSubmissions: MySystem.SubmissionsFeedbackLabel.design({
   // numSubmissions: SC.LabelView.design({
     layout: { right: 15, bottom: 40, height: 20, width: 220},
