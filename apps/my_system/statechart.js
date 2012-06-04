@@ -109,30 +109,10 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     
     // runs the rules, saves the data and pops up a message to the user
     checkButtonPressed: function () {
-      
-      var lastFeedback           = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
-      var numOfSubmits           = null;
-      var maxSubmits             = MySystem.activityController.get('maxSubmissionClicks');
-      var maxSubmissionFeedback  = MySystem.activityController.get('maxSubmissionFeedback');
-      var alertPane              = SC.AlertPane.warn;
-      var results                = null;
-
       // force focus of main pane, as author could have focus elsewhere, hit
       // checkDiagram, and then hit delete key...
       MySystem.nodesController.focusMainPane();
-      if (lastFeedback && maxSubmits > 0  && (lastFeedback.get('numOfSubmits') >= maxSubmits)) {
-        alertPane.call(SC.AlertPane, {description: maxSubmissionFeedback}); 
-        // we should just save -- just to be safe..
-        MySystem.savingController.save();
-      }
-      else {
-        results = MySystem.activityController.getDiagramFeedback({isSubmit: YES});
-        MySystem.savingController.submit();
-        hasProblems = results[0];
-        MySystem.activityController.showFeedbackPalette();
-        //alertPane = results[0] ? SC.AlertPane.info : SC.AlertPane.warn;
-        //alertPane.call(SC.AlertPane, {description: results[1], classNames: ['feedback']});
-      }
+      MySystem.activityController.checkButtonPressed();
     },
     
     // The delete key should generally be handled before this, but if not this is the place

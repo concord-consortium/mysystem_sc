@@ -44,6 +44,7 @@ MySystem.InstructionView = SC.View.extend({
     // from Check to Submit.
     title: 'Submit Diagram',
     toolTip: 'Submit your diagram',
+    isEnabledBinding: 'MySystem.activityController.canSubmit',
     action: 'checkButtonPressed'
   }),
   

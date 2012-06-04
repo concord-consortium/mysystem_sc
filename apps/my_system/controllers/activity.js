@@ -20,6 +20,7 @@ MySystem.activityController = SC.ObjectController.create({
 
   lastFeedback: '',
   numOfSubmits: 0,
+  canSubmit: YES,
 
   submissionInfo: function(_feedback) {
     var maxSubmissionClicks = this.get('maxSubmissionClicks');
@@ -36,11 +37,14 @@ MySystem.activityController = SC.ObjectController.create({
   }.property('lastFeedback','maxSubmissionClicks','numOfSubmits'),
 
   getDiagramFeedback: function (options) {
+    var success;
+    var feedback;
     
     MySystem.rulesController.runDiagramRules();
     // for now, we can assume that if there are no suggestions the diagram is good
-    var success             = MySystem.rulesController.get('success');
-    var feedback            = MySystem.rulesController.get('feedback');
+    success             = MySystem.rulesController.get('success');
+    feedback            = MySystem.rulesController.get('feedback');
+
     MySystem.RuleFeedback.saveFeedback(MySystem.store, feedback, success, options.isSubmit);
 
     var lastFeedback        = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
@@ -68,6 +72,51 @@ MySystem.activityController = SC.ObjectController.create({
     if(palette) {
       palette.remove();
     }
-  }
+    this.enableFeedbackButton();
+  },
+  
+  disableFeedbackButton: function() {
+    this.set('canSubmit', NO);
+  },
+
+  enableFeedbackButton: function() {
+    var selfRef = this;
+    // prevent neurotic or maniacle clicking:
+    setTimeout(function() { selfRef.set('canSubmit', YES); }, 1000);
+  },
+
+  // runs the rules, saves the data and pops up a message to the user
+  checkButtonPressed: function () {
+      
+      var lastFeedback           = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+      var numOfSubmits           = null;
+      var maxSubmits             = this.get('maxSubmissionClicks');
+      var maxSubmissionFeedback  = this.get('maxSubmissionFeedback');
+      var alertPane              = SC.AlertPane.warn;
+      var results                = null;
+      var selfRef                = this;
+      
+      this.disableFeedbackButton();
+
+      if (lastFeedback && maxSubmits > 0  && (lastFeedback.get('numOfSubmits') >= maxSubmits)) {
+        alertPane.call(SC.AlertPane, {
+          description: maxSubmissionFeedback,
+          delegate: {
+            alertPaneDidDismiss: function(pane, status) {
+              selfRef.enableFeedbackButton();
+            }
+          }
+        });
+        // we should just save -- just to be safe..
+        MySystem.savingController.save();
+      }
+
+      else {
+        results = this.getDiagramFeedback({isSubmit: YES});
+        MySystem.savingController.submit();
+        hasProblems = results[0];
+        this.showFeedbackPalette();
+      }
+    }
 }) ;
 
