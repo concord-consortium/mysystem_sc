@@ -159,6 +159,10 @@ Mysystem2.prototype.save = function(isSubmit) {
   var response,
       state;
 
+  // sometimes we are called without a dom element, in which case,
+  // return immediately...
+  if (this.domIO === null) { return; }
+  
   // We use a simple dom element for our data passing
   response =this.domIO.textContent;
   
