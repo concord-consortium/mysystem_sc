@@ -5,7 +5,7 @@
 /*globals MySystem RaphaelViews */
 
 sc_require('mixins/arrow_drawing');
-
+sc_require('controllers/terminal');
 /** @class
 
 @extends RaphaelViews.RaphaelView
@@ -13,13 +13,14 @@ sc_require('mixins/arrow_drawing');
 MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   childViews: 'inProgressLinkView'.w(),
   canvasView: SC.outlet('parentView.parentView.parentView'),    // can't refer to MySystem.mainPage.mainPane.canvasView in tests...
-  displayProperties: 'x y r isHovering dragLinkSrcTerminal stroke'.w(),
+  displayProperties: 'x y r isHovering dragLinkSrcTerminal dragLinkEndTerminal stroke'.w(),
 
   x:                 0,
   y:                 0,
   r:                 function(){
-                        return this.get('isHovering') ? 12 : 10;
+                        return this.get('isHovering') ? 18 : 18;
                       }.property('isHovering'),
+
   normalFill:        '#ccc',
   hoverFill:         '#00F',
   draggingFill:      '#0F0',
@@ -28,8 +29,8 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   strokeWidth:       '1',
   strokeOpacity:     '0.2',
   isLineDrag:        NO,
-  dragX:            null,
-  dragY:            null,
+  dragX:             null,
+  dragY:             null,
   _raphaelCircle:    null,
 
   dragLinkSrcTerminalBinding: 'MySystem.nodesController.dragLinkSrcTerminal',
@@ -46,7 +47,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     }
     
     return isSrc ? this.get('hoverFill') :this.get('normalFill');
-  }.property('isHovering', 'dragLinkSrcTerminal').cacheable(),
+  }.property('isHovering', 'dragLinkSrcTerminal', 'dragLinkEndTerminal'),
 
   attrs: function() {
     return {
@@ -86,8 +87,8 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     this.set('dragX', this.get('x'));
     this.set('dragY', this.get('y'));
     this.set('isLineDrag', YES);
-    this.set('dragLinkSrcTerminal', this);
-    this.set('dragLinkEndTerminal', null);
+
+    MySystem.terminalController.dragStart(this);
     return YES;
   },
 
@@ -128,14 +129,8 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     // don't forget to handle the last mouse movement!
     this._drag(evt);
     this.set('isLineDrag', NO);
-    if (this.get('dragLinkSrcTerminal') === this) {
-      this.set('dragLinkSrcTerminal',null);
-    }
-    if (!!this.get('dragLinkEndTerminal')) {
-      MySystem.statechart.sendAction('rubberbandLinkComplete');
-    } else {
-      MySystem.statechart.sendAction('rubberbandLinkAbandoned');
-    }
+
+    MySystem.terminalController.dragComplete();
     return YES;
   },
 
@@ -143,19 +138,13 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     this.mouseUp(evt);
   },
 
-  mouseEntered: function () {
-    this.set('isHovering', YES);
-    if (this.get('dragLinkSrcTerminal') && this.get('dragLinkSrcTerminal') != this) {
-      this.set('dragLinkEndTerminal',this);
-    }
+  mouseEntered: function (evt) {
+    MySystem.terminalController.focusIn(this);
     return YES;
   },
 
-  mouseExited: function () {
-    this.set('isHovering',NO);
-    if (this.get('dragLinkEndTerminal') === this) {
-      this.set('dragLinkEndTerminal',null);
-    }
+  mouseExited: function (evt) {    
+    MySystem.terminalController.focusOut(this);
     return YES;
   },
   
@@ -178,9 +167,19 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     path: function() {
       var x1 = this.get('startX'),
       x2 = this.get('endX'),
+      mod_x = x1 > x2 ? 10 : -10,
+
       y1 = this.get('startY'),
-      y2 = this.get('endY'),
+      y2 = this.get('endY') - 10,
+      mod_y = y1 > y2 ? 10 : -10,
+
       isTopTerminal = this.get('parentView') == this.getPath('parentView.parentView.terminalA');
+      // We need to draw a bit offset from the mouse event,
+      // because 'pointer-events: none' doesn't seem to be working
+      // on FireFox, and we need to avoid 'mouse in' and 'mouse out' errors
+      // when the cursor is at the apex of the arrow-head.
+      y2 = y2 < y1 ? y2 + 20 : y2 + 3;
+      x2 = x2 > x1 ? x2 - 3 : x2 + 3;
       return MySystem.ArrowDrawing.arrowPath(x1,y1,x2,y2,isTopTerminal,isTopTerminal,null,null,null,0);
     },
 
@@ -204,15 +203,23 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
     _raphaelCanvas: null,
 
     renderCallback: function (raphaelCanvas, attrs) {
+      var group;
       this._raphaelCanvas = raphaelCanvas;
       this._arrowPath  = raphaelCanvas.path();
       this._arrowPath.attr(attrs.tail);
+      // ignore mouse events for the SVG arrow head: 
+      // http://www.w3.org/TR/SVG/interact.html
+      this._arrowPath.node.style['pointer-events'] = "none";
+      
       this._arrowHead  = raphaelCanvas.path();
       this._arrowHead.attr(attrs.head);
-      return raphaelCanvas.set().push(
+      this._arrowHead.node.style['pointer-events'] = "none";
+      group = raphaelCanvas.set();
+      group.push(
         this._arrowPath,
         this._arrowHead
       );
+      return group;
     },
 
     render: function (context, firstTime) {
@@ -223,7 +230,10 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
       else {
         var attrs = this.attrs();
         this._arrowPath.attr(attrs.tail);
+        this._arrowPath.node.style['pointer-events'] = "none";
+
         this._arrowHead.attr(attrs.head);
+        this._arrowHead.node.style['pointer-events'] = "none";
       }
     }
 
