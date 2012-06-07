@@ -96,12 +96,13 @@ MySystem.ArrowDrawing = {
     
     // calculate control points c2 and c3
     var curveDistance = (tip.x - start.x) * curvature,
-        startYCurveDistance = endYCurveDistance = (curveDistance === 0 ? 1 : Math.max(Math.min(curveDistance, 100), -100)),
+        startYCurveDistance = (curveDistance === 0 ? 1 : Math.max(Math.min(curveDistance, 100), -100)),
+        endYCurveDistance = startYCurveDistance,
         startUp = startCurveUp ? 1 : -1,
         endUp = endCurveUp ? 1 : -1;
     startYCurveDistance = (startYCurveDistance * startUp > 0) ? startYCurveDistance : startYCurveDistance * -1;
-    var endYCurveDistance = (endYCurveDistance * endUp > 0) ? endYCurveDistance : endYCurveDistance * -1,
-        c2 = new this.coord(start.x+(curveDistance/2), start.y-startYCurveDistance),
+    endYCurveDistance = (endYCurveDistance * endUp > 0) ? endYCurveDistance : endYCurveDistance * -1;
+    var c2 = new this.coord(start.x+(curveDistance/2), start.y-startYCurveDistance),
         c3 = new this.coord(tip.x-(curveDistance/2), tip.y-endYCurveDistance),
         cDistance = Math.sqrt(Math.pow((curveDistance/2),2) + Math.pow(startYCurveDistance,2)),
         perimX = nodeRadius*(curveDistance/2)/cDistance, 
