@@ -18,6 +18,9 @@ sc_require('mixins/arrow_drawing');
 MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.LinkView.prototype */ {
 
+  nodeWidthBinding:  SC.Binding.oneWay("MySystem.activityController.content.nodeWidth"),
+  nodeHeightBinding: SC.Binding.oneWay("MySystem.activityController.content.nodeHeight"),
+
   displayProperties: 'content.endNode.x content.endNode.y content.startNode.x content.startNode.y lineColor borderColor borderOpacity lineWidth borderWidth'.w(),
 
   childViews: 'removeButtonView'.w(),
@@ -107,6 +110,10 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
     var content   = this.get('content'),
         startNode = content.get('startNode'),
         endNode   = content.get('endNode'),
+        
+        nodeHeight = this.get('nodeHeight'),
+        halfNodeWidth = this.get('nodeWidth') / 2,
+        
         startX    = 0,
         startY    = 0,
         endX      = 0,
@@ -126,18 +133,18 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
             endingAtTop   = (content.get('endTerminal') === 'a');
     
         if (startingAtTop) {
-          startX = startX + 50;
+          startX = startX + halfNodeWidth;
           startY = startY;
         } else {
-          startX = startX + 50;
-          startY = startY + 110;
+          startX = startX + halfNodeWidth;
+          startY = startY + nodeHeight;
         }
         if (endingAtTop) {
-          endX = endX + 50;
+          endX = endX + halfNodeWidth;
           endY = endY;
         } else {
-          endX = endX + 50;
-          endY = endY + 110;
+          endX = endX + halfNodeWidth;
+          endY = endY + nodeHeight;
         }
 
         var pathStr   = MySystem.ArrowDrawing.arrowPath(startX,startY,endX,endY,startingAtTop,endingAtTop);

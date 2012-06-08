@@ -28,9 +28,10 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   isDragging: NO,
   isHovered:  NO,
   
-  bodyWidth: 100,
-  bodyHeight: 110,
-  bodyColor: '#000000',       // the node s/b visually transparent, but not transparent to mouse events, so it must have a fill
+  bodyWidthBinding:  SC.Binding.oneWay("MySystem.activityController.content.nodeWidth"),
+  bodyHeightBinding: SC.Binding.oneWay("MySystem.activityController.content.nodeHeight"),
+  
+  bodyColor:   '#000000',       // the node s/b visually transparent, but not transparent to mouse events, so it must have a fill
   bodyOpacity: 0,
  
   // for titleView
@@ -40,23 +41,23 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   centerX: function () {
     return this.get('x') + this.get('bodyWidth') / 2;
-  }.property('x', 'bodyWidth'),
+  }.property('x', 'bodyWidth').cacheable(),
   
   titleY: function () {
     return this.get('y') + this.get('bodyHeight') - 20;     // could parameterize this better later
-  }.property('y', 'bodyHeight'),
+  }.property('y', 'bodyHeight').cacheable(),
  
   terminalAY: function() {
     return this.get('y');     // could parameterize this better later
-  }.property('y', 'bodyHeight'),
+  }.property('y', 'bodyHeight').cacheable(),
   
   terminalBY: function() {
     return this.get('y') + this.get('bodyHeight');     // could parameterize this better later
-  }.property('y', 'bodyHeight'),
+  }.property('y', 'bodyHeight').cacheable(),
 
   borderColor: function () {
     return this.get('isSelected') ? 'rgb(173, 216, 230)' : '#CCCCCC';
-  }.property('isSelected'),
+  }.property('isSelected').cacheable(),
   
   borderOpacity: 1.0,
   
@@ -67,9 +68,21 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   borderRadius: 5,
   
   // target width and height - these may change after image scaling
-  imageWidth: 50,
+  imageWidth: function() {
+    return this.get('bodyWidth') * 0.8;
+  }.property('bodyWidth').cacheable(),
   
-  imageHeight: 70,
+  imageHeight: function() {
+    return this.get('bodyHeight') * 0.8;
+  }.property('bodyHeight').cacheable(),
+
+  verticalMargin: function() {
+    return this.get('bodyHeight') * 0.1;
+  }.property('bodyHeight').cacheable(),
+
+  horizontalMargin: function() {
+    return this.get('bodyWidth') * 0.1;
+  }.property('bodyWidth').cacheable(),
 
   // place-holder for our rendered raphael image object
   // this is the nodes 'image'.
@@ -152,7 +165,9 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   render: function (context, firstTime) {
     
     var content = this.get('content');
-    
+    var hMargin = this.get('horizontalMargin');
+    var vMargin = this.get('verticalMargin');
+
     if (firstTime) {
       // when we first load this image, create a new Image object so we can inspect 
       // the actual width and height, and then scale the rendered image appropriately 
@@ -180,9 +195,10 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         },
 
         imageAttrs = {
+
           src:    content.get('image'),
-          x:      25 + content.get('x')+((50-this.get('imageWidth'))/2),  // center narrow images
-          y:      10 + content.get('y'),
+          x:      hMargin + content.get('x'), // +((hMargin-this.get('imageWidth'))/2),  // center narrow images
+          y:      vMargin + content.get('y'),
           width:  this.get('imageWidth'),
           height: this.get('imageHeight')
         };
@@ -205,12 +221,11 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
           srcWidth = image.width,
           srcHeight = image.height;
       
-      var scaledWidth =  ((srcWidth * targetHeight) / srcHeight);   
-      var scaleOnWidth = scaledWidth > targetWidth;
-      
-      var newWidth = scaleOnWidth ? targetWidth : scaledWidth,
-          newHeight = scaleOnWidth? (srcHeight * targetWidth) / srcWidth : targetHeight;
-          
+      var scaledHeight =  (targetHeight / srcHeight);
+      var scaledWidth  =  (targetWidth  / srcWidth);
+      var scalar = scaledWidth < scaledHeight ? scaledHeight : scaledWidth; 
+      var newWidth = srcWidth * scalar;
+      var newHeight = srcHeight * scalar;      
       // RunLoop here, or image won't change until mouse moves
       SC.RunLoop.begin();
         this.set('imageWidth', newWidth);

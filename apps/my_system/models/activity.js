@@ -53,7 +53,10 @@ MySystem.Activity = SC.Record.extend(
   maxSubmissionClicks: SC.Record.attr(Number, {defaultValue: 0}),
   maxSubmissionFeedback: SC.Record.attr(String, {defaultValue: "You have clicked 'submit' too many times. Please continue working without hints."}),
   feedbackPanelWidth:  SC.Record.attr(Number, {defaultValue: 500}),
-  feedbackPanelHeight: SC.Record.attr(Number, {defaultValue: 250})
+  feedbackPanelHeight: SC.Record.attr(Number, {defaultValue: 250}),
+  terminalRadius: SC.Record.attr(Number, {defaultValue: 10}),
+  nodeHeight: SC.Record.attr(Number, {defaultValue: 110}),
+  nodeWidth: SC.Record.attr(Number,  {defaultValue: 100})
 });
 
 MySystem.Activity.GuidCounter = 100;
@@ -102,12 +105,16 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     correctFeedback: (wiseStepDef["correctFeedback"] || "Your diagram has no obvious problems."),
     guid: MySystem.Activity.newGuid("activity"),
     enableCustomRuleEvaluator: (wiseStepDef["enableCustomRuleEvaluator"] || false),
-    customRuleEvaluator: (wiseStepDef["customRuleEvaluator"] || "" ),
-    maxSubmissionClicks: (wiseStepDef["maxSubmissionClicks"] || 0),
+    customRuleEvaluator:   (wiseStepDef["customRuleEvaluator"] || "" ),
+    maxSubmissionClicks:   (wiseStepDef["maxSubmissionClicks"] || 0  ),
     maxSubmissionFeedback: (wiseStepDef["maxSubmissionFeedback"] || "You have clicked 'submit' too many times. Please continue working without hints."),
-    feedbackPanelWidth:  (wiseStepDef["feedbackPanelWidth"]  || 500),
-    feedbackPanelHeight: (wiseStepDef["feedbackPanelHeight"] || 250)
+    feedbackPanelWidth:    (wiseStepDef["feedbackPanelWidth"]  || 500),
+    feedbackPanelHeight:   (wiseStepDef["feedbackPanelHeight"] || 250),
+    terminalRadius:        (wiseStepDef["terminalRadius"]      || 14 ),
+    nodeHeight:            (wiseStepDef["nodeHeight"]          || 110),
+    nodeWidth:             (wiseStepDef["nodeWidth"]           || 100)
   });
+
   var size = modules.length;
   var i = 0;
   for (i=0; i < size; i++) {

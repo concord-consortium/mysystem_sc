@@ -48,7 +48,35 @@
       Add New Node Type
     {{/view}}
   </div>
-  
+  <div class="options_block">
+    <h2> Node Size</h2>
+      <p>
+          Node width:
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.nodeWidth"
+            placeholder  = "100"
+            id           = "nodeWidth"
+            size         = "3"
+          }}
+          height: 
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.nodeHeight"
+            placeholder  = "110"
+            id           = "nodeHeight"
+            size         = "3"
+          }}
+          Terminal radius: 
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.terminalRadius"
+            placeholder  = "14"
+            id           = "terminalRadius"
+            size         = "3"
+          }}
+      </p>
+  </div>
   <div class="options_block">
     <h2>Energy Types</h2>
     {{#collection contentBinding="MSA.energyTypesController" tagName="ul"}}

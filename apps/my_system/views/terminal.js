@@ -13,13 +13,15 @@ sc_require('controllers/terminal');
 MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
   childViews: 'inProgressLinkView'.w(),
   canvasView: SC.outlet('parentView.parentView.parentView'),    // can't refer to MySystem.mainPage.mainPane.canvasView in tests...
-  displayProperties: 'x y r isHovering dragLinkSrcTerminal dragLinkEndTerminal stroke'.w(),
+  displayProperties: 'x y r isHovering radius dragLinkSrcTerminal dragLinkEndTerminal stroke'.w(),
 
   x:                 0,
   y:                 0,
+  radiusBinding:     SC.Binding.oneWay("MySystem.activityController.content.terminalRadius"),
+
   r:                 function(){
-                        return this.get('isHovering') ? 18 : 18;
-                      }.property('isHovering'),
+                        return this.get('isHovering') ? this.get('radius') * 1.25 : this.get('radius');
+                      }.property('isHovering, radius'),
 
   normalFill:        '#ccc',
   hoverFill:         '#00F',

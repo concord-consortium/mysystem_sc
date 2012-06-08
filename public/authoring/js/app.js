@@ -76,7 +76,15 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
   if (typeof dataHash.feedbackPanelWidth === "undefined" || dataHash.feedbackPanelWidth === null){
     dataHash.feedbackPanelWidth = 500;
   }
-
+  if (typeof dataHash.terminalRadius === "undefined" || dataHash.terminalRadius === null){
+    dataHash.terminalRadius = 14;
+  }
+  if (typeof dataHash.nodeWidth === "undefined" || dataHash.nodeWidth === null){
+    dataHash.nodeWidth = 100;
+  }
+  if (typeof dataHash.nodeHeight === "undefined" || dataHash.nodeWidth === null){
+    dataHash.nodeWidth = 110;
+  }
   // TODO: migrate objects to have uuids that don't already have them
 
   MSA.loadData(dataHash);
@@ -107,7 +115,10 @@ MSA.ActivityModel = SCUtil.ModelObject.extend({
   maxSubmissionClicks: SCUtil.dataHashProperty,
   maxSubmissionFeedback: SCUtil.dataHashProperty,
   feedbackPanelWidth: SCUtil.dataHashProperty,
-  feedbackPanelHeight: SCUtil.dataHashProperty
+  feedbackPanelHeight: SCUtil.dataHashProperty,
+  terminalRadius: SCUtil.dataHashProperty,
+  nodeWidth: SCUtil.dataHashProperty,
+  nodeHeight: SCUtil.dataHashProperty
 });
 
 MSA.Module = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
@@ -238,7 +249,10 @@ MSA.dataController = SC.Object.create({
              'MSA.activity.maxSubmissionClicks',
              'MSA.activity.maxSubmissionFeedback',
              'MSA.activity.feedbackPanelWidth',
-             'MSA.activity.feedbackPanelHeight')
+             'MSA.activity.feedbackPanelHeight',
+             'MSA.activity.terminalRadius',
+             'MSA.activity.nodeWidth',
+             'MSA.activity.nodeHeight')
 });
 
 MSA.NodeTypesView = SC.CollectionView.extend({
