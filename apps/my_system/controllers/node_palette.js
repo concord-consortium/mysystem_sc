@@ -11,5 +11,13 @@
 */
 MySystem.nodePaletteController = SC.ArrayController.create(
 /** @scope MySystem.nodePaletteController.prototype */ {
-  contentBinding: "MySystem.activityController.paletteItems"
+  
+  contentBinding:    "MySystem.activityController.paletteItems",
+  itemHeightBinding:  SC.Binding.oneWay("MySystem.activityController.*content.nodeHeight"),
+  
+  itemHeightDidChange: function() {
+    var height = this.get('itemHeight');
+    this.set('rowHeight', height + 15);
+  }.observes('itemHeight')
+
 });

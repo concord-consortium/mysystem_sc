@@ -16,16 +16,25 @@ sc_require('views/letterbox_image');
   @since ALPHA
 
 */
-MySystem.PaletteItemView = SC.View.extend( 
-  {
-  layout: { top: 10, left: 20, right: 10, width: 100 },
-  padding: 10,
+MySystem.PaletteItemView = SC.View.extend( {
+  layout: { top: 10, centerX: 0, width: 50 },
+ 
+  displayProperties: 'content isSelected width height'.w(),
+  content:           null,
+  isSelected:        false,
 
-  displayProperties: 'content isSelected'.w(),
-  content: null,
-  isSelected: false,
-
+  widthBinding:      SC.Binding.oneWay("MySystem.activityController.content.nodeWidth"),
+  heightBinding:     SC.Binding.oneWay("MySystem.activityController.content.nodeHeight"),
+    
   childViews: 'borderFrame'.w(),
+
+  widthChanged: function() {
+    this.adjust('width', this.get('width') + 20);
+  }.observes('width'),
+
+  heightChanged: function() {
+    this.adjust('height', this.get('height') + 20);
+  }.observes('height'),
 
   render: function (context) {
     sc_super();
@@ -34,19 +43,19 @@ MySystem.PaletteItemView = SC.View.extend(
 
   borderFrame: SC.View.design({
     classNames: 'node addbutton'.w(),
-    layout: { top: 10, bottom: 8, height: 112 },
+    layout: { left: 0.12, right: 0.12, top: 6, bottom: 6},
     childViews: 'icon label'.w(),
-    
+ 
     icon: MySystem.LetterboxImageView.design({
       classNames: ['image'],
       // useImageQueue: YES,
       useCanvas: NO,
-      layout: { top: 16, width:50, height:70, centerX: 0},
+      layout: { bottom: 16, top: 0.3, left: 2, right: 2},
       valueBinding: '.parentView.parentView.content.image'
     }),
 
     label: SC.LabelView.design({
-      layout: { bottom: 0, centerX: 0, width: 100, height: 25 },
+      layout: {height: 14, bottom: 2, left: 2, right: 2},
       classNames: ['name'],
       textAlign: SC.ALIGN_CENTER,    
       valueBinding: '.parentView.parentView.content.title',

@@ -12,12 +12,12 @@
   @extends SC.View
 */
 sc_require('core');
-sc_require('views/palette_item')
+sc_require('views/palette_item');
 
-MySystem.NodePaletteView = SC.ListView.extend({ // Node Palette (left)
-  layout: { top: 0, bottom: 0, left: 15 },
+MySystem.NodePaletteView = SC.ListView.extend( { // Node Palette (left)
+  layout: { top: 0, bottom: 0, left: 0 },
   // childViews: 'addDecorator addClay addHand addBulb'.w(),
   contentBinding: 'MySystem.nodePaletteController',
   exampleView: MySystem.PaletteItemView,
-  rowHeight: 127
+  rowDelegate: MySystem.nodePaletteController
 });
