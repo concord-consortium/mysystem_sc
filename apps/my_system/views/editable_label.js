@@ -199,6 +199,7 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
   },
 
   mouseDown: function (evt) {
+    if (!this.get('isEditable')) { return NO ; }
     // this.startDrag(evt);
     if (this.recentUp(NO)) {
       return YES;
@@ -207,6 +208,7 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
   },
 
   mouseUp: function(evt) {
+    if (!this.get('isEditable')) { return NO ; }
     if (this.recentUp(YES)) {
       return this.doubleClick(evt);
     }
@@ -214,6 +216,7 @@ MySystem.EditableLabelView = RaphaelViews.RaphaelView.extend(SC.Editable, {
   },
 
   doubleClick: function(evt) {
+    if (!this.get('isEditable')) { return NO ; }
     this.beginEditing();
     return YES;
   },
