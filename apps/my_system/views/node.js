@@ -30,10 +30,12 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   bodyWidthBinding:  SC.Binding.oneWay("MySystem.activityController.content.nodeWidth"),
   bodyHeightBinding: SC.Binding.oneWay("MySystem.activityController.content.nodeHeight"),
-  
+  terminalRadiusBinding: SC.Binding.oneWay("MySystem.activityController.content.terminalRadius"),
+
   bodyColor:   '#000000',       // the node s/b visually transparent, but not transparent to mouse events, so it must have a fill
   bodyOpacity: 0,
- 
+  fontSize: 14,
+
   // for titleView
   titleBinding: '*content.title',
   xBinding:     '*content.x',
@@ -44,7 +46,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   }.property('x', 'bodyWidth').cacheable(),
   
   titleY: function () {
-    return this.get('y') + this.get('bodyHeight') - 20;     // could parameterize this better later
+    return this.get('y') + this.get('bodyHeight') + this.get('fontSize') + this.get('terminalRadius');
   }.property('y', 'bodyHeight').cacheable(),
  
   terminalAY: function() {
@@ -69,11 +71,11 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   // target width and height - these may change after image scaling
   imageWidth: function() {
-    return this.get('bodyWidth') * 0.8;
+    return this.get('bodyWidth') * 0.9;
   }.property('bodyWidth').cacheable(),
   
   imageHeight: function() {
-    return this.get('bodyHeight') * 0.8;
+    return this.get('bodyHeight') * 0.9;
   }.property('bodyHeight').cacheable(),
 
   verticalMargin: function() {
@@ -127,12 +129,12 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   }),
   
   titleView: MySystem.EditableLabelView.design({
-    isEditable:     NO,
-    fontSize:       14,
-    textColor:      '#000',
-    textBinding:    '.parentView.title',
-    centerXBinding: '.parentView.centerX',
-    centerYBinding: '.parentView.titleY',
+    isEditable:      NO,
+    fontSizeBinding: '.parentView.fontSize',
+    textColor:       '#000',
+    textBinding:     '.parentView.title',
+    centerXBinding:  '.parentView.centerX',
+    centerYBinding:  '.parentView.titleY',
     selectMe: function() {
       var currentNode = this.getPath('parentView.content');
       MySystem.nodesController.unselectAll();
