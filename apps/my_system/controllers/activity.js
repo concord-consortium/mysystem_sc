@@ -88,35 +88,89 @@ MySystem.activityController = SC.ObjectController.create({
   // runs the rules, saves the data and pops up a message to the user
   checkButtonPressed: function () {
       
-      var lastFeedback           = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
-      var numOfSubmits           = null;
-      var maxSubmits             = this.get('maxSubmissionClicks');
-      var maxSubmissionFeedback  = this.get('maxSubmissionFeedback');
-      var alertPane              = SC.AlertPane.warn;
-      var results                = null;
-      var selfRef                = this;
-      
-      this.disableFeedbackButton();
+    var lastFeedback           = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+    var numOfSubmits           = null;
+    var maxSubmits             = this.get('maxSubmissionClicks');
+    var maxSubmissionFeedback  = this.get('maxSubmissionFeedback');
+    var alertPane              = SC.AlertPane.warn;
+    var results                = null;
+    var selfRef                = this;
+    var remainingFeedback      = this.remainingFeedback();
+    var submitName             = "submission";
+    this.disableFeedbackButton();
 
-      if (lastFeedback && maxSubmits > 0  && (lastFeedback.get('numOfSubmits') >= maxSubmits)) {
-        alertPane.call(SC.AlertPane, {
-          description: maxSubmissionFeedback,
+    if (remainingFeedback < 1) {
+      alertPane.call(SC.AlertPane, {
+        description: maxSubmissionFeedback,
+        delegate: {
+          alertPaneDidDismiss: function(pane, status) {
+            selfRef.enableFeedbackButton();
+          }
+        }
+      });
+      // we should still save, just to be safe.
+      MySystem.savingController.save();
+    }
+
+    else {
+      // show an alert first if the user is running out.
+      if (remainingFeedback < 4) {
+        if (remainingFeedback > 1) { 
+          submitName = submitName + "s";
+        }
+        
+        // alert pain
+        SC.AlertPane.warn({
+          message: "You only have " + remainingFeedback + " " + submitName + " left",
+          description: "Click cancel to continue working without feedback. Click OK to use a submission.",
+          buttons: [
+            { 
+              title: "OK"
+            },
+            {
+              title: "cancel"
+            }
+          ],
           delegate: {
             alertPaneDidDismiss: function(pane, status) {
-              selfRef.enableFeedbackButton();
+              switch(status) {
+                case SC.BUTTON1_STATUS:
+                  selfRef.doGetDiagramFeedback();
+                  break;
+                case SC.BUTTON2_STATUS:
+                  selfRef.enableFeedbackButton();
+                  break;
+              }
             }
           }
         });
-        // we should just save -- just to be safe..
-        MySystem.savingController.save();
-      }
 
+      }
       else {
-        results = this.getDiagramFeedback({isSubmit: YES});
-        MySystem.savingController.submit();
-        hasProblems = results[0];
-        this.showFeedbackPalette();
+        this.doGetDiagramFeedback();
       }
     }
+  },
+
+  remainingFeedback: function() {
+    var lastFeedback           = null;
+    var maxSubmits             = this.get('maxSubmissionClicks');
+    var numOfSubmits           = null;
+    if (maxSubmits === 0) {
+      return Infinity;
+    }
+    lastFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
+    if (!lastFeedback) {
+      return maxSubmits;
+    }
+    return maxSubmits - lastFeedback.get('numOfSubmits');
+  },
+
+  doGetDiagramFeedback: function() {
+    results = this.getDiagramFeedback({isSubmit: YES});
+    MySystem.savingController.submit();
+    hasProblems = results[0];
+    this.showFeedbackPalette();
+  }
 }) ;
 
