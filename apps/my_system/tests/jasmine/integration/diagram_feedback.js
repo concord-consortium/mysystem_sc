@@ -61,11 +61,28 @@ describe("The diagram feedback", function(){
   });
 
   it("should be saved by the submit button even if save button has been pushed first", function(){
-    helper.
-      addNode('obj1').
-      saveDiagram().
-      submitDiagram();
+    runs(function() {
+      helper
+        .addNode('obj1').
+        saveDiagram();
+    });
     
+    waitsFor(function() {
+      var selector = ".button:contains('Submit Diagram'):not(.disabled)";
+      var target = SC.CoreQuery(selector);
+      return (!!selector);
+    }, "waiting for submit button", 3000);
+
+    runs(function() {
+      helper.submitDiagram();
+    });
+
+}, "message");
+    simulateClickOnSelector(".button:contains('Submit Diagram'):not(.disabled)");
+
+
+      submitDiagram();
+         
     expect(helper.get('externalSaveCount')).toBe(2);
   });
 
@@ -165,7 +182,7 @@ describe("submit timestamp", function(){
            "uuid": "en1"
          }
        ],
-       "diagram_rules": [],
+       "diagram_rules": []
      }
   });
   beforeEach(function(){
