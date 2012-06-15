@@ -1,4 +1,4 @@
-/*global describe it beforeEach afterEach spyOn Mysystem2 MySystem eventManager mockEventManager mockNode*/
+loadWiseConfig/*global describe it beforeEach afterEach spyOn Mysystem2 MySystem eventManager mockEventManager mockNode*/
 describe("Mysystem2", function(){
   var node,
       nodeContent,
@@ -88,7 +88,7 @@ describe("Mysystem2", function(){
     
     beforeEach(function(){
       // setup a valid student work state to test the dom population
-      node.studentWork = [ { type: 'MySystem2' } ];
+      node.studentWork = [ { type: 'mysystem2' } ];
       
       window.SC = {
         isReady: true
