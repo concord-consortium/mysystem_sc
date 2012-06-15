@@ -11,7 +11,7 @@
  */
 function MYSYSTEM2STATE(response, isSubmit) {
   //remember the type to avoid corruption (i.e., loading a state saved by an openresponse WISE4 step)
-  this.type = "MySystem2";
+  this.type = "mysystem2";
   
 	//the text response the student wrote
 	this.response = "";
