@@ -241,6 +241,14 @@ Mysystem2Node.prototype.getHTMLContentTemplate = function() {
 	return createContent('node/mysystem2/mysystem2.html');
 };
 
+/**
+ * Returns whether this step type can be special exported
+ * @return a boolean value
+ */
+Mysystem2Node.prototype.canSpecialExport = function() {
+					 return true;
+};
+
 //Add this node to the node factory so the vle knows it exists.
 NodeFactory.addNode('Mysystem2Node', Mysystem2Node);
 
