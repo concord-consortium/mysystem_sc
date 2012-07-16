@@ -40,7 +40,8 @@ MySystem.mainPage = SC.Page.design({
           childViews: 'diagramBackground diagramView'.w(),
           
           diagramBackground: MySystem.DiagramBackgroundView.design({
-            imageUrl: 'http://th01.deviantart.net/fs47/PRE/f/2009/183/d/b/Foo_Fighters_CD_Wallpaper_by_LynchMob10_09.jpg'
+            imageUrlBinding: 'MySystem.activityController.backgroundImage',
+            scalingEnabledBinding: 'MySystem.activityController.backgroundImageScaling'
           }),
 
           diagramView: MySystem.DiagramView.design({

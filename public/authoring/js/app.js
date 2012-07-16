@@ -24,7 +24,12 @@ if (top === self) {
     "maxSubmissionClicks": 0,
     "maxSubmissionFeedback":  "You have clicked 'submit' too many times. Please continue working without hints.",
     "feedbackPanelWidth": 500,
-    "feedbackPanelHeight": 250
+    "feedbackPanelHeight": 250,
+    "terminalRadius": 14,
+    "nodeHeight": 110,
+    "nodeWidth": 110,
+    "backgroundImage": null,
+    "backgroundImageScaling": false
   };
 }
 
@@ -82,9 +87,18 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
   if (typeof dataHash.nodeWidth === "undefined" || dataHash.nodeWidth === null){
     dataHash.nodeWidth = 100;
   }
-  if (typeof dataHash.nodeHeight === "undefined" || dataHash.nodeWidth === null){
-    dataHash.nodeWidth = 110;
+  if (typeof dataHash.nodeHeight === "undefined" || dataHash.nodeHeight === null){
+    dataHash.nodeHeight = 110;
   }
+
+  if (typeof dataHash.backgroundImage === "undefined" || dataHash.backgroundImage === null){
+    dataHash.backgroundImage = null;
+  }
+
+  if (typeof dataHash.backgroundImageScaling === "undefined" || dataHash.backgroundImageScaling === null){
+    dataHash.backgroundImageScaling = false;
+  }
+
   // TODO: migrate objects to have uuids that don't already have them
 
   MSA.loadData(dataHash);
@@ -118,7 +132,9 @@ MSA.ActivityModel = SCUtil.ModelObject.extend({
   feedbackPanelHeight: SCUtil.dataHashProperty,
   terminalRadius: SCUtil.dataHashProperty,
   nodeWidth: SCUtil.dataHashProperty,
-  nodeHeight: SCUtil.dataHashProperty
+  nodeHeight: SCUtil.dataHashProperty,
+  backgroundImage: SCUtil.dataHashProperty,
+  backgroundImageScaling: SCUtil.dataHashProperty
 });
 
 MSA.Module = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
@@ -252,7 +268,9 @@ MSA.dataController = SC.Object.create({
              'MSA.activity.feedbackPanelHeight',
              'MSA.activity.terminalRadius',
              'MSA.activity.nodeWidth',
-             'MSA.activity.nodeHeight')
+             'MSA.activity.nodeHeight',
+             'MSA.activity.backgroundImage',
+             'MSA.activity.backgroundImageScaling')
 });
 
 MSA.NodeTypesView = SC.CollectionView.extend({

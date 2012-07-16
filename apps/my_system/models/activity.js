@@ -56,7 +56,9 @@ MySystem.Activity = SC.Record.extend(
   feedbackPanelHeight: SC.Record.attr(Number, {defaultValue: 250}),
   terminalRadius: SC.Record.attr(Number, {defaultValue: 10}),
   nodeHeight: SC.Record.attr(Number, {defaultValue: 110}),
-  nodeWidth: SC.Record.attr(Number,  {defaultValue: 100})
+  nodeWidth: SC.Record.attr(Number,  {defaultValue: 100}),
+  backgroundImage: SC.Record.attr(String, {defaultValue: null}),
+  backgroundImageScaling: SC.Record.attr(Boolean, {defaultValue: true})
 });
 
 MySystem.Activity.GuidCounter = 100;
@@ -112,7 +114,9 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     feedbackPanelHeight:   (wiseStepDef["feedbackPanelHeight"] || 250),
     terminalRadius:        (wiseStepDef["terminalRadius"]      || 14 ),
     nodeHeight:            (wiseStepDef["nodeHeight"]          || 110),
-    nodeWidth:             (wiseStepDef["nodeWidth"]           || 100)
+    nodeWidth:             (wiseStepDef["nodeWidth"]           || 100),
+    backgroundImage:       (wiseStepDef["backgroundImage"]     || null),
+    backgroundImageScaling:(wiseStepDef["backgroundImageScaling"]|| true)
   });
 
   var size = modules.length;
