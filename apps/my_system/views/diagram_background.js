@@ -13,7 +13,7 @@
 MySystem.DiagramBackgroundView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.DiagramBackgroundView.prototype */ {
 
-  displayProperties: 'imageDidLoad imageUrl scalingEnabled'.w(),
+  displayProperties: 'imageDidLoad imageUrl width height'.w(),
 
   imageUrl:       null,  // nothing for now I guess. set imageUrlBinding in parent.
   imageDidLoad:   false,
@@ -29,20 +29,24 @@ MySystem.DiagramBackgroundView = RaphaelViews.RaphaelView.extend(SC.ContentDispl
   reloadImage: function() {
     this._reloadImage();
   }.observes('imageUrl'),
+  
+  changeScale: function() {
+    this._reloadImage();
+  }.observes('scalingEnabled'),
 
   _reloadImage: function() {
     this.set('imageDidLoad', false);
     image = new Image();
+    this.set('width',0);
+    this.set('height',0);
+    this.set('isVisibile',false);
     var self = this;
     image.onload = function() {
       self.setImageDimensions(image);
+      self.set('isVisibile',true);
     };
     image.src = this.get('imageUrl');
   },
-
-  isVisibile: function() {
-    return !!this.get('imageUrl');
-  }.property('imageUrl').cacheable(),
 
   // RENDER METHODS
   renderCallback: function (raphaelCanvas, attrs) {
@@ -58,9 +62,9 @@ MySystem.DiagramBackgroundView = RaphaelViews.RaphaelView.extend(SC.ContentDispl
       'width': this.get('width'),
       'height': this.get('height')
     };
-    if (this.get('isVisibile')) {
-      attrs.src = this.get('imageUrl');
-    }
+    
+    attrs.src = this.get('imageUrl');
+    
     if (firstTime) {
       this._reloadImage();
       context.callback(this, this.renderCallback, attrs);
