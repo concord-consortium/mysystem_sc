@@ -32,6 +32,7 @@ MySystem.Activity = SC.Record.extend(
   minimumRequirementsFeedback: SC.Record.attr(String),
 
   // Toggle editing for various things
+  enableNodeLabelDisplay: SC.Record.attr(Boolean, {defaultValue: true}),
   enableNodeLabelEditing: SC.Record.attr(Boolean, {defaultValue: false}),
   enableNodeDescriptionEditing: SC.Record.attr(Boolean, {defaultValue: false}),
   enableLinkDescriptionEditing: SC.Record.attr(Boolean, {defaultValue: false}),
@@ -99,6 +100,7 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     MySystem.Activity, {
     assignmentText: wiseStepDef["prompt"],
     maxFeedbackItems: (wiseStepDef["maxFeedbackItems"] || 0),
+    enableNodeLabelDisplay: (wiseStepDef["enableNodeLabelDisplay"] || false),
     enableNodeLabelEditing: (wiseStepDef["enableNodeLabelEditing"] || false),
     enableNodeDescriptionEditing: (wiseStepDef["enableNodeDescriptionEditing"] || false),
     enableLinkDescriptionEditing: (wiseStepDef["enableLinkDescriptionEditing"] || false),

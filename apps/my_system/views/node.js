@@ -130,6 +130,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   titleView: MySystem.EditableLabelView.design({
     isEditable:      NO,
+    isVisibleBinding: 'MySystem.activityController.enableNodeLabelDisplay',
     fontSizeBinding: '.parentView.fontSize',
     textColor:       '#000',
     textBinding:     '.parentView.title',
