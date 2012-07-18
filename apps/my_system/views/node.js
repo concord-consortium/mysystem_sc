@@ -12,7 +12,7 @@ sc_require('views/remove_button');
 
   Display class for displaying a Node. Expects its 'content' property to be a MySystem.Node record.
 
-  @extends SC.View
+  @extends SC.RaphaelView
 */
 MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
 /** @scope MySystem.NodeView.prototype */ {
