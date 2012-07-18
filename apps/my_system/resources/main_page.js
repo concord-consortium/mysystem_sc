@@ -41,7 +41,7 @@ MySystem.mainPage = SC.Page.design({
           
           diagramBackground: MySystem.DiagramBackgroundView.design({
             imageUrlBinding: 'MySystem.activityController.backgroundImage',
-            scalingEnabledBinding: 'MySystem.activityController.backgroundImageScaling'
+            scalingEnabledBinding: SC.Binding.oneWay('MySystem.activityController.backgroundImageScaling')
           }),
 
           diagramView: MySystem.DiagramView.design({

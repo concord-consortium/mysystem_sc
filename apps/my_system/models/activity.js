@@ -58,7 +58,7 @@ MySystem.Activity = SC.Record.extend(
   nodeHeight: SC.Record.attr(Number, {defaultValue: 110}),
   nodeWidth: SC.Record.attr(Number,  {defaultValue: 100}),
   backgroundImage: SC.Record.attr(String, {defaultValue: null}),
-  backgroundImageScaling: SC.Record.attr(Boolean, {defaultValue: true})
+  backgroundImageScaling: SC.Record.attr(Boolean, {defaultValue: false})
 });
 
 MySystem.Activity.GuidCounter = 100;
@@ -116,7 +116,7 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     nodeHeight:            (wiseStepDef["nodeHeight"]          || 110),
     nodeWidth:             (wiseStepDef["nodeWidth"]           || 100),
     backgroundImage:       (wiseStepDef["backgroundImage"]     || null),
-    backgroundImageScaling:(wiseStepDef["backgroundImageScaling"]|| true)
+    backgroundImageScaling:(wiseStepDef["backgroundImageScaling"]|| false)
   });
 
   var size = modules.length;
