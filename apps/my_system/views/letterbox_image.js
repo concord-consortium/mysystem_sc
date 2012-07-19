@@ -16,29 +16,49 @@
 MySystem.LetterboxImageView = SC.ImageView.extend(
 /** @scope MySystem.LetterboxImageView.prototype */ {
 
-  render: function(context, firstTime) {
+  didLoad: function (image) {
     sc_super();
-    if (this.get('image').width > 1){
-      // debugger
-      var targetWidth  = this.get('layout').width,
-          targetHeight = this.get('layout').height,
-          srcWidth     = this.get('image').width,
-          srcHeight    = this.get('image').height;
+    this.adjustLetterBox();
+  },
+
+  adjustLetterBox: function() {
+    var parentWidth =0;
+    var parentHeight=0;
+    var hRatio=0;
+    var vRatio=0;
+    var newWidth=0;
+    var newHeight=0;
+
+    var image = this.get('image');
+
+    SC.RunLoop.begin();
+      this.adjust({
+        'left': 0, 
+        'top': 0
+      });
+    SC.RunLoop.end();
+
+    SC.RunLoop.begin();
+      parentWidth  = this.clippingFrame().width;
+      parentHeight = this.clippingFrame().height;
       
+      hRatio  = parentWidth / image.width;
+      vRatio  = parentHeight / image.height;
+      ratio = hRatio > vRatio ?  vRatio : hRatio;
+      newWidth  = image.width * ratio;
+      newHeight = image.height * ratio;    
+      this.adjust({
+        'width': newWidth,
+        'height': newHeight
+      });
+    SC.RunLoop.end();
+  },
 
-      var scaledHeight =  (targetHeight / srcHeight);
-      var scaledWidth  =  (targetWidth  / srcWidth);
-      var scalar = scaledWidth < scaledHeight ? scaledHeight : scaledWidth; 
-      var newWidth = srcWidth * scalar;
-      var newHeight = srcHeight * scalar;      
-
-      // if we're close, don't adjust or we'll keep iterating down to zero
-      if (Math.abs(targetWidth - newWidth) > 2 ||
-          Math.abs(targetHeight - newHeight) > 2){
-        this.adjust('width', newWidth);
-        this.adjust('height', newHeight);
-      }
-    }
+  parentViewDidResize: function() {
+    sc_super();
+    this.adjustLetterBox();
+    this.set('layerNeedsUpdate',YES);
+    this.updateLayerIfNeeded();
   }
 
 });

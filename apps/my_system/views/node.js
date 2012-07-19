@@ -69,15 +69,6 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   borderRadius: 5,
   
-  // target width and height - these may change after image scaling
-  imageWidth: function() {
-    return this.get('bodyWidth') * 0.9;
-  }.property('bodyWidth').cacheable(),
-  
-  imageHeight: function() {
-    return this.get('bodyHeight') * 0.9;
-  }.property('bodyHeight').cacheable(),
-
   verticalMargin: function() {
     return this.get('bodyHeight') * 0.1;
   }.property('bodyHeight').cacheable(),
@@ -198,12 +189,11 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         },
 
         imageAttrs = {
-
           src:    content.get('image'),
           x:      hMargin + content.get('x'), // +((hMargin-this.get('imageWidth'))/2),  // center narrow images
           y:      vMargin + content.get('y'),
-          width:  this.get('imageWidth'),
-          height: this.get('imageHeight')
+          width:  this.get('imageWidth') || 10,
+          height: this.get('imageHeight')|| 10
         };
 
     if (firstTime) {
@@ -219,17 +209,17 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   setImageDimensions: function (image) {
     image.onload = null;
     if (image.width > 1){
-      var targetWidth = this.get('imageWidth'),
-          targetHeight = this.get('imageHeight'),
+      var targetWidth =  (this.get('bodyWidth') * 0.9),
+          targetHeight = (this.get('bodyHeight') * 0.9),
           srcWidth = image.width,
           srcHeight = image.height;
       
       var scaledHeight =  (targetHeight / srcHeight);
       var scaledWidth  =  (targetWidth  / srcWidth);
-      var scalar = scaledWidth < scaledHeight ? scaledHeight : scaledWidth; 
+      var scalar = scaledWidth < scaledHeight ? scaledWidth : scaledHeight; 
       var newWidth = srcWidth * scalar;
-      var newHeight = srcHeight * scalar;      
-      // RunLoop here, or image won't change until mouse moves
+      var newHeight = srcHeight * scalar;
+
       SC.RunLoop.begin();
         this.set('imageWidth', newWidth);
         this.set('imageHeight', newHeight);

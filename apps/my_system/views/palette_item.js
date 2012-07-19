@@ -50,7 +50,7 @@ MySystem.PaletteItemView = SC.View.extend( {
       classNames: ['image'],
       // useImageQueue: YES,
       useCanvas: NO,
-      layout: { bottom: 16, top: 0.3, left: 2, right: 2},
+      layout: { bottom: 16, top: 0, left: 2, right: 2},
       valueBinding: '.parentView.parentView.content.image'
     }),
 
