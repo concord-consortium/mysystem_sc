@@ -17,7 +17,7 @@ MySystem.TerminalView = RaphaelViews.RaphaelView.extend({
 
   x:                 0,
   y:                 0,
-  radiusBinding:     SC.Binding.oneWay("MySystem.activityController.content.terminalRadius"),
+  radius:           12,
 
   r:                 function(){
                         return this.get('isHovering') ? this.get('radius') * 1.25 : this.get('radius');

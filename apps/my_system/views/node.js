@@ -137,11 +137,14 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   terminalA: MySystem.TerminalView.design({
     xBinding: '.parentView.centerX',
     yBinding: '.parentView.terminalAY',
+    radiusBinding:     SC.Binding.oneWay(".parentView.terminalRadius"),  
     isVisible: YES
   }),
+  
   terminalB: MySystem.TerminalView.design({
     xBinding: '.parentView.centerX',
     yBinding: '.parentView.terminalBY',
+    radiusBinding:     SC.Binding.oneWay(".parentView.terminalRadius"),  
     isVisible: YES
   }),
 
