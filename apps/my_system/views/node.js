@@ -31,6 +31,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   bodyWidthBinding:  SC.Binding.oneWay("MySystem.activityController.content.nodeWidth"),
   bodyHeightBinding: SC.Binding.oneWay("MySystem.activityController.content.nodeHeight"),
   terminalRadiusBinding: SC.Binding.oneWay("MySystem.activityController.content.terminalRadius"),
+  enableNodeLabelDisplayBinding: SC.Binding.oneWay("MySystem.activityController.content.enableNodeLabelDisplay"),
 
   bodyColor:   '#000000',       // the node s/b visually transparent, but not transparent to mouse events, so it must have a fill
   bodyOpacity: 0,
@@ -121,12 +122,12 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   titleView: MySystem.EditableLabelView.design({
     isEditable:      NO,
-    isVisibleBinding: 'MySystem.activityController.enableNodeLabelDisplay',
-    fontSizeBinding: '.parentView.fontSize',
-    textColor:       '#000',
-    textBinding:     '.parentView.title',
-    centerXBinding:  '.parentView.centerX',
-    centerYBinding:  '.parentView.titleY',
+    isVisibleBinding: '.parentView.enableNodeLabelDisplay',
+    fontSizeBinding:  '.parentView.fontSize',
+    textColor:        '#000',
+    textBinding:      '.parentView.title',
+    centerXBinding:   '.parentView.centerX',
+    centerYBinding:   '.parentView.titleY',
     selectMe: function() {
       var currentNode = this.getPath('parentView.content');
       MySystem.nodesController.unselectAll();
