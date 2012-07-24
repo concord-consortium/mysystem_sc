@@ -1,13 +1,13 @@
 /*globals MySystem describe it expect xit xdescribe beforeEach afterEach spyOn runs waits waitsFor NO YES*/
 
 describe("LoadingAuthoredSteps", function () {
-  
+
   beforeEach( function () {
     MySystem.setupStore(MySystem);
-    
+
     // this is an example of real authored content. Note that none of the module (paletteItem) properties
     // except name, image and uuid are used
-    var authoredContent = 
+    var authoredContent =
       {
         "type": "mysystem2",
         "prompt": "",
@@ -92,46 +92,46 @@ describe("LoadingAuthoredSteps", function () {
         ],
         "maxFeedbackItems": 5
       };
-      
+
       var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
       MySystem.activityController.set('content',activity);
   });
-  
+
   it("should be able to load a step with authored palette items", function () {
-    
+
     expect(MySystem.activityController.get('paletteItems').length()).toBe(2);
-    
+
     var firstItem   = MySystem.activityController.get('paletteItems').firstObject();
     expect(firstItem).toBeDefined();
     expect(firstItem.get('title')).toBe("testObject");
     expect(firstItem.get('image')).toBe("testImage.png");
     expect(firstItem.get('uuid')).toBe("c183d424-fae7-43f6-a57f-b969de0ed6e6");
-    
+
     var secondItem   = MySystem.activityController.get('paletteItems').objectAt(1);
     expect(secondItem.get('title')).toBe("testObject2");
   });
-  
+
   it("should be able to load a step with authored energy types", function () {
-    
+
     expect(MySystem.activityController.get('energyTypes').length()).toBe(2);
-    
+
     var firstEnergy   = MySystem.activityController.get('energyTypes').firstObject();
     expect(firstEnergy).toBeDefined();
     expect(firstEnergy.get('label')).toBe("testEnergy");
     expect(firstEnergy.get('color')).toBe("#E97F02");
     expect(firstEnergy.get('uuid')).toBe("9c685b8c-8a87-4e96-a911-fbd0abbe473f");
     expect(firstEnergy.get('isEnabled')).toBe(YES);
-    
+
     var secondEnergy   = MySystem.activityController.get('energyTypes').objectAt(1);
     expect(secondEnergy.get('label')).toBe("testEnergy2");
   });
-  
+
   it("should be able to load a step with authored diagram rules", function () {
-    
+
     expect(MySystem.activityController.get('diagramRules').length()).toBe(5);
-    
+
     var rules = MySystem.activityController.get('diagramRules').toArray();
-    
+
     expect(rules[0].get('comparison')).toBe("exactly");
     expect(rules[0].get('type')).toBe("testObject");
     expect(rules[0].get('number')).toBe(1);
@@ -140,27 +140,27 @@ describe("LoadingAuthoredSteps", function () {
     expect(rules[0].get('energyType')).toBe(null);
     expect(rules[0].get('linkDirection')).toBe(null);
     expect(rules[0].get('otherNodeType')).toBe(null);
-    
+
     expect(rules[1].get('type')).toBe("node");        // this may break after we handle generic names better
-    
+
     expect(rules[2].get('hasLink')).toBe(YES);
     expect(rules[2].get('energyType')).toBe("testEnergy");
     expect(rules[2].get('linkDirection')).toBe("-->");
     expect(rules[2].get('otherNodeType')).toBe("testObject2");
-    
+
     expect(rules[3].get('energyType')).toBe("any");   // this may break after we handle generic names better
-    
+
     expect(rules[4].get('hasLink')).toBe(YES);
-    expect(rules[4].get('energyType')).toBe(null);    
+    expect(rules[4].get('energyType')).toBe(null);
   });
-  
+
   it("should be able to load a step with a maximum number of feedback items", function() {
     expect(MySystem.activityController.get('maxFeedbackItems')).toBe(5);
   });
-  
+
   it("should be able to load a step with unspecified number of feedback items", function () {
-    
-    var authoredContent = 
+
+    var authoredContent =
       {
         "type": "mysystem2",
         "prompt": "",
@@ -168,16 +168,16 @@ describe("LoadingAuthoredSteps", function () {
         "energy_types": [],
         "diagram_rules": []
       };
-      
+
       var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
-      MySystem.activityController.set('content',activity);   
-      
+      MySystem.activityController.set('content',activity);
+
       expect(MySystem.activityController.get('maxFeedbackItems')).toBe(0);
   });
-  
+
   it("should be able to load a step with no items at all", function () {
-    
-    var authoredContent = 
+
+    var authoredContent =
       {
         "type": "mysystem2",
         "prompt": "",
@@ -185,18 +185,18 @@ describe("LoadingAuthoredSteps", function () {
         "energy_types": [],
         "diagram_rules": []
       };
-      
+
       var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
-      MySystem.activityController.set('content',activity);   
-      
+      MySystem.activityController.set('content',activity);
+
       expect(MySystem.activityController.get('paletteItems').length()).toBe(0);
       expect(MySystem.activityController.get('energyTypes').length()).toBe(0);
       expect(MySystem.activityController.get('diagramRules').length()).toBe(0);
   });
-  
+
   it("should be able to load a step with assignment text", function () {
-    
-    var authoredContent = 
+
+    var authoredContent =
       {
         "type": "mysystem2",
         "prompt": "prompt1",
@@ -204,10 +204,10 @@ describe("LoadingAuthoredSteps", function () {
         "energy_types": [],
         "diagram_rules": []
       };
-      
+
       var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
-      MySystem.activityController.set('content',activity);   
-      
+      MySystem.activityController.set('content',activity);
+
       expect(MySystem.activityController.get('assignmentText')).toBe("prompt1");
   });
 
