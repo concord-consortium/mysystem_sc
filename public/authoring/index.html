@@ -250,30 +250,48 @@
               {{view MSA.TextField valueBinding="parentView.content.name" placeholder="name"}}
             </span>
           </div>
-          The diagram 
-          {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
-          {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.comparisons" valueBinding="parentView.content.comparison"}}
-          {{view MSA.TextField valueBinding="parentView.content.number" placeholder="number" size="1"}}<br/>
-          {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.content.type"}}
-          <!-- button to show/hide the rest of the options if we could use an if statement then we could
-               check for the status of the property, and show one button in one case and another button in another case
-
-               not exactly why we need parentView.parentView here, my guess is that the if wraps this in another view so we
-               need parentView.parentView to get all the way up to the itemView 
-             
-               I tried adding a button to hide the link options again but the value bindings did not correctly update the views after they
-               were shown, hidden and shown again.  Changing the view after the show, hide, show did update the model object though
-          -->
-          {{#if "content.hasLink"}}
-            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.linkDirections" valueBinding="parentView.parentView.content.linkDirection"}}
-            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.parentView.content.otherNodeType"}}
-            with energy type: {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.energyTypes" valueBinding="parentView.parentView.content.energyType"}}
+          {{view SC.Checkbox 
+              title="is javascript rule" 
+              valueBinding="content.is_javascript" 
+              id="customRuleEvaluator"}}
+          {{#if "content.is_javascript"}}
+            <div class="javascript_rule">
+              {{
+                view MSA.TextArea 
+                valueBinding  = "content.javascriptExpression"
+                wrap          = "off" 
+                rows          = "20"
+                cols          = "72" 
+              }}
+              {{#view SC.Button target="content" action="editJSRule"}} edit {{/view}}
+            </div>
+        
           {{else}}
-            {{#view SC.Button
-              targetBinding="parentView.parentView.content"
-              action="toggleHasLink"}}
-              Enable link conditions
-            {{/view}} 
+            The diagram 
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.comparisons" valueBinding="parentView.content.comparison"}}
+            {{view MSA.TextField valueBinding="parentView.content.number" placeholder="number" size="1"}}<br/>
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.content.type"}}
+            <!-- button to show/hide the rest of the options if we could use an if statement then we could
+                 check for the status of the property, and show one button in one case and another button in another case
+
+                 not exactly why we need parentView.parentView here, my guess is that the if wraps this in another view so we
+                 need parentView.parentView to get all the way up to the itemView 
+               
+                 I tried adding a button to hide the link options again but the value bindings did not correctly update the views after they
+                 were shown, hidden and shown again.  Changing the view after the show, hide, show did update the model object though
+            -->
+            {{#if "content.hasLink"}}
+              {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.linkDirections" valueBinding="parentView.parentView.content.linkDirection"}}
+              {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.parentView.content.otherNodeType"}}
+              with energy type: {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.energyTypes" valueBinding="parentView.parentView.content.energyType"}}
+            {{else}}
+              {{#view SC.Button
+                targetBinding="parentView.parentView.content"
+                action="toggleHasLink"}}
+                Enable link conditions
+              {{/view}} 
+            {{/if}}
           {{/if}}
           <br/><br/>
           if not then show the user: 

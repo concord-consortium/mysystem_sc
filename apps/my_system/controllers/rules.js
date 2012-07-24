@@ -88,7 +88,8 @@ MySystem.rulesController = SC.ObjectController.create({
   check: function(_rule) {
     var rule = this.find(_rule);
     var nodes = this.nodes;
-    return rule.check(nodes);
+    var Rules = this; // TODO: pull out rule helpers to module
+    return rule.check(nodes,Rules);
   },
 
   // run one rule, adding suggestion if

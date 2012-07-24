@@ -19,12 +19,13 @@ MySystem.DiagramRule = SC.Record.extend(
   number: SC.Record.attr(Number),
   name: SC.Record.attr(String),
   type: SC.Record.attr(String),
+  isJSRule: SC.Record.attr(Boolean, { defaultValue: NO }),
   hasLink: SC.Record.attr(Boolean),
   linkDirection: SC.Record.attr(String),
   otherNodeType: SC.Record.attr(String),
   energyType: SC.Record.attr(String),
+  javascriptExpression: SC.Record.attr(String),
   not: SC.Record.attr(Boolean, { defaultValue: NO }),
-
 
   // FIXME use something better than node for non typed rules
   paletteItem: function (nodeType) {
@@ -58,6 +59,9 @@ MySystem.DiagramRule = SC.Record.extend(
   },
 
   check: function(nodes) {
+    if (this.get('ruleType')== MySystem.DiagramRule.jsRule) {
+      reuturn (this.js_check());
+    }
     var count = this.matches(nodes);
 
     // 'more than', 'less than', 'exactly'
@@ -108,6 +112,37 @@ MySystem.DiagramRule = SC.Record.extend(
     return this.checkNode(startPaletteItem, link.get('startNode')) && this.checkNode(endPaletteItem, link.get('endNode'));
   },
 
+
+  // has access to this class.
+  // returns = true if we passed
+  // nodes is the list of nodes to check
+  // rule_helper is a collection of rule evaluation ruitines.
+  // currently the rule_helper is a rule_controller.
+  // we should factor that out.
+  js_check: function (nodes, rule_helper) {
+    var self = this;
+    var node_list = nodes;
+    var Rules = rule_helper;
+    var rules = Rules.rules();
+    var ruleName = this.get('name');
+    var ruleNumber = this.get('number');
+    var errorMsg = "Rule Evaluation Error: rule# %{number} - %{name}:\n%{exception}";
+    return function(){
+      try {
+        eval(customRuleEvaluator);
+      }
+      catch(e) {
+        errorMsg.fmt({name: ruleName, number: ruleNumber, exception: e});
+        if (console && typeof console.log == 'function') {
+          console.log(errorMsg);
+        }
+        errorMsg = 
+        // WARNING:  Errors will be dispalyed to users:
+        suggestions.pushObject(errorMsg);
+      }
+    }.call(this);
+  },
+
   matches: function(nodes) {
     var paletteItem = this.paletteItem(this.get('type')),
         n = 0;
@@ -156,7 +191,7 @@ MySystem.DiagramRule = SC.Record.extend(
       }
     }
   }
-}) ;
 
+}) ;
 MySystem.DiagramRule.genericPaletteItem = "genericPaletteItem";
-MySystem.DiagramRule.genericEnergyType = "genericEnergyType";
+MySystem.DiagramRule.genericEnergyType  = "genericEnergyType";

@@ -172,6 +172,7 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
   linkDirection: SCUtil.dataHashProperty,
   otherNodeType: SCUtil.dataHashProperty,
   energyType: SCUtil.dataHashProperty,
+  javascriptExpression: SCUtil.dataHashProperty,
   not: SCUtil.dataHashProperty,
   shouldOption: function(key, value) {
     if (value){
@@ -181,6 +182,14 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
   }.property('not'),
   toggleHasLink: function(){
     this.set('hasLink', !this.get('hasLink'));
+  },
+  editorWindow: null,
+  editCustomRule: function() {
+    var self = this;
+    var callback = function(new_value) {
+      self.set('javascriptExpression',newValue);
+    }.bind(self);
+    MSA.editorController.editCustomRule(this,value,this.get('javascriptExpression'));
   }
 });
 
@@ -300,13 +309,20 @@ MSA.TextField = SC.TextField.extend({
   size: null
 });
 
-MSA.customRuleController = SC.Object.create({
+MSA.editorController = SC.Object.create({
+  owner: null,
   editorWindow: null,
+  value: '',
+  callback: function() {},
+  
+  editCustomRule: function(owner,value,callback) {
+    this.save();// save the previous data back to whomever.
+    this.set('owner',owner);
+    this.set('value',value);
+    this.set('callback',callback);
 
-  editCustomRule: function() {
     var editorWindow = this.get('editorWindow');
     var features  = "menubar=no,location=no,titlebar=no,toolbar=no,resizable=yes,scrollbars=yes,status=no,width=750,height=650"; 
-    var javascript = MSA.activity.get('customRuleEvaluator');
 
     // reuse existing window:
     if (editorWindow) {
@@ -318,21 +334,43 @@ MSA.customRuleController = SC.Object.create({
     else {
       editorWindow = window.open("ace.html", 'editorwindow', features);
       this.set('editorWindow', editorWindow);
-      editorWindow.srcText = javascript;
+      editorWindow.srcText = value;
       editorWindow.originParent = window;
     }
     var self = this;
     var updateMessage = function(event) {
       var message = JSON.parse(event.data);
       if (message.javascript) {
-        MSA.activity.set('customRuleEvaluator',message.javascript);
+        callback(message.javascript);
       }
       if (message.windowClosed) {
         self.set('editorWindow',null);
       }
     };
-
     window.addEventListener("message", updateMessage, false);
-  }
+  },
 
+  save: function() {
+    var editorWindow = this.get('editorWindow');
+    var value = null;
+    var callback = this.get("callback");
+    if (editorWindow && callback) {
+      value = editorWindow.srcText;
+      console.log(value);
+      callback(value);
+    }
+    else {
+      console.log("no callback or no editorwindow");
+    }
+  }
+});
+
+MSA.customRuleController = SC.Object.create({
+  editCustomRule: function() {
+    var value = MSA.activity.get('customRuleEvaluator');
+    var callback = function(value) {
+      MSA.activity.set('customRuleEvaluator',value);
+    }.bind(this);
+    MSA.editorController.editCustomRule(this,value,callback);
+  }
 });
