@@ -175,6 +175,10 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
   javascriptExpression: SCUtil.dataHashProperty,
   isJavascript: SCUtil.dataHashProperty,
   not: SCUtil.dataHashProperty,
+  defaultDataHash: {
+     "javascriptExpression": "",
+     "isJavascript": false
+  },
   shouldOption: function(key, value) {
     if (value){
       this.set("not", value !== "should");
