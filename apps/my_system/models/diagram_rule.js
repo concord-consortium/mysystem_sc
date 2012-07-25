@@ -19,7 +19,7 @@ MySystem.DiagramRule = SC.Record.extend(
   number: SC.Record.attr(Number),
   name: SC.Record.attr(String),
   type: SC.Record.attr(String),
-  isJSRule: SC.Record.attr(Boolean, { defaultValue: NO }),
+  isJavascript: SC.Record.attr(Boolean, { defaultValue: NO }),
   hasLink: SC.Record.attr(Boolean),
   linkDirection: SC.Record.attr(String),
   otherNodeType: SC.Record.attr(String),
@@ -59,8 +59,10 @@ MySystem.DiagramRule = SC.Record.extend(
   },
 
   check: function(nodes) {
-    if (this.get('ruleType')== MySystem.DiagramRule.jsRule) {
-      reuturn (this.js_check());
+    console.log(this.get('isJavascript'));
+    debugger;
+    if (this.get('isJavascript')) {
+      return (this.js_check());
     }
     var count = this.matches(nodes);
 
@@ -122,8 +124,8 @@ MySystem.DiagramRule = SC.Record.extend(
   js_check: function (nodes, rule_helper) {
     var self = this;
     var node_list = nodes;
-    var Rules = rule_helper;
-    var rules = Rules.rules();
+    // var Rules = rule_helper;
+    // var rules = Rules.rules();
     var ruleName = this.get('name');
     var ruleNumber = this.get('number');
     var errorMsg = "Rule Evaluation Error: rule# %{number} - %{name}:\n%{exception}";
@@ -136,9 +138,6 @@ MySystem.DiagramRule = SC.Record.extend(
         if (console && typeof console.log == 'function') {
           console.log(errorMsg);
         }
-        errorMsg = 
-        // WARNING:  Errors will be dispalyed to users:
-        suggestions.pushObject(errorMsg);
       }
     }.call(this);
   },
