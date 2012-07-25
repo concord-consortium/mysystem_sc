@@ -251,19 +251,23 @@
             </span>
           </div>
           {{view SC.Checkbox 
-              title="is javascript rule" 
-              valueBinding="content.is_javascript" 
-              id="customRuleEvaluator"}}
-          {{#if "content.is_javascript"}}
+              title="use javascript" 
+              valueBinding="parentView.content.isJavascript" 
+              placeholder=false
+              defaultValue=false
+              }}
+          {{#if "content.isJavascript"}}
             <div class="javascript_rule">
               {{
                 view MSA.TextArea 
-                valueBinding  = "content.javascriptExpression"
+                valueBinding  = "parentView.parentView.content.javascriptExpression"
                 wrap          = "off" 
                 rows          = "20"
                 cols          = "72" 
               }}
-              {{#view SC.Button target="content" action="editJSRule"}} edit {{/view}}
+              {{#view SC.Button
+                targetBinding="parentView.parentView.content"
+                action="editJSRule"}} edit {{/view}}
             </div>
         
           {{else}}

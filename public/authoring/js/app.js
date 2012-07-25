@@ -173,6 +173,7 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
   otherNodeType: SCUtil.dataHashProperty,
   energyType: SCUtil.dataHashProperty,
   javascriptExpression: SCUtil.dataHashProperty,
+  isJavascript: SCUtil.dataHashProperty,
   not: SCUtil.dataHashProperty,
   shouldOption: function(key, value) {
     if (value){
@@ -184,12 +185,12 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
     this.set('hasLink', !this.get('hasLink'));
   },
   editorWindow: null,
-  editCustomRule: function() {
+  editJSRule: function() {
     var self = this;
-    var callback = function(new_value) {
+    var myCallback = function(newValue) {
       self.set('javascriptExpression',newValue);
     }.bind(self);
-    MSA.editorController.editCustomRule(this,value,this.get('javascriptExpression'));
+    MSA.editorController.editCustomRule(this,this.get('javascriptExpression'),myCallback);
   }
 });
 
@@ -314,8 +315,10 @@ MSA.editorController = SC.Object.create({
   editorWindow: null,
   value: '',
   callback: function() {},
+
   
   editCustomRule: function(owner,value,callback) {
+    this.registerWindowCallbacks();
     this.save();// save the previous data back to whomever.
     this.set('owner',owner);
     this.set('value',value);
@@ -326,7 +329,7 @@ MSA.editorController = SC.Object.create({
 
     // reuse existing window:
     if (editorWindow) {
-      editorWindow.postMessage(javascript,"*");
+      editorWindow.postMessage(value,"*");
       editorWindow.focus();
     }
 
@@ -337,30 +340,35 @@ MSA.editorController = SC.Object.create({
       editorWindow.srcText = value;
       editorWindow.originParent = window;
     }
+  },
+
+  registerWindowCallbacks: function() {
+    if(this.hasregisteredCallbacks) {
+      return;
+    }
     var self = this;
     var updateMessage = function(event) {
       var message = JSON.parse(event.data);
       if (message.javascript) {
-        callback(message.javascript);
+        self.set('value',message.javascript);
+        self.save();
       }
       if (message.windowClosed) {
         self.set('editorWindow',null);
       }
-    };
+    }.bind(self);
     window.addEventListener("message", updateMessage, false);
+    this.hasregisteredCallbacks = true;
   },
 
   save: function() {
-    var editorWindow = this.get('editorWindow');
-    var value = null;
+    var value = this.get('value');
     var callback = this.get("callback");
-    if (editorWindow && callback) {
-      value = editorWindow.srcText;
-      console.log(value);
+    if (callback) {
       callback(value);
     }
     else {
-      console.log("no callback or no editorwindow");
+      console.log("no callback defined");
     }
   }
 });
