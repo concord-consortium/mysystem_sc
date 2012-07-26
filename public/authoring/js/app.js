@@ -189,6 +189,7 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
     this.set('hasLink', !this.get('hasLink'));
   },
   editorWindow: null,
+  helpDiv: '#ruleHelp',
   editJSRule: function() {
     var self = this;
     var myCallback = function(newValue) {
@@ -344,6 +345,7 @@ MSA.editorController = SC.Object.create({
       editorWindow.srcText = value;
       editorWindow.originParent = window;
     }
+    editorWindow.setHelp(owner.helpDiv);
   },
 
   registerWindowCallbacks: function() {
@@ -378,6 +380,7 @@ MSA.editorController = SC.Object.create({
 });
 
 MSA.customRuleController = SC.Object.create({
+  helpDiv: '#evalHelp',
   editCustomRule: function() {
     var value = MSA.activity.get('customRuleEvaluator');
     var callback = function(value) {

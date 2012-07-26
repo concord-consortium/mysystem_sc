@@ -24,6 +24,11 @@
         if (window.srcText) {
           myCodeMirror.setValue(window.srcText);
         }
+        window.setHelp = function(selector) {
+          $('#ruleHelp').hide();
+          $('#evalHelp').hide();
+          $(selector).show();
+        }
 
         var last_marker = null;
         
@@ -102,7 +107,7 @@
       padding-top: 0px;
     }
 
-    #js_help {
+    .js_help {
       font-family: Lucidatypewriter, monospace;
       white-space: pre;
       height: 100px;
@@ -116,36 +121,53 @@
   </style>
 </head>
 <body>
-  <div id="container">      
-    <div id="js_help">
-  <span class="label">Sample functions:</span>
-  Rules.addSuggestion(string);      // add 'string' to the suggestions.
-  Rules.addRuleSuggestion(rule_id); // add the suggestion from rule named 'rule_id'
-  Rules.check(rule_id);             // check 'rule_id' without feedback. (true|false)
-  Rules.run(rule_id);               // run 'rule_id' rule, adding feedback.
-  Rules.runAll();                   // run all the rules, adding feedback.
-  Rules.hasTransformation();        // true if the diagram has transformations
-  Rules.iconsUsedOnce();            // true if the icons were only used one time.
-  Rules.extraLinks(rules);          // true if there are links present not defined in 'rules'.
-  Rules.extraLinks();               // true if there are links present not defined in any rule.
+  <div id="container">
 
-  // sample use:
-  if (Rules.extraLinks()) {
-    Rules.addSuggestion("You have some extra links!");
-  }
-  if (!Rules.iconsUsedOnce()) {
-    Rules.addSuggestion("You can only use each icon once.");
-  }
-  if (!Rules.hasTransformation()) {
-    Rules.addSuggestion("How is energy transformed?");
-  }
+    <div id="evalHelp" class="js_help">
+      <span class="label">Custom evaluation functions:</span>
+      Rules.addSuggestion(string);      // add 'string' to the suggestions.
+      Rules.addRuleSuggestion(rule_id); // add the suggestion from rule named 'rule_id'
+      Rules.check(rule_id);             // check 'rule_id' without feedback. (true|false)
+      Rules.run(rule_id);               // run 'rule_id' rule, adding feedback.
+      Rules.runAll();                   // run all the rules, adding feedback.
+      Rules.hasTransformation();        // true if the diagram has transformations
+      Rules.iconsUsedOnce();            // true if the icons were only used one time.
+      Rules.extraLinks(rules);          // true if there are links present not defined in 'rules'.
+      Rules.extraLinks();               // true if there are links present not defined in any rule.
 
-  // Expert only:
-  Rules.find(rule_id);              // find a rule with a specific name.
-  rules;                            // [] all the rules.
-  nodes;                            // [] all of the nodes.
-  suggestions;                      // [] the suggestion list.
+      // sample use:
+      if (Rules.extraLinks()) {w
+        Rules.addSuggestion("You have some extra links!");
+      }
+      if (!Rules.iconsUsedOnce()) {
+        Rules.addSuggestion("You can only use each icon once.");
+      }
+      if (!Rules.hasTransformation()) {
+        Rules.addSuggestion("How is energy transformed?");
+      }
+
+      // Expert only:
+      Rules.find(rule_id);              // find a rule with a specific name.
+      rules;                            // [] all the rules.
+      nodes;                            // [] all of the nodes.
+      suggestions;                      // [] the suggestion list.
     </div>
+
+    <div id="ruleHelp" class="js_help">
+      <span class="label">JS Rule functions:</span>
+      this.check(rule_id);             // check 'rule_id' without feedback. (true|false)
+      this.hasNode('name');            // returns true if there is a node named 'name'
+      this.result = false;             
+      this.hasTransformation();        // true if the diagram has transformations
+      this.iconsUsedOnce();            // true if the icons were only used one time.
+      Rules.extraLinks();              // true if there are links present not defined in any rule.
+
+      // sample use:
+      if (this.hasNode('good node') { this.result = true; }
+      else { this.result = false; }
+      
+    </div>
+
     <div id="editor_wrap">
       <div class='label'>javscript editor:</div>
       <textarea id="code_editor"></textarea>  
