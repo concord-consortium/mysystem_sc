@@ -95,7 +95,8 @@ MySystem.rulesController = SC.ObjectController.create({
   // run one rule, adding suggestion if
   run: function(_rule) {
     var rule = this.find(_rule);
-    if (!this.check(rule)) {
+    var self = this;
+    if (!this.check(rule,self)) {
       this.addSuggestion(rule.get('suggestion'));
     }
   },

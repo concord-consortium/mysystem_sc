@@ -58,15 +58,15 @@ MySystem.DiagramRule = SC.Record.extend(
     }
   },
 
-  check: function(nodes) {
+  check: function(nodes,evaluator) {
     if (this.get('isJavascript')) {
-      return (this.js_check());
+      return (this.js_check(nodes,evaluator));
     }
     var count = this.matches(nodes);
 
     // 'more than', 'less than', 'exactly'
     var passes;
-    debugger;
+
     switch(this.get('comparison')) {
       case 'more than':
         passes = count > this.get('number');
@@ -120,16 +120,23 @@ MySystem.DiagramRule = SC.Record.extend(
   // rule_helper is a collection of rule evaluation ruitines.
   // currently the rule_helper is a rule_controller.
   // we should factor that out.
-  js_check: function (nodes, rule_helper) {
+  js_check: function (nodes, evaluator) {
     var self = this;
-    var node_list = nodes;
-    // var Rules = rule_helper;
-    // var rules = Rules.rules();
+    var javascript = this.get("javascriptExpression");
     var ruleName = this.get('name');
     var ruleNumber = this.get('number');
-    var javascript = this.get("javascriptExpression");
+    var context = {
+      self: self,
+      helper: evaluator,
+      run: evaluator.run,
+      check: evaluator.check,
+      nodes: nodes,
+      name: ruleName,
+      number: ruleNumber,
+      result: false
+    };
+    // debugger;
     var errorMsg = "Rule Evaluation Error: rule# %@ - %@:\n%@";
-    var result = false;
     (function(){
       try {
         eval(javascript);
@@ -138,10 +145,11 @@ MySystem.DiagramRule = SC.Record.extend(
         errorMsg = errorMsg.fmt(ruleName, ruleNumber, e);
         if (console && typeof console.log == 'function') {
           console.log(errorMsg);
+          alert(errorMsg);
         }
       }
-    }).call(self);
-    return result;
+    }).call(context);
+    return context.result;
   },
 
   matches: function(nodes) {
