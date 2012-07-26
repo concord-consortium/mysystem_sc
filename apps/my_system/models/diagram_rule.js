@@ -145,8 +145,8 @@ MySystem.DiagramRule = SC.Record.extend(
         errorMsg = errorMsg.fmt(ruleName, ruleNumber, e);
         if (console && typeof console.log == 'function') {
           console.log(errorMsg);
-          alert(errorMsg);
         }
+        alert(errorMsg);
       }
     }).call(context);
     return context.result;
