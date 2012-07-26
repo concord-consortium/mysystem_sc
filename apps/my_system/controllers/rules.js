@@ -284,9 +284,12 @@ MySystem.rulesController = SC.ObjectController.create({
     });
 
     return (notAllowedLink !== null && notAllowedLink !== 'undefined');
+  },
+
+  hasNode: function(nodeName) {
+    var nodes = MySystem.store.find(MySystem.Node);
+    return (nodes.findProperty('nodeType',nodeName));
   }
-
-
-
+  
 });
 

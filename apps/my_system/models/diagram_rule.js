@@ -114,41 +114,34 @@ MySystem.DiagramRule = SC.Record.extend(
   },
 
 
-  // has access to this class.
+
   // returns = true if we passed
   // nodes is the list of nodes to check
-  // rule_helper is a collection of rule evaluation ruitines.
-  // currently the rule_helper is a rule_controller.
-  // we should factor that out.
+  // evaluator is the rule_controller, which has helper methods.
   js_check: function (nodes, evaluator) {
-    var self = this;
+    var self       = this;
     var javascript = this.get("javascriptExpression");
-    var ruleName = this.get('name');
-    var ruleNumber = this.get('number');
+    var ruleName   = this.get('name');
+    
     var context = {
       self: self,
       helper: evaluator,
+      diagram: evaluator,
       run: evaluator.run,
       check: evaluator.check,
       nodes: nodes,
-      diagram: {
-        hasNode: function(nodeName) {
-          return (nodes.findProperty('nodeType',nodeName));
-        }
-      },
       name: ruleName,
-      number: ruleNumber,
       result: false
     };
     
 
-    var errorMsg = "Rule Evaluation Error: rule# %@ - %@:\n%@";
+    var errorMsg = "Rule Evaluation Error: rule# %@:\n%@";
     (function(){
       try {
         eval(javascript);
       }
       catch(e) {
-        errorMsg = errorMsg.fmt(ruleName, ruleNumber, e);
+        errorMsg = errorMsg.fmt(ruleName, e);
         if (console && typeof console.log == 'function') {
           console.log(errorMsg);
         }
