@@ -131,11 +131,17 @@ MySystem.DiagramRule = SC.Record.extend(
       run: evaluator.run,
       check: evaluator.check,
       nodes: nodes,
+      diagram: {
+        hasNode: function(nodeName) {
+          return (nodes.findProperty('nodeType',nodeName));
+        }
+      },
       name: ruleName,
       number: ruleNumber,
       result: false
     };
-    // debugger;
+    
+
     var errorMsg = "Rule Evaluation Error: rule# %@ - %@:\n%@";
     (function(){
       try {

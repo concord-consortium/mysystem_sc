@@ -31,6 +31,10 @@ describe("DiagramRules", function () {
           {
             "name": "obj3",
             "uuid": "obj3"
+          },
+          {
+            "name": "unwantedObject",
+            "uuid": "unwantedObject"
           }
         ],
         "energy_types": [
@@ -611,34 +615,47 @@ describe("DiagramRules", function () {
   });
 
   describe("Custom Rule Evaluation", function() {
-    var customEvaluationString;
+    var customEvaluationString, altCustomEvalString;
     var ruleFeedback;
     beforeEach(function() {
        givenRules([
           {
             "comparison": "exactly",
             "number": "1",
+            "name": "a",
             "type": "obj1",
             "suggestion": "failed rule_a"
           },
           {
             "comparison": "exactly",
             "number": "1",
+            "name": "b",
             "type": "obj2",
             "suggestion": "failed rule_b"
           },
           {
             "comparison": "exactly",
             "number": "1",
+            "name": "c",
             "type": "obj3",
             "suggestion": "failed rule_c"
+          },
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "name": "d",
+            "type": "unwantedObject",
+            "isJavascript": YES,
+            "javascriptExpression": "this.result=true;if(this.diagram.hasNode('unwantedObject')){this.result=false;}",
+            "suggestion": "failed d"
           }
       ]);
-      customEvaluationString = "";
-      customEvaluationString += "var rule_a = rules.objectAt(0).check(nodes);";
-      customEvaluationString += "var rule_b = rules.objectAt(1).check(nodes);";
-      customEvaluationString += "var rule_c = rules.objectAt(2).check(nodes);";
-      customEvaluationString += "if(! ((rule_a && rule_b) || rule_c)) {";
+
+      customEvaluationString  = "var a = Rules.check('a');";
+      customEvaluationString += "var b = Rules.check('b');";
+      customEvaluationString += "var c = Rules.check('c');";
+      customEvaluationString += "var d = Rules.check('d');";
+      customEvaluationString += "if(! ((a && b) || c) && d) {";
       customEvaluationString += "   suggestions.pushObject('custom rule evaluation failed.');";
       customEvaluationString += "}";
     });
@@ -659,6 +676,9 @@ describe("DiagramRules", function () {
         it("should fail diagrams containing just one 'b' node", function() {
           runRules({nodes: ['obj2'], links: []});
           expect(ruleFeedback.get('feedback')).toBe('custom rule evaluation failed.');
+        });
+        it("should fail diagrams containing an unwantedObject", function() {
+          runRules({nodes: ['obj1','obj2','unwantedObject'], links: []});
         });
       });
 
@@ -703,8 +723,36 @@ describe("DiagramRules", function () {
     });
   });
 
+ describe("Javascript rule Evaluation", function() {
+    var customEvaluationString, altCustomEvalString;
+    var ruleFeedback;
+    beforeEach(function() {
+       givenRules([
+          {
+            "comparison": "exactly",
+            "number": "1",
+            "name": "d",
+            "type": "obj3",
+            "isJavascript": YES,
+            "javascriptExpression": "if(this.diagram.hasNode('obj1')){this.result=true;}",
+            "suggestion": "failed d"
+          }
+      ]);
+    });
+
+    it("should fail diagrams for which the simple conditions are not met", function() {
+      expect({nodes: ['obj2'], links: []}).toFail();
+    });
+
+    it("should pass diagrams for which the simple conditions are met", function() {
+      expect({nodes: ['obj1'], links: []}).toPass();
+    });
+    
+  });
+
+
   givenRules = function (rules, maxFeedback) {
-    $.each(rules, function(i, rule){
+    $.each(rules, function(i, rule){  
       if (!rule.suggestion){
         rule.suggestion = "Failed rule "+i;
       }
