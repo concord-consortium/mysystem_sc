@@ -59,8 +59,6 @@ MySystem.DiagramRule = SC.Record.extend(
   },
 
   check: function(nodes) {
-    console.log(this.get('isJavascript'));
-    debugger;
     if (this.get('isJavascript')) {
       return (this.js_check());
     }
@@ -68,6 +66,7 @@ MySystem.DiagramRule = SC.Record.extend(
 
     // 'more than', 'less than', 'exactly'
     var passes;
+    debugger;
     switch(this.get('comparison')) {
       case 'more than':
         passes = count > this.get('number');
@@ -128,18 +127,21 @@ MySystem.DiagramRule = SC.Record.extend(
     // var rules = Rules.rules();
     var ruleName = this.get('name');
     var ruleNumber = this.get('number');
-    var errorMsg = "Rule Evaluation Error: rule# %{number} - %{name}:\n%{exception}";
-    return function(){
+    var javascript = this.get("javascriptExpression");
+    var errorMsg = "Rule Evaluation Error: rule# %@ - %@:\n%@";
+    var result = false;
+    (function(){
       try {
-        eval(customRuleEvaluator);
+        eval(javascript);
       }
       catch(e) {
-        errorMsg.fmt({name: ruleName, number: ruleNumber, exception: e});
+        errorMsg = errorMsg.fmt(ruleName, ruleNumber, e);
         if (console && typeof console.log == 'function') {
           console.log(errorMsg);
         }
       }
-    }.call(this);
+    }).call(self);
+    return result;
   },
 
   matches: function(nodes) {

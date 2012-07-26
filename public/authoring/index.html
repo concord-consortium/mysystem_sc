@@ -270,10 +270,10 @@
         
           {{else}}
             The diagram 
-            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
-            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.comparisons" valueBinding="parentView.content.comparison"}}
-            {{view MSA.TextField valueBinding="parentView.content.number" placeholder="number" size="1"}}<br/>
-            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.content.type"}}
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.shouldOptions" valueBinding="parentView.parentView.content.shouldOption"}} contain
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.comparisons" valueBinding="parentView.parentView.content.comparison"}}
+            {{view MSA.TextField valueBinding="parentView.parentView.content.number" placeholder="number" size="1"}}<br/>
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.parentView.content.type"}}
             <!-- button to show/hide the rest of the options if we could use an if statement then we could
                  check for the status of the property, and show one button in one case and another button in another case
 
@@ -284,12 +284,12 @@
                  were shown, hidden and shown again.  Changing the view after the show, hide, show did update the model object though
             -->
             {{#if "content.hasLink"}}
-              {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.linkDirections" valueBinding="parentView.parentView.content.linkDirection"}}
-              {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.parentView.content.otherNodeType"}}
-              with energy type: {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.energyTypes" valueBinding="parentView.parentView.content.energyType"}}
+              {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.linkDirections" valueBinding="parentView.parentView.parentView.content.linkDirection"}}
+              {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.parentView.parentView.content.otherNodeType"}}
+              with energy type: {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.energyTypes" valueBinding="parentView.parentView.parentView.content.energyType"}}
             {{else}}
               {{#view SC.Button
-                targetBinding="parentView.parentView.content"
+                targetBinding="parentView.parentView.parentView.content"
                 action="toggleHasLink"}}
                 Enable link conditions
               {{/view}} 
