@@ -29,6 +29,10 @@
           $('#evalHelp').hide();
           $(selector).show();
         }
+        // first time:
+        if (window.helpSelector) {
+          window.setHelp(window.helpSelector);
+        }
 
         var last_marker = null;
         

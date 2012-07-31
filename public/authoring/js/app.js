@@ -336,6 +336,7 @@ MSA.editorController = SC.Object.create({
     if (editorWindow) {
       editorWindow.postMessage(value,"*");
       editorWindow.focus();
+      editorWindow.setHelp(owner.helpDiv);
     }
 
     // or create a new one:
@@ -343,9 +344,10 @@ MSA.editorController = SC.Object.create({
       editorWindow = window.open("ace.html", 'editorwindow', features);
       this.set('editorWindow', editorWindow);
       editorWindow.srcText = value;
+      exitorWindow.helpSelector = owner.helpDiv;
       editorWindow.originParent = window;
     }
-    editorWindow.setHelp(owner.helpDiv);
+    
   },
 
   registerWindowCallbacks: function() {
