@@ -28,6 +28,7 @@ MySystem.Activity = SC.Record.extend(
   
   // Rules for evaluating the digram
   diagramRules: SC.Record.toMany('MySystem.DiagramRule'),
+  rubricCategories: SC.Record.toMany('MySystem.RubricCategory'),
   minimumRequirements: SC.Record.toMany('MySystem.DiagramRule'),
   minimumRequirementsFeedback: SC.Record.attr(String),
 
@@ -163,6 +164,7 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     );
     activity.get('minimumRequirements').pushObject(newDiagramRule);
   }
+
   var diagram_rules = wiseStepDef["diagram_rules"];
   size = diagram_rules.length;
   newDiagramRule = null;
@@ -176,6 +178,24 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     );
     activity.get('diagramRules').pushObject(newDiagramRule);
   }
+
+  var rubric_categories = wiseStepDef["rubric_categories"];
+  var newCategory = null;
+  if (rubric_categories) {
+    size = rubric_categories.length;
+    newCategory = null;
+    rule = null;
+    for (i=0; i < size; i++) {
+      rule = rubric_categories[i];
+      newCategory = MySystem.store.createRecord(
+        MySystem.RubricCategory,
+        rule, 
+        MySystem.Activity.newGuid("rubricCategory")
+      );
+      activity.get('rubricCategories').pushObject(newCategory);
+    }
+  }
+
   return activity;
 };
 
