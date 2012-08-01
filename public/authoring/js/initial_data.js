@@ -52,6 +52,7 @@ InitialMySystemData = {
     }
  ],
  "diagram_rules": [],
+ "rubric_categories": [],
  "minimum_requirements": [],
  "correctFeedback": "Your diagram has no obvious problems.",
  "maxFeedbackItems": 0,

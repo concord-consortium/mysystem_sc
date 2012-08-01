@@ -11,6 +11,7 @@ if (top === self) {
     "modules": [],
     "energy_types": [],
     "diagram_rules": [],
+    "rubric_categories": [],
     "correctFeedback": "Your diagram has no obvious problems.",
     "minimum_requirements": [],
     "maxFeedbackItems": 0,
@@ -43,6 +44,9 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
   if (!dataHash.diagram_rules) {
     dataHash.diagram_rules = [];
   } 
+  if (!dataHash.rubric_categories) {
+    dataHash.rubric_categories = [];
+  }
   if (typeof dataHash.correctFeedback === "undefined" || dataHash.correctFeedback === null){
     dataHash.correctFeedback = "";
   }
@@ -117,6 +121,7 @@ MSA.loadData = function(dataHash) {
   MSA.modulesController.setExternalContent(dataHash.modules);
   MSA.energyTypesController.setExternalContent(dataHash.energy_types);
   MSA.diagramRulesController.setExternalContent(dataHash.diagram_rules);
+  MSA.rubricCategoriesController.setExternalContent(dataHash.rubric_categories);
   MSA.minRequirementsController.setExternalContent(dataHash.minimum_requirements);
 };
 
@@ -165,6 +170,7 @@ MSA.EnergyType = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
 MSA.DiagramRule = SCUtil.ModelObject.extend({
   suggestion: SCUtil.dataHashProperty,
   name: SCUtil.dataHashProperty,
+  category: SCUtil.dataHashProperty,
   comparison: SCUtil.dataHashProperty,
   number: SCUtil.dataHashProperty,
   type: SCUtil.dataHashProperty,
@@ -199,6 +205,46 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
   }
 });
 
+MSA.RubricCategory = SCUtil.ModelObject.extend({
+  name: SCUtil.dataHashProperty
+});
+
+MSA.RubricCategoriesController = SCUtil.ModelArray.extend({
+  modelType: MSA.RubricCategory,
+
+  moveItemUp: function(button) {
+    var c = this.get('content');
+    var item = button.get('item');
+    var i = c.indexOf(item.get('dataHash'));
+
+    if (i > 0) {
+      this.contentWillChange();
+      var itemBefore = this.objectAt(i-1);
+      this.replaceContent(i-1, 2, [item, itemBefore]);
+      this.contentDidChange();
+    }
+  },
+
+  moveItemDown: function(button) {
+    var c = this.get('content');
+    var item = button.get('item');
+    var i = c.indexOf(item.get('dataHash'));
+
+    if (i < (c.length-1)) {
+      this.contentWillChange();
+      var itemAfter = this.objectAt(i+1);
+      this.replaceContent(i, 2, [itemAfter, item]);
+      this.contentDidChange();
+    }
+  }
+});
+
+
+MSA.rubricCategoriesController = MSA.RubricCategoriesController.create({
+  content: MSA.data.rubric_categories
+});
+
+
 MSA.modulesController = SCUtil.ModelArray.create({
   content: MSA.data.modules,
   modelType: MSA.Module
@@ -219,6 +265,10 @@ MSA.RulesController = SCUtil.ModelArray.extend({
   energyTypes: function() {
     return MSA.energyTypesController.mapProperty('label').insertAt(0, 'any');
   }.property('MSA.energyTypesController.[]', 'MSA.energyTypesController.@each.label').cacheable(),
+
+  categories: function (){
+    return MSA.rubricCategoriesController.mapProperty('name').insertAt(0, 'none');
+  }.property('MSA.rubricCategoriesController.[]', 'MSA.rubricCategoriesController.@each.name').cacheable(),
 
   comparisons: ['more than', 'less than', 'exactly'],
 
@@ -256,6 +306,8 @@ MSA.RulesController = SCUtil.ModelArray.extend({
 MSA.diagramRulesController = MSA.RulesController.create({
   content: MSA.data.diagram_rules
 });
+
+
 
 MSA.minRequirementsController = MSA.RulesController.create({
   content: MSA.data.minimum_requirements,
