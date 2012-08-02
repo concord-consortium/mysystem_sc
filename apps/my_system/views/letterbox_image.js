@@ -15,6 +15,7 @@
 */
 MySystem.LetterboxImageView = SC.ImageView.extend(
 /** @scope MySystem.LetterboxImageView.prototype */ {
+  useImageQueue: NO,
 
   didLoad: function (image) {
     sc_super();
@@ -31,27 +32,26 @@ MySystem.LetterboxImageView = SC.ImageView.extend(
 
     var image = this.get('image');
 
-    SC.RunLoop.begin();
-      this.adjust({
-        'left': 0, 
-        'top': 0
-      });
-    SC.RunLoop.end();
+    
+    this.adjust({
+      'left': 0, 
+      'top': 0
+    });
 
-    SC.RunLoop.begin();
-      parentWidth  = this.clippingFrame().width;
-      parentHeight = this.clippingFrame().height;
-      
-      hRatio  = parentWidth / image.width;
-      vRatio  = parentHeight / image.height;
-      ratio = hRatio > vRatio ?  vRatio : hRatio;
-      newWidth  = image.width * ratio;
-      newHeight = image.height * ratio;    
-      this.adjust({
-        'width': newWidth,
-        'height': newHeight
-      });
-    SC.RunLoop.end();
+    parentWidth  = this.clippingFrame().width;
+    parentHeight = this.clippingFrame().height;
+    
+    hRatio  = parentWidth / image.width;
+    vRatio  = parentHeight / image.height;
+    ratio = hRatio > vRatio ?  vRatio : hRatio;
+    newWidth  = image.width * ratio + 1;
+    newHeight = image.height * ratio + 1;
+    
+    this.adjust({
+      'width': newWidth,
+      'height': newHeight
+    });
+  
   },
 
   parentViewDidResize: function() {
