@@ -31,7 +31,14 @@ MySystem.setupStore = function (obj, ignoreUndeclaredFields) {
     studentStateDataSource: MySystem.MergedHashDataSource.create({
       ignoreUndeclaredFields: ignoreUndeclaredFields,
       
-      handledRecordTypes: [MySystem.Link, MySystem.Node, MySystem.Story, MySystem.StorySentence, MySystem.RuleFeedback, MySystem.GraphicPreview],
+      handledRecordTypes: [
+        MySystem.Link, 
+        MySystem.Node, 
+        MySystem.Story, 
+        MySystem.StorySentence, 
+        MySystem.RuleFeedback, 
+        MySystem.GraphicPreview,
+        MySystem.RubricScore],
 
       // write the updated student-state data to the DOM whenever it changes
       // New: Write the updated student-state data to a variable whenever it changes.
