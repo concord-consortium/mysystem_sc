@@ -1,5 +1,5 @@
 // ==========================================================================
-// Project:   MySystem.savingController
+// Project:   MySystem
 // Copyright: ©2011 Concord Consortium
 // ==========================================================================
 
@@ -50,12 +50,16 @@ MySystem.savingController = SC.Object.create({
     return !!this.get('saveFunction') && !!this.get('dataIsDirty');
   }.property('saveFunction', 'dataIsDirty'),
 
+  processLearnerDiagram: function() {
+    var rubricScore = MySystem.RubricScore.score(MySystem.store);
+    MySystem.GraphicPreview.makePreview(MySystem.store);
+  },
   // Called to attempt to save the diagram. Either by pressing 'save', navigating away,
   // or when the save button is pressed.
   // IMPORANT: dataSources must call: MySystem.savingController.set('dataIsDirty', YES); 
   save: function() {
     var isSubmit = NO;
-    MySystem.GraphicPreview.makePreview(MySystem.store);
+    this.processLearnerDiagram();
     if(this.get('saveFunction') && this.get('dataIsDirty')) {
       this.get('saveFunction')(isSubmit);
     }
@@ -65,7 +69,7 @@ MySystem.savingController = SC.Object.create({
   // state so it won't be overriden
   submit: function(){
     var isSubmit = YES;
-    MySystem.GraphicPreview.makePreview(MySystem.store);
+    this.processLearnerDiagram();
     if(this.get('saveFunction')) {
       this.get('saveFunction')(isSubmit);
     }
