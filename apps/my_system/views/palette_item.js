@@ -19,12 +19,13 @@ sc_require('views/letterbox_image');
 MySystem.PaletteItemView = SC.View.extend( {
   layout: { top: 10, centerX: 0, width: 50 },
  
-  displayProperties: 'content isSelected width height'.w(),
+  displayProperties: 'content isSelected width height enableNodeLabelDisplay'.w(),
   content:           null,
   isSelected:        false,
 
   widthBinding:      SC.Binding.oneWay("MySystem.activityController.content.nodeWidth"),
   heightBinding:     SC.Binding.oneWay("MySystem.activityController.content.nodeHeight"),
+  enableNodeLabelDisplayBinding: SC.Binding.oneWay("MySystem.activityController.content.enableNodeLabelDisplay"),
     
   childViews: 'borderFrame'.w(),
 
@@ -59,6 +60,7 @@ MySystem.PaletteItemView = SC.View.extend( {
       classNames: ['name'],
       textAlign: SC.ALIGN_CENTER,    
       valueBinding: '.parentView.parentView.content.title',
+      isVisibleBinding: '.parentView.parentView.enableNodeLabelDisplay',
       isEditable: NO
     })
   }),

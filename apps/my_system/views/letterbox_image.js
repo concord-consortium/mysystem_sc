@@ -32,33 +32,23 @@ MySystem.LetterboxImageView = SC.ImageView.extend(
 
     var image = this.get('image');
 
-    
-    this.adjust({
-      'left': 0, 
-      'top': 0
-    });
-
-    parentWidth  = this.clippingFrame().width;
-    parentHeight = this.clippingFrame().height;
-    
+    parentWidth  = this.clippingFrame().width - 2;
+    parentHeight = this.clippingFrame().height - 2;
+    parentWidth  = (parentWidth < 2) ? 2 : parentWidth;
+    parentHeight  = (parentHeight < 2) ? 2 : parentHeight;
     hRatio  = parentWidth / image.width;
     vRatio  = parentHeight / image.height;
     ratio = hRatio > vRatio ?  vRatio : hRatio;
-    newWidth  = image.width * ratio + 1;
-    newHeight = image.height * ratio + 1;
+    newWidth  = image.width * ratio;
+    newHeight = image.height * ratio;
     
     this.adjust({
+      'left': 0, 
+      'top': 0,
       'width': newWidth,
       'height': newHeight
     });
   
-  },
-
-  parentViewDidResize: function() {
-    sc_super();
-    this.adjustLetterBox();
-    this.set('layerNeedsUpdate',YES);
-    this.updateLayerIfNeeded();
   }
 
 });

@@ -20,7 +20,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   childViews: 'removeButtonView titleView terminalA terminalB'.w(),
 
   contentDisplayProperties: 'x y image title'.w(),
-  displayProperties: 'bodyWidth bodyHeight bodyColor bodyOpacity borderColor borderOpacity borderWidth borderRadius imageWidth imageHeight'.w(),
+  displayProperties: 'bodyWidth bodyHeight bodyColor bodyOpacity borderColor borderOpacity borderWidth borderRadius imageWidth imageHeight enableNodeLabelDisplay'.w(),
     
   // PROPERTIES
   
