@@ -29,7 +29,8 @@ MySystem.LetterboxImageView = SC.ImageView.extend(
     var vRatio=0;
     var newWidth=0;
     var newHeight=0;
-
+    var newLeft=0;
+    var newTop = 0;
     var image = this.get('image');
 
     parentWidth  = this.clippingFrame().width - 2;
@@ -42,9 +43,11 @@ MySystem.LetterboxImageView = SC.ImageView.extend(
     newWidth  = image.width * ratio;
     newHeight = image.height * ratio;
     
+    newLeft = (parentWidth - newWidth)/2 + 1;
+    newTop  = (parentHeight - newHeight)/2;
     this.adjust({
-      'left': 0, 
-      'top': 0,
+      'centerX': 0,
+      'centerY': 0,
       'width': newWidth,
       'height': newHeight
     });

@@ -28,6 +28,9 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   isDragging: NO,
   isHovered:  NO,
   
+  verticalMargin: 0,
+  horizontalMargin: 0,
+  
   bodyWidthBinding:  SC.Binding.oneWay("MySystem.activityController.content.nodeWidth"),
   bodyHeightBinding: SC.Binding.oneWay("MySystem.activityController.content.nodeHeight"),
   terminalRadiusBinding: SC.Binding.oneWay("MySystem.activityController.content.terminalRadius"),
@@ -70,13 +73,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   
   borderRadius: 5,
   
-  verticalMargin: function() {
-    return this.get('bodyHeight') * 0.1;
-  }.property('bodyHeight').cacheable(),
 
-  horizontalMargin: function() {
-    return this.get('bodyWidth') * 0.1;
-  }.property('bodyWidth').cacheable(),
 
   // place-holder for our rendered raphael image object
   // this is the nodes 'image'.
@@ -195,7 +192,7 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         imageAttrs = {
           src:    content.get('image'),
           x:      hMargin + content.get('x'), // +((hMargin-this.get('imageWidth'))/2),  // center narrow images
-          y:      vMargin + content.get('y'),
+          y:      content.get('y'),// vMargin + content.get('y'),
           width:  this.get('imageWidth') || 10,
           height: this.get('imageHeight')|| 10
         };
@@ -213,20 +210,25 @@ MySystem.NodeView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   setImageDimensions: function (image) {
     image.onload = null;
     if (image.width > 1){
-      var targetWidth =  (this.get('bodyWidth') * 0.9),
-          targetHeight = (this.get('bodyHeight') * 0.9),
-          srcWidth = image.width,
-          srcHeight = image.height;
-      
-      var scaledHeight =  (targetHeight / srcHeight);
-      var scaledWidth  =  (targetWidth  / srcWidth);
-      var scalar = scaledWidth < scaledHeight ? scaledWidth : scaledHeight; 
-      var newWidth = srcWidth * scalar;
-      var newHeight = srcHeight * scalar;
+      var bodyWidth    =  this.get('bodyWidth'),
+          bodyHeight   =  this.get('bodyHeight'),
+          targetWidth  =  bodyWidth  * 0.9,
+          targetHeight =  bodyHeight * 0.9,
+          srcWidth     =  image.width,
+          srcHeight    =  image.height,
+          scaledHeight = (targetHeight / srcHeight),
+          scaledWidth  = (targetWidth  / srcWidth),
+          scalar       = scaledWidth < scaledHeight ? scaledWidth : scaledHeight,
+          newWidth     = srcWidth * scalar,
+          newHeight    = srcHeight * scalar,
+          hMargin      = (bodyWidth - newWidth) / 2,
+          vMargin      = (bodyHeight - newHeight) / 2;
 
       SC.RunLoop.begin();
-        this.set('imageWidth', newWidth);
+        this.set('imageWidth',  newWidth);
         this.set('imageHeight', newHeight);
+        this.set('horizontalMargin',     hMargin);
+        this.set('verticalMargin',     vMargin);
       SC.RunLoop.end();
     }
   },

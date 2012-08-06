@@ -49,9 +49,8 @@ MySystem.PaletteItemView = SC.View.extend( {
  
     icon: MySystem.LetterboxImageView.design({
       classNames: ['image'],
-      // useImageQueue: YES,
       useCanvas: NO,
-      layout: { bottom: 16, top: 0, left: 2, right: 2},
+      layout: { bottom: 16, top: 0, width: 100, centerX: 0},
       valueBinding: '.parentView.parentView.content.image'
     }),
 
