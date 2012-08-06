@@ -13,7 +13,7 @@
   @version 0.1
 */
 MySystem.GraphicPreview = SC.Record.extend(
-/** @scope MySystem.PaletteItem.prototype */ {
+/** @scope MySystem.GraphicPreview.prototype */ {
 
   timeStamp:    SC.Record.attr(String),  // timestamp
   svg:          SC.Record.attr(String),  // svg markup
