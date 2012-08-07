@@ -18,6 +18,7 @@ MySystem.DiagramRule = SC.Record.extend(
   comparison: SC.Record.attr(String),
   number: SC.Record.attr(Number),
   name: SC.Record.attr(String),
+  category: SC.Record.attr(String),
   type: SC.Record.attr(String),
   isJavascript: SC.Record.attr(Boolean, { defaultValue: NO }),
   hasLink: SC.Record.attr(Boolean),

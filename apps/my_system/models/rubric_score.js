@@ -22,13 +22,12 @@ MySystem.RubricScore = SC.Record.extend(
   /**
   An image preview of the diagram in SVG and PNG formats
   **/
-  updateScore: function() {
+  update: function(score,categories) {
     var data = [], exporter;
     this.set('timeStamp', new Date());
-    this.set('score',0);
-    this.set('categories',"some,categories seperated by commas?");
+    this.set('score',score);
+    this.set('categories',categories);
   }
-
 });
 
 // we only ever want a single one of these records to exist per student state.
@@ -48,11 +47,6 @@ MySystem.RubricScore.instance = function() {
   return lastScore;
 };
 
-MySystem.RubricScore.score = function(store){
-  var score = MySystem.RubricScore.instance(store);
-  score.updateScore();
-  store.flush();
-  store.commitRecords();
-};
+
 
 

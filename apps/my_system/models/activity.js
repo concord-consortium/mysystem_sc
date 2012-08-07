@@ -29,6 +29,7 @@ MySystem.Activity = SC.Record.extend(
   // Rules for evaluating the digram
   diagramRules: SC.Record.toMany('MySystem.DiagramRule'),
   rubricCategories: SC.Record.toMany('MySystem.RubricCategory'),
+  rubricExpression: SC.Record.attr(String),
   minimumRequirements: SC.Record.toMany('MySystem.DiagramRule'),
   minimumRequirementsFeedback: SC.Record.attr(String),
 
@@ -119,7 +120,8 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     nodeHeight:            (wiseStepDef["nodeHeight"]          || 110),
     nodeWidth:             (wiseStepDef["nodeWidth"]           || 100),
     backgroundImage:       (wiseStepDef["backgroundImage"]     || null),
-    backgroundImageScaling:(wiseStepDef["backgroundImageScaling"]|| false)
+    backgroundImageScaling:(wiseStepDef["backgroundImageScaling"]|| false),
+    rubricExpression:      (wiseStepDef["rubricExpression"] || "")
   });
 
   var size = modules.length;

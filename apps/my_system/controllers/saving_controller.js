@@ -51,7 +51,7 @@ MySystem.savingController = SC.Object.create({
   }.property('saveFunction', 'dataIsDirty'),
 
   processLearnerDiagram: function() {
-    var rubricScore = MySystem.RubricScore.score(MySystem.store);
+    MySystem.rubricController.score();
     MySystem.GraphicPreview.makePreview(MySystem.store);
   },
   // Called to attempt to save the diagram. Either by pressing 'save', navigating away,
