@@ -63,5 +63,6 @@ InitialMySystemData = {
  "enableCustomRuleEvaluator": false,
  "customRuleEvaluator": "",
  "feedbackPanelWidth": 500,
- "feedbackPanelHeight": 250
+ "feedbackPanelHeight": 250,
+ "rubricExpression": "this.result=0;"
 };

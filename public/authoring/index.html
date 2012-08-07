@@ -241,6 +241,20 @@
   </div>
   
   <div class="options_block">
+    <h2>Rubric Evaluator</h2>
+      <div class="rubricExpression">
+        {{
+          view MSA.TextArea 
+          valueBinding  = "MSA.activity.rubricExpression"
+          id            = "rubricExpression"
+          wrap          = "off" 
+          rows          = "20"
+          cols          = "72" 
+        }}
+      </div>
+  </div>    
+
+  <div class="options_block">
     <h2>Rubric Categories</h2>
     {{#collection contentBinding="MSA.rubricCategoriesController" tagName="div" attributeBindings="start" start="0"}}
       <div class="rubric_category">

@@ -12,6 +12,7 @@ if (top === self) {
     "energy_types": [],
     "diagram_rules": [],
     "rubric_categories": [],
+    "rubricExpression": "true;",
     "correctFeedback": "Your diagram has no obvious problems.",
     "minimum_requirements": [],
     "maxFeedbackItems": 0,
@@ -46,6 +47,9 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
   } 
   if (!dataHash.rubric_categories) {
     dataHash.rubric_categories = [];
+  }
+  if (!dataHash.rubricExpression) {
+    dataHash.rubricExpression = "true;";
   }
   if (typeof dataHash.correctFeedback === "undefined" || dataHash.correctFeedback === null){
     dataHash.correctFeedback = "";
@@ -144,7 +148,8 @@ MSA.ActivityModel = SCUtil.ModelObject.extend({
   nodeWidth: SCUtil.dataHashProperty,
   nodeHeight: SCUtil.dataHashProperty,
   backgroundImage: SCUtil.dataHashProperty,
-  backgroundImageScaling: SCUtil.dataHashProperty
+  backgroundImageScaling: SCUtil.dataHashProperty,
+  rubricExpression: SCUtil.dataHashProperty
 });
 
 MSA.Module = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
@@ -343,7 +348,8 @@ MSA.dataController = SC.Object.create({
              'MSA.activity.nodeWidth',
              'MSA.activity.nodeHeight',
              'MSA.activity.backgroundImage',
-             'MSA.activity.backgroundImageScaling')
+             'MSA.activity.backgroundImageScaling',
+             'MSA.activity.rubricExpression')
 });
 
 MSA.NodeTypesView = SC.CollectionView.extend({
