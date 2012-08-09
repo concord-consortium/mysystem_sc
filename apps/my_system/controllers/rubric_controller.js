@@ -46,7 +46,7 @@ MySystem.rubricController = SC.ObjectController.create({
         }),
         
         category = function(categoryName) {
-          var category = ruleResults.findProperty(name,categoryName);
+          var category = ruleResults.findProperty('name',categoryName);
           if (category) {
             return category.value;
           }
@@ -75,11 +75,20 @@ MySystem.rubricController = SC.ObjectController.create({
 
             // run conditional block
             if (typeof b === 'function') {
-              if (a===true) {
+              if (a === true) {
                 b.apply(this);
                 return a;
               }
             }
+
+            // set score if last argument.
+            if (typeof b === 'number') {
+              if (a === true) {
+                score(b);
+                return a;
+              }
+            }
+
             // coerce to true or false
             return (!!comparefunc(a,b));
           });
@@ -100,6 +109,7 @@ MySystem.rubricController = SC.ObjectController.create({
             return (a&&b);
           });
         },
+
         errorMsg = "Rubric Evaluation Error: \n%@";
 
     // debugger;
