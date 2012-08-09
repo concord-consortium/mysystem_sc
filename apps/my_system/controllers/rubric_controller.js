@@ -17,38 +17,88 @@ MySystem.rubricController = SC.ObjectController.create({
   // rubricExpressionBinding:    SC.Binding.oneWay('MySystem.activityController.rubricExpression'),
   categoriesBinding: SC.Binding.oneWay('MySystem.activityController.rubricCategories'),
 
-  score: function() {
+  score: function(submit) {
     var self = this,
-        score = MySystem.RubricScore.instance(),
+        rubricScore = MySystem.RubricScore.instance(),
         expression = MySystem.activityController.get('rubricExpression') || "",
         categories = MySystem.activityController.get('rubricCategories'),
         nodes      = MySystem.nodesController.get('content'),
-        rules = MySystem.activityController.get('diagramRules'),
-        result = MySystem.rubricController.UNSCORED,
-        ruleResults = {},
+        rules      = MySystem.activityController.get('diagramRules'),
+        result     = MySystem.rubricController.UNSCORED,
+        
+        ruleResults = [],
+
         resultsOfCategories = categories.forEach(function(c) {
-          var name = c.get('name');
-          var rulesInCategory = rules.filterProperty('category',name);
-          if (rulesInCategory.length < 1) { 
-            ruleResults[name] = false;
-            return; 
+          var name  = c.get('name'),
+              value = false,
+              found = null,
+              rulesInCategory = rules.filterProperty('category',name);
+          
+          found = rulesInCategory.find(function(r) {
+            if (r.check(nodes, MySystem.rulesController) === true) {
+              return true;
+            }
+          });
+          if (found) {
+            value = true;
           }
-          var resultsOfRules  = rulesInCategory.map(function(r) {
-            return r.check(nodes, MySystem.rulesController);
+          ruleResults.push({name: name, value: value});
+        }),
+        
+        category = function(categoryName) {
+          var category = ruleResults.findProperty(name,categoryName);
+          if (category) {
+            return category.value;
+          }
+          return false;
+        },
+        
+        hasScored = false,
+
+        score = function(_score) {
+          if(!hasScored) {
+            hasScored = true;
+            result = _score;
+          }
+        },
+
+        categoryReduce = function(args,comparefunc) {
+
+          // call like this: result = all('a','b','c',function(){...});
+          var results = args.reduce(function(previousValue,current) {
+            var a = previousValue,
+                b = current;
+
+            // convert items to booleans
+            if (typeof a === 'string')   { a = category(a); }
+            if (typeof b === 'string')   { b = category(b); }
+
+            // run conditional block
+            if (typeof b === 'function') {
+              if (a===true) {
+                b.apply(this);
+                return a;
+              }
+            }
+            // coerce to true or false
+            return (!!comparefunc(a,b));
           });
-          var resultsOfAllRules = resultsOfRules.reduce(function(prev,current) {
-            return (previous || current);
+          return results;
+        },
+
+
+        any = function() {
+          var args = [].slice.apply(arguments);
+          categoryReduce(args,function(a,b) {
+            return (a||b);
           });
-          ruleResults[name] = resultsOfAllRules;
-        });
-        context = {
-          diagram: self.get('nodes'), // tbd
-          // return true or false for category
-          category: function(categoryName) {
-            var r = ruleResults[categoryName];
-            return (!!r);
-          },
-          result: result
+        },
+
+        all = function() {
+          var args = [].slice.apply(arguments);
+          categoryReduce(args,function(a,b) {
+            return (a&&b);
+          });
         },
         errorMsg = "Rubric Evaluation Error: \n%@";
 
@@ -64,8 +114,13 @@ MySystem.rubricController = SC.ObjectController.create({
         }
         alert(errorMsg);
       }
-    }).call(context);
-    score.update(context.result, "no categories yet");
+    }).call(self);
+    
+    rubricScore.update(result, ruleResults.filterProperty('value').mapProperty('name'));
+    //TODO: remove this alert!
+    if (submit) {
+      alert("score: %@\ncategories: %@\nTime: %@".fmt(rubricScore.get('score'),rubricScore.get('categories'),rubricScore.get('timeStamp')));
+    }
   }
 });
 

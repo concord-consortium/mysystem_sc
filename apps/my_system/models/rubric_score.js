@@ -19,14 +19,13 @@ MySystem.RubricScore = SC.Record.extend(
   score:          SC.Record.attr(Number),  // score
   categories:     SC.Record.attr(String),  // rubric categories that were matched
 
-  /**
-  An image preview of the diagram in SVG and PNG formats
-  **/
   update: function(score,categories) {
     var data = [], exporter;
-    this.set('timeStamp', new Date());
+    var timestamp = new Date();
+    this.set('timeStamp', timestamp);
     this.set('score',score);
     this.set('categories',categories);
+
   }
 });
 

@@ -50,8 +50,8 @@ MySystem.savingController = SC.Object.create({
     return !!this.get('saveFunction') && !!this.get('dataIsDirty');
   }.property('saveFunction', 'dataIsDirty'),
 
-  processLearnerDiagram: function() {
-    MySystem.rubricController.score();
+  processLearnerDiagram: function(submit) {
+    MySystem.rubricController.score(submit);
     MySystem.GraphicPreview.makePreview(MySystem.store);
   },
   // Called to attempt to save the diagram. Either by pressing 'save', navigating away,
@@ -59,9 +59,9 @@ MySystem.savingController = SC.Object.create({
   // IMPORANT: dataSources must call: MySystem.savingController.set('dataIsDirty', YES); 
   save: function() {
     var isSubmit = NO;
-    this.processLearnerDiagram();
     if(this.get('saveFunction') && this.get('dataIsDirty')) {
       this.get('saveFunction')(isSubmit);
+      this.processLearnerDiagram(isSubmit);
     }
   },
 
@@ -69,7 +69,7 @@ MySystem.savingController = SC.Object.create({
   // state so it won't be overriden
   submit: function(){
     var isSubmit = YES;
-    this.processLearnerDiagram();
+    this.processLearnerDiagram(true);
     if(this.get('saveFunction')) {
       this.get('saveFunction')(isSubmit);
     }
