@@ -108,14 +108,15 @@ MySystem.rubricController = SC.ObjectController.create({
           categoryReduce(args,function(a,b) {
             return (a&&b);
           });
-        },
+        },  
 
         errorMsg = "Rubric Evaluation Error: \n%@";
 
-    // debugger;
+
     (function(){
       try {
-        eval(expression);
+        var script = CoffeeScript.compile(expression,{thing: 10});
+        eval(script);
       }
       catch(e) {
         errorMsg = errorMsg.fmt(e);
