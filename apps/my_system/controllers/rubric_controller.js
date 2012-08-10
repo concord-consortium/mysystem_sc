@@ -115,8 +115,8 @@ MySystem.rubricController = SC.ObjectController.create({
 
     (function(){
       try {
-        var script = CoffeeScript.compile(expression,{thing: 10});
-        eval(script);
+        //var script = CoffeeScript.compile(expression,{thing: 10});
+        eval(expression);
       }
       catch(e) {
         errorMsg = errorMsg.fmt(e);
