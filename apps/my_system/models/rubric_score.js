@@ -21,7 +21,7 @@ MySystem.RubricScore = SC.Record.extend(
 
   update: function(score,categories) {
     var data = [], exporter;
-    var timestamp = new Date();
+    var timestamp = new Date().getTime();
     this.set('timeStamp', timestamp);
     this.set('score',score);
     this.set('categories',categories);
