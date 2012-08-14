@@ -123,18 +123,10 @@ MySystem.DiagramRule = SC.Record.extend(
     var self       = this;
     var javascript = this.get("javascriptExpression");
     var ruleName   = this.get('name');
-    
-    var context = {
-      self: self,
-      helper: evaluator,
-      diagram: evaluator,
-      run: evaluator.run,
-      check: evaluator.check,
-      nodes: nodes,
-      name: ruleName,
-      result: false
-    };
-    
+    var Rules      = evaluator;
+    var rules      = evaluator;
+    var name       = ruleName;
+    var result     = false;
 
     var errorMsg = "Rule Evaluation Error: rule# %@:\n%@";
     (function(){
@@ -148,8 +140,8 @@ MySystem.DiagramRule = SC.Record.extend(
         }
         alert(errorMsg);
       }
-    }).call(context);
-    return context.result;
+    }).call(self);
+    return result;
   },
 
   matches: function(nodes) {
