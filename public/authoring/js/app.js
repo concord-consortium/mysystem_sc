@@ -402,7 +402,7 @@ MSA.editorController = SC.Object.create({
       editorWindow = window.open("ace.html", 'editorwindow', features);
       this.set('editorWindow', editorWindow);
       editorWindow.srcText = value;
-      exitorWindow.helpSelector = owner.helpDiv;
+      editorWindow.helpSelector = owner.helpDiv;
       editorWindow.originParent = window;
     }
     
