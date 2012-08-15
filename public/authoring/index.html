@@ -252,6 +252,13 @@
           cols          = "72" 
         }}
       </div>
+      <div class="showScore">
+        {{#view SC.Button 
+          target="MSA.rubricCategoriesController"
+          action="showScore" class="score"}}
+          Score the digram
+        {{/view}}
+      </div>
   </div>    
 
   <div class="options_block">

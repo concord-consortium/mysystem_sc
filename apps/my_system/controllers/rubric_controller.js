@@ -129,9 +129,14 @@ MySystem.rubricController = SC.ObjectController.create({
     
     rubricScore.update(result, ruleResults.filterProperty('value').mapProperty('name'));
     //TODO: remove this alert!
-    if (submit) {
-      alert("score: %@\ncategories: %@\nTime: %@".fmt(rubricScore.get('score'),rubricScore.get('categories'),rubricScore.get('timeStamp')));
-    }
+    // if (submit) {
+    //   alert("score: %@\ncategories: %@\nTime: %@".fmt(rubricScore.get('score'),rubricScore.get('categories'),rubricScore.get('timeStamp')));
+    // }
+  },
+  displayScore: function() {
+    MySystem.rubricController.score();
+    rubricScore = MySystem.RubricScore.instance();
+    alert("score: %@\ncategories: %@\nTime: %@".fmt(rubricScore.get('score'),rubricScore.get('categories'),rubricScore.get('timeStamp')));  
   }
 });
 

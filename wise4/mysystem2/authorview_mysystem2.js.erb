@@ -34,13 +34,24 @@ View.prototype.Mysystem2Node.generatePage = function(view){
   parent.appendChild(this.getBuildInfoDiv());
 };
 
+var scoringFunction=function() {
+  var frame = window.frames['previewFrame'];
+  var mysystem = null;
+  if (typeof frame !== 'undefined') {
+    mysystem = frame.window.MySystem;
+    if (typeof mysystem !== 'undefined') {
+      mysystem.rubricController.displayScore();
+    }
+  }
+};
+
 View.prototype.Mysystem2Node.AuthoringIFrameLoaded = function(){
   var iframe = document.getElementById('mysystem2-authoring-iframe').contentWindow;
   
   iframe.MSA.setupParentIFrame(this.content, this, function (){
     /* fire source updated event */
     this.view.eventManager.fire('sourceUpdated');
-  });
+  }, scoringFunction);
 };
 
 View.prototype.Mysystem2Node.getBuildInfoDiv = function() {

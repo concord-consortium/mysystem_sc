@@ -40,8 +40,15 @@
         runtime_iframe.SC.RunLoop.end();
       }
       
+      function scoreDiagram() {
+        var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
+        var controller = runtime_iframe.MySystem.rubricController;
+        var showScore = controller.displayScore;
+        showScore();
+      }
+
       createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
-        iframe.contentWindow.MSA.setupParentIFrame(null, this, updateRuntime);
+        iframe.contentWindow.MSA.setupParentIFrame(null, this, updateRuntime, scoreDiagram);
         authorIframeLoaded = true;
         if (authorIframeLoaded && appIframeLoaded){
           bothIframesLoaded();

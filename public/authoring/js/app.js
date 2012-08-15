@@ -36,7 +36,7 @@ if (top === self) {
   };
 }
 
-MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
+MSA.setupParentIFrame = function(dataHash, updateObject, updateFn, scoreFn) {
   if (typeof dataHash === "undefined" || dataHash === null){
     dataHash = MSA.data;
   }
@@ -116,6 +116,7 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn) {
   MSA.loadData(dataHash);
 
   MSA.dataController.addObserver('data', updateObject, updateFn);
+  MSA.rubricCategoriesController.set('scoreFunction',scoreFn);
 };
 
 MSA.loadData = function(dataHash) {
@@ -216,6 +217,7 @@ MSA.RubricCategory = SCUtil.ModelObject.extend({
 
 MSA.RubricCategoriesController = SCUtil.ModelArray.extend({
   modelType: MSA.RubricCategory,
+  scoreFunction: null,
 
   moveItemUp: function(button) {
     var c = this.get('content');
@@ -240,6 +242,13 @@ MSA.RubricCategoriesController = SCUtil.ModelArray.extend({
       var itemAfter = this.objectAt(i+1);
       this.replaceContent(i, 2, [itemAfter, item]);
       this.contentDidChange();
+    }
+  },
+  
+  showScore: function() {
+    var scoreFunction = this.get('scoreFunction');
+    if (scoreFunction) {
+      scoreFunction();
     }
   }
 });
