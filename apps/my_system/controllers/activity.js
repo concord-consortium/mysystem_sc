@@ -54,7 +54,7 @@ MySystem.activityController = SC.ObjectController.create({
   },
 
   // TODO: These probably should be moved to their own controller perhaps..
-  // Related to a floating PalettePan showing last feedback.
+  // Related to a floating PalettePanel showing last feedback.
   feedbackPalette: null,
   showFeedbackPalette: function() {
     var palette = this.get('feedbackPalette');
