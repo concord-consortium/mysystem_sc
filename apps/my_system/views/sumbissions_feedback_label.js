@@ -20,10 +20,10 @@ MySystem.SubmissionsFeedbackLabel = SC.View.extend({
     MySystem.activityController.showFeedbackPalette();
   },
   render: function (context) {
-    context.push('<h1>', this.get('value'), '</h1>');
+    context.push("<div id='sumbission_feedback_label'>", this.get('value'), '</div>');
   },
   update: function (jquery) {
-    jquery.find('h1').text(this.get('value'));
+    jquery.find('#sumbission_feedback_label').text(this.get('value'));
   }
 });
 

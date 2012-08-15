@@ -12,19 +12,21 @@
 sc_require('core');
 
 MySystem.InstructionPallet = SC.PalettePane.extend({
-  layout: { width: 500, height: 250, right: 200, top: 200 },
+  layout: { width: 600, height: 400, centerX: 0, centerY: 0 },
   error: false,
+  isModal: true,
+  isAnchored: true,
   contentView: SC.View.extend({
     classNames: "instruction_palette".w(),
     render: function (context) {
       context.push('<div class="instruction_content">', this.get('instructions'), '</div>');
+      sc_super();
     },
     update: function (jquery) {
-      jquery.find('.instruction_content').text(this.get('instructions'));
+      jquery.find('.instruction_content').html(this.get('instructions'));
     }
   }).design({
-    layout: { width: 500, height: 250, right: 0, top: 0 }, 
-
+    layout: { width: 600, height: 400, right: 0, top:   0 },
     displayProperties            : 'instructions instructionPanelWidth instructionPanelHeight'.w(),
     instructionsBinding          : 'MySystem.storyController.content',
     instructionPanelWidthBinding : 'MySystem.storyController.instructionPanelWidth',

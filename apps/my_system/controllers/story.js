@@ -19,7 +19,7 @@ MySystem.storyController = SC.ObjectController.create(
   // instructionPanelWidthBinding: "MySystem.activityController.feedbackPanelWidth",
   // instructionPanelHeightBinding: "MySystem.activityController.feedbackPanelHeight",
 
-  instructionPanelWidth: 400,
+  instructionPanelWidth: 600,
   instructionPanelHeight: 400,
 
   // Related to a floating PalettePanel showing last feedback.

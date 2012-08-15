@@ -102,7 +102,7 @@ MySystem.main = function main() {
   MySystem.canvasView = MySystem.mainPage.mainPane.get('diagramView');    // TODO rename to 'diagramView' project-wide RPK 8-11-11
 
   MySystem.statechart.initStatechart();
-  
+  MySystem.storyController.showInstructions();
   SC.RootResponder.CAPTURE_BACKSPACE_KEY = YES;
 };
 
