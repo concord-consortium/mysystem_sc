@@ -115,6 +115,13 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
       MySystem.activityController.checkButtonPressed();
     },
     
+
+    // show the user the help content...
+    helpButtonPressed: function () {
+      MySystem.nodesController.focusMainPane();
+      MySystem.storyController.showInstructions();
+    },
+
     // The delete key should generally be handled before this, but if not this is the place
     // of last resort to catch a Delete event before it causes the browser's BACK action.
     // Note this will only work for views with a statechart as their default responder. Any

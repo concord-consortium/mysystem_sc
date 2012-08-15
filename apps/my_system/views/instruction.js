@@ -8,67 +8,59 @@
 require('views/sumbissions_feedback_label');
 
 MySystem.InstructionView = SC.View.extend({
-  childViews: 'scroller clearButtonView numSubmissions checkButtonView saveButtonView saveStatusView '.w(),
+  childViews: 'helpButtonView clearButtonView numSubmissions checkButtonView saveButtonView saveStatusView '.w(),
   backgroundColor: '#eeefff',
   
   canCollapse: YES,
   
-  scroller: SC.ScrollView.design({
-    canScrollHorizontal: NO,
-    canScrollVertical: YES,
-    anchorLocation: SC.ANCHOR_TOP,  
-    layout:  { top: this.margin, width: 390, bottom: 5, left: 5 },
-    contentView: SC.LabelView.design({
-      valueBinding: 'MySystem.storyController.content',
-      useStaticLayout: YES, 
-      anchorLocation: SC.ANCHOR_TOP,  
-      layout: { top: 0, right: 0},
-      tagName: "div",
-      escapeHTML: NO,
-      textAlign: SC.ALIGN_LEFT
-    })
+  helpButtonView: SC.ButtonView.design({
+    layout: { left: 5, top: 5, height: 25, width: 145 },
+    title: 'Show instructions',
+    toolTip: 'Show instructions',
+    icon: 'sc-icon-info-16',
+    action: 'helpButtonPressed'
   }),
 
-  clearButtonView: SC.ButtonView.design({
-    layout: { left: 400, bottom: 10, height: 25, width: 80 },
-    title: 'Clear',
-    toolTip: 'Clear everything from your diagram',
-    action: 'clearCanvas'
+  checkButtonView: SC.ButtonView.design({
+    layout: { left: 155, top: 5, height: 25, width: 135 },
+    // NP Sept. 1, 2011: Kelley in Berkeley wanted this label changed
+    // from Check to Submit.
+    title: 'Submit Diagram',
+    toolTip: 'Submit your diagram',
+    icon: 'sc-icon-bookmark-16',
+    isEnabledBinding: 'MySystem.activityController.canSubmit',
+    action: 'checkButtonPressed'
   }),
-
+  
   numSubmissions: MySystem.SubmissionsFeedbackLabel.design({
-  // numSubmissions: SC.LabelView.design({
-    layout: { left: 400, bottom: 40, height: 20, width: 220},
+    layout: { left: 5, top: 35, height: 20, width: 220},
     value: 'test',
     textAlign: SC.ALIGN_LEFT,
     valueBinding: 'MySystem.activityController.submissionInfo',
     visible:  YES
   }),
   
-  checkButtonView: SC.ButtonView.design({
-    //layout: { right: 15, bottom: 10, height: 25, width: 120 },
-    layout: { left: 400, top: 5, height: 25, width: 125 },
-    // NP Sept. 1, 2011: Kelley in Berkeley wanted this label changed
-    // from Check to Submit.
-    title: 'Submit Diagram',
-    toolTip: 'Submit your diagram',
-    isEnabledBinding: 'MySystem.activityController.canSubmit',
-    action: 'checkButtonPressed'
+  clearButtonView: SC.ButtonView.design({
+    layout: { left: 350, top: 5, height: 25, width: 80 },
+    title: 'Clear',
+    icon: 'sc-icon-trash-16',
+    toolTip: 'Clear everything from your diagram',
+    action: 'clearCanvas'
   }),
-  
+
   // this starts out not enabled so people don't think they can actually save
   saveButtonView: SC.ButtonView.design({
-    //layout: { right: 150, top: 5, height: 25, width: 80 },
-    layout: { left: 485, bottom: 10, height: 25, width: 80 },
+    layout: { left: 440, top: 5, height: 25, width: 80 },
     title: 'Save',
     isEnabledBinding: 'MySystem.savingController.enableManualSave',
     toolTip: 'Save your diagram',
+    icon: 'sc-icon-folder-16',
     action: 'saveButtonPressed'
   }),
   
   saveStatusView: SC.LabelView.design({
-    layout: { left: 400 , top: 40, height: 25, width: 130 },
-    textAlign: SC.ALIGN_LEFT,
+    layout: { left: 350 , top: 40, height: 25, width: 170 },
+    textAlign: SC.ALIGN_RIGHT,
 		displayProperties: 'isDirty value'.w(),
     valueBinding: 'MySystem.savingController.saveStatusText',
 		isDirtyBinding: 'MySystem.savingController.dataIsDirty',

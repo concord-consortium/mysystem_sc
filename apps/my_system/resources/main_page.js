@@ -20,15 +20,15 @@ MySystem.mainPage = SC.Page.design({
     diagramView: SC.outlet('canvasView.diagramView'),
     
     topView: SC.SplitView.design({
-      defaultThickness: 140,
+      defaultThickness: 120,
       topLeftView: SC.ScrollView.design({
         contentView: MySystem.NodePaletteView.design({
-          layout: { top: 0, bottom: 0, left: 0 }
+          layout: { top: 0,left: 0 }
         }) 
       }),
       dividerView: SC.SplitDividerView, // Divider for resizing right/left
       bottomRightView: SC.SplitView.design({ // Rest of app (right)
-        defaultThickness: 150,
+        defaultThickness: 60,
         layoutDirection: SC.LAYOUT_VERTICAL,
         topLeftView: MySystem.InstructionView, // Top instructions
         dividerView: SC.SplitDividerView, // Divider for resizing up/down
