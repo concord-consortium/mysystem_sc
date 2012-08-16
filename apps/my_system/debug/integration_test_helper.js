@@ -47,6 +47,9 @@ IntegrationTestHelper = SC.Object.extend({
      paletteView: MySystem.getPath('mainPage.mainPane').getPath('topView.topLeftView.contentView'),
      diagramView: MySystem.getPath('mainPage.mainPane').getPath('topView.bottomRightView.bottomRightView.diagramView')
     }));
+
+    MySystem.storyController.hideInstructions();
+    SC.run();  
   },
   
   teardownApp: function() {

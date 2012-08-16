@@ -646,7 +646,7 @@ describe("DiagramRules", function () {
             "name": "d",
             "type": "unwantedObject",
             "isJavascript": YES,
-            "javascriptExpression": "this.result=true;if(this.diagram.hasNode('unwantedObject')){this.result=false;}",
+            "javascriptExpression": "result=true;if(diagram.hasNode('unwantedObject')){result=false;}",
             "suggestion": "failed d"
           }
       ]);
@@ -734,7 +734,7 @@ describe("DiagramRules", function () {
             "name": "d",
             "type": "obj3",
             "isJavascript": YES,
-            "javascriptExpression": "if(this.diagram.hasNode('obj1')){this.result=true;}",
+            "javascriptExpression": "if(diagram.hasNode('obj1')){result=true;}",
             "suggestion": "failed d"
           }
       ]);

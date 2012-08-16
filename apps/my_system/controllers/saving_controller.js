@@ -60,8 +60,8 @@ MySystem.savingController = SC.Object.create({
   save: function() {
     var isSubmit = NO;
     if(this.get('saveFunction') && this.get('dataIsDirty')) {
-      this.get('saveFunction')(isSubmit);
       this.processLearnerDiagram(isSubmit);
+      this.get('saveFunction')(isSubmit);
     }
   },
 

@@ -63,11 +63,12 @@ describe("The Diagram", function () {
   
       var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
       MySystem.activityController.set('content',activity);
-
       diagramBuilder = DiagramBuilder.create({
         paletteView: appPane.getPath('contentView.palette.contentView'),
         diagramView: appPane.getPath('contentView.diagram.diagramView')
       });
+      SC.run();
+      MySystem.storyController.hideInstructions();
       SC.run();
   });
   

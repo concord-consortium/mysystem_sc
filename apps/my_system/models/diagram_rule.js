@@ -115,7 +115,6 @@ MySystem.DiagramRule = SC.Record.extend(
   },
 
 
-
   // returns = true if we passed
   // nodes is the list of nodes to check
   // evaluator is the rule_controller, which has helper methods.
@@ -124,7 +123,7 @@ MySystem.DiagramRule = SC.Record.extend(
     var javascript = this.get("javascriptExpression");
     var ruleName   = this.get('name');
     var Rules      = evaluator;
-    var rules      = evaluator;
+    var diagram    = evaluator;
     var name       = ruleName;
     var result     = false;
 
