@@ -122,6 +122,14 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn, scoreFn) {
 MSA.loadData = function(dataHash) {
   MSA.data = dataHash;
 
+  // old authored data hasn't specified this.
+  // authoring interface incorrectly checks a box
+  MSA.data.diagram_rules.forEach(function(rule) {
+    if ((typeof rule.isJavascript === 'undefined')) {
+      rule.isJavascript = NO;
+    }
+  });
+  
   MSA.set('activity', MSA.ActivityModel.create({dataHash: MSA.data}));
   MSA.modulesController.setExternalContent(dataHash.modules);
   MSA.energyTypesController.setExternalContent(dataHash.energy_types);
