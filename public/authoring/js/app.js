@@ -1,6 +1,6 @@
 /*globals MSA, SCUtil, InitialMySystemData*/
 
-MSA = SC.Application.create();
+MSA = Ember.Application.create();
 
 if (top === self) {
   // we are not in iframe so load in some fake data
@@ -13,7 +13,7 @@ if (top === self) {
     "diagram_rules": [],
     "rubric_categories": [],
     "rubricExpression": "true;",
-    "correctFeedback": "Your diagram has no obvious problems.",
+    "correctFeedback": "Your diagram has false obvious problems.",
     "minimum_requirements": [],
     "maxFeedbackItems": 0,
     "minimumRequirementsFeedback": "You need to work more on your diagram to get feedback!",
@@ -126,7 +126,7 @@ MSA.loadData = function(dataHash) {
   // authoring interface incorrectly checks a box
   MSA.data.diagram_rules.forEach(function(rule) {
     if ((typeof rule.isJavascript === 'undefined')) {
-      rule.isJavascript = NO;
+      rule.isJavascript = false;
     }
   });
   
@@ -336,10 +336,10 @@ MSA.minRequirementsController = MSA.RulesController.create({
   updateHasRequirements: function() {
     this.set('hasRequirements', (this.getPath('content.length') > 0));
   }.observes('content.length'),
-  hasRequirements: NO
+  hasRequirements: false
 });
 
-MSA.dataController = SC.Object.create({
+MSA.dataController = Ember.Object.create({
   data: function(){
     return JSON.stringify(MSA.data, null, 2);
   }.property('MSA.modulesController.[]', 
@@ -369,13 +369,13 @@ MSA.dataController = SC.Object.create({
              'MSA.activity.rubricExpression')
 });
 
-MSA.NodeTypesView = SC.CollectionView.extend({
+MSA.NodeTypesView = Ember.CollectionView.extend({
   tagName: 'ul',
   contentBinding: "MSA.diagramRulesController.nodeTypes"
 });
 
 // add missing textarea tag attributes
-MSA.TextArea = SC.TextArea.extend({
+MSA.TextArea = Ember.TextArea.extend({
   attributeBindings: ['rows', 'cols', 'wrap'],
   // reasonable defaults?
   cols: 50,
@@ -384,13 +384,13 @@ MSA.TextArea = SC.TextArea.extend({
 });
 
 // add size attribute to text field
-MSA.TextField = SC.TextField.extend({
+MSA.TextField = Ember.TextField.extend({
   attributeBindings: ['type', 'value', 'size'],
   type: "text",
   size: null
 });
 
-MSA.editorController = SC.Object.create({
+MSA.editorController = Ember.Object.create({
   owner: null,
   editorWindow: null,
   value: '',
@@ -405,7 +405,7 @@ MSA.editorController = SC.Object.create({
     this.set('callback',callback);
 
     var editorWindow = this.get('editorWindow');
-    var features  = "menubar=no,location=no,titlebar=no,toolbar=no,resizable=yes,scrollbars=yes,status=no,width=750,height=650"; 
+    var features  = "menubar=false,location=false,titlebar=false,toolbar=false,resizable=yes,scrollbars=yes,status=false,width=750,height=650"; 
 
     // reuse existing window:
     if (editorWindow) {
@@ -451,12 +451,12 @@ MSA.editorController = SC.Object.create({
       callback(value);
     }
     else {
-      console.log("no callback defined");
+      console.log("false callback defined");
     }
   }
 });
 
-MSA.customRuleController = SC.Object.create({
+MSA.customRuleController = Ember.Object.create({
   helpDiv: '#evalHelp',
   editCustomRule: function() {
     var value = MSA.activity.get('customRuleEvaluator');
@@ -466,3 +466,11 @@ MSA.customRuleController = SC.Object.create({
     MSA.editorController.editCustomRule(this,value,callback);
   }
 });
+
+MSA.NodeView = Ember.View.extend({
+  templateName: 'node-template',
+  remove: function() {
+    MSA.modulesController.removeObject(this.get('node'));
+  }
+});
+

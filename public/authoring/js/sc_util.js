@@ -24,7 +24,7 @@ SCUtil.dataHashProperty = function(key, value) {
   }
 }.property();
 
-SCUtil.ModelObject = SC.Object.extend({
+SCUtil.ModelObject = Ember.Object.extend({
   dataHash: null,
   defaultDataHash: null,
   rev: 0,
@@ -41,17 +41,17 @@ SCUtil.ModelObject = SC.Object.extend({
   }
 });
 
-SCUtil.UUIDModel = SC.Mixin.create({
+SCUtil.UUIDModel = Ember.Mixin.create({
   uuid: SCUtil.dataHashProperty,
   
   init: function() {
-    if(SC.none(this.get('uuid'))){
+    if(Ember.none(this.get('uuid'))){
       this.set('uuid', SCUtil.uuid());
     }
   }
 });
 
-SCUtil.ModelArray = SC.ArrayProxy.extend({
+SCUtil.ModelArray = Ember.ArrayController.extend({
   // this will point to the dataHashs represnting the models
   content: null,
 
@@ -63,15 +63,16 @@ SCUtil.ModelArray = SC.ArrayProxy.extend({
 
   // useful when the content is coming from iframe that isn't using SC
   setExternalContent: function(dataHash) {
-    SC.NativeArray.apply(dataHash);
+    Ember.NativeArray.apply(dataHash);
     this.set('content', dataHash);
   },
 
   objectAtContent: function(idx) {
     var data = this.get('content').objectAt(idx),
-        model = null;
+        model = null,
+        modelObjects = this.get('modelObjects') !== null? this.get('modelObjects') : [];
 
-    this.get('modelObjects').forEach(function (cur_model){
+    modelObjects.forEach(function (cur_model){
       if(cur_model.get('dataHash') === data){
         model = cur_model;
       }
@@ -109,18 +110,19 @@ SCUtil.ModelArray = SC.ArrayProxy.extend({
 
   init: function() {
     this._super();
-    this.set('modelObjects', SC.Set.create());
+    this.set('modelObjects', Ember.Set.create());
   },
 
   _contentWillChange: function () {
-    this.get('modelObjects').forEach(function(model){
+    var modelObjects = this.get('modelObjects') !== null? this.get('modelObjects') : [];
+    modelObjects.forEach(function(model){
       model.destroy();
     });
-    this.set('modelObjects', SC.Set.create());
+    this.set('modelObjects', Ember.Set.create());
   }.observesBefore('content')
 });
 
-SCUtil.SelectOption = SC.View.extend({
+SCUtil.SelectOption = Ember.View.extend({
   tagName: 'option',
   content: null,
 
@@ -133,7 +135,7 @@ SCUtil.SelectOption = SC.View.extend({
   }.observes('content')
 });
 
-SCUtil.Select = SC.CollectionView.extend({
+SCUtil.Select = Ember.CollectionView.extend({
   tagName: 'select',
   itemViewClass: SCUtil.SelectOption,
   
@@ -141,7 +143,7 @@ SCUtil.Select = SC.CollectionView.extend({
   
   willInsertElement: function() {
     // make sure the value has something since null is not displayed in the UI
-    if(SC.none(this.get('value'))){
+    if(Ember.none(this.get('value'))){
       this.set('value', this.get('content').objectAt(0));
     }
 
