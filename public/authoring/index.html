@@ -20,6 +20,7 @@
 </head>
 <body>  
 
+  <!-- #### Display Options #### -->
   <script type="text/x-handlebars">
     <div class="options_block">
       <h2>Options</h2>
@@ -50,6 +51,8 @@
         <br/>
       </div>
     </div>
+
+    <!-- #### Node Types  (Modules) #### -->
     <div class="options_block">
       <h2>Node Types</h2>
 
@@ -64,23 +67,240 @@
       {{/view}}
     </div>
 
-      <div class="rubricExpression">
-        {{
-          view MSA.TextArea 
-          valueBinding  = "MSA.activity.rubricExpression"
-          id            = "rubricExpression"
-          wrap          = "off" 
-          rows          = "20"
-          cols          = "72" 
-        }}
+    <!-- #### Node Sizes #### -->
+    <div class="options_block">
+      <h2> Node Size</h2>
+        <p>
+            Node width:
+            {{
+              view MSA.TextField 
+              valueBinding = "MSA.activity.nodeWidth"
+              placeholder  = "100"
+              id           = "nodeWidth"
+              size         = "3"
+            }}
+            height: 
+            {{
+              view MSA.TextField 
+              valueBinding = "MSA.activity.nodeHeight"
+              placeholder  = "110"
+              id           = "nodeHeight"
+              size         = "3"
+            }}
+            Terminal radius: 
+            {{
+              view MSA.TextField 
+              valueBinding = "MSA.activity.terminalRadius"
+              placeholder  = "14"
+              id           = "terminalRadius"
+              size         = "3"
+            }}
+        </p>
+    </div>
+
+    <!-- #### background images #### -->
+    <div class="options_block">
+      <h2> Background Image</h2>
+      <p>
+          Background Image:
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.backgroundImage"
+            placeholder  = ""
+            id           = "backgroundImage"
+            size         = "40"
+          }}
+      <p>
+      <div style="padding-left: 20px;">
+        Scale background images to fit:
+        {{view Ember.Checkbox checkedBinding="MSA.activity.backgroundImageScaling"  }}
       </div>
+    </div>
+
+    <!-- #### Energy Types #### -->
+    <div class="options_block">
+      <h2>Energy Types</h2>
+      {{#each MSA.energyTypesController.content tagName="ul"}}
+        {{view MSA.LinkView linkBinding="this"}}
+      {{/each}}
+
+      {{#view Ember.Button 
+        target="MSA.energyTypesController"
+        action="createItem" class="add_button"}}
+        Add New Energy Type
+      {{/view}}
+    </div>
+
+    <!-- #### Minimum Requirements #### -->
+    <div class="options_block">
+      <h2>Minimum Requirements</h2>
+      {{#if MSA.minRequirementsController.hasRequirements}}
+        <p style="padding-left: 10px;">
+          Feedback: 
+          <br/>
+          {{
+            view MSA.TextArea 
+            valueBinding = "MSA.activity.minimumRequirementsFeedback" 
+            placeholder  = "You need to work more on your diagram to get feedback!" 
+            id           = "minimumFeedback"
+          }}
+          <br/><br/>
+        </p>
+      {{/if}}
+      {{#each MSA.minRequirementsController.content tagName="ul"}}
+        {{view MSA.MinRequirementView ruleBinding="this"}}
+      {{/each}}
+      {{#view Ember.Button 
+        target="MSA.minRequirementsController"
+        action="createItem" class="add_button"}}
+        Add New Minimum Requirement
+      {{/view}}
+    </div>
+
+
+
+    <!-- #### Rubric Expression #### -->
+    <div class="rubricExpression">
+      {{
+        view MSA.TextArea 
+        valueBinding  = "MSA.activity.rubricExpression"
+        id            = "rubricExpression"
+        wrap          = "off" 
+        rows          = "20"
+        cols          = "72" 
+      }}
+    </div>
+
+
+    <!-- #### Rubric Expression #### -->
+    <div class="options_block">
+      <h2>Diagram Rules</h2>
+      {{#each MSA.diagramRulesController.content}}
+        {{view MSA.RuleView rule="this" }} 
+      {{/each}}
+        
+      {{#view Ember.Button 
+        target="MSA.diagramRulesController"
+        action="createItem" class="add_button"}}
+        Add New Diagram Rule
+      {{/view}}
+    </div>
+
+
+    <!-- #### JSON DataHash #### -->
+    <div class="code">
+      <hr/>
+      <pre><code>
+        {{MSA.dataController.data}}
+      </code></pre>
+    </div>
+
   </script>
 
+
+  <!-- #### Node Template #### -->
   <script type="text/x-handlebars"  data-template-name='node-template'>
     {{view MSA.TextField valueBinding="name" placeholder="name"}}
     {{view MSA.TextField valueBinding="image" placeholder="image"}}
     <button {{action "remove" on="click" item="model"}}>remove</button>
   </script>
+
+  <!-- #### Link Template #### -->
+  <script type="text/x-handlebars"  data-template-name='link-template'>
+    {{view MSA.TextField valueBinding="label" placeholder="label"}}
+    {{view MSA.TextField valueBinding="color" placeholder="color"}}
+    <button {{action "remove" on="click" item="model"}}>remove</button>
+  </script>
+
+  <!-- #### Category Template #### -->
+  <script type="text/x-handlebars"  data-template-name='category-template'>
+    {{view MSA.TextField valueBinding="name" placeholder="name"}}
+    {{view MSA.TextField valueBinding="image" placeholder="image"}}
+    <button {{action "remove" on="click" item="model"}}>remove</button>
+  </script>
+
+  <!-- #### Rule Template #### -->
+  <script type="text/x-handlebars" data-template-name="rule-template">
+    <div class="diagram_rule">
+      <div class="diagram_rule_name">
+        <span class="label">Rule Name:</span>
+        <span class="value">
+          {{view MSA.TextField valueBinding="name"}}
+        </span>
+        <span class="rule_category">
+          <span class="label">Category:</span>
+          <span class="value">
+            {{view Ember.Select
+              contentBinding="MSA.diagramRulesController.categories" 
+              selectionBinding="category" }}
+          </span>
+        </span>
+      </div>
+
+      use javascript: 
+      {{view Ember.Checkbox checkedBinding="isJavascript"}}
+      
+      The diagram 
+      {{view Ember.Select 
+          contentBinding="MSA.diagramRulesController.shouldOptions" 
+          selectionBinding="shouldOption"}} 
+      contain
+      {{view Ember.Select  
+        contentBinding="MSA.diagramRulesController.comparisons" 
+        selectionBinding="comparison"}}
+
+      {{view Ember.Select 
+        contentBinding="MSA.diagramRulesController.nodeTypes" 
+        selectionBinding="type"
+      }}
+
+    </div>
+  </script>
+
+  <!-- #### MinRequirement Template #### -->
+  <script type="text/x-handlebars" data-template-name="minRequirement-template">
+
+      The diagram 
+      {{view Ember.Select 
+          contentBinding="MSA.minRequirementsController.shouldOptions" 
+          selectionBinding="shouldOption"}} 
+      contain
+      {{view Ember.Select  
+        contentBinding="MSA.minRequirementsController.comparisons" 
+        selectionBinding="comparison"}}
+
+      {{view Ember.Select 
+        contentBinding="MSA.minRequirementsController.nodeTypes" 
+        selectionBinding="type"
+      }}
+
+      {{#if "content.hasLink"}}
+        {{view Ember.Select
+          contentBinding="MSA.minRequirementsController.linkDirections" 
+          selectionBinding="linkDirection"
+        }}
+        {{view Ember.Select 
+          contentBinding="MSA.minRequirementsController.nodeTypes" 
+          selectionBinding="otherNodeType"
+        }}
+        with energy type: 
+        {{view Ember.Select 
+          contentBinding="MSA.minRequirementsController.energyTypes" 
+          selectionBinding="parentView.parentView.content.energyType"
+        }}
+      {{else}}
+        <button {{action "toggleHasLink" on="click" item="model"}}>Enable link conditions</button>
+      {{/if}}
+      
+      <br/>
+      
+      <button {{action "remove" on="click" item="model"}}>Remove Requirement</button>
+      <button {{action "moveItemUp" on="click" item="model"}}>↑</button>
+      <button {{action "moveItemDown" on="click" item="model"}}>↓</button>
+     
+    </div>
+  </script>
+
 
 
 
@@ -91,14 +311,6 @@
   <script src="js/sc_util.js"></script>
   <script src="js/initial_data.js"></script>
   <script src="js/app.js"></script>
-
-  <!--
-  <script src="js/views.js"></script>
-  <script src="js/models.js"></script>
-  <script src="js/controllers.js"></script>
-  
-  --->
-
 
 
 </body>

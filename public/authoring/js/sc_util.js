@@ -52,14 +52,14 @@ SCUtil.UUIDModel = Ember.Mixin.create({
 });
 
 SCUtil.ModelArray = Ember.ArrayController.extend({
-  // this will point to the dataHashs represnting the models
-  content: null,
+  // // this will point to the dataHashs represnting the models
+  // content: null,
 
-  // this points to the cached model objects
-  modelObjects: null,
+  // // this points to the cached model objects
+  // modelObjects: null,
 
-  // type of model object to create
-  modelType: null,
+  // // type of model object to create
+  // modelType: null,
 
   // useful when the content is coming from iframe that isn't using SC
   setExternalContent: function(dataHash) {
@@ -67,10 +67,19 @@ SCUtil.ModelArray = Ember.ArrayController.extend({
     this.set('content', dataHash);
   },
 
-  objectAtContent: function(idx) {
-    var data = this.get('content').objectAt(idx),
-        model = null,
-        modelObjects = this.get('modelObjects') !== null? this.get('modelObjects') : [];
+  // objectAtContent: function(idx) {
+  //   var data = this.get('content').objectAt(idx);
+  //   return this.objectForHash(data);
+  // },
+
+  objectForHash: function(data) {
+    var model = null,
+        modelObjects = this.get('modelObjects');
+
+    if (Ember.none(modelObjects)) {
+      modelObjects = Ember.Set.create();
+      this.set('modelObjects',modelObjects);
+    }
 
     modelObjects.forEach(function (cur_model){
       if(cur_model.get('dataHash') === data){
@@ -78,30 +87,31 @@ SCUtil.ModelArray = Ember.ArrayController.extend({
       }
     });
 
-    if (!model) {
-      model = this.get('modelType').create({dataHash: data});
+    if (Ember.none(model)) {
+      model = this.get('modelType').create();
+      model.set('dataHash',data);
       this.get('modelObjects').add(model);
     }
     return model;
   },
 
-  replaceContent: function(idx, amt, objects) {
-    var dataObjects = null;
-    if(objects){
-      dataObjects = [];
-      objects.forEach(function (model){
-        dataObjects.push(model.get('dataHash'));
-      });
-    }
+  // replaceContent: function(idx, amt, objects) {
+  //   var dataObjects = null;
+  //   if(objects){
+  //     dataObjects = [];
+  //     objects.forEach(function (model){
+  //       dataObjects.push(model.get('dataHash'));
+  //     });
+  //   }
 
-    this.get('content').replace(idx, amt, dataObjects);
+  //   this.get('content').replace(idx, amt, dataObjects);
 
-    // we should clean up the cached model objects
-    // we don't need to actually add the model objects they will be created as they are requested
-  },
+  //   // we should clean up the cached model objects
+  //   // we don't need to actually add the model objects they will be created as they are requested
+  // },
 
   createItem: function() {
-    this.pushObject(this.get('modelType').create());
+    this.pushObject(this.get('modelType').create().get('dataHash'));
   },
 
   removeItem: function(button){
@@ -111,53 +121,16 @@ SCUtil.ModelArray = Ember.ArrayController.extend({
   init: function() {
     this._super();
     this.set('modelObjects', Ember.Set.create());
-  },
-
-  _contentWillChange: function () {
-    var modelObjects = this.get('modelObjects') !== null? this.get('modelObjects') : [];
-    modelObjects.forEach(function(model){
-      model.destroy();
-    });
-    this.set('modelObjects', Ember.Set.create());
-  }.observesBefore('content')
-});
-
-SCUtil.SelectOption = Ember.View.extend({
-  tagName: 'option',
-  content: null,
-
-  render: function(buffer) {
-    buffer.push(this.getPath('content'));
-  },
-
-  _contentDidChange: function() {
-    this.$().text(this.get('content'));
-  }.observes('content')
-});
-
-SCUtil.Select = Ember.CollectionView.extend({
-  tagName: 'select',
-  itemViewClass: SCUtil.SelectOption,
-  
-  value: null,
-  
-  willInsertElement: function() {
-    // make sure the value has something since null is not displayed in the UI
-    if(Ember.none(this.get('value'))){
-      this.set('value', this.get('content').objectAt(0));
-    }
-
-    // make sure the view value matches the model
-    // I tried using an attributeBinding on 'value' 
-    // but just setting the 'value' attribute on a select element doesn't necessarly update
-    // the UI.
-    this.$().val(this.get('value'));
-  },
-  
-  change: function(event) {
-    this.set('value', this.$().val());
-    return false;
   }
+
+  // _contentWillChange: function () {
+  //   var modelObjects = this.get('modelObjects') !== null? this.get('modelObjects') : Ember.Set.create();
+  //   modelObjects.forEach(function(model){
+  //     model.destroy();
+  //   });
+  //   this.set('modelObjects', Ember.Set.create());
+  // }.observesBefore('content')
 });
+
 
 

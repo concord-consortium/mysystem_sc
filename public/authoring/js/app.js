@@ -282,7 +282,7 @@ MSA.RulesController = SCUtil.ModelArray.extend({
 
   nodeTypes: function (){
     return MSA.modulesController.mapProperty('name').insertAt(0, 'node');
-  }.property('MSA.modulesController.[]', 'MSA.modulesController.@each.name').cacheable(),
+  }.property('MSA.modulesController.@each.name').cacheable(),
 
   energyTypes: function() {
     return MSA.energyTypesController.mapProperty('label').insertAt(0, 'any');
@@ -298,29 +298,24 @@ MSA.RulesController = SCUtil.ModelArray.extend({
 
   linkDirections: ['-->', '<--', '---'],
 
-  moveItemUp: function(button) {
+  moveItemUp: function(item) {
     var c = this.get('content');
-    var item = button.get('item');
-    var i = c.indexOf(item.get('dataHash'));
+    var i = c.indexOf(item);
 
     if (i > 0) {
-      this.contentWillChange();
       var itemBefore = this.objectAt(i-1);
       this.replaceContent(i-1, 2, [item, itemBefore]);
-      this.contentDidChange();
     }
   },
 
-  moveItemDown: function(button) {
+  moveItemDown: function(item) {
     var c = this.get('content');
-    var item = button.get('item');
-    var i = c.indexOf(item.get('dataHash'));
+    var i = c.indexOf(item);
+
 
     if (i < (c.length-1)) {
-      this.contentWillChange();
       var itemAfter = this.objectAt(i+1);
       this.replaceContent(i, 2, [itemAfter, item]);
-      this.contentDidChange();
     }
   }
 });
@@ -474,3 +469,34 @@ MSA.NodeView = Ember.View.extend({
   }
 });
 
+MSA.LinkView = Ember.View.extend({
+  templateName: 'link-template',
+  remove: function() {
+    MSA.energyTypesController.removeObject(this.get('link'));
+  }
+});
+
+MSA.RuleView = Ember.View.extend({
+  templateName: 'rule-template',
+  remove: function() {
+    MSA.diagramRulesController.removeObject(this.get('rule'));
+  }
+});
+
+MSA.MinRequirementView = Ember.View.extend({
+  templateName: 'minRequirement-template',
+  remove: function() {
+    MSA.minRequirementsController.removeObject(this.get('rule'));
+  },
+  moveItemUp: function() {
+   MSA.minRequirementsController.moveItemUp(this.get('rule')); 
+  },
+  moveItemDown: function() {
+   MSA.minRequirementsController.moveItemDown(this.get('rule')); 
+  },
+  toggleHasLink: function() {
+    var rule   = this.get('rule');
+    var object = MSA.minRequirementsController.objectForHash(rule);
+    object.toggleHasLink();
+  }
+});

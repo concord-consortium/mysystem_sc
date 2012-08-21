@@ -1,0 +1,427 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]--> <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]--> <!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]--> <!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title></title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/style.css?v=2">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>  
+  <script type="text/x-handlebars">
+  <div class="options_block">
+    <h2>Options</h2>
+    <h3>Links</h3>
+      <div style="padding-left: 20px;">
+      {{view Ember.Checkbox title="Enable Label Editing" valueBinding="MSA.activity.enableLinkLabelEditing" id="linkLabelEditing"}}
+      {{view Ember.Checkbox title="Enable Description Editing" valueBinding="MSA.activity.enableLinkDescriptionEditing" id="linkDescriptionEditing"}}
+      </div>
+    <h3>Nodes</h3>
+      <div style="padding-left: 20px;">
+        {{view Ember.Checkbox title="Enable Label Display" valueBinding="MSA.activity.enableNodeLabelDisplay" id="enableNodeLabelDisplay"}}
+        {{view Ember.Checkbox title="Enable Label Editing" valueBinding="MSA.activity.enableNodeLabelEditing" id="nodeLabelEditing"}}
+        {{view Ember.Checkbox title="Enable Description Editing" valueBinding="MSA.activity.enableNodeDescriptionEditing" id="nodeDescriptionEditing"}}
+      </div>
+  </div>
+  
+  <div class="options_block">
+    <h2>Node Types</h2>
+    {{#collection contentBinding="MSA.modulesController" tagName="ul"}}
+      {{view MSA.TextField valueBinding="parentView.content.name" placeholder="name"}}
+      {{view MSA.TextField valueBinding="parentView.content.image" placeholder="image"}}
+      {{#view Ember.Button target="MSA.modulesController" action="removeItem" itemBinding="parentView.content"}}
+      remove
+      {{/view}}
+    {{/collection}}
+    {{#view Ember.Button 
+      target="MSA.modulesController"
+      action="createItem" class="add_button"}}
+      Add New Node Type
+    {{/view}}
+  </div>
+  <div class="options_block">
+    <h2> Node Size</h2>
+      <p>
+          Node width:
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.nodeWidth"
+            placeholder  = "100"
+            id           = "nodeWidth"
+            size         = "3"
+          }}
+          height: 
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.nodeHeight"
+            placeholder  = "110"
+            id           = "nodeHeight"
+            size         = "3"
+          }}
+          Terminal radius: 
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.terminalRadius"
+            placeholder  = "14"
+            id           = "terminalRadius"
+            size         = "3"
+          }}
+      </p>
+  </div>
+
+  <!-- background images -->
+  <div class="options_block">
+    <h2> Background Image</h2>
+    <p>
+        Background Image:
+        {{
+          view MSA.TextField 
+          valueBinding = "MSA.activity.backgroundImage"
+          placeholder  = ""
+          id           = "backgroundImage"
+          size         = "40"
+        }}
+    <p>
+    <div style="padding-left: 20px;">
+      {{view Ember.Checkbox 
+        title="Scale background images to fit:" 
+        valueBinding="MSA.activity.backgroundImageScaling" 
+        id="backgroundImageScaling"}}
+    </div>
+  </div>
+
+  <div class="options_block">
+    <h2>Energy Types</h2>
+    {{#collection contentBinding="MSA.energyTypesController" tagName="ul"}}
+      {{view MSA.TextField valueBinding="parentView.content.label" placeholder="label"}}
+      {{view MSA.TextField valueBinding="parentView.content.color" placeholder="color"}}
+      {{#view Ember.Button target="MSA.energyTypesController" action="removeItem" itemBinding="parentView.content"}}
+      remove
+      {{/view}}
+    {{/collection}}
+    {{#view Ember.Button 
+      target="MSA.energyTypesController"
+      action="createItem" class="add_button"}}
+      Add New Energy Type
+    {{/view}}
+  </div>
+  
+  <div class="options_block">
+    <h2>Minimum Requirements</h2>
+    {{#if MSA.minRequirementsController.hasRequirements}}
+      <p style="padding-left: 10px;">
+        Feedback: 
+        <br/>
+        {{
+          view MSA.TextArea 
+          valueBinding = "MSA.activity.minimumRequirementsFeedback" 
+          placeholder  = "You need to work more on your diagram to get feedback!" 
+          id           = "minimumFeedback"
+        }}
+        <br/><br/>
+      </p>
+    {{/if}}
+    {{#collection contentBinding="MSA.minRequirementsController" tagName="ul"}}
+        The diagram
+        {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.shouldOptions" valueBinding="parentView.content.shouldOption"}} contain
+        {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.comparisons" valueBinding="parentView.content.comparison"}}
+        {{view MSA.TextField valueBinding="parentView.content.number" placeholder="number" size="1"}}<br/>
+        {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.nodeTypes" valueBinding="parentView.content.type"}}
+        <!-- button to show/hide the rest of the options if we could use an if statement then we could
+             check for the status of the property, and show one button in one case and another button in another case
+
+             not exactly why we need parentView.parentView here, my guess is that the if wraps this in another view so we
+             need parentView.parentView to get all the way up to the itemView 
+
+             I tried adding a button to hide the link options again but the value bindings did not correctly update the views after they
+             were shown, hidden and shown again.  Changing the view after the show, hide, show did update the model object though
+        -->
+        {{#if "content.hasLink"}}
+          {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.linkDirections" valueBinding="parentView.parentView.content.linkDirection"}}
+          {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.nodeTypes" valueBinding="parentView.parentView.content.otherNodeType"}}
+          with energy type: {{collection SCUtil.Select contentBinding="MSA.minRequirementsController.energyTypes" valueBinding="parentView.parentView.content.energyType"}}
+        {{else}}
+          {{#view Ember.Button
+            targetBinding="parentView.parentView.content"
+            action="toggleHasLink"}}
+            Enable link conditions
+          {{/view}} 
+        {{/if}}
+        <br/>
+        {{#view Ember.Button target="MSA.minRequirementsController" action="removeItem" itemBinding="parentView.content"}}
+        Remove Requirement
+        {{/view}}
+        {{#view Ember.Button target="MSA.minRequirementsController" action="moveItemUp" itemBinding="parentView.content"}} ↑ {{/view}}
+        {{#view Ember.Button target="MSA.minRequirementsController" action="moveItemDown" itemBinding="parentView.content"}} ↓ {{/view}}
+    {{/collection}}
+    {{#view Ember.Button 
+      target="MSA.minRequirementsController"
+      action="createItem" class="add_button"}}
+      Add New Minimum Requirement
+    {{/view}}
+  </div>
+  
+  <div class="options_block">
+    <h2>Feedback</h2>
+      <div style="padding-left: 10px;">
+        <p>
+          Only report 
+          {{view MSA.TextField valueBinding="MSA.activity.maxFeedbackItems" placeholder="#" id="feedbackLimit" size = "1" }}
+          feedback items
+        </p>
+    
+        <p>
+          Feedback panel size:
+          width:
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.feedbackPanelWidth"
+            placeholder  = "500"
+            id           = "feedbackPanelWidth"
+            size         = "3"
+          }}
+          height: 
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.feedbackPanelHeight"
+            placeholder  = "250"
+            id           = "feedbackPanelHeight"
+            size         = "3"
+          }}
+        </p>
+        <p>
+          Feedback if all rules pass:
+          <br/>
+          {{ 
+            view MSA.TextArea 
+            valueBinding ="MSA.activity.correctFeedback" 
+            placeholder  = "Your diagram has no obvious problems." 
+            id           = "correctFeedback"
+          }}
+          <br/><br/>
+        </p>
+    </div>
+  </div>
+
+  <div class="options_block">
+    <h2>Maximum submissions</h2>
+    <div style="padding-left: 10px;">
+      <p>
+        Limit the number of student submissions to:
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.activity.maxSubmissionClicks"
+            placeholder  = "#"
+            id           = "maxSubmissionClicks"
+            size         = "2"
+          }}
+      </p>
+      <p>
+        If the student has submitted too many time, display:
+        <br/>
+        {{
+          view MSA.TextArea
+          valueBinding = "MSA.activity.maxSubmissionFeedback"
+          placeholder  = "You have clicked 'submit' too many times. Please continue working without hints."
+          id           = "maxSubmissionFeedback"
+        }}
+        <br/><br/>
+      </p>
+    </div>
+  </div>
+  
+  <div class="options_block">
+    <h2>Rubric Evaluator</h2>
+      <div class="rubricExpression">
+        {{
+          view MSA.TextArea 
+          valueBinding  = "MSA.activity.rubricExpression"
+          id            = "rubricExpression"
+          wrap          = "off" 
+          rows          = "20"
+          cols          = "72" 
+        }}
+      </div>
+      <div class="showScore">
+        {{#view Ember.Button 
+          target="MSA.rubricCategoriesController"
+          action="showScore" class="score"}}
+          Score the digram
+        {{/view}}
+      </div>
+  </div>    
+
+  <div class="options_block">
+    <h2>Rubric Categories</h2>
+    {{#collection contentBinding="MSA.rubricCategoriesController" tagName="div" attributeBindings="start" start="0"}}
+      <div class="rubric_category">
+        <div class="rubric_category_name">
+          <span class="label">Category Name:</span>
+          <span class="value">
+            {{view MSA.TextField valueBinding="parentView.content.name" placeholder="name"}}
+          </span>
+          <span class="remove_button">
+            {{#view Ember.Button target="MSA.rubricCategoriesController" action="removeItem" itemBinding="parentView.content"}}
+              Remove Category
+            {{/view}}
+          </span>        
+        </div>
+      </div>
+    {{/collection}}
+    {{#view Ember.Button 
+      target="MSA.rubricCategoriesController"
+      action="createItem" class="add_button"}}
+      Add New Category
+    {{/view}}
+  </div>
+
+  <div class="options_block">
+    <h2>Diagram Rules</h2>
+    {{#collection contentBinding="MSA.diagramRulesController" tagName="ol" attributeBindings="start" start="0"}}
+        <div class="diagram_rule">
+          <div class="diagram_rule_name">
+            <span class="label">Rule Name:</span>
+            <span class="value">
+              {{view MSA.TextField valueBinding="parentView.content.name" placeholder="name"}}
+            </span>
+            <span class="rule_category">
+              <span class="label">Category:</span>
+              <span class="value">
+                {{collection SCUtil.Select 
+                  contentBinding="MSA.diagramRulesController.categories" 
+                  valueBinding="parentView.content.category"}}
+              </span>
+            </span>
+          </div>
+
+          {{view Ember.Checkbox 
+              title="use javascript" 
+              valueBinding="parentView.content.isJavascript" 
+              }}
+          {{#if "content.isJavascript"}}
+            <div class="javascript_rule">
+              {{
+                view MSA.TextArea 
+                valueBinding  = "parentView.parentView.content.javascriptExpression"
+                wrap          = "off" 
+                rows          = "20"
+                cols          = "72" 
+              }}
+              {{#view Ember.Button
+                targetBinding="parentView.parentView.content"
+                action="editJSRule"}} edit {{/view}}
+            </div>
+        
+          {{else}}
+            The diagram 
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.shouldOptions" valueBinding="parentView.parentView.content.shouldOption"}} contain
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.comparisons" valueBinding="parentView.parentView.content.comparison"}}
+            {{view MSA.TextField valueBinding="parentView.parentView.content.number" placeholder="number" size="1"}}<br/>
+            {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.parentView.content.type"}}
+            <!-- button to show/hide the rest of the options if we could use an if statement then we could
+                 check for the status of the property, and show one button in one case and another button in another case
+
+                 not exactly why we need parentView.parentView here, my guess is that the if wraps this in another view so we
+                 need parentView.parentView to get all the way up to the itemView 
+               
+                 I tried adding a button to hide the link options again but the value bindings did not correctly update the views after they
+                 were shown, hidden and shown again.  Changing the view after the show, hide, show did update the model object though
+            -->
+            {{#if "content.hasLink"}}
+              {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.linkDirections" valueBinding="parentView.parentView.parentView.content.linkDirection"}}
+              {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.nodeTypes" valueBinding="parentView.parentView.parentView.content.otherNodeType"}}
+              with energy type: {{collection SCUtil.Select contentBinding="MSA.diagramRulesController.energyTypes" valueBinding="parentView.parentView.parentView.content.energyType"}}
+            {{else}}
+              {{#view Ember.Button
+                targetBinding="parentView.parentView.parentView.content"
+                action="toggleHasLink"}}
+                Enable link conditions
+              {{/view}} 
+            {{/if}}
+          {{/if}}
+          <br/><br/>
+          if not then show the user: 
+          <br/>
+          {{
+            view MSA.TextArea 
+            valueBinding = "parentView.content.suggestion"
+          }}
+          <br/><br/>
+          {{#view Ember.Button target="MSA.diagramRulesController" action="removeItem" itemBinding="parentView.content"}}
+          Remove Diagram Rule
+          {{/view}}
+          {{#view Ember.Button target="MSA.diagramRulesController" action="moveItemUp" itemBinding="parentView.content"}} ↑ {{/view}}
+          {{#view Ember.Button target="MSA.diagramRulesController" action="moveItemDown" itemBinding="parentView.content"}} ↓ {{/view}}
+        </div>
+    {{/collection}}
+    {{#view Ember.Button 
+      target="MSA.diagramRulesController"
+      action="createItem" class="add_button"}}
+      Add New Diagram Rule
+    {{/view}}
+  </div>
+  <div class="options_block">
+    {{view Ember.Checkbox 
+        title="Enable Custom Rule Evaluator" 
+        valueBinding="MSA.activity.enableCustomRuleEvaluator" 
+        id="customRuleEvaluator"}}
+    {{#if "MSA.activity.enableCustomRuleEvaluator"}}
+
+Javascipt for custom rules. e.g.
+<br/>
+<pre>
+  // sample use:
+  if (Rules.extraLinks()) {
+    Rules.addSuggestion("You have some extra links!");
+  }
+  if (!Rules.iconsUsedOnce()) {
+    Rules.addSuggestion("You can only use each icon once.");
+  }
+  if (!Rules.hasTransformation()) {
+    Rules.addSuggestion("How is energy transformed?");
+  }
+</code>
+</pre>
+<br/>
+        <div id="customRuleEvaluator">
+          {{
+            view MSA.TextArea 
+            valueBinding  = "MSA.activity.customRuleEvaluator"
+            wrap          = "off" 
+            rows          = "20"
+            cols          = "72" 
+          }}
+          {{#view Ember.Button target="MSA.customRuleController" action="editCustomRule"}} edit {{/view}}
+        </div>
+    {{/if}}
+  </div>
+
+<div class="options_block">
+  <h2>State</h2>
+  <pre style="font-size: 80%">
+  {{MSA.dataController.data}}
+  </pre>
+</div>
+</script>
+  
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')</script>
+  <script src="js/libs/handlebars-1.0.0.beta.6.js"></script>
+  <script src="js/libs/ember-1.0.pre.js"></script>
+  <script src="js/sc_util.js"></script>
+  <script src="js/initial_data.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
