@@ -2,43 +2,11 @@
 
 MSA = Ember.Application.create();
 
-if (top === self) {
-  // we are not in iframe so load in some fake data
-  MSA.data = InitialMySystemData;
-} else {
-  // we are in an iframe
-  MSA.data = {
-    "modules": [],
-    "energy_types": [],
-    "diagram_rules": [],
-    "rubric_categories": [],
-    "rubricExpression": "true;",
-    "correctFeedback": "Your diagram has false obvious problems.",
-    "minimum_requirements": [],
-    "maxFeedbackItems": 0,
-    "minimumRequirementsFeedback": "You need to work more on your diagram to get feedback!",
-    "enableNodeLabelDisplay": true,
-    "enableNodeLabelEditing": false,
-    "enableNodeDescriptionEditing": false,
-    "enableLinkDescriptionEditing": false,
-    "enableLinkLabelEditing": false,
-    "enableCustomRuleEvaluator": false,
-    "customRuleEvaluator": "",
-    "maxSubmissionClicks": 0,
-    "maxSubmissionFeedback":  "You have clicked 'submit' too many times. Please continue working without hints.",
-    "feedbackPanelWidth": 500,
-    "feedbackPanelHeight": 250,
-    "terminalRadius": 14,
-    "nodeHeight": 110,
-    "nodeWidth": 110,
-    "backgroundImage": null,
-    "backgroundImageScaling": false
-  };
-}
+
 
 MSA.setupParentIFrame = function(dataHash, updateObject, updateFn, scoreFn) {
   if (typeof dataHash === "undefined" || dataHash === null){
-    dataHash = MSA.data;
+    dataHash = MSA.dataController.get('data');
   }
   
   // migration from old content format
@@ -113,30 +81,13 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn, scoreFn) {
 
   // TODO: migrate objects to have uuids that don't already have them
 
-  MSA.loadData(dataHash);
+  MSA.dataController.loadData(dataHash);
 
   MSA.dataController.addObserver('data', updateObject, updateFn);
   MSA.rubricCategoriesController.set('scoreFunction',scoreFn);
 };
 
-MSA.loadData = function(dataHash) {
-  MSA.data = dataHash;
 
-  // old authored data hasn't specified this.
-  // authoring interface incorrectly checks a box
-  MSA.data.diagram_rules.forEach(function(rule) {
-    if ((typeof rule.isJavascript === 'undefined')) {
-      rule.isJavascript = false;
-    }
-  });
-  
-  MSA.set('activity', MSA.ActivityModel.create({dataHash: MSA.data}));
-  MSA.modulesController.setExternalContent(dataHash.modules);
-  MSA.energyTypesController.setExternalContent(dataHash.energy_types);
-  MSA.diagramRulesController.setExternalContent(dataHash.diagram_rules);
-  MSA.rubricCategoriesController.setExternalContent(dataHash.rubric_categories);
-  MSA.minRequirementsController.setExternalContent(dataHash.minimum_requirements);
-};
 
 MSA.ActivityModel = SCUtil.ModelObject.extend({
   correctFeedback: SCUtil.dataHashProperty,
@@ -261,22 +212,6 @@ MSA.RubricCategoriesController = SCUtil.ModelArray.extend({
   }
 });
 
-
-MSA.rubricCategoriesController = MSA.RubricCategoriesController.create({
-  content: MSA.data.rubric_categories
-});
-
-
-MSA.modulesController = SCUtil.ModelArray.create({
-  content: MSA.data.modules,
-  modelType: MSA.Module
-});
-
-MSA.energyTypesController = SCUtil.ModelArray.create({
-  content: MSA.data.energy_types,
-  modelType: MSA.EnergyType
-});
-
 MSA.RulesController = SCUtil.ModelArray.extend({
   modelType: MSA.DiagramRule,
 
@@ -320,48 +255,144 @@ MSA.RulesController = SCUtil.ModelArray.extend({
   }
 });
 
+MSA.rubricCategoriesController = MSA.RubricCategoriesController.create({
+  // content: MSA.data.rubric_categories
+});
+
+
+MSA.modulesController = SCUtil.ModelArray.create({
+  // content: MSA.data.modules,
+  modelType: MSA.Module
+});
+
+MSA.energyTypesController = SCUtil.ModelArray.create({
+  // content: MSA.data.energy_types,
+  modelType: MSA.EnergyType
+});
+
+
 MSA.diagramRulesController = MSA.RulesController.create({
-  content: MSA.data.diagram_rules
+  // content: MSA.data.diagram_rules
 });
 
 
 
+
+
+
 MSA.minRequirementsController = MSA.RulesController.create({
-  content: MSA.data.minimum_requirements,
   updateHasRequirements: function() {
-    this.set('hasRequirements', (this.getPath('content.length') > 0));
+    this.set('hasRequirements', (this.get('content.length') > 0));
   }.observes('content.length'),
   hasRequirements: false
 });
 
 MSA.dataController = Ember.Object.create({
-  data: function(){
-    return JSON.stringify(MSA.data, null, 2);
-  }.property('MSA.modulesController.[]', 
-             'MSA.modulesController.@each.rev', 
-             'MSA.energyTypesController.@each.rev', 
-             'MSA.diagramRulesController.@each.rev',
-             'MSA.minRequirementsController.@each.rev',
-             'MSA.activity.correctFeedback',
-             'MSA.activity.minimumRequirementsFeedback',
-             'MSA.activity.enableNodeLabelDisplay',
-             'MSA.activity.enableNodeLabelEditing',
-             'MSA.activity.enableNodeDescriptionEditing',
-             'MSA.activity.enableLinkDescriptionEditing',
-             'MSA.activity.enableLinkLabelEditing',
-             'MSA.activity.maxFeedbackItems',
-             'MSA.activity.enableCustomRuleEvaluator',
-             'MSA.activity.customRuleEvaluator',
-             'MSA.activity.maxSubmissionClicks',
-             'MSA.activity.maxSubmissionFeedback',
-             'MSA.activity.feedbackPanelWidth',
-             'MSA.activity.feedbackPanelHeight',
-             'MSA.activity.terminalRadius',
-             'MSA.activity.nodeWidth',
-             'MSA.activity.nodeHeight',
-             'MSA.activity.backgroundImage',
-             'MSA.activity.backgroundImageScaling',
-             'MSA.activity.rubricExpression')
+
+  modulesBinding: 'MSA.modulesController.content',
+  energyTypesBinding: 'MSA.energyTypesController.content',
+  minRequirementsBinding: 'MSA.minRequirementsController.content',
+  diagramRulesBinding: 'MSA.diagramRulesController.content',
+
+  defaultDataHash: function() {
+    var defaults = {
+      "modules": [],
+      "energy_types": [],
+      "diagram_rules": [],
+      "rubric_categories": [],
+      "rubricExpression": "true;",
+      "correctFeedback": "Your diagram has false obvious problems.",
+      "minimum_requirements": [],
+      "maxFeedbackItems": 0,
+      "minimumRequirementsFeedback": "You need to work more on your diagram to get feedback!",
+      "enableNodeLabelDisplay": true,
+      "enableNodeLabelEditing": false,
+      "enableNodeDescriptionEditing": false,
+      "enableLinkDescriptionEditing": false,
+      "enableLinkLabelEditing": false,
+      "enableCustomRuleEvaluator": false,
+      "customRuleEvaluator": "",
+      "maxSubmissionClicks": 0,
+      "maxSubmissionFeedback":  "You have clicked 'submit' too many times. Please continue working without hints.",
+      "feedbackPanelWidth": 500,
+      "feedbackPanelHeight": 250,
+      "terminalRadius": 14,
+      "nodeHeight": 110,
+      "nodeWidth": 110,
+      "backgroundImage": null,
+      "backgroundImageScaling": false
+    };
+    if (top === self) {
+      // we are not in iframe so load in some fake data
+      defaults = InitialMySystemData;
+    }
+    return defaults;
+  }.property().cacheable(),
+
+  data: function() {
+    var activity = this.get('activity');
+    var data;
+    if(Ember.none(activity)) {
+      data = this.get('defaultDataHash');
+    }
+    else {
+      data = activity.get('dataHash');
+    }
+
+    // TODO: handle null lists...
+    var modules         = this.get('modules')        || [];
+    var energyTypes     = this.get('energyTypes')    || [];
+    var minRequirements = this.get('minRequirements')|| [];
+    var diagramRules    = this.get('diagramRules')   || [];
+    
+    // if (modules.length > 0         ){ modules         = modules.mapProperty('dataHash');        }
+    // if (energyTypes.length > 0     ){ energyTypes     = energyTypes.mapProperty('dataHash');    }
+    // if (minRequirements.length > 0 ){ minRequirements = minRequirements.mapProperty('dataHash');}
+    // if (diagramRules.length > 0    ){ diagramRules    = diagramRules.mapProperty('dataHash');   }
+    modules         = modules.mapProperty('dataHash');        
+    energyTypes     = energyTypes.mapProperty('dataHash');    
+    minRequirements = minRequirements.mapProperty('dataHash');
+    diagramRules    = diagramRules.mapProperty('dataHash');   
+
+    data.modules              = modules;
+    data.energy_types         = energyTypes;
+    data.minimum_requirements = minRequirements;
+    data.diagram_rules        = diagramRules;
+    return data;
+    // return JSON.stringify(data, null, 2);
+  
+  }.property( 'activity.rev',
+    'energyTypes.@each.rev',
+    'modules.@each.rev', 
+    'minRequirements.@each.rev',
+    'diagramRules.@each.rev'
+  ).cacheable(),
+
+  dataJson: function() {
+    return JSON.stringify(this.get('data'),null,2);
+  }.property('data').cacheable(),
+
+  loadData: function(dataHash) {
+    var data = dataHash;
+    if (typeof data === 'string') {
+      data = JSON.parse(data);
+    }
+    // old authored data hasn't specified this.
+    // authoring interface incorrectly checks a box
+    
+    data.diagram_rules.forEach(function(rule) {
+      if ((typeof rule.isJavascript === 'undefined')) {
+        rule.isJavascript = false;
+      }
+    });
+
+    this.set('activity', MSA.ActivityModel.create({'dataHash': data}));
+    MSA.modulesController.contentFromHashArray(data.modules);
+    MSA.energyTypesController.contentFromHashArray(data.energy_types);
+    MSA.diagramRulesController.contentFromHashArray(data.diagram_rules);
+    MSA.rubricCategoriesController.contentFromHashArray(data.rubric_categories);
+    MSA.minRequirementsController.contentFromHashArray(data.minimum_requirements);
+  }
 });
 
 MSA.NodeTypesView = Ember.CollectionView.extend({
@@ -496,7 +527,6 @@ MSA.MinRequirementView = Ember.View.extend({
   },
   toggleHasLink: function() {
     var rule   = this.get('rule');
-    var object = MSA.minRequirementsController.objectForHash(rule);
-    object.toggleHasLink();
+    rule.toggleHasLink();
   }
 });

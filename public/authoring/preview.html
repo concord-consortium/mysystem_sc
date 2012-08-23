@@ -28,16 +28,25 @@
         });
       }
       
-      function updateRuntime(data) {
-        if (!data.modules){
+      function updateRuntime(_data) {
+        var data = _data;
+        if (!data){
           authoring_iframe = document.getElementById(authorIframeId).contentWindow;
-          var data = authoring_iframe.MSA.data;
+          data = authoring_iframe.MSA.dataController.get('data');
         }
+        // TODO: why is this happening? Should already be a hash.
+        if (typeof data.get !== 'undefined') {
+          data = data.get('data');
+        }
+
         var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
-        var activity = runtime_iframe.MySystem.Activity.fromWiseStepDef(data);
-        runtime_iframe.SC.RunLoop.begin();
-          runtime_iframe.MySystem.activityController.set('content',activity);
-        runtime_iframe.SC.RunLoop.end();
+      
+        if (runtime_iframe.MySystem) {
+          var activity = runtime_iframe.MySystem.Activity.fromWiseStepDef(data);
+          runtime_iframe.SC.RunLoop.begin();
+            runtime_iframe.MySystem.activityController.set('content',activity);
+          runtime_iframe.SC.RunLoop.end();
+        }
       }
       
       function scoreDiagram() {
@@ -67,7 +76,7 @@
             authorContent = document.getElementById('mysystem2-authoring-iframe').contentWindow,
             runtimeContent = document.getElementById('runtime-iframe').contentWindow;
 
-        updateRuntime(authorContent.MSA.data);
+        updateRuntime(authorContent.MSA.dataController.get('data'));
 
         dataStore.setAuthorContentWindow(authorContent);
         dataStore.setLearnerContentWindow(runtimeContent);

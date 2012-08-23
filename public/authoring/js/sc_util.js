@@ -62,38 +62,38 @@ SCUtil.ModelArray = Ember.ArrayController.extend({
   // modelType: null,
 
   // useful when the content is coming from iframe that isn't using SC
-  setExternalContent: function(dataHash) {
-    Ember.NativeArray.apply(dataHash);
-    this.set('content', dataHash);
-  },
+  // setExternalContent: function(dataHash) {
+  //   Ember.NativeArray.apply(dataHash);
+  //   this.set('content', dataHash);
+  // },
 
   // objectAtContent: function(idx) {
   //   var data = this.get('content').objectAt(idx);
   //   return this.objectForHash(data);
   // },
 
-  objectForHash: function(data) {
-    var model = null,
-        modelObjects = this.get('modelObjects');
+  // objectForHash: function(data) {
+  //   var model = null,
+  //       modelObjects = this.get('modelObjects');
 
-    if (Ember.none(modelObjects)) {
-      modelObjects = Ember.Set.create();
-      this.set('modelObjects',modelObjects);
-    }
+  //   if (Ember.none(modelObjects)) {
+  //     modelObjects = Ember.Set.create();
+  //     this.set('modelObjects',modelObjects);
+  //   }
 
-    modelObjects.forEach(function (cur_model){
-      if(cur_model.get('dataHash') === data){
-        model = cur_model;
-      }
-    });
+  //   modelObjects.forEach(function (cur_model){
+  //     if(cur_model.get('dataHash') === data){
+  //       model = cur_model;
+  //     }
+  //   });
 
-    if (Ember.none(model)) {
-      model = this.get('modelType').create();
-      model.set('dataHash',data);
-      this.get('modelObjects').add(model);
-    }
-    return model;
-  },
+  //   if (Ember.none(model)) {
+  //     model = this.get('modelType').create();
+  //     model.set('dataHash',data);
+  //     this.get('modelObjects').add(model);
+  //   }
+  //   return model;
+  // },
 
   // replaceContent: function(idx, amt, objects) {
   //   var dataObjects = null;
@@ -110,17 +110,34 @@ SCUtil.ModelArray = Ember.ArrayController.extend({
   //   // we don't need to actually add the model objects they will be created as they are requested
   // },
 
+  contentFromHashArray: function(hashArray) {
+    // var size = hashArray.length;
+    // var i;
+    var item = null;
+    var modelType = this.get('modelType');
+    this.set('content',[]);
+
+    hashArray.forEach(function(item) {
+      item = modelType.create(item);
+      this.pushObject(item);
+    });
+  },
   createItem: function() {
-    this.pushObject(this.get('modelType').create().get('dataHash'));
+    // this.pushObject(this.get('modelType').create().get('dataHash'));
+    this.pushObject(this.get('modelType').create());
   },
 
   removeItem: function(button){
     this.removeObject(button.get('item'));
   },
 
+  // init: function() {
+  //   this._super();
+  //   this.set('modelObjects', Ember.Set.create());
+  // }
   init: function() {
     this._super();
-    this.set('modelObjects', Ember.Set.create());
+    this.set('content', []);
   }
 
   // _contentWillChange: function () {

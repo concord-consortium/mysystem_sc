@@ -28,26 +28,26 @@
 
       <div style="padding-left: 20px;">
         Enable link Editing? 
-        {{view Ember.Checkbox checkedBinding="MSA.activity.enableLinkLabelEditing" }}
+        {{view Ember.Checkbox checkedBinding="MSA.dataController.activity.enableLinkLabelEditing" }}
         <br/>
 
         Enable link disription editing? 
-        {{view Ember.Checkbox checkedBinding="MSA.activity.enableLinkDescriptionEditing" }}
+        {{view Ember.Checkbox checkedBinding="MSA.dataController.activity.enableLinkDescriptionEditing" }}
         <br/>
       </div> 
     
       <h3>Nodes</h3>
       <div style="padding-left: 20px;">
         Enable label display:
-        {{view Ember.Checkbox checkedBinding="MSA.activity.enableNodeLabelDisplay" }}
+        {{view Ember.Checkbox checkedBinding="MSA.dataController.activity.enableNodeLabelDisplay" }}
         <br/>
         
         Enable label editing:
-        {{view Ember.Checkbox checkedBinding="MSA.activity.enableNodeLabelEditing" }}
+        {{view Ember.Checkbox checkedBinding="MSA.dataController.activity.enableNodeLabelEditing" }}
         <br/>
       
         Enable description Editing: 
-        {{view Ember.Checkbox checkedBinding="MSA.activity.enableNodeDescriptionEditing"}}
+        {{view Ember.Checkbox checkedBinding="MSA.dataController.activity.enableNodeDescriptionEditing"}}
         <br/>
       </div>
     </div>
@@ -74,7 +74,7 @@
             Node width:
             {{
               view MSA.TextField 
-              valueBinding = "MSA.activity.nodeWidth"
+              valueBinding = "MSA.dataController.activity.nodeWidth"
               placeholder  = "100"
               id           = "nodeWidth"
               size         = "3"
@@ -82,7 +82,7 @@
             height: 
             {{
               view MSA.TextField 
-              valueBinding = "MSA.activity.nodeHeight"
+              valueBinding = "MSA.dataController.activity.nodeHeight"
               placeholder  = "110"
               id           = "nodeHeight"
               size         = "3"
@@ -90,7 +90,7 @@
             Terminal radius: 
             {{
               view MSA.TextField 
-              valueBinding = "MSA.activity.terminalRadius"
+              valueBinding = "MSA.dataController.activity.terminalRadius"
               placeholder  = "14"
               id           = "terminalRadius"
               size         = "3"
@@ -105,7 +105,7 @@
           Background Image:
           {{
             view MSA.TextField 
-            valueBinding = "MSA.activity.backgroundImage"
+            valueBinding = "MSA.dataController.activity.backgroundImage"
             placeholder  = ""
             id           = "backgroundImage"
             size         = "40"
@@ -113,7 +113,7 @@
       <p>
       <div style="padding-left: 20px;">
         Scale background images to fit:
-        {{view Ember.Checkbox checkedBinding="MSA.activity.backgroundImageScaling"  }}
+        {{view Ember.Checkbox checkedBinding="MSA.dataController.activity.backgroundImageScaling"  }}
       </div>
     </div>
 
@@ -140,7 +140,7 @@
           <br/>
           {{
             view MSA.TextArea 
-            valueBinding = "MSA.activity.minimumRequirementsFeedback" 
+            valueBinding = "MSA.dataController.activity.minimumRequirementsFeedback" 
             placeholder  = "You need to work more on your diagram to get feedback!" 
             id           = "minimumFeedback"
           }}
@@ -163,7 +163,7 @@
     <div class="rubricExpression">
       {{
         view MSA.TextArea 
-        valueBinding  = "MSA.activity.rubricExpression"
+        valueBinding  = "MSA.dataController.activity.rubricExpression"
         id            = "rubricExpression"
         wrap          = "off" 
         rows          = "20"
@@ -191,7 +191,7 @@
     <div class="code">
       <hr/>
       <pre><code>
-        {{MSA.dataController.data}}
+        {{MSA.dataController.dataJson}}
       </code></pre>
     </div>
 
