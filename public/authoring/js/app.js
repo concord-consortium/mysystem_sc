@@ -296,33 +296,35 @@ MSA.dataController = Ember.Object.create({
 
   defaultDataHash: function() {
     var defaults = {
-      "modules": [],
-      "energy_types": [],
-      "diagram_rules": [],
-      "rubric_categories": [],
-      "rubricExpression": "true;",
-      "correctFeedback": "Your diagram has false obvious problems.",
-      "minimum_requirements": [],
-      "maxFeedbackItems": 0,
-      "minimumRequirementsFeedback": "You need to work more on your diagram to get feedback!",
-      "enableNodeLabelDisplay": true,
-      "enableNodeLabelEditing": false,
-      "enableNodeDescriptionEditing": false,
-      "enableLinkDescriptionEditing": false,
-      "enableLinkLabelEditing": false,
-      "enableCustomRuleEvaluator": false,
-      "customRuleEvaluator": "",
-      "maxSubmissionClicks": 0,
-      "maxSubmissionFeedback":  "You have clicked 'submit' too many times. Please continue working without hints.",
-      "feedbackPanelWidth": 500,
-      "feedbackPanelHeight": 250,
-      "terminalRadius": 14,
-      "nodeHeight": 110,
-      "nodeWidth": 110,
-      "backgroundImage": null,
-      "backgroundImageScaling": false
+      "modules"                      : [],
+      "energy_types"                 : [],
+      "diagram_rules"                : [],
+      "rubric_categories"            : [],
+      "rubricExpression"             : "true;",
+      "correctFeedback"              : "Your diagram has false obvious problems.",
+      "minimum_requirements"         : [],
+      "maxFeedbackItems"             : 0,
+      "minimumRequirementsFeedback"  : "You need to work more on your diagram to get feedback!",
+      "enableNodeLabelDisplay"       : true,
+      "enableNodeLabelEditing"       : false,
+      "enableNodeDescriptionEditing" : false,
+      "enableLinkDescriptionEditing" : false,
+      "enableLinkLabelEditing"       : false,
+      "enableCustomRuleEvaluator"    : false,
+      "customRuleEvaluator"          : "",
+      "maxSubmissionClicks"          : 0,
+      "maxSubmissionFeedback"        :  "You have clicked 'submit' too many times. Please continue working without hints.",
+      "feedbackPanelWidth"           : 500,
+      "feedbackPanelHeight"          : 250,
+      "terminalRadius"               : 14,
+      "nodeHeight"                   : 110,
+      "nodeWidth"                    : 110,
+      "backgroundImage"              : null,
+      "backgroundImageScaling"       : false
     };
+
     if (top === self) {
+      // TODO: (test this, is it still needed?)
       // we are not in iframe so load in some fake data
       defaults = InitialMySystemData;
     }
@@ -339,28 +341,11 @@ MSA.dataController = Ember.Object.create({
       data = activity.get('dataHash');
     }
 
-    // TODO: handle null lists...
-    var modules         = this.get('modules')        || [];
-    var energyTypes     = this.get('energyTypes')    || [];
-    var minRequirements = this.get('minRequirements')|| [];
-    var diagramRules    = this.get('diagramRules')   || [];
-    
-    // if (modules.length > 0         ){ modules         = modules.mapProperty('dataHash');        }
-    // if (energyTypes.length > 0     ){ energyTypes     = energyTypes.mapProperty('dataHash');    }
-    // if (minRequirements.length > 0 ){ minRequirements = minRequirements.mapProperty('dataHash');}
-    // if (diagramRules.length > 0    ){ diagramRules    = diagramRules.mapProperty('dataHash');   }
-    modules         = modules.mapProperty('dataHash');        
-    energyTypes     = energyTypes.mapProperty('dataHash');    
-    minRequirements = minRequirements.mapProperty('dataHash');
-    diagramRules    = diagramRules.mapProperty('dataHash');   
-
-    data.modules              = modules;
-    data.energy_types         = energyTypes;
-    data.minimum_requirements = minRequirements;
-    data.diagram_rules        = diagramRules;
+    data.modules              = this.get('modules').mapProperty('dataHash');       
+    data.energy_types         = this.get('energyTypes').mapProperty('dataHash');   
+    data.minimum_requirements = this.get('minRequirements').mapProperty('dataHash');
+    data.diagram_rules        = this.get('diagramRules').mapProperty('dataHash');  
     return data;
-    // return JSON.stringify(data, null, 2);
-  
   }.property( 'activity.rev',
     'energyTypes.@each.rev',
     'modules.@each.rev', 
