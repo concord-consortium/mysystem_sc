@@ -279,9 +279,6 @@ MSA.diagramRulesController = MSA.RulesController.create({
 
 
 
-
-
-
 MSA.minRequirementsController = MSA.RulesController.create({
   updateHasRequirements: function() {
     this.set('hasRequirements', (this.get('content.length') > 0));
