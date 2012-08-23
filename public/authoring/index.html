@@ -144,10 +144,10 @@
             placeholder  = "You need to work more on your diagram to get feedback!" 
             id           = "minimumFeedback"
           }}
-          <br/><br/>
         </p>
       {{/if}}
-      {{#each MSA.minRequirementsController.content tagName="ul"}}
+      
+      {{#each MSA.minRequirementsController.content}}
         {{view MSA.MinRequirementView ruleBinding="this"}}
       {{/each}}
       {{#view Ember.Button 
@@ -157,22 +157,87 @@
       {{/view}}
     </div>
 
-
-
-    <!-- #### Rubric Expression #### -->
-    <div class="rubricExpression">
-      {{
-        view MSA.TextArea 
-        valueBinding  = "MSA.dataController.activity.rubricExpression"
-        id            = "rubricExpression"
-        wrap          = "off" 
-        rows          = "20"
-        cols          = "72" 
-      }}
+    <!-- #### Feedback  #### -->
+    <div class="options_block">
+      <h2>Feedback</h2>
+      <div style="padding-left: 10px;">
+        <p>
+          Only report 
+          {{view MSA.TextField 
+            valueBinding="MSA.dataController.activity.maxFeedbackItems" 
+            placeholder="#" 
+            id="feedbackLimit" size = "1" }}
+          feedback items
+        </p>
+    
+        <p>
+          Feedback panel size:
+          width:
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.dataController.activity.feedbackPanelWidth"
+            placeholder  = "500"
+            id           = "feedbackPanelWidth"
+            size         = "3"
+          }}
+          height: 
+          {{
+            view MSA.TextField 
+            valueBinding = "MSA.dataController.activity.feedbackPanelHeight"
+            placeholder  = "250"
+            id           = "feedbackPanelHeight"
+            size         = "3"
+          }}
+        </p>
+        <p>
+          Feedback if all rules pass:
+          <br/>
+          {{ 
+            view MSA.TextArea 
+            valueBinding ="MSA.dataController.activity.correctFeedback" 
+            placeholder  = "Your diagram has no obvious problems." 
+            id           = "correctFeedback"
+          }}
+          <br/><br/>
+        </p>
+      </div>
     </div>
 
 
-    <!-- #### Rubric Expression #### -->
+    <!-- #### Max submissions  #### -->
+    <div class="options_block">
+      <h2>Maximum submissions</h2>
+      <div style="padding-left: 10px;">
+        <p>
+          Limit the number of student submissions to:
+            {{
+              view MSA.TextField 
+              valueBinding = "MSA.dataController.activity.maxSubmissionClicks"
+              placeholder  = "#"
+              id           = "maxSubmissionClicks"
+              size         = "2"
+            }}
+        </p>
+        <p>
+          If the student has submitted too many time, display:
+          <br/>
+          {{
+            view MSA.TextArea
+            valueBinding = "MSA.dataController.activity.maxSubmissionFeedback"
+            placeholder  = "You have clicked 'submit' too many times. Please continue working without hints."
+            id           = "maxSubmissionFeedback"
+          }}
+          <br/><br/>
+        </p>
+      </div>
+    </div>
+  
+    <!-- #### Rubric Evaluator #### -->
+    {{view MSA.RubricExpressionView}}
+
+
+
+    <!-- #### Rules  #### -->
     <div class="options_block">
       <h2>Diagram Rules</h2>
       {{#each MSA.diagramRulesController.content}}
@@ -198,6 +263,26 @@
   </script>
 
 
+
+
+  <!-- #### Rubric Evaluator Template #### -->
+  <script type="text/x-handlebars"  data-template-name='rubricExpression-template'>
+    <div class="options_block">
+      <h2>Rubric Evaluator</h2>
+      <div class="rubricExpression">
+        {{view MSA.TextArea 
+          valueBinding  = "rubricExpression"
+          wrap          = "off" 
+          rows          = "20"
+          cols          = "72" 
+        }}
+      </div>
+      <div class="showScore">
+        <button {{action "showScore"}}>Score the digram</button>
+      </div>
+    </div>
+  </script>
+
   <!-- #### Node Template #### -->
   <script type="text/x-handlebars"  data-template-name='node-template'>
     {{view MSA.TextField valueBinding="name" placeholder="name"}}
@@ -219,77 +304,64 @@
     <button {{action "remove" on="click" item="model"}}>remove</button>
   </script>
 
-  <!-- #### Rule Template #### -->
+
+
+  <!-- #### MinRequirement Template #### -->
   <script type="text/x-handlebars" data-template-name="rule-template">
     <div class="diagram_rule">
-      <div class="diagram_rule_name">
-        <span class="label">Rule Name:</span>
-        <span class="value">
-          {{view MSA.TextField valueBinding="name"}}
-        </span>
-        <span class="rule_category">
-          <span class="label">Category:</span>
+      {{#if "showName"}}
+        <div class="diagram_rule_name">
+          <span class="label">Rule Name:</span>
           <span class="value">
-            {{view Ember.Select
-              contentBinding="MSA.diagramRulesController.categories" 
-              selectionBinding="category" }}
+            {{view MSA.TextField valueBinding="name"}}
           </span>
-        </span>
-      </div>
-
-      use javascript: 
-      {{view Ember.Checkbox checkedBinding="isJavascript"}}
-      
-      The diagram 
+          <span class="rule_category">
+            <span class="label"#>Category:</span>
+            <span class="value">
+              {{view Ember.Select
+                contentBinding="MSA.diagramRulesController.categories" 
+                selectionBinding="category" }}
+            </span>
+          </span>
+        </div>
+        use javascript: 
+        {{view Ember.Checkbox checkedBinding="isJavascript"}}
+      {{/if}}
+      The diagram <br/>
       {{view Ember.Select 
           contentBinding="MSA.diagramRulesController.shouldOptions" 
           selectionBinding="shouldOption"}} 
+      
       contain
       {{view Ember.Select  
         contentBinding="MSA.diagramRulesController.comparisons" 
         selectionBinding="comparison"}}
-
+      {{view MSA.TextField 
+        valueBinding="number" 
+        placeholder="number" size="1"}}
       {{view Ember.Select 
-        contentBinding="MSA.diagramRulesController.nodeTypes" 
+        contentBinding="MSA.diagramRulesController.nodeTypes"
         selectionBinding="type"
       }}
+      </br>
 
-    </div>
-  </script>
-
-  <!-- #### MinRequirement Template #### -->
-  <script type="text/x-handlebars" data-template-name="minRequirement-template">
-
-      The diagram 
-      {{view Ember.Select 
-          contentBinding="MSA.minRequirementsController.shouldOptions" 
-          selectionBinding="shouldOption"}} 
-      contain
-      {{view Ember.Select  
-        contentBinding="MSA.minRequirementsController.comparisons" 
-        selectionBinding="comparison"}}
-
-      {{view Ember.Select 
-        contentBinding="MSA.minRequirementsController.nodeTypes" 
-        selectionBinding="type"
-      }}
-
-      {{#if "content.hasLink"}}
+      Use link conditions: 
+      {{view Ember.Checkbox checkedBinding="hasLink" }}
+      {{#if "hasLink"}}
+        <br/>
         {{view Ember.Select
-          contentBinding="MSA.minRequirementsController.linkDirections" 
+          contentBinding="MSA.diagramRulesController.linkDirections" 
           selectionBinding="linkDirection"
         }}
         {{view Ember.Select 
-          contentBinding="MSA.minRequirementsController.nodeTypes" 
+          contentBinding="MSA.diagramRulesController.nodeTypes" 
           selectionBinding="otherNodeType"
         }}
         with energy type: 
         {{view Ember.Select 
-          contentBinding="MSA.minRequirementsController.energyTypes" 
+          contentBinding="MSA.diagramRulesController.energyTypes" 
           selectionBinding="parentView.parentView.content.energyType"
         }}
-      {{else}}
-        <button {{action "toggleHasLink" on="click" item="model"}}>Enable link conditions</button>
       {{/if}}
       
       <br/>
@@ -297,10 +369,13 @@
       <button {{action "remove" on="click" item="model"}}>Remove Requirement</button>
       <button {{action "moveItemUp" on="click" item="model"}}>↑</button>
       <button {{action "moveItemDown" on="click" item="model"}}>↓</button>
-     
+      
     </div>
   </script>
 
+  <script type="text/x-handlebars" data-template-name="link_conditions-template">
+
+  </script>
 
 
 

@@ -78,7 +78,7 @@ msaPreview.CouchDS.prototype =
       function(response){
         if (response.authored_data){
           self.authoredDocRev = response._rev;
-          self.authorContentWindow.MSA.loadData(response.authored_data);
+          self.authorContentWindow.MSA.dataController.loadData(response.authored_data);
         }
       }
     );
@@ -101,7 +101,7 @@ msaPreview.CouchDS.prototype =
   },
   
   saveAuthoring: function () {
-    var authoredData = this.authorContentWindow.MSA.data,
+    var authoredData = this.authorContentWindow.MSA.dataController.get('dataJson'),
         authoredDataHash = JSON.parse(JSON.stringify(authoredData, null, 2));
         
     var data = {"authored_data": authoredDataHash};

@@ -215,6 +215,8 @@ MSA.RubricCategoriesController = SCUtil.ModelArray.extend({
 MSA.RulesController = SCUtil.ModelArray.extend({
   modelType: MSA.DiagramRule,
 
+  nodesBinding: 'MSA.modulesController.content',
+
   nodeTypes: function (){
     return MSA.modulesController.mapProperty('name').insertAt(0, 'node');
   }.property('MSA.modulesController.@each.name').cacheable(),
@@ -293,6 +295,7 @@ MSA.dataController = Ember.Object.create({
   energyTypesBinding: 'MSA.energyTypesController.content',
   minRequirementsBinding: 'MSA.minRequirementsController.content',
   diagramRulesBinding: 'MSA.diagramRulesController.content',
+  rubricCategoriesBinding: 'MSA.rubricCategoriesController.content',
 
   defaultDataHash: function() {
     var defaults = {
@@ -345,6 +348,7 @@ MSA.dataController = Ember.Object.create({
     data.energy_types         = this.get('energyTypes').mapProperty('dataHash');   
     data.minimum_requirements = this.get('minRequirements').mapProperty('dataHash');
     data.diagram_rules        = this.get('diagramRules').mapProperty('dataHash');  
+    data.rubric_categories    = this.get('rubricCategories').mapProperty('dataHash');  
     return data;
   }.property( 'activity.rev',
     'energyTypes.@each.rev',
@@ -357,32 +361,39 @@ MSA.dataController = Ember.Object.create({
     return JSON.stringify(this.get('data'),null,2);
   }.property('data').cacheable(),
 
+
   loadData: function(dataHash) {
     var data = dataHash;
     if (typeof data === 'string') {
       data = JSON.parse(data);
     }
+
     // old authored data hasn't specified this.
     // authoring interface incorrectly checks a box
-    
     data.diagram_rules.forEach(function(rule) {
       if ((typeof rule.isJavascript === 'undefined')) {
         rule.isJavascript = false;
       }
     });
-
-    this.set('activity', MSA.ActivityModel.create({'dataHash': data}));
+    
     MSA.modulesController.contentFromHashArray(data.modules);
     MSA.energyTypesController.contentFromHashArray(data.energy_types);
     MSA.diagramRulesController.contentFromHashArray(data.diagram_rules);
     MSA.rubricCategoriesController.contentFromHashArray(data.rubric_categories);
     MSA.minRequirementsController.contentFromHashArray(data.minimum_requirements);
+
+    var activity = MSA.ActivityModel.create();
+    var item;
+    for (item in data) {
+      activity.set(item,data[item]);
+    }
+    this.set('activity',activity);
   }
 });
 
 MSA.NodeTypesView = Ember.CollectionView.extend({
   tagName: 'ul',
-  contentBinding: "MSA.diagramRulesController.nodeTypes"
+  contentBinding: "MSA.diagramRulesController.nodes"
 });
 
 // add missing textarea tag attributes
@@ -499,8 +510,16 @@ MSA.RuleView = Ember.View.extend({
   }
 });
 
+MSA.RubricExpressionView = Ember.View.extend({
+  templateName: 'rubricExpression-template',
+  rubricExpressionBinding: 'MSA.dataController.activity.rubricExpression',
+  showScore: function() {
+    MSA.rubricCategoriesController.showScore();
+  }
+});
+
 MSA.MinRequirementView = Ember.View.extend({
-  templateName: 'minRequirement-template',
+  templateName: 'rule-template',
   remove: function() {
     MSA.minRequirementsController.removeObject(this.get('rule'));
   },

@@ -116,12 +116,14 @@ SCUtil.ModelArray = Ember.ArrayController.extend({
     var item = null;
     var modelType = this.get('modelType');
     this.set('content',[]);
-
+    var newData = [];
     hashArray.forEach(function(item) {
-      item = modelType.create(item);
-      this.pushObject(item);
+      item = modelType.create({dataHash: item});
+      newData.push(item);
     });
+    this.set('content',newData);
   },
+  
   createItem: function() {
     // this.pushObject(this.get('modelType').create().get('dataHash'));
     this.pushObject(this.get('modelType').create());
