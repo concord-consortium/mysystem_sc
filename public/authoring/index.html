@@ -240,9 +240,11 @@
     <!-- #### Rules  #### -->
     <div class="options_block">
       <h2>Diagram Rules</h2>
+      <ol start=0>
       {{#each MSA.diagramRulesController.content}}
-        {{view MSA.RuleView}} 
+        {{view MSA.RuleView ruleBinding="this"}} 
       {{/each}}
+      </ol>
         
       {{#view Ember.Button 
         target="MSA.diagramRulesController"
@@ -251,38 +253,75 @@
       {{/view}}
     </div>
 
-  <div class="options_block">
-    <h2>Rubric Categories</h2>
-    {{#each MSA.rubricCategoriesController.content}}
-      <div class="rubric_category">
-        <div class="rubric_category_name">
-          <span class="label">Category Name:</span>
-          <span class="value">
-            {{view MSA.TextField valueBinding="name" placeholder="name"}}
-          </span>
-          <span class="remove_button">
-            {{#view Ember.Button target="MSA.rubricCategoriesController" action="removeItem" itemBinding="parentView.content"}}
-              Remove Category
-            {{/view}}
-          </span>        
+    <div class="options_block">
+      <h2>Rubric Categories</h2>
+      {{#each MSA.rubricCategoriesController.content}}
+        <div class="rubric_category">
+          <div class="rubric_category_name">
+            <span class="label">Category Name:</span>
+            <span class="value">
+              {{view MSA.TextField valueBinding="name" placeholder="name"}}
+            </span>
+            <span class="remove_button">
+              {{#view Ember.Button target="MSA.rubricCategoriesController" action="removeItem" itemBinding="parentView.content"}}
+                Remove Category
+              {{/view}}
+            </span>        
+          </div>
         </div>
-      </div>
-    {{/each}}
-    {{#view Ember.Button 
-      target="MSA.rubricCategoriesController"
-      action="createItem" class="add_button"}}
-      Add New Category
-    {{/view}}
-  </div>
-
-
-    <!-- #### JSON DataHash #### -->
-    <div class="code">
-      <hr/>
-      <pre><code>
-        {{MSA.dataController.dataJson}}
-      </code></pre>
+      {{/each}}
+      {{#view Ember.Button 
+        target="MSA.rubricCategoriesController"
+        action="createItem" class="add_button"}}
+        Add New Category
+      {{/view}}
     </div>
+
+
+
+    <!--- ##### Custom Rule Evaluator ##### -->
+    <div class="options_block">
+      Enable Custom Rule Evaluator
+      {{view Ember.Checkbox checkedBinding="MSA.dataController.activity.enableCustomRuleEvaluator"}}
+
+      {{#if MSA.dataController.activity.enableCustomRuleEvaluator}}
+        <br/>
+        Javascipt for custom rules. e.g.
+        <br/>
+        <code style="white-space:pre;">
+// sample use:
+if (Rules.extraLinks()) {
+  Rules.addSuggestion("You have some extra links!");
+}
+if (!Rules.iconsUsedOnce()) {
+  Rules.addSuggestion("You can only use each icon once.");
+}
+if (!Rules.hasTransformation()) {
+  Rules.addSuggestion("How is energy transformed?");
+}
+        </code>
+        <br/>
+        <div id="customRuleEvaluator">
+          {{
+            view MSA.TextArea 
+            valueBinding  = "MSA.dataController.activity.customRuleEvaluator"
+            wrap          = "off" 
+            rows          = "20"
+            cols          = "72" 
+          }}
+          {{#view Ember.Button target="MSA.customRuleController" action="editCustomRule"}} edit {{/view}}
+        </div>
+      {{/if}}
+    </div>
+
+
+      <!-- #### JSON DataHash #### -->
+      <div class="code">
+        <hr/>
+        <pre><code>
+          {{MSA.dataController.dataJson}}
+        </code></pre>
+      </div>
 
   </script>
 
@@ -333,7 +372,7 @@
 
   <!-- #### Rule Template #### -->
   <script type="text/x-handlebars" data-template-name="rule-template">
-
+    <li>
     <div class="diagram_rule">
       {{#if view.showName}}
         <div class="diagram_rule_name">
@@ -348,55 +387,76 @@
                 contentBinding="MSA.diagramRulesController.categories" 
                 selectionBinding="category" }}
             </span>
-          </span>
+          </span><br/>
+          use javascript: {{view Ember.Checkbox checkedBinding="isJavascript"}}
         </div>
-        use javascript: 
-        {{view Ember.Checkbox checkedBinding="isJavascript"}}
       {{/if}}
-      The diagram <br/>
-      {{view Ember.Select 
-          contentBinding="MSA.diagramRulesController.shouldOptions" 
-          selectionBinding="shouldOption"}} 
-      
-      contain
-      {{view Ember.Select  
-        contentBinding="MSA.diagramRulesController.comparisons" 
-        selectionBinding="comparison"}}
-      {{view MSA.TextField 
-        valueBinding="number" 
-        placeholder="number" size="1"}}
-      {{view Ember.Select 
-        contentBinding="MSA.diagramRulesController.nodeTypes"
-        selectionBinding="type"
-      }}
-      </br>
+      {{#if "isJavascript"}}
+            <div class="javascript_rule">
+              {{
+                view MSA.TextArea 
+                valueBinding  = "javascriptExpression"
+                wrap          = "off" 
+                rows          = "20"
+                cols          = "72" 
+              }}
+              <button {{action "editJSRule" on="click" item="model"}}>edit</button>
 
-      Use link conditions: 
-      {{view Ember.Checkbox checkedBinding="hasLink" }}
-      {{#if "hasLink"}}
+            </div>
+      {{else}}
+        The diagram
+        {{view Ember.Select 
+            contentBinding="MSA.diagramRulesController.shouldOptions" 
+            selectionBinding="shouldOption"}} 
+        
+        contain
+        {{view Ember.Select  
+          contentBinding="MSA.diagramRulesController.comparisons" 
+          selectionBinding="comparison"}}
+        {{view MSA.TextField 
+          valueBinding="number" 
+          placeholder="number" size="1"}}
+        {{view Ember.Select 
+          contentBinding="MSA.diagramRulesController.nodeTypes"
+          selectionBinding="type"
+        }}
+        </br>
+
+        with links: 
+        {{view Ember.Checkbox checkedBinding="hasLink" }}
+        {{#if "hasLink"}}
+          <hr/>
+          {{view Ember.Select
+            contentBinding="MSA.diagramRulesController.linkDirections" 
+            selectionBinding="linkDirection"
+          }}
+          {{view Ember.Select 
+            contentBinding="MSA.diagramRulesController.nodeTypes" 
+            selectionBinding="otherNodeType"
+          }}
+          with energy type: 
+          {{view Ember.Select 
+            contentBinding="MSA.diagramRulesController.energyTypes" 
+            selectionBinding="energyType"
+          }}
+        {{/if}}
+      {{/if}}
+      {{#if view.showSuggestion }}
+        <hr/>
+        if not then show the user: 
         <br/>
-        {{view Ember.Select
-          contentBinding="MSA.diagramRulesController.linkDirections" 
-          selectionBinding="linkDirection"
-        }}
-        {{view Ember.Select 
-          contentBinding="MSA.diagramRulesController.nodeTypes" 
-          selectionBinding="otherNodeType"
-        }}
-        with energy type: 
-        {{view Ember.Select 
-          contentBinding="MSA.diagramRulesController.energyTypes" 
-          selectionBinding="parentView.parentView.content.energyType"
+        {{
+          view MSA.TextArea 
+          valueBinding = "suggestion"
         }}
       {{/if}}
-      
-      <br/>
-      
-      <button {{action "remove" on="click" item="model"}}>Remove Requirement</button>
+      <hr/>
+      <button {{action "remove" on="click" item="model"}}>Remove {{view.ruleType}}</button>
       <button {{action "moveItemUp" on="click" item="model"}}>↑</button>
       <button {{action "moveItemDown" on="click" item="model"}}>↓</button>
       
     </div>
+    </li>
   </script>
 
   <script type="text/x-handlebars" data-template-name="link_conditions-template">

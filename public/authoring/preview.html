@@ -19,16 +19,16 @@
           authorIframeLoaded = false,
           appIframeLoaded = false;
       
-      function createIframe(url, id, $elem, callback) {
+      var createIframe = function(url, id, $elem, callback) {
         $iframe = $('<iframe id='+id+'>').attr('src', url).attr('width', '100%').attr('height', 700);
         $elem.append($iframe);
         $('iframe#'+id).load(function() 
         {
           callback(this);
         });
-      }
+      };
       
-      function updateRuntime(_data) {
+      var updateRuntime = function(_data) {
         var data = _data;
         if (!data){
           authoring_iframe = document.getElementById(authorIframeId).contentWindow;
@@ -47,35 +47,31 @@
             runtime_iframe.MySystem.activityController.set('content',activity);
           runtime_iframe.SC.RunLoop.end();
         }
-      }
+      };
       
-      function scoreDiagram() {
+      var scoreDiagram = function(){
         var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
         var controller = runtime_iframe.MySystem.rubricController;
         var showScore = controller.displayScore;
         showScore();
-      }
+      };
 
-      createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
-        iframe.contentWindow.MSA.setupParentIFrame(null, this, updateRuntime, scoreDiagram);
-        authorIframeLoaded = true;
-        if (authorIframeLoaded && appIframeLoaded){
-          bothIframesLoaded();
-        }
-      });
+      // createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
+      //   iframe.contentWindow.MSA.setupParentIFrame(null, this, updateRuntime, scoreDiagram);
+      //   authorIframeLoaded = true;
+      //   if (authorIframeLoaded && appIframeLoaded){
+      //     setTimeout(bothIframesLoaded,5000);
+      //     // bothIframesLoaded();
+      //   }
+      // });
       
-      createIframe('../my_system', 'runtime-iframe', $('#runtime_td'), function(iframe){
-        appIframeLoaded = true;
-        if (authorIframeLoaded && appIframeLoaded){
-          bothIframesLoaded();
-        }
-      });
-      
-      function bothIframesLoaded() {
+
+      var bothIframesLoaded= function() {
         var dataStore = new msaPreview.CouchDS(),
             authorContent = document.getElementById('mysystem2-authoring-iframe').contentWindow,
             runtimeContent = document.getElementById('runtime-iframe').contentWindow;
 
+        authorContent.MSA.setupParentIFrame(null, this, updateRuntime, scoreDiagram);
         updateRuntime(authorContent.MSA.dataController.get('data'));
 
         dataStore.setAuthorContentWindow(authorContent);
@@ -91,7 +87,7 @@
           if (data.length > 1 && !!data[1]){
             dataStore.loadLearnerData(data[1]);
           }
-        }
+        };
 
         // register save function on Save Authored Activity button
         $('#save_authoring').click(function(){dataStore.saveAuthoring()});
@@ -131,7 +127,15 @@
           }
         });
 
-     }
+     }; // bothIframesLoaded
+
+    createIframe('../my_system', 'runtime-iframe', $('#runtime_td'), function(iframe){
+        createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
+          bothIframesLoaded();
+          // setTimeout(bothIframesLoaded,1000);
+        });
+      });
+      
     });
   </script>
 </head>

@@ -295,7 +295,7 @@ MSA.dataController = Ember.Object.create({
       "diagram_rules"                : [],
       "rubric_categories"            : [],
       "rubricExpression"             : "true;",
-      "correctFeedback"              : "Your diagram has false obvious problems.",
+      "correctFeedback"              : "Your diagram has no obvious problems.",
       "minimum_requirements"         : [],
       "maxFeedbackItems"             : 0,
       "minimumRequirementsFeedback"  : "You need to work more on your diagram to get feedback!",
@@ -473,9 +473,9 @@ MSA.editorController = Ember.Object.create({
 MSA.customRuleController = Ember.Object.create({
   helpDiv: '#evalHelp',
   editCustomRule: function() {
-    var value = MSA.activity.get('customRuleEvaluator');
+    var value = MSA.dataController.activity.get('customRuleEvaluator');
     var callback = function(value) {
-      MSA.activity.set('customRuleEvaluator',value);
+      MSA.dataController.activity.set('customRuleEvaluator',value);
     }.bind(this);
     MSA.editorController.editCustomRule(this,value,callback);
   }
@@ -498,8 +498,24 @@ MSA.LinkView = Ember.View.extend({
 MSA.RuleView = Ember.View.extend({
   templateName: 'rule-template',
   showName: true,
+  showSuggestion: true,
+  ruleType: "Diagram Rule",
   remove: function() {
     MSA.diagramRulesController.removeObject(this.get('rule'));
+  },
+  moveItemUp: function() {
+   MSA.diagramRulesController.moveItemUp(this.get('rule')); 
+  },
+  moveItemDown: function() {
+   MSA.diagramRulesController.moveItemDown(this.get('rule')); 
+  },
+  toggleHasLink: function() {
+    var rule   = this.get('rule');
+    rule.toggleHasLink();
+  },
+  editJSRule: function() {
+    var rule   = this.get('rule');
+    rule.editJSRule();
   }
 });
 
@@ -512,6 +528,9 @@ MSA.RubricExpressionView = Ember.View.extend({
 
 MSA.MinRequirementView = Ember.View.extend({
   templateName: 'rule-template',
+  showName: false,
+  showSuggestion: false,
+  ruleType: "Requirement",
   remove: function() {
     MSA.minRequirementsController.removeObject(this.get('rule'));
   },
