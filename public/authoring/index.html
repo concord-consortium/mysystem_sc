@@ -241,7 +241,7 @@
     <div class="options_block">
       <h2>Diagram Rules</h2>
       {{#each MSA.diagramRulesController.content}}
-        {{view MSA.RuleView rule="this" }} 
+        {{view MSA.RuleView}} 
       {{/each}}
         
       {{#view Ember.Button 
@@ -250,6 +250,30 @@
         Add New Diagram Rule
       {{/view}}
     </div>
+
+  <div class="options_block">
+    <h2>Rubric Categories</h2>
+    {{#each MSA.rubricCategoriesController.content}}
+      <div class="rubric_category">
+        <div class="rubric_category_name">
+          <span class="label">Category Name:</span>
+          <span class="value">
+            {{view MSA.TextField valueBinding="name" placeholder="name"}}
+          </span>
+          <span class="remove_button">
+            {{#view Ember.Button target="MSA.rubricCategoriesController" action="removeItem" itemBinding="parentView.content"}}
+              Remove Category
+            {{/view}}
+          </span>        
+        </div>
+      </div>
+    {{/each}}
+    {{#view Ember.Button 
+      target="MSA.rubricCategoriesController"
+      action="createItem" class="add_button"}}
+      Add New Category
+    {{/view}}
+  </div>
 
 
     <!-- #### JSON DataHash #### -->
@@ -271,7 +295,8 @@
       <h2>Rubric Evaluator</h2>
       <div class="rubricExpression">
         {{view MSA.TextArea 
-          valueBinding  = "rubricExpression"
+          valueBinding  = "MSA.dataController.activity.rubricExpression"
+          id            = "rubricExpression"
           wrap          = "off" 
           rows          = "20"
           cols          = "72" 
@@ -306,10 +331,11 @@
 
 
 
-  <!-- #### MinRequirement Template #### -->
+  <!-- #### Rule Template #### -->
   <script type="text/x-handlebars" data-template-name="rule-template">
+
     <div class="diagram_rule">
-      {{#if "showName"}}
+      {{#if view.showName}}
         <div class="diagram_rule_name">
           <span class="label">Rule Name:</span>
           <span class="value">
@@ -379,7 +405,7 @@
 
 
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\/script>')</script>
   <script src="js/libs/handlebars-1.0.0.beta.6.js"></script>
   <script src="js/libs/ember-1.0.pre.js"></script>
