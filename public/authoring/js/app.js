@@ -257,25 +257,19 @@ MSA.RulesController = SCUtil.ModelArray.extend({
   }
 });
 
-MSA.rubricCategoriesController = MSA.RubricCategoriesController.create({
-  // content: MSA.data.rubric_categories
-});
+MSA.rubricCategoriesController = MSA.RubricCategoriesController.create({});
 
 
 MSA.modulesController = SCUtil.ModelArray.create({
-  // content: MSA.data.modules,
   modelType: MSA.Module
 });
 
 MSA.energyTypesController = SCUtil.ModelArray.create({
-  // content: MSA.data.energy_types,
   modelType: MSA.EnergyType
 });
 
 
-MSA.diagramRulesController = MSA.RulesController.create({
-  // content: MSA.data.diagram_rules
-});
+MSA.diagramRulesController = MSA.RulesController.create({});
 
 
 
@@ -351,7 +345,8 @@ MSA.dataController = Ember.Object.create({
     'energyTypes.@each.rev',
     'modules.@each.rev', 
     'minRequirements.@each.rev',
-    'diagramRules.@each.rev'
+    'diagramRules.@each.rev',
+    'rubricCategories.@each.rev'
   ).cacheable(),
 
   dataJson: function() {
@@ -502,6 +497,7 @@ MSA.LinkView = Ember.View.extend({
 
 MSA.RuleView = Ember.View.extend({
   templateName: 'rule-template',
+  showName: true,
   remove: function() {
     MSA.diagramRulesController.removeObject(this.get('rule'));
   }
@@ -509,7 +505,6 @@ MSA.RuleView = Ember.View.extend({
 
 MSA.RubricExpressionView = Ember.View.extend({
   templateName: 'rubricExpression-template',
-  rubricExpressionBinding: 'MSA.dataController.activity.rubricExpression',
   showScore: function() {
     MSA.rubricCategoriesController.showScore();
   }
