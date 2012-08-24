@@ -7,7 +7,7 @@
   <!-- <link rel="stylesheet" href="css/style.css?v=2"> -->
   <link rel="stylesheet" href="css/custom.css">
   <link rel="stylesheet" href="css/jquery.gritter.css">
-  <script type="text/javascript" src="js/libs/jquery-1.4.4.min.js"></script>
+  <script type="text/javascript" src="js/libs/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="js/libs/jquery.couch.js"></script>
   <script type="text/javascript" src="js/libs/jquery.gritter.min.js"></script>
   <script type="text/javascript" src="js/couch-ds.js"></script>
@@ -28,39 +28,56 @@
         });
       }
       
-      function updateRuntime(data) {
-        if (!data.modules){
+      var updateRuntime = function(_data) {
+        var data = _data;
+        if (!data){
           authoring_iframe = document.getElementById(authorIframeId).contentWindow;
-          var data = authoring_iframe.MSA.data;
+          data = authoring_iframe.MSA.dataController.get('data');
         }
+        // TODO: why is this happening? Should already be a hash.
+        if (typeof data.get !== 'undefined') {
+          data = data.get('data');
+        }
+
         var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
-        var activity = runtime_iframe.MySystem.Activity.fromWiseStepDef(data);
-        runtime_iframe.SC.RunLoop.begin();
-          runtime_iframe.MySystem.activityController.set('content',activity);
-        runtime_iframe.SC.RunLoop.end();
-      }
       
-      createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
-        iframe.contentWindow.MSA.setupParentIFrame(null, this, updateRuntime);
-        authorIframeLoaded = true;
-        if (authorIframeLoaded && appIframeLoaded){
-          bothIframesLoaded();
+        if (runtime_iframe.MySystem) {
+          var activity = runtime_iframe.MySystem.Activity.fromWiseStepDef(data);
+          runtime_iframe.SC.RunLoop.begin();
+            runtime_iframe.MySystem.activityController.set('content',activity);
+          runtime_iframe.SC.RunLoop.end();
         }
-      });
+      };
       
-      createIframe('../my_system', 'runtime-iframe', $('#runtime_td'), function(iframe){
-        appIframeLoaded = true;
-        if (authorIframeLoaded && appIframeLoaded){
-          bothIframesLoaded();
-        }
-      });
+      var scoreDiagram = function(){
+        var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
+        var controller = runtime_iframe.MySystem.rubricController;
+        var showScore = controller.displayScore;
+        showScore();
+      };
+
+      // createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
+      //   iframe.contentWindow.MSA.setupParentIFrame(null, this, updateRuntime);
+      //   authorIframeLoaded = true;
+      //   if (authorIframeLoaded && appIframeLoaded){
+      //     bothIframesLoaded();
+      //   }
+      // });
       
-      function bothIframesLoaded() {
+      // createIframe('../my_system', 'runtime-iframe', $('#runtime_td'), function(iframe){
+      //   appIframeLoaded = true;
+      //   if (authorIframeLoaded && appIframeLoaded){
+      //     bothIframesLoaded();
+      //   }
+      // });
+      
+    var bothIframesLoaded= function() {
         var dataStore = new msaPreview.CouchDS(),
             authorContent = document.getElementById('mysystem2-authoring-iframe').contentWindow,
             runtimeContent = document.getElementById('runtime-iframe').contentWindow;
 
-        updateRuntime(authorContent.MSA.data);
+        authorContent.MSA.setupParentIFrame(null, this, updateRuntime, scoreDiagram);
+        updateRuntime(authorContent.MSA.dataController.get('data'));
 
         dataStore.setAuthorContentWindow(authorContent);
         dataStore.setLearnerContentWindow(runtimeContent);
@@ -75,7 +92,7 @@
           if (data.length > 1 && !!data[1]){
             dataStore.loadLearnerData(data[1]);
           }
-        }
+        };
 
         // register save function on Save Authored Activity button
         $('#save_authoring').click(function(){dataStore.saveAuthoring()});
@@ -110,13 +127,20 @@
           }
         });
         $('#autosave_time').keyup(function(){
-          console.log("woo")
           if ($('#autosave_external')[0].checked){
             runtimeContent.MySystem.setAutoSaveFrequency(this.value * 1000);
           }
         });
 
-     }
+     }; // bothIframesLoaded
+
+    createIframe('../my_system', 'runtime-iframe', $('#runtime_td'), function(iframe){
+        createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
+          bothIframesLoaded();
+          // setTimeout(bothIframesLoaded,1000);
+        });
+      });
+      
     });
   </script>
 </head>
