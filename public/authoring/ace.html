@@ -159,16 +159,16 @@
 
     <div id="ruleHelp" class="js_help">
       <span class="label">JS Rule functions:</span>
-      this.check(rule_id);             // check 'rule_id' without feedback. (true|false)
-      this.hasNode('name');            // returns true if there is a node named 'name'
-      this.result = false;             
-      this.hasTransformation();        // true if the diagram has transformations
-      this.iconsUsedOnce();            // true if the icons were only used one time.
-      Rules.extraLinks();              // true if there are links present not defined in any rule.
+      Rules.check(rule_id);             // check 'rule_id' without feedback. (true|false)
+      Rules.hasNode('name');            // returns true if there is a node named 'name'
+      result = false;                   // fail this rule. 
+      Rules.hasTransformation();        // true if the diagram has transformations
+      Rules.iconsUsedOnce();            // true if the icons were only used one time.
+      Rules.extraLinks();               // true if there are links present not defined in any rule.
 
       // sample use:
-      if (this.hasNode('good node') { this.result = true; }
-      else { this.result = false; }
+      if (Rules.hasNode('good node') { result = true; }
+      else { result = false; } // result is false by default, so this is redundant.
       
     </div>
 
