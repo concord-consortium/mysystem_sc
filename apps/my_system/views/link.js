@@ -255,7 +255,9 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
         distanceAlongLine   = 35,
         distanceAlongNormal = 18,
         len, p1, p2, scale, dx, dy, x, y, occluded;
-        
+    
+    var link = this.get('content');
+    if (!link.isComplete()) return;
     if (line.attr('path').length < 1) return;     // this can happen after our content is destroyed
     
     len = line.getTotalLength();
@@ -294,6 +296,7 @@ MySystem.LinkView = RaphaelViews.RaphaelView.extend(SC.ContentDisplay,
   },
   
   removeButtonClicked: function () {
+    this.set('isVisible','false');
     MySystem.statechart.sendAction('deleteDiagramObject', this, this.get('content'));
   }
   
