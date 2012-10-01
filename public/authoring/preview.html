@@ -10,6 +10,7 @@
   <script type="text/javascript" src="js/libs/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="js/libs/jquery.couch.js"></script>
   <script type="text/javascript" src="js/libs/jquery.gritter.min.js"></script>
+  <script type="text/javascript" src="js/libs/ZeroClipboard.min.js"></script>
   <script type="text/javascript" src="js/couch-ds.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {  
@@ -56,15 +57,6 @@
         showScore();
       };
 
-      // createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
-      //   iframe.contentWindow.MSA.setupParentIFrame(null, this, updateRuntime, scoreDiagram);
-      //   authorIframeLoaded = true;
-      //   if (authorIframeLoaded && appIframeLoaded){
-      //     setTimeout(bothIframesLoaded,5000);
-      //     // bothIframesLoaded();
-      //   }
-      // });
-      
 
       var bothIframesLoaded= function() {
         var dataStore = new msaPreview.CouchDS(),

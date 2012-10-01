@@ -22,6 +22,10 @@
 
   <!-- #### Display Options #### -->
   <script type="text/x-handlebars">
+
+    
+    {{ view MSA.PromptView }}
+
     <div class="options_block">
       <h2>Options</h2>
       <h3>Links</h3>
@@ -322,11 +326,22 @@ if (!Rules.hasTransformation()) {
           {{MSA.dataController.dataJson}}
         </code></pre>
       </div>
-
   </script>
 
-
-
+  <script type="text/x-handlebars"  data-template-name='prompt-template'>  
+    <div class="options_block">
+      <h3>Instructions:</h3>
+      <div class="instructions">
+        {{view MSA.TextArea 
+          valueBinding  = "MSA.dataController.activity.prompt"
+          id            = "prompt"
+          wrap          = "off" 
+          rows          = "10"
+          cols          = "50" 
+        }}
+      </div>
+    </div>
+  </script>
 
   <!-- #### Rubric Evaluator Template #### -->
   <script type="text/x-handlebars"  data-template-name='rubricExpression-template'>

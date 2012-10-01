@@ -90,6 +90,7 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn, scoreFn) {
 
 
 MSA.ActivityModel = SCUtil.ModelObject.extend({
+  prompt: SCUtil.dataHashProperty,
   correctFeedback: SCUtil.dataHashProperty,
   maxFeedbackItems: SCUtil.dataHashProperty,
   minimumRequirementsFeedback: SCUtil.dataHashProperty,
@@ -470,6 +471,10 @@ MSA.editorController = Ember.Object.create({
   }
 });
 
+MSA.promptController = Ember.Object.create({
+  showPrompt: false
+});
+
 MSA.customRuleController = Ember.Object.create({
   helpDiv: '#evalHelp',
   editCustomRule: function() {
@@ -524,6 +529,11 @@ MSA.RubricExpressionView = Ember.View.extend({
   showScore: function() {
     MSA.rubricCategoriesController.showScore();
   }
+});
+
+MSA.PromptView = Ember.View.extend({
+  templateName: 'prompt-template',
+  isVisibleBinding: 'MSA.promptController.showPrompt'
 });
 
 MSA.MinRequirementView = Ember.View.extend({

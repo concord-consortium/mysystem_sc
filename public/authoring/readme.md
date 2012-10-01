@@ -23,3 +23,12 @@ Which skips the module all together.   Is this better?
 
 - Authors can still go and delete the module which will orphan nodes, in theory diagram rules could still work since they don't really need the module
 - it adds a big opaque id to the object that can become annoying.
+
+## which html file should I use? preview.html, index.html, run.html?##
+
+* *Index.html* is the inner frame for the authoring. It would never be used by itself.
+* *run.html* is used only to display the runtime, no authoring is included.
+* *preivew.html* has two iframes: authoring on the left, and the runtime preview in the right. It is mostly for debugging and testing, becuase it allows the user to set various saving options.
+* It should be noted that there is another authoring project called ms_authoring (TODO: link?) which has its own "authoring.html" file. 
+
+ 
