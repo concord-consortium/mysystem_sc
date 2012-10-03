@@ -36,8 +36,9 @@ msaPreview.CouchDS.prototype =
           callback(response);
         },
         error: function (response) {
-          alert("Could not find a document with the id '"+self.authoredDocId+"'");
-          window.location.hash = '';
+          // let us fail silently:
+          // alert("Could not find a document with the id '"+self.authoredDocId+"'");
+          // window.location.hash = '';
         }
       }
     );
@@ -45,7 +46,6 @@ msaPreview.CouchDS.prototype =
 
   saveData: function(data, docId, revId, callback) {
     if (!!docId){
-      console.log("saving with known id "+this.learnerDocId);
       data._id = docId;
     }
     if (!!revId){
@@ -57,8 +57,6 @@ msaPreview.CouchDS.prototype =
       data,  
       { 
         success: function(response) { 
-          console.log("Saved ok, id = "+response.id);
-
           // try to intuit which ID is being sent:
           if (self.authoredDocId) {
             if (response.id != self.authoredDocId) {
