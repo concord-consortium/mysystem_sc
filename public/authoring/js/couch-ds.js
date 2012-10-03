@@ -58,7 +58,18 @@ msaPreview.CouchDS.prototype =
       { 
         success: function(response) { 
           console.log("Saved ok, id = "+response.id);
-          window.location.hash = (self.authoredDocId || "") + (self.learnerDocId ? "/"+self.learnerDocId : "/" + response.id);
+
+          // try to intuit which ID is being sent:
+          if (self.authoredDocId) {
+            if (response.id != self.authoredDocId) {
+              self.learnerDocId = response.id;
+            }
+          }
+          else {
+            self.authoredDocId = response.id;
+          }
+
+          window.location.hash = (self.authoredDocId + (self.learnerDocId ?  ( "/" + self.learnerDocId) : ""));
           var url = window.location.href;
           window.location.href = url;
           var gritId = $.gritter.add({
