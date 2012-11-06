@@ -84,7 +84,6 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn, scoreFn) {
   MSA.dataController.loadData(dataHash);
 
   var _update_function = function() {
-    debugger
     var data = MSA.dataController.get('data');
     updateFn(data);
   };

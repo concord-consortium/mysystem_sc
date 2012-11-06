@@ -51,11 +51,15 @@ View.prototype.Mysystem2Node.AuthoringIFrameLoaded = function(){
   var this_ref  = this;
 
   iframe.MSA.setupParentIFrame(this.content, this, function (_data){
-    debugger;
-    // 'this' is bound to the data because it is the first argument
-    // this_ref.content = _data;
-    //this_ref.view.activeContent.setContent(_data);
-    /* fire source updated event */
+    // We can't change the reference to the object,
+    // because too many interested parties are looking at it.
+    // but we can change its attributes.
+    for (var attr in _data) {
+        if (_data.hasOwnProperty(attr)){
+          this_ref.content[attr] = _data[attr];
+        }
+    }
+
     this_view.eventManager.fire('sourceUpdated');
   }, scoringFunction);
 };
