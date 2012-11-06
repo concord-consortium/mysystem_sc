@@ -83,7 +83,13 @@ MSA.setupParentIFrame = function(dataHash, updateObject, updateFn, scoreFn) {
 
   MSA.dataController.loadData(dataHash);
 
-  MSA.dataController.addObserver('data', updateObject, updateFn);
+  var _update_function = function() {
+    debugger
+    var data = MSA.dataController.get('data');
+    updateFn(data);
+  };
+
+  MSA.dataController.addObserver('data', MSA.dataController, _update_function);
   MSA.rubricCategoriesController.set('scoreFunction',scoreFn);
 };
 

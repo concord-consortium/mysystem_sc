@@ -47,10 +47,16 @@ var scoringFunction=function() {
 
 View.prototype.Mysystem2Node.AuthoringIFrameLoaded = function(){
   var iframe = document.getElementById('mysystem2-authoring-iframe').contentWindow;
-  
-  iframe.MSA.setupParentIFrame(this.content, this, function (){
+  var this_view = this.view;
+  var this_ref  = this;
+
+  iframe.MSA.setupParentIFrame(this.content, this, function (_data){
+    debugger;
+    // 'this' is bound to the data because it is the first argument
+    // this_ref.content = _data;
+    //this_ref.view.activeContent.setContent(_data);
     /* fire source updated event */
-    this.view.eventManager.fire('sourceUpdated');
+    this_view.eventManager.fire('sourceUpdated');
   }, scoringFunction);
 };
 
