@@ -505,6 +505,13 @@ MSA.LinkView = Ember.View.extend({
   }
 });
 
+MSA.CategoryView = Ember.View.extend({
+  templateName: 'category-template',
+  remove: function() {
+    MSA.rubricCategoriesController.removeObject(this.get('category'));
+  }
+});
+
 MSA.RuleView = Ember.View.extend({
   templateName: 'rule-template',
   showName: true,

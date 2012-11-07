@@ -260,19 +260,7 @@
     <div class="options_block">
       <h2>Rubric Categories</h2>
       {{#each MSA.rubricCategoriesController.content}}
-        <div class="rubric_category">
-          <div class="rubric_category_name">
-            <span class="label">Category Name:</span>
-            <span class="value">
-              {{view MSA.TextField valueBinding="name" placeholder="name"}}
-            </span>
-            <span class="remove_button">
-              {{#view Ember.Button target="MSA.rubricCategoriesController" action="removeItem" itemBinding="parentView.content"}}
-                Remove Category
-              {{/view}}
-            </span>        
-          </div>
-        </div>
+        {{view MSA.CategoryView categoryBinding="this"}} 
       {{/each}}
       {{#view Ember.Button 
         target="MSA.rubricCategoriesController"
@@ -378,9 +366,15 @@ if (!Rules.hasTransformation()) {
 
   <!-- #### Category Template #### -->
   <script type="text/x-handlebars"  data-template-name='category-template'>
-    {{view MSA.TextField valueBinding="name" placeholder="name"}}
-    {{view MSA.TextField valueBinding="image" placeholder="image"}}
-    <button {{action "remove" on="click" item="model"}}>remove</button>
+    <div class="rubric_category">
+      <div class="rubric_category_name">
+        <span class="label">Category Name:</span>
+        <span class="value">
+          {{view MSA.TextField valueBinding="name" placeholder="name"}}
+        </span>
+        <button {{action "remove" on="click" item="model"}}>remove</button>
+      </div>
+    </div>
   </script>
 
 
