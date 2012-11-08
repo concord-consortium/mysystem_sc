@@ -61,7 +61,7 @@
 	display:none;
 	position:absolute;
 	top:5px;
-	left:3px;
+	right:3px;
 	background:url(../images/gritter.png) no-repeat left top;
 	cursor:pointer;
 	width:30px;
