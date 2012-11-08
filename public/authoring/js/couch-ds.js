@@ -101,7 +101,16 @@ msaPreview.CouchDS.prototype =
       clip.setCSSEffects( true );                  
       
       clip.addEventListener( 'onComplete',function() {
-        alert('a link to this diagram is now in your clipboard.');
+        // alert('A link to this diagram is now in your clipboard.');
+        element.find('.gritter-title').html('A link to this diagram is now in your clipboard.');
+        var gritterId = element.closest('.gritter-item-wrapper').attr('id');
+        gritterId = gritterId.replace(/gritter-item-/g,'');
+        console.log(gritterId);
+
+        $.gritter.remove(gritterId, { 
+          fade: true,
+          speed: 3000
+        });
       });
     }
   },
