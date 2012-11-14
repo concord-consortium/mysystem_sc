@@ -30,17 +30,19 @@ MySystem = SC.Application.create(
   */
   updateFromDOM: function () {
     SC.run( function () {
-      var text = SC.$('#my_system_state').text(),
-          data;
-          
-      if (text.trim().length === 0) {
-        return; // there is no data in the DOM
-      }
-      data = MySystem.migrations.migrateLearnerData(JSON.parse(text));
-      MySystem.loadLearnerData(data);
+      var text = SC.$('#my_system_state').text();
+      MySystem.loadLearnerJSON(text);
     });
   },
-  
+
+  loadLearnerJSON: function (text) {
+    var data;
+    if (text.trim().length === 0) {
+      return; // there is no data in the DOM
+    }
+    data = MySystem.migrations.migrateLearnerData(JSON.parse(text));
+    MySystem.loadLearnerData(data);
+  },
   loadLearnerData: function (data) {
     MySystem.store.setStudentStateDataHash(data);
   },
