@@ -30,6 +30,7 @@ MySystem.Activity = SC.Record.extend(
   diagramRules: SC.Record.toMany('MySystem.DiagramRule'),
   rubricCategories: SC.Record.toMany('MySystem.RubricCategory'),
   rubricExpression: SC.Record.attr(String),
+  initialDiagramJson: SC.Record.attr(String),
   minimumRequirements: SC.Record.toMany('MySystem.DiagramRule'),
   minimumRequirementsFeedback: SC.Record.attr(String),
 
@@ -121,9 +122,10 @@ MySystem.Activity.fromWiseStepDef = function(wiseStepDef) {
     nodeWidth:             (wiseStepDef["nodeWidth"]           || 100),
     backgroundImage:       (wiseStepDef["backgroundImage"]     || null),
     backgroundImageScaling:(wiseStepDef["backgroundImageScaling"]|| false),
-    rubricExpression:      (wiseStepDef["rubricExpression"] || "")
+    rubricExpression:      (wiseStepDef["rubricExpression"] || ""),
+    initialDiagramJson:    (wiseStepDef["initialDiagramJson"]   || "")
   });
-
+  
   var size = modules.length;
   var i = 0;
   for (i=0; i < size; i++) {

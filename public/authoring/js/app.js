@@ -115,7 +115,8 @@ MSA.ActivityModel = SCUtil.ModelObject.extend({
   nodeHeight: SCUtil.dataHashProperty,
   backgroundImage: SCUtil.dataHashProperty,
   backgroundImageScaling: SCUtil.dataHashProperty,
-  rubricExpression: SCUtil.dataHashProperty
+  rubricExpression: SCUtil.dataHashProperty,
+  initialDiagramJson: SCUtil.dataHashProperty
 });
 
 MSA.Module = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
@@ -320,7 +321,8 @@ MSA.dataController = Ember.Object.create({
       "nodeHeight"                   : 110,
       "nodeWidth"                    : 110,
       "backgroundImage"              : null,
-      "backgroundImageScaling"       : false
+      "backgroundImageScaling"       : false,
+      "initialDiagramJson"           : ""
     };
 
     if (top === self) {
