@@ -43,9 +43,8 @@
         var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
       
         if (runtime_iframe.MySystem) {
-          var activity = runtime_iframe.MySystem.Activity.fromWiseStepDef(data);
           runtime_iframe.SC.RunLoop.begin();
-            runtime_iframe.MySystem.activityController.set('content',activity);
+            runtime_iframe.MySystem.loadWiseConfig(data,null);
           runtime_iframe.SC.RunLoop.end();
         }
       };
@@ -82,7 +81,11 @@
         };
 
         // register save function on Save Authored Activity button
-        $('#save_authoring').click(function(){dataStore.saveAuthoring()});
+        $('#save_authoring').click(function(){
+          var activity = authorContent.MSA.dataController.get('activity');
+          activity.set('initialDiagramJson',runtimeContent.$('#my_system_state').text());
+          dataStore.saveAuthoring();
+        });
 
         // register save function on internal MySystem app's save button
         // This is all complicated here just because we want to disable saving and autosaving
