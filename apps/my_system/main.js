@@ -114,6 +114,11 @@ MySystem.clearCanvas = function () {
   for (i = 0; i < nodes.get('length'); ++i) {
       nodes.objectAt(i).destroy();
   }
+  MySystem.loadInitialDiagram();
+};
+
+MySystem.loadInitialDiagram = function() {
+  MySystem.loadLearnerJSON(MySystem.activityController.get('initialDiagramJson')||'');
 };
 
 // Load canvas data for student
@@ -129,6 +134,7 @@ MySystem.loadWiseConfig = function(authoredContent,latestResponse) {
   SC.run( function() {
     var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
     MySystem.activityController.set('content',activity);
+    MySystem.loadInitialDiagram();
     MySystem.updateFromDOM();
     var lastFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
     MySystem.activityController.set('lastFeedback',lastFeedback.get('feedback'));
