@@ -45,6 +45,14 @@ var scoringFunction=function() {
   }
 };
 
+var getPreviewDiagramState=function() {
+  var previewFrame = window.frames['previewFrame'];
+  if (!! previewFrame.$) {
+    return previewFrame.$('#my_system_state').text()  
+  }
+  return null;
+}
+
 View.prototype.Mysystem2Node.AuthoringIFrameLoaded = function(){
   var iframe = document.getElementById('mysystem2-authoring-iframe').contentWindow;
   var this_view = this.view;
@@ -54,6 +62,12 @@ View.prototype.Mysystem2Node.AuthoringIFrameLoaded = function(){
     // We can't change the reference to the object,
     // because too many interested parties are looking at it.
     // but we can change its attributes.
+    var previewDiagram = getPreviewDiagramState();
+    if (previewDiagram && previewDiagram.length > 0) {
+      var activity = iframe.MSA.dataController.get('activity');
+      activity.set('initialDiagramJson',previewDiagram);
+      _data['initialDataJson'] = previewDiagram
+    }
     for (var attr in _data) {
         if (_data.hasOwnProperty(attr)){
           this_ref.content[attr] = _data[attr];
