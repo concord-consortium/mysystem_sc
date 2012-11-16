@@ -1,0 +1,8 @@
+rvm use 1.9.2-p290@my_system_sc --create
+
+export WISE_HOST=184.72.214.169
+export WISE_PEM=/Users/johndoe/lab/wise4-vagrant/config/keys/wise_vagrant.pem
+export WISE_STEP=./vle/node/mysystem2 
+export WISE_STEPS_PATH=/var/lib/tomcat6/webapps/vlewrapper/vle/node
+export WISE_SSH_USER=ubuntu
+export WISE_RSYNC_COMMAND='rsync -rtzPu -e "ssh -i $WISE_PEM" $WISE_STEP $WISE_SSH_USER@$WISE_HOST:$WISE_STEPS_PATH'

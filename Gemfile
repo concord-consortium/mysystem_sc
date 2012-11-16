@@ -13,3 +13,13 @@ gem "sc-testdriver", "0.1.1", :git => "git://github.com/concord-consortium/capyb
 gem "cucumber"
 
 gem "jasmine",  "1.2.0"
+
+# FS Notification libraries for guard (non-polling)
+gem 'rb-inotify', :require => false
+gem 'rb-fsevent', :require => false
+gem 'rb-fchange', :require => false
+
+# build from Guardfile when source files change
+gem 'guard'
+gem 'guard-rake'
+gem 'guard-shell'
