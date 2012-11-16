@@ -1,6 +1,9 @@
 # ===========================================================================
 # Project:   MySystem Sproutcore implementation
 # Copyright: ©2011 Concord Consortium
+# Sproutcore build file ... for building sproutcore app.
+# MySystem Sproutcore build will happen with 'bundle exec rake'
+# or 'bundle exec sc-build' .  The former will also create WISE4 glue.
 # ===========================================================================
 
 require File.expand_path('../frameworks/jasmine-sproutcore/builders/jasmine_builder', __FILE__)
