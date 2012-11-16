@@ -6,6 +6,7 @@
  */
 function Mysystem2(node,view,secondTime) {
   this.node = node;
+  this.view = node.view;
   this.content = node.getContent().getContentJSON();
 
   this.domIO = document.getElementById('my_system_state');
@@ -46,7 +47,29 @@ Mysystem2.prototype.saveTriggeredByMySystem = function(isSubmit) {
  * step, if any.
  */
 Mysystem2.prototype.render = function() {
+	var workToImport = [];
+	
+	//process the tag maps if we are not in authoring mode
+	if(this.view.authoringMode == null || !this.view.authoringMode) {
+		//get the tag map results
+		var tagMapResults = this.processTagMaps();
+		
+		//get the result values
+		enableStep = tagMapResults.enableStep;
+		message = tagMapResults.message;
+		workToImport = tagMapResults.workToImport;
+	}
+	
   var latestState = this.getLatestState();
+  
+  if(latestState == null && workToImport != null && workToImport.length > 0) {
+	  /*
+	   * the student has not done any work for this step and
+	   * there is work to import so we will use the work to import
+	   */
+	  latestState = workToImport[workToImport.length - 1];
+  }
+  
   if (latestState !== null) {
     /*
      * get the response from the latest state. the response variable is
@@ -209,6 +232,76 @@ Mysystem2.prototype.saveSuccessful = function () {
   }
 };
 
+
+/**
+ * Process the tag maps and obtain the results
+ * @return an object containing the results from processing the
+ * tag maps. the object contains three fields
+ * enableStep
+ * message
+ * workToImport
+ */
+Mysystem2.prototype.processTagMaps = function() {
+	var enableStep = true;
+	var message = '';
+	var workToImport = [];
+	
+	//the tag maps
+	var tagMaps = this.node.tagMaps;
+	
+	//check if there are any tag maps
+	if(tagMaps != null) {
+		
+		//loop through all the tag maps
+		for(var x=0; x<tagMaps.length; x++) {
+			
+			//get a tag map
+			var tagMapObject = tagMaps[x];
+			
+			if(tagMapObject != null) {
+				//get the variables for the tag map
+				var tagName = tagMapObject.tagName;
+				var functionName = tagMapObject.functionName;
+				var functionArgs = tagMapObject.functionArgs;
+				
+				if(functionName == "importWork") {
+					//get the work to import
+					workToImport = this.node.getWorkToImport(tagName, functionArgs);
+				} else if(functionName == "showPreviousWork") {
+					//show the previous work in the previousWorkDiv
+					this.node.showPreviousWork($('#previousWorkDiv'), tagName, functionArgs);
+				} else if(functionName == "checkCompleted") {
+					//we will check that all the steps that are tagged have been completed
+					
+					//get the result of the check
+					var result = this.node.checkCompleted(tagName, functionArgs);
+					enableStep = enableStep && result.pass;
+					
+					if(message == '') {
+						message += result.message;
+					} else {
+						//message is not an empty string so we will add a new line for formatting
+						message += '<br>' + result.message;
+					}
+				}
+			}
+		}
+	}
+	
+	if(message != '') {
+		//message is not an empty string so we will add a new line for formatting
+		message += '<br>';
+	}
+	
+	//put the variables in an object so we can return multiple variables
+	var returnObject = {
+		enableStep:enableStep,
+		message:message,
+		workToImport:workToImport
+	};
+	
+	return returnObject;
+};
 
 //used to notify scriptloader that this script has finished loading
 if(typeof eventManager != 'undefined'){

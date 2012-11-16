@@ -13,6 +13,12 @@ Mysystem2Node.authoringToolName = "My System 2";
  */
 Mysystem2Node.authoringToolDescription = "This is a generic step only used by developers";
 
+
+Mysystem2Node.tagMapFunctions = [
+	{functionName:'importWork', functionArgs:[]},
+	{functionName:'showPreviousWork', functionArgs:[]}
+];
+
 /**
  * This is the constructor for the Node
  * 
@@ -86,7 +92,7 @@ Mysystem2Node.prototype.onExit = function() {
  * div id to this function and this function will insert the student data
  * into the div.
  * 
- * @param divId the id of the div we will render the student work into
+ * @param displayStudentWorkDiv the div we will render the student work into
  * @param nodeVisit the student work
  * @param childDivIdPrefix (optional) a string that will be prepended to all the 
  * div ids use this to prevent DOM conflicts such as when the show all work div
@@ -98,7 +104,7 @@ Mysystem2Node.prototype.onExit = function() {
  * look at SensorNode.renderGradingView() as an example of a step that
  * requires additional processing
  */
-Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivIdPrefix, workgroupId) {
+Mysystem2Node.prototype.renderGradingView = function(displayStudentWorkDiv, nodeVisit, childDivIdPrefix, workgroupId) {
 	/*
 	 * get the step work id from the node visit in case we need to use it in
 	 * a DOM id. we don't use it in this case but I have retrieved it in case
@@ -106,6 +112,7 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
 	 * how one might use it.
 	 */
 	var stepWorkId = nodeVisit.id;
+	var divId = displayStudentWorkDiv.attr('id');
 
 	// get content
     var contentString = this.getContent().getContentString();
@@ -119,25 +126,86 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
     
     var divContent = "";
     
+    // given the nodeState, returns the HTML that should be displayed in the div for student work.
+    function getDivContentFromNodeState(nodeState, nodeStateIndex, view, contentBaseUrl) {
+			var studentWork = nodeState.response;
+			var isSubmit = nodeState.isSubmit;
+            var svg = null; 
+            var png = null;
+			var feedback = "";
+			var timestamp = "";
+			
+			//get the response string
+			var responseString = nodeState.response;
+			
+			//remove all the \n
+			responseString = responseString.replace(/\n/g, "");
+			
+			//create a JSON object from the response
+			var responseJSON = JSON.parse(responseString);
+			
+			if(responseJSON["MySystem.RuleFeedback"] != null &&
+			   responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK != null) {
+				
+				if(responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.feedback != null) {
+					//get the feedback
+					feedback = responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.feedback;    					
+				}
+				
+				if(responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.timeStampMs != null) {
+					//get the timestamp
+					var timestampMS = responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.timeStampMs;
+					timestamp = new Date(timestampMS);
+				}
+                if(responseJSON["MySystem.GraphicPreview"] != null &&
+                   responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW != null) {
+                    svg = responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW.svg;
+                    if (svg != null) {
+                        svg = unescape(svg);
+                        svg = new LZ77().decompress(svg);
+                    }
+                    png = responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW.png;
+                    if (png != null) { png = "<img src='" + png + "'' />"; }
+                }
+			}
+			
+    	    // prepend contentbaseurl in front of "assets" to student's work
+    	    var studentWork = view.utils.prependContentBaseUrlToAssets(contentBaseUrl, studentWork);
+    		
+    	    divContent += "Diagram: ";
+    	    
+            // put the student work and content in a hidden element
+            // add enlarge link to show student's diagram in a popup window
+            divContent += "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
+                "onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"_"+nodeStateIndex+"\"'>enlarge</a>" +
+                "<span id='content_"+divId+"_"+nodeStateIndex+"' style='display:none'>"+contentString+"</span>" +
+                "<span id='studentwork_"+divId+"_"+nodeStateIndex+"' style='display:none'>"+studentWork+"</span>";
+
+    		if (svg != null) {
+                divContent += "<div class='preview svg image'" + 
+                " style='display: block; overflow: auto; width: 100%; height:500px;'> " + 
+                svg + "</div>";
+            }
+            else if (png != null) {
+                 divContent += "<span class='preview png image'> " + png + "</span>";
+            }
+        
+            divContent += "<br>";
+    		divContent += "Is Submit: " + isSubmit;
+    		divContent += "<br>";
+    		divContent += "Feedback: " + feedback;
+    		divContent += "<br>";
+    		divContent += "Timestamp: " + timestamp;
+    		divContent += "<br>";
+    		return divContent;
+    }
+    
     if(contentJSON != null) {
     	if(contentJSON.customRuleEvaluator == null || contentJSON.customRuleEvaluator == ""){
     		//only display the latest node state
-    		
     		//Get the latest student state object for this step
-    		var MYSYSTEM2STATE = nodeVisit.getLatestWork();
-    		
-    		// get student work (string)
-    		var studentWork = MYSYSTEM2STATE.getStudentWork().response;
-    		
-    	    // prepend contentbaseurl in front of "assets" to student's work
-    	    var studentWork = this.view.utils.prependContentBaseUrlToAssets(contentBaseUrl, studentWork);
-    		
-    		// put the student work and content in a hidden element
-    	    // add enlarge link to show student's diagram in a popup window
-    		divContent = "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
-    			"onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"\"'>enlarge</a>" +
-    	    	"<span id='content_"+divId+"' style='display:none'>"+contentString+"</span>" +
-    	    	"<span id='studentwork_"+divId+"' style='display:none'>"+studentWork+"</span>";
+    		var nodeState = nodeVisit.getLatestWork();
+    		divContent = getDivContentFromNodeState(nodeState, 0, this.view, contentBaseUrl);
     	} else {
     		/*
     		 * display all the node states because this step utilizes automated feedback
@@ -148,87 +216,18 @@ Mysystem2Node.prototype.renderGradingView = function(divId, nodeVisit, childDivI
     		for(var x=nodeVisit.nodeStates.length - 1; x>=0; x--) {
     			//get a node state
     			var nodeState = nodeVisit.nodeStates[x];
-    			
-    			var studentWork = nodeState.response;
-    			var isSubmit = nodeState.isSubmit;
-                var svg = null; 
-                var png = null;
-    			var feedback = "";
-    			var timestamp = "";
-    			
-    			//get the response string
-    			var responseString = nodeState.response;
-    			
-    			//remove all the \n
-    			responseString = responseString.replace(/\n/g, "");
-    			
-    			//create a JSON object from the response
-    			var responseJSON = JSON.parse(responseString);
-    			
-    			if(responseJSON["MySystem.RuleFeedback"] != null &&
-    			   responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK != null) {
-    				
-    				if(responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.feedback != null) {
-    					//get the feedback
-    					feedback = responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.feedback;    					
-    				}
-    				
-    				if(responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.timeStampMs != null) {
-    					//get the timestamp
-    					var timestampMS = responseJSON["MySystem.RuleFeedback"].LAST_FEEDBACK.timeStampMs;
-    					timestamp = new Date(timestampMS);
-    				}
-                    if(responseJSON["MySystem.GraphicPreview"] != null &&
-                       responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW != null) {
-                        svg = responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW.svg;
-                        if (svg != null) {
-                            svg = unescape(svg);
-                            svg = new LZ77().decompress(svg);
-                        }
-                        png = responseJSON["MySystem.GraphicPreview"].LAST_GRAPHIC_PREVIEW.png;
-                        if (png != null) { png = "<img src='" + png + "'' />"; }
-                    }
+    			divContent += getDivContentFromNodeState(nodeState, x, this.view, contentBaseUrl);
+    			if(x != nodeVisit.nodeStates.length - 1) {
+    				//divide each node state with an hr
+    				divContent += "<hr style='border:1px solid lightgrey'>";
     			}
-    			
-        	    // prepend contentbaseurl in front of "assets" to student's work
-        	    var studentWork = this.view.utils.prependContentBaseUrlToAssets(contentBaseUrl, studentWork);
-        		
-        	    if(x != nodeVisit.nodeStates.length - 1) {
-        	    	//divide each node state with an hr
-        			divContent += "<hr style='border:1px solid lightgrey'>";
-        		}
-        	    
-        	    divContent += "Diagram: ";
-        	    
-                // put the student work and content in a hidden element
-                // add enlarge link to show student's diagram in a popup window
-                divContent += "<a class='msEnlarge' style='text-decoration:underline; color:blue;'" +
-                    "onclick='var newWindow=window.open(\"/vlewrapper/vle/node/mysystem2/mysystem2.html\"); newWindow.divId=\""+divId+"_"+x+"\"'>enlarge</a>" +
-                    "<span id='content_"+divId+"_"+x+"' style='display:none'>"+contentString+"</span>" +
-                    "<span id='studentwork_"+divId+"_"+x+"' style='display:none'>"+studentWork+"</span>";
-
-        		if (svg != null) {
-                    divContent += "<div class='preview svg image'" + 
-                    " style='display: block; overflow: auto; width: 100%; height:500px;'> " + 
-                    svg + "</div>";
-                }
-                else if (png != null) {
-                     divContent += "<span class='preview png image'> " + png + "</span>";
-                }
-            
-                divContent += "<br>";
-        		divContent += "Is Submit: " + isSubmit;
-        		divContent += "<br>";
-        		divContent += "Feedback: " + feedback;
-        		divContent += "<br>";
-        		divContent += "Timestamp: " + timestamp;
-        		divContent += "<br>";
     		}
     	}
     }
     
-	$('#' + divId).html(divContent);
+    displayStudentWorkDiv.html(divContent);
 };
+
 
 /**
  * Get the html file associated with this step that we will use to
@@ -247,6 +246,16 @@ Mysystem2Node.prototype.getHTMLContentTemplate = function() {
  */
 Mysystem2Node.prototype.canSpecialExport = function() {
 					 return true;
+};
+
+/**
+ * Get the tag map functions that are available for this step type
+ */
+Mysystem2Node.prototype.getTagMapFunctions = function() {
+	//get all the tag map function for this step type
+	var tagMapFunctions = Mysystem2Node.tagMapFunctions;
+	
+	return tagMapFunctions;
 };
 
 //Add this node to the node factory so the vle knows it exists.
