@@ -29,31 +29,79 @@
         });
       };
       
+
+      var getRuntimeFrame = function() {
+        return document.getElementById('runtime-iframe').contentWindow;
+      };
+    
+      var getMySystem = function() {
+        var runtime = getRuntimeFrame();
+        return runtime.MySystem;
+      };
+
+      var getAuthoringDataController = function() {
+        var authoring_iframe = document.getElementById(authorIframeId).contentWindow;
+        return authoring_iframe.MSA.dataController;
+      };
+
+      var getAuthoringData = function() {
+        return getAuthoringDataController().get('data');
+      };
+
+      var loadInitialDiagramJson = function() {
+        var previewFrame = getRuntimeFrame();
+        if (!! previewFrame.$) {
+          var dataJSON =  previewFrame.$('#my_system_state').text();
+          var data = null;
+          if (dataJSON && dataJSON.trim().length > 0) {
+            data = JSON.parse(dataJSON);
+          }
+          if (data) {
+            return JSON.stringify({'MySystem.Link': data['MySystem.Link'], 'MySystem.Node': data['MySystem.Node']})
+          }
+        }
+        return null;
+      };
+
+      var saveInitialDiagramJson = function(_data) {
+        var previewDiagram = loadInitialDiagramJson();
+        if (previewDiagram) {
+          var dataController = getAuthoringDataController();
+          if (dataController) {
+            dataController.set('initialDiagramJson',previewDiagram);
+          }
+          if (_data) {
+            _data['initialDiagramJson'] = previewDiagram;
+          }
+        }
+      };
+
       var updateRuntime = function(_data) {
         var data = _data;
-        if (!data){
-          authoring_iframe = document.getElementById(authorIframeId).contentWindow;
-          data = authoring_iframe.MSA.dataController.get('data');
-        }
-        // TODO: why is this happening? Should already be a hash.
-        if (typeof data.get !== 'undefined') {
-          data = data.get('data');
-        }
+        saveInitialDiagramJson(_data);
+        data = getAuthoringData();
+        
+        // if (!data){
+        //  
+        // }
+        // if (typeof data.get !== 'undefined') {
+        //   console.log("why is this happening? Data Should already be a hash.");
+        //   data = data.get('data');
+        // }
 
-        var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
-      
-        if (runtime_iframe.MySystem) {
-          runtime_iframe.SC.RunLoop.begin();
-            runtime_iframe.MySystem.loadWiseConfig(data,null);
-          runtime_iframe.SC.RunLoop.end();
+        var mysystem = getMySystem();
+        var runFrame = getRuntimeFrame();
+        if (runFrame && mysystem) {
+          runFrame.SC.RunLoop.begin();
+            mysystem.loadWiseConfig(data, null);
+          runFrame.SC.RunLoop.end();
         }
       };
       
       var scoreDiagram = function(){
-        var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
-        var controller = runtime_iframe.MySystem.rubricController;
-        var showScore = controller.displayScore;
-        showScore();
+        var mysystem = getMySystem();
+        var controller = mysystem.rubricController;
+        controller.displayScore.showScore();
       };
 
 
@@ -64,7 +112,6 @@
 
         authorContent.MSA.setupParentIFrame(null, this, updateRuntime, scoreDiagram);
         updateRuntime(authorContent.MSA.dataController.get('data'));
-
         dataStore.setAuthorContentWindow(authorContent);
         dataStore.setLearnerContentWindow(runtimeContent);
 
@@ -93,19 +140,32 @@
         // work always, we would simply need to call
         // runtimeContent.MySystem.registerExternalSaveFunction(dataStore.saveLearner, dataStore);
 
-        $('#save_external').attr('disabled', false);
-        $('#save_external').parent('span').removeClass('options_disabled');
-        $('#save_external').click(function(){
-          $('#autosave_external').parent('span').toggleClass('options_disabled');
-          if (this.checked){
-            runtimeContent.MySystem.registerExternalSaveFunction(dataStore.saveLearner, dataStore);
-            $('#autosave_external').attr('disabled', false);
-            $('#autosave_time').attr('disabled', false);
-          } else {
-            runtimeContent.MySystem.registerExternalSaveFunction(null);
-            $('#autosave_external').attr('disabled', true);
-            $('#autosave_time').attr('disabled', true);
-          }
+        // $('#save_external').attr('disabled', false);
+        // $('#save_external').parent('span').removeClass('options_disabled');
+        // $('#save_external').click(function(){
+        //   $('#autosave_external').parent('span').toggleClass('options_disabled');
+        //   if (this.checked){
+        //     runtimeContent.MySystem.registerExternalSaveFunction(dataStore.saveLearner, dataStore);
+        //     $('#autosave_external').attr('disabled', false);
+        //     $('#autosave_time').attr('disabled', false);
+        //   } else {
+        //     runtimeContent.MySystem.registerExternalSaveFunction(null);
+        //     $('#autosave_external').attr('disabled', true);
+        //     $('#autosave_time').attr('disabled', true);
+        //   }
+        // });
+        
+        runtimeContent.MySystem.registerExternalSaveFunction(function(data) {
+          saveInitialDiagramJson();
+          // updateRuntime
+          var runFrame = getRuntimeFrame();
+          var mysystem = getMySystem();
+          if (runFrame && mysystem) {
+            runFrame.SC.RunLoop.begin();
+              mysystem.loadWiseConfig(getAuthoringData()  , null);
+            runFrame.SC.RunLoop.end();
+          } 
+          alert("initialDiagramJson saved");
         });
 
         runtimeContent.MySystem.setAutoSaveFrequency(-1); // start with no auto save

@@ -354,7 +354,8 @@ MSA.dataController = Ember.Object.create({
     'modules.@each.rev', 
     'minRequirements.@each.rev',
     'diagramRules.@each.rev',
-    'rubricCategories.@each.rev'
+    'rubricCategories.@each.rev',
+    'initialDiagramJson.rev'
   ).cacheable(),
 
   dataJson: function() {

@@ -48,7 +48,10 @@ var scoringFunction=function() {
 View.prototype.Mysystem2Node.getPreviewDiagramState=function() {
   var previewFrame = window.frames['previewFrame'];
   if (!! previewFrame.$) {
-    return previewFrame.$('#my_system_state').text()  
+    var data =  $.parseJSON(previewFrame.$('#my_system_state').text());
+    if (data) {
+      return JSON.stringify({'MySystem.Link': data['MySystem.Link'], 'MySystem.Node': data['MySystem.Node']})
+    }
   }
   return null;
 };
@@ -72,7 +75,7 @@ View.prototype.Mysystem2Node.getAuthoringActvityData = function() {
 View.prototype.Mysystem2Node.saveInitialDiagramJson = function(_data) {
   var previewDiagram = this.getPreviewDiagramState();
   var activity = this.getAuthoringActvityData();
-  if (activity && previewDiagram && previewDiagram.length > 0) {
+  if (activity && previewDiagram) {
     activity.set('initialDiagramJson',previewDiagram);
     if (_data) {
       _data['initialDiagramJson'] = previewDiagram;
@@ -85,19 +88,20 @@ View.prototype.Mysystem2Node.AuthoringIFrameLoaded = function(){
   var this_view = this.view;
   var this_ref  = this;
 
-  iframe.MSA.setupParentIFrame(this.content, this, function (_data){
+  var updateFunction  = function(_data) {
     this_ref.saveInitialDiagramJson(_data);
-    // We can't change the reference to the object,
-    // because too many interested parties are looking at it.
-    // but we can change its attributes.
+    // con't change the reference to the object; update it.
+    // (too many interested parties are looking at it)
     for (var attr in _data) {
-        if (_data.hasOwnProperty(attr)){
-          this_ref.content[attr] = _data[attr];
-        }
+      if (_data.hasOwnProperty(attr)){
+        this_ref.content[attr] = _data[attr];
+      }
     }
 
     this_view.eventManager.fire('sourceUpdated');
-  }, scoringFunction);
+  }
+
+  iframe.MSA.setupParentIFrame(this.content, this, updateFunction, scoringFunction);
 };
 
 View.prototype.Mysystem2Node.getBuildInfoDiv = function() {

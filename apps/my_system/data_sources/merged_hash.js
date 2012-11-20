@@ -208,15 +208,21 @@ MySystem.MergedHashDataSource = SC.DataSource.extend(
     Set the merged hash to the new value passed. Calls pushRetrieve() and pushDestroy() on the store to add, change, or
     remove records to reflect the difference between the current data hash and the new data hash.
   */
-  setDataHash: function (store, newDataHash) {
+  setDataHash: function (store, newDataHash,onlyUpdateNew) {
     var oldDataHash = this.get('dataHash'),
         newDataHashCopy = {},
+        recordTypes,
         recordTypeName,
         recordType,
         id;
     
+    recordTypes = oldDataHash;
+
+    if (onlyUpdateNew) {
+      recordTypes = newDataHash;
+    }
     // destroys
-    for (recordTypeName in oldDataHash) {
+    for (recordTypeName in recordTypes) {
       if (!oldDataHash.hasOwnProperty(recordTypeName)) continue;
       if (this.keysToIgnore.contains(recordTypeName)) continue;
 

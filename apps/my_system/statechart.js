@@ -88,7 +88,7 @@ MySystem.statechart = SC.Object.create(SC.StatechartManager, {
     // clears the canvas after asking the user
     clearCanvas: function () {
       SC.AlertPane.warn({
-        description: "Are you sure you want to clear your diagram?",
+        description: "Are you sure you want to reset your diagram?",
         delegate: {
           alertPaneDidDismiss: function(pane, status) {
             if (status === SC.BUTTON2_STATUS){    // "yes"

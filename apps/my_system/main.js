@@ -69,6 +69,11 @@ MySystem.setupStore = function (obj, ignoreUndeclaredFields) {
     setStudentStateDataHash: function (hash) {
       this.dataSource.studentStateDataSource.setDataHash(this, hash);
     },
+
+    setInitialDiagramHash: function(hash) {
+      this.dataSource.studentStateDataSource.setDataHash(this,hash,true);
+    },
+
     getStudentStateDataHash: function() {
       var dataHash = this.dataSource.studentStateDataSource.dataHash();
       return JSON.stringify(dataHash,null,2);
@@ -109,16 +114,14 @@ MySystem.main = function main() {
 function main() { MySystem.main(); }
 
 MySystem.clearCanvas = function () {
-  var i;
-  var nodes = MySystem.store.find(MySystem.Node);
-  for (i = 0; i < nodes.get('length'); ++i) {
-      nodes.objectAt(i).destroy();
-  }
   MySystem.loadInitialDiagram();
 };
 
 MySystem.loadInitialDiagram = function() {
-  MySystem.loadLearnerJSON(MySystem.activityController.get('initialDiagramJson')||'');
+  var initialDiagram = MySystem.activityController.get('initialDiagramJson')|| '';
+  if (initialDiagram.trim().length < 1) { return; }
+  var hash = JSON.parse(initialDiagram);
+  MySystem.store.setInitialDiagramHash(hash);
 };
 
 // Load canvas data for student

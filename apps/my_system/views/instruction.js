@@ -42,9 +42,9 @@ MySystem.InstructionView = SC.View.extend({
   
   clearButtonView: SC.ButtonView.design({
     layout: { left: 350, top: 5, height: 25, width: 80 },
-    title: 'Clear',
+    title: 'Reset',
     icon: 'sc-icon-trash-16',
-    toolTip: 'Clear everything from your diagram',
+    toolTip: 'Reset your diagram',
     action: 'clearCanvas'
   }),
 
