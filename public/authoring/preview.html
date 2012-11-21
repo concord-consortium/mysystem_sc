@@ -29,89 +29,25 @@
         });
       };
       
-
-      var getRuntimeFrame = function() {
+      var getContentWindow = function() {
         return document.getElementById('runtime-iframe').contentWindow;
-      };
-    
+      }
       var getMySystem = function() {
-        var runtime = getRuntimeFrame();
-        return runtime.MySystem;
+        return getContentWindow().MySystem;
       };
-
-      var getAuthoringDataController = function() {
-        var authoring_iframe = document.getElementById(authorIframeId).contentWindow;
-        return authoring_iframe.MSA.dataController;
-      };
-
-      var getAuthoringData = function() {
-        return getAuthoringDataController().get('data');
-      };
-
-      var loadInitialDiagramJson = function() {
-        var previewFrame = getRuntimeFrame();
-        if (!! previewFrame.$) {
-          var dataJSON =  previewFrame.$('#my_system_state').text();
-          var data = null;
-          if (dataJSON && dataJSON.trim().length > 0) {
-            data = JSON.parse(dataJSON);
-          }
-          if (data) {
-            return JSON.stringify({'MySystem.Link': data['MySystem.Link'], 'MySystem.Node': data['MySystem.Node']})
-          }
-        }
-        return null;
-      };
-
-      var saveInitialDiagramJson = function(_data) {
-        var previewDiagram = loadInitialDiagramJson();
-        if (previewDiagram) {
-          var dataController = getAuthoringDataController();
-          if (dataController) {
-            dataController.set('initialDiagramJson',previewDiagram);
-          }
-          if (_data) {
-            _data['initialDiagramJson'] = previewDiagram;
-          }
-        }
-      };
-
-      var updateRuntime = function(_data) {
-        var data = _data;
-        saveInitialDiagramJson(_data);
-        data = getAuthoringData();
-        
-        // if (!data){
-        //  
-        // }
-        // if (typeof data.get !== 'undefined') {
-        //   console.log("why is this happening? Data Should already be a hash.");
-        //   data = data.get('data');
-        // }
-
-        var mysystem = getMySystem();
-        var runFrame = getRuntimeFrame();
-        if (runFrame && mysystem) {
-          runFrame.SC.RunLoop.begin();
-            mysystem.loadWiseConfig(data, null);
-          runFrame.SC.RunLoop.end();
-        }
-      };
-      
-      var scoreDiagram = function(){
-        var mysystem = getMySystem();
-        var controller = mysystem.rubricController;
-        controller.displayScore.showScore();
-      };
-
 
       var bothIframesLoaded= function() {
-        var dataStore = new msaPreview.CouchDS(),
-            authorContent = document.getElementById('mysystem2-authoring-iframe').contentWindow,
-            runtimeContent = document.getElementById('runtime-iframe').contentWindow;
+        var dataStore      = new msaPreview.CouchDS(),
+            authorContent  = document.getElementById('mysystem2-authoring-iframe').contentWindow,
+            runtimeContent = getContentWindow();
 
-        authorContent.MSA.setupParentIFrame(null, this, updateRuntime, scoreDiagram);
-        updateRuntime(authorContent.MSA.dataController.get('data'));
+        var mysystem = getMySystem();
+        mysystem.setAuthoringDataController(authorContent.MSA.dataController);
+
+        authorContent.MSA.setupParentIFrame(null, this, mysystem.updateRuntime, mysystem.scoreDiagram);
+        mysystem.reloadAuthoringData();
+        
+        // TODO: datastore needs a better api than content window....
         dataStore.setAuthorContentWindow(authorContent);
         dataStore.setLearnerContentWindow(runtimeContent);
 
@@ -154,17 +90,11 @@
         //     $('#autosave_time').attr('disabled', true);
         //   }
         // });
-        
-        runtimeContent.MySystem.registerExternalSaveFunction(function(data) {
-          saveInitialDiagramJson();
-          // updateRuntime
-          var runFrame = getRuntimeFrame();
-          var mysystem = getMySystem();
-          if (runFrame && mysystem) {
-            runFrame.SC.RunLoop.begin();
-              mysystem.loadWiseConfig(getAuthoringData()  , null);
-            runFrame.SC.RunLoop.end();
-          } 
+
+
+        runtimeContent.MySystem.registerExternalSaveFunction(function(data) {  
+          mysystem.saveInitialDiagramJson();
+          mysystem.loadWiseConfig(mysystem.getAuthoringData()  , null);
           alert("initialDiagramJson saved");
         });
 
