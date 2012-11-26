@@ -81,7 +81,7 @@ MySystem.getAuthoringData = function() {
 };
 
 MySystem.getStateJson = function() {
-  SC.$('#my_system_state').text();
+  return SC.$('#my_system_state').text();
 };
 
 MySystem.loadInitialDiagramJson = function() {
