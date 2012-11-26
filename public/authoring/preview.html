@@ -42,9 +42,11 @@
             runtimeContent = getContentWindow();
 
         var mysystem = getMySystem();
-        mysystem.setAuthoringDataController(authorContent.MSA.dataController);
-
+        
+        // this is the initialization method on the ember.js app:
         authorContent.MSA.setupParentIFrame(null, this, mysystem.updateRuntime, mysystem.scoreDiagram);
+
+        mysystem.setAuthoringDataController(authorContent.MSA.dataController);
         mysystem.reloadAuthoringData();
         
         // TODO: datastore needs a better api than content window....
@@ -65,8 +67,7 @@
 
         // register save function on Save Authored Activity button
         $('#save_authoring').click(function(){
-          var activity = authorContent.MSA.dataController.get('activity');
-          activity.set('initialDiagramJson',runtimeContent.$('#my_system_state').text());
+          mysystem.saveInitialDiagramJson();
           dataStore.saveAuthoring();
         });
 
@@ -92,10 +93,10 @@
         // });
 
 
-        runtimeContent.MySystem.registerExternalSaveFunction(function(data) {  
+        runtimeContent.MySystem.registerExternalSaveFunction(function(data) {
+          var mysystem = getMySystem();
           mysystem.saveInitialDiagramJson();
           mysystem.loadWiseConfig(mysystem.getAuthoringData()  , null);
-          alert("initialDiagramJson saved");
         });
 
         runtimeContent.MySystem.setAutoSaveFrequency(-1); // start with no auto save
