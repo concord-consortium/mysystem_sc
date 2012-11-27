@@ -4,11 +4,17 @@ MSA = Ember.Application.create();
 
 
 
-MSA.setupParentIFrame = function(dataHash, updateObject, updateFn, scoreFn) {
+MSA.setupParentIFrame = function(dataHash, updateObject, mysystem) {
   if (typeof dataHash === "undefined" || dataHash === null){
     dataHash = MSA.dataController.get('data');
   }
-  
+  var updateFn = mysystem.updateRuntime;
+  var scoreFn = mysystem.scoreDiagram;
+
+  mysystem.setAuthoringDataController(MSA.dataController);
+  mysystem.reloadAuthoringData();
+        
+
   // migration from old content format
   if (!dataHash.diagram_rules) {
     dataHash.diagram_rules = [];

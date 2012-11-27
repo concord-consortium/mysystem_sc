@@ -44,10 +44,7 @@
         var mysystem = getMySystem();
         
         // this is the initialization method on the ember.js app:
-        authorContent.MSA.setupParentIFrame(null, this, mysystem.updateRuntime, mysystem.scoreDiagram);
-
-        mysystem.setAuthoringDataController(authorContent.MSA.dataController);
-        mysystem.reloadAuthoringData();
+        authorContent.MSA.setupParentIFrame(null, this, mysystem);
         
         // TODO: datastore needs a better api than content window....
         dataStore.setAuthorContentWindow(authorContent);

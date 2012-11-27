@@ -121,6 +121,21 @@ MySystem.updateRuntime = function(_data) {
   SC.RunLoop.begin();
     MySystem.loadWiseConfig(data, null);
   SC.RunLoop.end();
+
+  // TODO:  This code is from WISE4 authorview
+  // we need to re-wire it so that we can speak to WISE4 from here.
+  //   var updateFunction  = function(_data) {
+  //   this_ref.saveInitialDiagramJson(_data);
+  //   // con't change the reference to the object; update it.
+  //   // (too many interested parties are looking at it)
+  //   for (var attr in _data) {
+  //     if (_data.hasOwnProperty(attr)){
+  //       this_ref.content[attr] = _data[attr];
+  //     }
+  //   }
+
+  //   this_view.eventManager.fire('sourceUpdated');
+  // }
 };
 
 MySystem.reloadAuthoringData = function() {
@@ -142,3 +157,7 @@ MySystem.scoreDiagram = function(){
   var controller = MySystem.rubricController;
   controller.displayScore.showScore();
 };
+
+
+
+
