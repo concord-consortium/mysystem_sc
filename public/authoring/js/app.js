@@ -2,18 +2,25 @@
 
 MSA = Ember.Application.create();
 
+MSA.setPreviewApp = function(mysystem) {
+  mysystem.setAuthoringDataController(MSA.dataController);
+  mysystem.reloadAuthoringData();
+  mysystem.saveInitialDiagramAsSaveFunction();
+  
+  var _update_function = function() {
+    var data = MSA.dataController.get('data');
+    mysystem.updateRuntime(data);
+  };
 
+  MSA.dataController.addObserver('data', MSA.dataController, _update_function);
+  MSA.rubricCategoriesController.set('scoreFunction',mysystem.scoreDiagram);
+};
 
 MSA.setupParentIFrame = function(dataHash, updateObject, mysystem) {
+
   if (typeof dataHash === "undefined" || dataHash === null){
     dataHash = MSA.dataController.get('data');
   }
-  var updateFn = mysystem.updateRuntime;
-  var scoreFn = mysystem.scoreDiagram;
-
-  mysystem.setAuthoringDataController(MSA.dataController);
-  mysystem.reloadAuthoringData();
-        
 
   // migration from old content format
   if (!dataHash.diagram_rules) {
@@ -88,14 +95,9 @@ MSA.setupParentIFrame = function(dataHash, updateObject, mysystem) {
   // TODO: migrate objects to have uuids that don't already have them
 
   MSA.dataController.loadData(dataHash);
-
-  var _update_function = function() {
-    var data = MSA.dataController.get('data');
-    updateFn(data);
-  };
-
-  MSA.dataController.addObserver('data', MSA.dataController, _update_function);
-  MSA.rubricCategoriesController.set('scoreFunction',scoreFn);
+  if(mysystem) {
+    MSA.setPreviewApp(mysystem);
+  }
 };
 
 
@@ -339,6 +341,17 @@ MSA.dataController = Ember.Object.create({
     return defaults;
   }.property().cacheable(),
 
+  // update the dataHash we originated from.
+  updateParentHash: function(data) {
+    if (this.parentHash && typeof (this.parentHash === 'object')) {
+      for (var attr in data) {
+        if (data.hasOwnProperty(attr)){
+          this.parentHash[attr] = data[attr];
+        }
+      }
+    }
+  },
+
   data: function() {
     var activity = this.get('activity');
     var data;
@@ -353,14 +366,15 @@ MSA.dataController = Ember.Object.create({
     data.energy_types         = this.get('energyTypes').mapProperty('dataHash');   
     data.minimum_requirements = this.get('minRequirements').mapProperty('dataHash');
     data.diagram_rules        = this.get('diagramRules').mapProperty('dataHash');  
-    data.rubric_categories    = this.get('rubricCategories').mapProperty('dataHash');  
+    data.rubric_categories    = this.get('rubricCategories').mapProperty('dataHash');
+    this.updateParentHash(data);
     return data;
   }.property( 'activity.rev',
     'energyTypes.@each.rev',
     'modules.@each.rev', 
     'minRequirements.@each.rev',
     'diagramRules.@each.rev',
-    'rubricCategories.@each.rev',
+    'rubricCategories.@each.rev', 
     'initialDiagramJson.rev'
   ).cacheable(),
 
@@ -371,6 +385,7 @@ MSA.dataController = Ember.Object.create({
 
   loadData: function(dataHash) {
     var data = dataHash;
+    this.parentHash = dataHash;
     if (typeof data === 'string') {
       data = JSON.parse(data);
     }

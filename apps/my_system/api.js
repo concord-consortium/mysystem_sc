@@ -101,11 +101,18 @@ MySystem.saveInitialDiagramJson = function(_data) {
     var dataController = MySystem.getAuthoringDataController();
     if (dataController) {
       dataController.set('initialDiagramJson',previewDiagram);
+      var ignored = dataController.get('data'); // force a refresh
     }
     if (_data) {
       _data.initialDiagramJson = previewDiagram;
     }
   }
+};
+
+MySystem.saveInitialDiagramAsSaveFunction = function() {
+  MySystem.registerExternalSaveFunction(function(data) {
+    MySystem.updateRuntime(); // kind of silly, but save the initialDiagramJson.
+  });
 };
 
 MySystem.updateRuntime = function(_data) {
@@ -122,30 +129,11 @@ MySystem.updateRuntime = function(_data) {
     MySystem.loadWiseConfig(data, null);
   SC.RunLoop.end();
 
-  // TODO:  This code is from WISE4 authorview
-  // we need to re-wire it so that we can speak to WISE4 from here.
-  //   var updateFunction  = function(_data) {
-  //   this_ref.saveInitialDiagramJson(_data);
-  //   // con't change the reference to the object; update it.
-  //   // (too many interested parties are looking at it)
-  //   for (var attr in _data) {
-  //     if (_data.hasOwnProperty(attr)){
-  //       this_ref.content[attr] = _data[attr];
-  //     }
-  //   }
-
-  //   this_view.eventManager.fire('sourceUpdated');
-  // }
 };
 
 MySystem.reloadAuthoringData = function() {
   MySystem.saveInitialDiagramJson();
   var data = MySystem.getAuthoringData();
-
-  // if (typeof data.get !== 'undefined') {
-  //   console.log("why is this happening? Data Should already be a hash.");
-  //   data = data.get('data');
-  // }
 
   SC.RunLoop.begin();
     MySystem.loadWiseConfig(data, null);
@@ -153,9 +141,7 @@ MySystem.reloadAuthoringData = function() {
 };
       
 MySystem.scoreDiagram = function(){
-  var mysystem = getMySystem();
-  var controller = MySystem.rubricController;
-  controller.displayScore.showScore();
+  MySystem.rubricController.displayScore.showScore();
 };
 
 

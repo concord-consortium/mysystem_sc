@@ -34,27 +34,15 @@ View.prototype.Mysystem2Node.generatePage = function(view){
   parent.appendChild(this.getBuildInfoDiv());
 };
 
-var scoringFunction=function() {
+View.prototype.Mysystem2Node.getMySystem = function () {
   var frame = window.frames['previewFrame'];
   var mysystem = null;
   if (typeof frame !== 'undefined') {
-    mysystem = frame.window.MySystem;
-    if (typeof mysystem !== 'undefined') {
-      mysystem.rubricController.displayScore();
-    }
-  }
-};
-
-View.prototype.Mysystem2Node.getPreviewDiagramState=function() {
-  var previewFrame = window.frames['previewFrame'];
-  if (!! previewFrame.$) {
-    var data =  $.parseJSON(previewFrame.$('#my_system_state').text());
-    if (data) {
-      return JSON.stringify({'MySystem.Link': data['MySystem.Link'], 'MySystem.Node': data['MySystem.Node']})
-    }
+    return frame.window.MySystem;
   }
   return null;
 };
+
 
 View.prototype.Mysystem2Node.getAuthoringFrame = function() {
   return document.getElementById('mysystem2-authoring-iframe').contentWindow;
@@ -72,36 +60,16 @@ View.prototype.Mysystem2Node.getAuthoringActvityData = function() {
   }
 };
 
-View.prototype.Mysystem2Node.saveInitialDiagramJson = function(_data) {
-  var previewDiagram = this.getPreviewDiagramState();
-  var activity = this.getAuthoringActvityData();
-  if (activity && previewDiagram) {
-    activity.set('initialDiagramJson',previewDiagram);
-    if (_data) {
-      _data['initialDiagramJson'] = previewDiagram;
-    }
-  }
+View.prototype.Mysystem2Node.previewFrameLoaded = function() {
+  this.getAuthoringApp().setPreviewApp(this.getMySystem());
 };
 
 View.prototype.Mysystem2Node.AuthoringIFrameLoaded = function(){
   var iframe = document.getElementById('mysystem2-authoring-iframe').contentWindow;
   var this_view = this.view;
   var this_ref  = this;
-
-  var updateFunction  = function(_data) {
-    this_ref.saveInitialDiagramJson(_data);
-    // con't change the reference to the object; update it.
-    // (too many interested parties are looking at it)
-    for (var attr in _data) {
-      if (_data.hasOwnProperty(attr)){
-        this_ref.content[attr] = _data[attr];
-      }
-    }
-
-    this_view.eventManager.fire('sourceUpdated');
-  }
-
-  iframe.MSA.setupParentIFrame(this.content, this, updateFunction, scoringFunction);
+  var mysystem  = this.getMySystem();
+  this.getAuthoringApp().setupParentIFrame(this.content, this, this.getMySystem());
 };
 
 View.prototype.Mysystem2Node.getBuildInfoDiv = function() {

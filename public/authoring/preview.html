@@ -89,12 +89,8 @@
         //   }
         // });
 
+        // mySystem.saveInitialDiagramAsSaveFunction();
 
-        runtimeContent.MySystem.registerExternalSaveFunction(function(data) {
-          var mysystem = getMySystem();
-          mysystem.saveInitialDiagramJson();
-          mysystem.loadWiseConfig(mysystem.getAuthoringData()  , null);
-        });
 
         runtimeContent.MySystem.setAutoSaveFrequency(-1); // start with no auto save
         $('#autosave_external').click(function(){

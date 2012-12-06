@@ -29,56 +29,24 @@
         });
       }
       
-      var updateRuntime = function(_data) {
-        var data = _data;
-        if (!data){
-          authoring_iframe = document.getElementById(authorIframeId).contentWindow;
-          data = authoring_iframe.MSA.dataController.get('data');
-        }
-        // TODO: why is this happening? Should already be a hash.
-        if (typeof data.get !== 'undefined') {
-          data = data.get('data');
-        }
+    var getContentWindow = function() {
+      return document.getElementById('runtime-iframe').contentWindow;
+    }
+    
+    var getMySystem = function() {
+      return getContentWindow().MySystem;
+    };
 
-        var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
-      
-        if (runtime_iframe.MySystem) {
-          var activity = runtime_iframe.MySystem.Activity.fromWiseStepDef(data);
-          runtime_iframe.SC.RunLoop.begin();
-            runtime_iframe.MySystem.activityController.set('content',activity);
-          runtime_iframe.SC.RunLoop.end();
-        }
-      };
-      
-      var scoreDiagram = function(){
-        var runtime_iframe = document.getElementById('runtime-iframe').contentWindow;
-        var controller = runtime_iframe.MySystem.rubricController;
-        var showScore = controller.displayScore;
-        showScore();
-      };
-
-      // createIframe('index.html', authorIframeId, $('#authoring_td'), function(iframe){
-      //   iframe.contentWindow.MSA.setupParentIFrame(null, this, updateRuntime);
-      //   authorIframeLoaded = true;
-      //   if (authorIframeLoaded && appIframeLoaded){
-      //     bothIframesLoaded();
-      //   }
-      // });
-      
-      // createIframe('../my_system', 'runtime-iframe', $('#runtime_td'), function(iframe){
-      //   appIframeLoaded = true;
-      //   if (authorIframeLoaded && appIframeLoaded){
-      //     bothIframesLoaded();
-      //   }
-      // });
-      
     var bothIframesLoaded= function() {
         var dataStore = new msaPreview.CouchDS(),
             authorContent = document.getElementById('mysystem2-authoring-iframe').contentWindow,
             runtimeContent = document.getElementById('runtime-iframe').contentWindow;
 
-        authorContent.MSA.setupParentIFrame(null, this, updateRuntime, scoreDiagram);
-        updateRuntime(authorContent.MSA.dataController.get('data'));
+
+        var mysystem = getMySystem();
+        
+        // this is the initialization method on the ember.js app:
+        authorContent.MSA.setupParentIFrame(null, this, mysystem);
 
         dataStore.setAuthorContentWindow(authorContent);
         dataStore.setLearnerContentWindow(runtimeContent);
