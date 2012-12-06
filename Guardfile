@@ -10,6 +10,10 @@ guard 'rake', :task => 'copy_templates', :run_on_start => false do
   watch(%r{^wise4/mysystem2/.*})
 end
 
+guard 'rake', :task => 'copy_authoring', :run_on_start => false do
+  watch(%r{^public/authoring/.*})
+end
+
 # optionally rsync files to our remote server 
 guard :shell do
   watch(%r{^vle/node/mysystem2/version_info.html$}) do 

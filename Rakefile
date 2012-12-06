@@ -24,7 +24,7 @@ desc "package sproutcore for for a wise4 deployment"
 task :wise => [:build, :install] 
 
 desc "package sproutcore for Wise4 but don't copy"
-task :build => [:repackage, :inject_javascript, :copy_templates, :copy_authoring, :copy_icons]
+task :build => [:repackage, :inject_javascript, :copy_templates, :copy_icons]
 
 desc "copy the files to the Wise4 vle directory dir"
 task :install do
@@ -77,7 +77,7 @@ end
 
 
 desc  "Copy vle wrapper classes using template files with variable substition"
-task :copy_templates do
+task :copy_templates => [:copy_authoring] do
   templates = Dir.glob(File.join(@template_directory, "**", "*#{@template_suffix}"))
   js        = Dir.glob(File.join(@output_directory,"js","*.js"))
 
