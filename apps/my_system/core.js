@@ -44,7 +44,6 @@ MySystem = SC.Application.create(
     MySystem.loadLearnerData(data);
   },
   loadLearnerData: function (data) {
-    console.log(data);
     MySystem.store.setStudentStateDataHash(data);
   },
   
