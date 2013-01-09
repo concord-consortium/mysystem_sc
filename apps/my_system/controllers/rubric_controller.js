@@ -17,6 +17,7 @@ MySystem.rubricController = SC.ObjectController.create({
   // rubricExpressionBinding:    SC.Binding.oneWay('MySystem.activityController.rubricExpression'),
   categoriesBinding: SC.Binding.oneWay('MySystem.activityController.rubricCategories'),
 
+
   score: function(submit) {
     var self = this,
         rubricScore = MySystem.RubricScore.instance(),
@@ -25,7 +26,7 @@ MySystem.rubricController = SC.ObjectController.create({
         nodes      = MySystem.nodesController.get('content'),
         rules      = MySystem.activityController.get('diagramRules'),
         result     = MySystem.rubricController.UNSCORED,
-        
+
         ruleResults = [],
 
         resultsOfCategories = categories.forEach(function(c) {
@@ -33,7 +34,7 @@ MySystem.rubricController = SC.ObjectController.create({
               value = false,
               found = null,
               rulesInCategory = rules.filterProperty('category',name);
-          
+
           found = rulesInCategory.find(function(r) {
             if (r.check(nodes, MySystem.rulesController) === true) {
               return true;
@@ -44,7 +45,7 @@ MySystem.rubricController = SC.ObjectController.create({
           }
           ruleResults.push({name: name, value: value});
         }),
-        
+
         category = function(categoryName) {
           var category = ruleResults.findProperty('name',categoryName);
           if (category) {
@@ -52,7 +53,7 @@ MySystem.rubricController = SC.ObjectController.create({
           }
           return false;
         },
-        
+
         hasScored = false,
 
         score = function(_score) {
@@ -108,7 +109,7 @@ MySystem.rubricController = SC.ObjectController.create({
           categoryReduce(args,function(a,b) {
             return (a&&b);
           });
-        },  
+        },
 
         errorMsg = "Rubric Evaluation Error: \n%@";
 
@@ -126,7 +127,7 @@ MySystem.rubricController = SC.ObjectController.create({
         alert(errorMsg);
       }
     }).call(self);
-    
+
     rubricScore.update(result, ruleResults.filterProperty('value').mapProperty('name'));
     //TODO: remove this alert!
     // if (submit) {
@@ -136,7 +137,7 @@ MySystem.rubricController = SC.ObjectController.create({
   displayScore: function() {
     MySystem.rubricController.score();
     rubricScore = MySystem.RubricScore.instance();
-    alert("score: %@\ncategories: %@\nTime: %@".fmt(rubricScore.get('score'),rubricScore.get('categories'),rubricScore.get('timeStamp')));  
+    alert("score: %@\ncategories: %@\nTime: %@".fmt(rubricScore.get('score'),rubricScore.get('categories'),rubricScore.get('timeStamp')));
   }
 });
 
