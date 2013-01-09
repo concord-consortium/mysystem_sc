@@ -141,7 +141,7 @@ MySystem.reloadAuthoringData = function() {
 };
       
 MySystem.scoreDiagram = function(){
-  MySystem.rubricController.displayScore.showScore();
+  MySystem.rubricController.displayScore();
 };
 
 
