@@ -11,4 +11,5 @@ debug/snapshot_demo/app
 server.*
 Gemfile.lock
 .DS_Store
+*~
 *.sublime-*
