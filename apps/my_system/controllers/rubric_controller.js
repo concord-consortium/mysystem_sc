@@ -18,6 +18,15 @@ MySystem.rubricController = SC.ObjectController.create({
   categoriesBinding: SC.Binding.oneWay('MySystem.activityController.rubricCategories'),
 
 
+  // An example rubric:
+  // all ('noah-transform','storage','source','release', 6);
+  // all ('noah-transform','storage', 5);
+  // all ('noah-transform','source', 5);
+  // all ('noah-transform','release', 5);
+  // all ('noah-transform',4);
+  // any('source','storage','release',3);
+  // any('link',2);
+  // score(1);
   score: function(submit) {
     var self = this,
         rubricScore = MySystem.RubricScore.instance(),
@@ -129,10 +138,6 @@ MySystem.rubricController = SC.ObjectController.create({
     }).call(self);
 
     rubricScore.update(result, ruleResults.filterProperty('value').mapProperty('name'));
-    //TODO: remove this alert!
-    // if (submit) {
-    //   alert("score: %@\ncategories: %@\nTime: %@".fmt(rubricScore.get('score'),rubricScore.get('categories'),rubricScore.get('timeStamp')));
-    // }
   },
   displayScore: function() {
     MySystem.rubricController.score();
