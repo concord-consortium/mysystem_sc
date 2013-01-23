@@ -114,7 +114,8 @@ Mysystem2.prototype.render = function() {
   if (latestState) {
     MySystem.updateFromDOM();
   }
-
+  eventManager.fire('mySystemPreviewFrameLoaded');
+  
   // TODO: Do we know if we are in preview mode?
   this.keepStudentLogedIn();
 };

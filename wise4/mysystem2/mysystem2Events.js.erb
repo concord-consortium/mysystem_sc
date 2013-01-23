@@ -37,7 +37,7 @@ View.prototype.mysystem2Dispatcher = function(type,args,obj){
     console.log('mysystem2AuthoringIFrameLoaded');
     obj.Mysystem2Node.AuthoringIFrameLoaded();
   }
-  if(type === 'previewFrameLoaded') {
+  if(type === 'mySystemPreviewFrameLoaded') {
     obj.Mysystem2Node.previewFrameLoaded();
   }
 };
@@ -61,7 +61,8 @@ var events = [
   'mysystem2AuthoringIFrameLoaded',
   'templateUpdatePrompt',
   'previewFrameLoaded',
-  'processPostResponseComplete'
+  'processPostResponseComplete',
+  'mySystemPreviewFrameLoaded'
 ];
 
 /*
