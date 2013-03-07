@@ -39,7 +39,25 @@
 
         var checkSyntax = function() {
           var src = myCodeMirror.getValue();
-          var result = JSHINT(src);
+          var opts =  {
+            evil: true, nomen: false, onevar: false, regexp: false,
+            strict: true, boss: true, undef: true, maxlen: 100, indent:4, expr: true,
+            predef: [
+              "Rules",
+              "all",
+              "any",
+              "score",
+              "result",
+              "diagram",
+              "name",
+              "ruleName",
+              "self",
+              "correctFeedback",
+              "suggestions",
+              "nodes"
+            ]
+          };
+          var result = JSHINT(src,opts);
           if (!result) {
             var error = JSHINT.errors[0];
             var line  = error.line - 1;
