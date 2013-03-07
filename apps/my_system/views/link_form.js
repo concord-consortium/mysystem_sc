@@ -1,6 +1,6 @@
 // ==========================================================================
 // Project:   MySystem.LinkFormView
-// Copyright: ©2010 Concord Consortium 
+// Copyright: ©2010 Concord Consortium
 // under the MIT License (see LICENSE file for more info)
 // ==========================================================================
 /*globals MySystem */
@@ -27,8 +27,8 @@ MySystem.LinkFormView = SC.FormView.extend({
     }
   }.observes('*content.guid'),
 
-  energy: SC.FormView.row("Energy:", 
-      SC.RadioView.design({
+  energy: SC.FormView.row("Energy:",
+    SC.RadioView.design({
       layout: { width: '180', height: 700},
       classNames: ['border'],
       itemsBinding: SC.Binding.oneWay('MySystem.activityController.energyTypes'),
@@ -54,7 +54,7 @@ MySystem.LinkFormView = SC.FormView.extend({
         }
         return ret;
       }.property('isEnabled', 'value', 'items', 'itemTitleKey', 'itemWidthKey', 'itemValueKey', 'itemIsEnabledKey', 'localize', 'itemIconKey','itemAriaLabeledByKey', 'itemAriaLabelKey').cacheable(),
-      
+
 
       _findItemByValue: function(val) {
         var key = this.get('itemValueKey');
@@ -68,7 +68,7 @@ MySystem.LinkFormView = SC.FormView.extend({
         }
         return null;
       }
-  })),
+    })),
 
 
   label: SC.FormView.row("Label:", SC.TextFieldView.design({

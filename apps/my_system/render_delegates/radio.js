@@ -31,25 +31,63 @@ MySystem.Theme.radioRenderDelegate = SC.RenderDelegate.create({
   className: 'radio',
   
   render: function(dataSource, context) {
-    var color = dataSource.get('color');
+    this.addSizeClassName(dataSource, context);
 
-    if (color) {
-      context.css('background-color', color);
-      context.css('color', "#FFFFFF");
-    }
+    var theme = dataSource.get('theme');
 
-    context.css('font-weight', 'bold');
+    var isSelected = dataSource.get('isSelected'),
+        width = dataSource.get('width'),
+        labelId = SC.guidFor(dataSource) + '-label',
+        colorId = SC.guidFor(dataSource) + '-color',
+        color   = dataSource.get('color') || "#ffffff";
 
-    // delegate the rest of the handling to the original
-    // radioRenderDelegate
-    SC.BaseTheme.radioRenderDelegate.render(dataSource, context);
+
+    context.setClass({
+      active: dataSource.get('isActive'),
+      mixed: dataSource.get('isMixed'),
+      sel: dataSource.get('isSelected'),
+      disabled: !dataSource.get('isEnabled')
+    });
+
+    //accessing accessibility
+    context.attr('role', 'radio');
+    context.attr('aria-checked', isSelected);
+    context.attr('aria-labelledby', labelId);
+    context.attr('aria-disabled', dataSource.get('isEnabled') ? 'false' : 'true');
+
+    if (width) context.css('width', width);
+
+    context.push('<span class = "button"></span>');
+    context = context.begin('div').addClass('ms-color-well').id(colorId);
+    context.css('background-color', color);
+    context = context.end();
+    context = context.begin('span').addClass('sc-button-label').id(labelId);
+    context.css('color', "black");
+    theme.labelRenderDelegate.render(dataSource, context);
+    context = context.end();
   },
 
   update: function(dataSource, jquery) {
-    var color = dataSource.get('color');
-    jquery.css('background-color', color ? color : null);
-    jquery.css('color', color ? "#FFFFFF" : null);
+    this.updateSizeClassName(dataSource, jquery);
 
-    SC.BaseTheme.radioRenderDelegate.update(dataSource, jquery);
+    var theme = dataSource.get('theme'),
+        color   = dataSource.get('color') || "#ffffff";
+
+    var isSelected = dataSource.get('isSelected'),
+        width = dataSource.get('width'),
+        value = dataSource.get('value');
+
+    jquery.setClass({
+      active: dataSource.get('isActive'),
+      mixed: dataSource.get('isMixed'),
+      sel: dataSource.get('isSelected'),
+      disabled: !dataSource.get('isEnabled')
+    });
+
+    jquery.attr('aria-disabled', dataSource.get('isEnabled') ? 'false' : 'true');
+    jquery.attr('aria-checked', isSelected);
+    jquery.css('width', width ? width : null);
+    jquery.find('.ms-color-well').css('background-color', color);
+    theme.labelRenderDelegate.update(dataSource, jquery.find('.sc-button-label'));
   }
 });

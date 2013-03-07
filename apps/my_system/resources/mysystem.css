@@ -234,6 +234,15 @@ div.node {
   font-size: 13px;
 }
 
+.ms-color-well {
+  display: inline-block;
+  width:  30px;
+  height: 15px;
+  clear: none;
+  margin-right: 4px;
+}
+
+
 h1{
   font-size: 2em;
 }
