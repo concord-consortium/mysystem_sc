@@ -241,6 +241,10 @@ div.node {
   clear: none;
   margin-right: 4px;
 }
+.sc-button-label {
+  font-size: 1.2em;
+  font-weight: normal;
+}
 
 
 h1{

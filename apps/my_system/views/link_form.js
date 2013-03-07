@@ -29,7 +29,7 @@ MySystem.LinkFormView = SC.FormView.extend({
 
   energy: SC.FormView.row("Energy:",
     SC.RadioView.design({
-      layout: { width: '180', height: 700},
+      layout: { width: '230', height: 700},
       classNames: ['border'],
       itemsBinding: SC.Binding.oneWay('MySystem.activityController.energyTypes'),
       contentValueKey: 'energyType',
