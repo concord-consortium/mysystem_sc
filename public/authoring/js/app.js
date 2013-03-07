@@ -515,6 +515,17 @@ MSA.customRuleController = Ember.Object.create({
   }
 });
 
+MSA.rubricController = Ember.Object.create({
+  helpDiv: '#evalHelp',
+  editRubric: function() {
+    var value = MSA.dataController.activity.get('rubricExpression');
+    var callback = function(value) {
+      MSA.dataController.activity.set('rubricExpression',value);
+    }.bind(this);
+    MSA.editorController.editCustomRule(this,value,callback);
+  }
+});
+
 MSA.NodeView = Ember.View.extend({
   templateName: 'node-template',
   remove: function() {
@@ -564,6 +575,9 @@ MSA.RubricExpressionView = Ember.View.extend({
   templateName: 'rubricExpression-template',
   showScore: function() {
     MSA.rubricCategoriesController.showScore();
+  },
+  edit: function() {
+    MSA.rubricController.editRubric();
   }
 });
 

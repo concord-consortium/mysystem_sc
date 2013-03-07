@@ -20,7 +20,6 @@
 </head>
 <body>
 
-
   <!-- #### Display Options #### -->
   <script type="text/x-handlebars">
 
@@ -281,40 +280,18 @@
         <br/>
         Javascipt for custom rules. e.g.
         <br/>
-        <code style="white-space:pre;">
-// sample use:
-if (Rules.extraLinks()) {
-  Rules.addSuggestion("You have some extra links!");
-}
-if (!Rules.iconsUsedOnce()) {
-  Rules.addSuggestion("You can only use each icon once.");
-}
-if (!Rules.hasTransformation()) {
-  Rules.addSuggestion("How is energy transformed?");
-}
-        </code>
-        <br/>
         <div id="customRuleEvaluator">
-          {{
-            view MSA.TextArea
-            valueBinding  = "MSA.dataController.activity.customRuleEvaluator"
-            wrap          = "off"
-            rows          = "20"
-            cols          = "72"
-          }}
-          {{#view Ember.Button target="MSA.customRuleController" action="editCustomRule"}} edit {{/view}}
+        <div class="codeblock">{{MSA.dataController.activity.customRuleEvaluator}}</div>
+          {{#view Ember.Button target="MSA.customRuleController" action="editCustomRule"}} edit custom rules {{/view}}
         </div>
       {{/if}}
     </div>
 
+  <!-- #### JSON DataHash #### -->
+  <div id="datahash_json_view">
+    <div class="codeblock">{{MSA.dataController.dataJson}}</div>
+  </div>
 
-      <!-- #### JSON DataHash #### -->
-      <div class="code">
-        <hr/>
-        <pre><code>
-          {{MSA.dataController.dataJson}}
-        </code></pre>
-      </div>
   </script>
 
   <script type="text/x-handlebars"  data-template-name='prompt-template'>
@@ -336,18 +313,13 @@ if (!Rules.hasTransformation()) {
   <script type="text/x-handlebars"  data-template-name='rubricExpression-template'>
     <div class="options_block">
       <h2>Rubric Evaluator</h2>
-      <div class="rubricExpression">
-        {{view MSA.TextArea
-          valueBinding  = "MSA.dataController.activity.rubricExpression"
-          id            = "rubricExpression"
-          wrap          = "off"
-          rows          = "20"
-          cols          = "72"
-        }}
-      </div>
-      <div class="showScore">
+      <div class="rubricExpression codeblock">{{MSA.dataController.activity.rubricExpression}}</div>
+      <span class="showScore flow">
         <button {{action "showScore"}}>Score the digram</button>
-      </div>
+      </span>
+      <span class="edit flow">
+        <button {{action "edit"}}>Edit</button>
+      </span>
     </div>
   </script>
 
@@ -403,14 +375,8 @@ if (!Rules.hasTransformation()) {
       {{/if}}
       {{#if "isJavascript"}}
             <div class="javascript_rule">
-              {{
-                view MSA.TextArea
-                valueBinding  = "javascriptExpression"
-                wrap          = "off"
-                rows          = "20"
-                cols          = "72"
-              }}
-              <button {{action "editJSRule" on="click" item="model"}}>edit</button>
+              <div class="rubricExpression codeblock">{{javascriptExpression}}</div>
+              <button {{action "editJSRule" on="click" item="model"}}>edit javascript</button>
 
             </div>
       {{else}}
