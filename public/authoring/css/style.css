@@ -151,10 +151,19 @@ textarea {
   font-size: 16px;
 }
 
-
-
-
-
+.codeblock {
+  margin: 1em;
+  padding: 1em;
+  background-color:#FEFEFE;
+  overflow: auto;
+  white-space: pre;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -o-pre-wrap;
+  background: #f4f4f4;
+  border: solid 1px #e1e1e1;
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;
+}
 
 
 
