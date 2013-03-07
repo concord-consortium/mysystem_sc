@@ -6,7 +6,7 @@ MSA.setPreviewApp = function(mysystem) {
   mysystem.setAuthoringDataController(MSA.dataController);
   mysystem.reloadAuthoringData();
   mysystem.saveInitialDiagramAsSaveFunction();
-  
+
   var _update_function = function() {
     var data = MSA.dataController.get('data');
     mysystem.updateRuntime(data);
@@ -25,7 +25,7 @@ MSA.setupParentIFrame = function(dataHash, updateObject, mysystem) {
   // migration from old content format
   if (!dataHash.diagram_rules) {
     dataHash.diagram_rules = [];
-  } 
+  }
   if (!dataHash.rubric_categories) {
     dataHash.rubric_categories = [];
   }
@@ -145,8 +145,8 @@ MSA.EnergyType = SCUtil.ModelObject.extend( SCUtil.UUIDModel, {
   color: SCUtil.dataHashProperty
 });
 
-// it would be useful to support polymorphic 
-// so there are different types of rule 
+// it would be useful to support polymorphic
+// so there are different types of rule
 MSA.DiagramRule = SCUtil.ModelObject.extend({
   suggestion: SCUtil.dataHashProperty,
   name: SCUtil.dataHashProperty,
@@ -218,7 +218,7 @@ MSA.RubricCategoriesController = SCUtil.ModelArray.extend({
       this.contentDidChange();
     }
   },
-  
+
   showScore: function() {
     var scoreFunction = this.get('scoreFunction');
     if (scoreFunction) {
@@ -362,19 +362,19 @@ MSA.dataController = Ember.Object.create({
       data = activity.get('dataHash');
     }
 
-    data.modules              = this.get('modules').mapProperty('dataHash');       
-    data.energy_types         = this.get('energyTypes').mapProperty('dataHash');   
+    data.modules              = this.get('modules').mapProperty('dataHash');
+    data.energy_types         = this.get('energyTypes').mapProperty('dataHash');
     data.minimum_requirements = this.get('minRequirements').mapProperty('dataHash');
-    data.diagram_rules        = this.get('diagramRules').mapProperty('dataHash');  
+    data.diagram_rules        = this.get('diagramRules').mapProperty('dataHash');
     data.rubric_categories    = this.get('rubricCategories').mapProperty('dataHash');
     this.updateParentHash(data);
     return data;
   }.property( 'activity.rev',
     'energyTypes.@each.rev',
-    'modules.@each.rev', 
+    'modules.@each.rev',
     'minRequirements.@each.rev',
     'diagramRules.@each.rev',
-    'rubricCategories.@each.rev', 
+    'rubricCategories.@each.rev',
     'initialDiagramJson.rev'
   ).cacheable(),
 
@@ -397,7 +397,7 @@ MSA.dataController = Ember.Object.create({
         rule.isJavascript = false;
       }
     });
-    
+
     MSA.modulesController.contentFromHashArray(data.modules);
     MSA.energyTypesController.contentFromHashArray(data.energy_types);
     MSA.diagramRulesController.contentFromHashArray(data.diagram_rules);
@@ -440,7 +440,7 @@ MSA.editorController = Ember.Object.create({
   value: '',
   callback: function() {},
 
-  
+
   editCustomRule: function(owner,value,callback) {
     this.registerWindowCallbacks();
     this.save();// save the previous data back to whomever.
@@ -449,7 +449,7 @@ MSA.editorController = Ember.Object.create({
     this.set('callback',callback);
 
     var editorWindow = this.get('editorWindow');
-    var features  = "menubar=false,location=false,titlebar=false,toolbar=false,resizable=yes,scrollbars=yes,status=false,width=750,height=650"; 
+    var features  = "menubar=false,location=false,titlebar=false,toolbar=false,resizable=yes,scrollbars=yes,status=false,width=750,height=650";
 
     // reuse existing window:
     if (editorWindow) {
@@ -466,7 +466,7 @@ MSA.editorController = Ember.Object.create({
       editorWindow.helpSelector = owner.helpDiv;
       editorWindow.originParent = window;
     }
-    
+
   },
 
   registerWindowCallbacks: function() {
@@ -545,10 +545,10 @@ MSA.RuleView = Ember.View.extend({
     MSA.diagramRulesController.removeObject(this.get('rule'));
   },
   moveItemUp: function() {
-   MSA.diagramRulesController.moveItemUp(this.get('rule')); 
+   MSA.diagramRulesController.moveItemUp(this.get('rule'));
   },
   moveItemDown: function() {
-   MSA.diagramRulesController.moveItemDown(this.get('rule')); 
+   MSA.diagramRulesController.moveItemDown(this.get('rule'));
   },
   toggleHasLink: function() {
     var rule   = this.get('rule');
@@ -581,10 +581,10 @@ MSA.MinRequirementView = Ember.View.extend({
     MSA.minRequirementsController.removeObject(this.get('rule'));
   },
   moveItemUp: function() {
-   MSA.minRequirementsController.moveItemUp(this.get('rule')); 
+   MSA.minRequirementsController.moveItemUp(this.get('rule'));
   },
   moveItemDown: function() {
-   MSA.minRequirementsController.moveItemDown(this.get('rule')); 
+   MSA.minRequirementsController.moveItemDown(this.get('rule'));
   },
   toggleHasLink: function() {
     var rule   = this.get('rule');
