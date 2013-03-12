@@ -56,29 +56,44 @@ SCUtil.ModelArray = Ember.ArrayController.extend({
   contentFromHashArray: function(hashArray) {
     // var size = hashArray.length;
     // var i;
-    var item = null;
-    var modelType = this.get('modelType');
-    this.set('content',[]);
-    var newData = [];
-    hashArray.forEach(function(item) {
-      item = modelType.create({dataHash: item});
-      newData.push(item);
+    var self = this;
+    Ember.run( function() {
+      var item = null;
+      var modelType = self.get('modelType');
+      var modelObjects = self.get('content');
+      if (modelObjects !== null) {
+        modelObjects.forEach(function(model){
+          model.destroy();
+        });
+      }
+
+      self.set('content',[]);
+      var newData = [];
+      if (typeof hashArray === 'undefined') {
+        hashArray = [];
+      }
+      hashArray.forEach(function(item) {
+        item = modelType.create({dataHash: item});
+        newData.push(item);
+      });
+      self.set('content',newData);
     });
-    this.set('content',newData);
   },
-  
+
   createItem: function() {
     // this.pushObject(this.get('modelType').create().get('dataHash'));
     this.pushObject(this.get('modelType').create());
   },
 
   removeItem: function(button){
-    this.removeObject(button.get('item'));
+    var item = button.get('item');
+    this.removeObject(item);
+    item.destroy();
   },
 
   init: function() {
     this._super();
-    this.set('content', []);
+    this.set('modelObjects', Ember.Set.create());
   }
 
 });
