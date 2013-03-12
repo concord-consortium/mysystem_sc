@@ -7,7 +7,7 @@
   <!-- <link rel="stylesheet" href="css/style.css?v=2"> -->
   <link rel="stylesheet" href="css/custom.css">
   <link rel="stylesheet" href="css/jquery.gritter.css">
-  <script type="text/javascript" src="js/libs/jquery-1.4.4.min.js"></script>
+  <script type="text/javascript" src="js/libs/jquery-1.9.1.min.js"></script>
   <script type="text/javascript" src="js/libs/jquery.couch.js"></script>
   <script type="text/javascript" src="js/libs/lz77.js"></script>
   <script type="text/javascript" src="js/libs/jquery.gritter.min.js"></script>
@@ -38,7 +38,7 @@
                 feedback = response.learner_data['MySystem.GraphicPreview'].LAST_GRAPHIC_PREVIEW || "no feedback";
                 svg = unescape(feedback.svg);
                 svg = new LZ77().decompress(svg);
-                
+
                 $('#svg_preview').append($(svg));
               } catch(err) {
                 alert("missing image previews from data, see console for more info");

@@ -7,32 +7,32 @@
   <!-- <link rel="stylesheet" href="css/style.css?v=2"> -->
   <link rel="stylesheet" href="css/custom.css">
   <link rel="stylesheet" href="css/jquery.gritter.css">
-  <script type="text/javascript" src="js/libs/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="js/libs/jquery-1.9.1.min.js"></script>
   <script type="text/javascript" src="js/libs/jquery.couch.js"></script>
   <script type="text/javascript" src="js/libs/jquery.gritter.min.js"></script>
   <script type="text/javascript" src="js/libs/ZeroClipboard.min.js"></script>
   <script type="text/javascript" src="js/couch-ds.js"></script>
   <script type="text/javascript">
-    $(document).ready(function() {  
+    $(document).ready(function() {
 
       var authorIframeId = 'mysystem2-authoring-iframe',
           appIframeId = 'runtime-iframe',
           authorIframeLoaded = false,
           appIframeLoaded = false;
-      
+
       function createIframe(url, id, $elem, callback, authoring) {
         $iframe = $('<iframe id='+id+'>').attr('src', url).attr('width', '100%').attr('height', 600);
         $elem.append($iframe);
-        $('iframe#'+id).load(function() 
+        $('iframe#'+id).load(function()
         {
           callback(this);
         });
       }
-      
+
     var getContentWindow = function() {
       return document.getElementById('runtime-iframe').contentWindow;
     }
-    
+
     var getMySystem = function() {
       return getContentWindow().MySystem;
     };
@@ -44,7 +44,7 @@
 
 
         var mysystem = getMySystem();
-        
+
         // this is the initialization method on the ember.js app:
         authorContent.MSA.setupParentIFrame(null, this, mysystem);
 
@@ -109,7 +109,7 @@
           // setTimeout(bothIframesLoaded,1000);
         });
       });
-      
+
     });
   </script>
 </head>

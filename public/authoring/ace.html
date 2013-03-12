@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="css/custom.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/codemirror.css">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.6.1.min.js"%3E%3C/script%3E'))</script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscriptsrc="js/libs/jquery-1.9.1.min.js"%3E%3C/script%3E'))</script>
   <script type="text/javascript">
     $(document).ready(function() {
         var myCodeMirror = CodeMirror.fromTextArea($('#code_editor')[0], {
@@ -35,7 +35,7 @@
         }
 
         var last_marker = null;
-        
+
 
         var checkSyntax = function() {
           var src = myCodeMirror.getValue();
@@ -179,7 +179,7 @@
       <span class="label">JS Rule functions:</span>
       Rules.check(rule_id);             // check 'rule_id' without feedback. (true|false)
       Rules.hasNode('name');            // returns true if there is a node named 'name'
-      result = false;                   // fail this rule. 
+      result = false;                   // fail this rule.
       Rules.hasTransformation();        // true if the diagram has transformations
       Rules.iconsUsedOnce();            // true if the icons were only used one time.
       Rules.extraLinks();               // true if there are links present not defined in any rule.
@@ -187,12 +187,12 @@
       // sample use:
       if (Rules.hasNode('good node') { result = true; }
       else { result = false; } // result is false by default, so this is redundant.
-      
+
     </div>
 
     <div id="editor_wrap">
       <div class='label'>javscript editor:</div>
-      <textarea id="code_editor"></textarea>  
+      <textarea id="code_editor"></textarea>
     </div>
     <div id="js_error_labels" class="label" style="display: none;"> Javascript Errors:</div>
     <div id="js_errors"></div>
