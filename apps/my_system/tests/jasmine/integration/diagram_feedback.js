@@ -202,7 +202,6 @@ describe("submit timestamp", function(){
     helper.addNode('obj1');
 
     helper.submitDiagram();
-    console.log(helper.lastFeedback().numOfSubmits);
     firstSubmitTime = helper.lastFeedback().timeStampMs;
     expect(firstSubmitTime > milliesNow).toBeTruthy();
   

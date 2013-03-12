@@ -4,37 +4,30 @@
  * This handles events and calls the appropriate function to handle
  * the event.
  */
+
 View.prototype.mysystem2Dispatcher = function(type,args,obj){
   if(type === 'mysystem2PromptChanged'){
-    console.log('mysystem2PromptChanged');
     //  obj.Mysystem2Node.AddNewModule();
   }
   if(type === 'mysystem2FieldUpdated'){
-    console.log('mysystem2FieldUpdated');
     obj.Mysystem2Node.fieldUpdated(args[0], args[1]);
   }
   if(type === 'mysystem2RemoveMod'){
-    console.log('mysystem2RemoveMod');
     obj.Mysystem2Node.removeMod(args[0]);
   }
   if(type === 'mysystem2AddNewModule'){
-    console.log('mysystem2AddNewModule');
     obj.Mysystem2Node.AddNewModule();
   }
   if(type === 'mysystem2AddNewEnergyType'){
-    console.log('mysystem2AddNewEnergyType');
     obj.Mysystem2Node.AddNewEnergyType();
   }
   if(type === 'mysystem2EnergyFieldUpdated'){
-    console.log('mysystem2EnergyFieldUpdated');
     obj.Mysystem2Node.fieldEnergyUpdated(args[0], args[1]);
   }
   if(type === 'mysystem2RemoveEtype'){
-    console.log('mysystem2RemoveEtype');
     obj.Mysystem2Node.removeEtype(args[0]);
   }
   if(type === 'mysystem2AuthoringIFrameLoaded'){
-    console.log('mysystem2AuthoringIFrameLoaded');
     obj.Mysystem2Node.AuthoringIFrameLoaded();
   }
   if(type === 'mySystemPreviewFrameLoaded') {
