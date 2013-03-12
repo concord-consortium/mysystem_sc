@@ -439,12 +439,30 @@ MSA.TextArea = Ember.TextArea.extend({
   wrap: "off"
 });
 
-// add size attribute to text field
-MSA.TextField = Ember.TextField.extend({
+// add size, no live_update
+MSA.TextField = Ember.View.extend({
+  classNames: ['ember-text-field'],
+  tagName: "input",
   attributeBindings: ['type', 'value', 'size'],
   type: "text",
-  size: null
+  value: "",
+  size: null,
+
+  // unlike Ember.TextSupport, we dont trigger
+  // on key-up, paste, copy, &etc. Why?
+  // because updated 20 or so lists of nodes (in the rules)
+  // was causing CPU spin.
+  init: function() {
+    this._super();
+    this.on("focusOut", this, this._elementValueDidChange);
+    this.on("change", this, this._elementValueDidChange);
+  },
+
+  _elementValueDidChange: function() {
+    Ember.set(this, 'value', this.$().val());
+  }
 });
+
 
 MSA.editorController = Ember.Object.create({
   owner: null,
