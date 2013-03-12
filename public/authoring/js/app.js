@@ -1,6 +1,6 @@
-/*globals MSA, SCUtil, InitialMySystemData*/
+/*globals Ember, SCUtil, InitialMySystemData*/
 
-MSA = Ember.Application.create();
+var MSA = Ember.Application.create();
 
 MSA.setPreviewApp = function(mysystem) {
   mysystem.setAuthoringDataController(MSA.dataController);

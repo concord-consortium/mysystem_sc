@@ -1,3 +1,4 @@
+/*globals MySystem, SCUtil, InitialMySystemData*/
 
 MySystem.clearCanvas = function () {
   MySystem.loadInitialDiagram();

@@ -1,6 +1,6 @@
-/*globals InitialMySystemData */
+/*globals */
 
-InitialMySystemData = {
+var InitialMySystemData = {
  "type": "mysystem2",
  "prompt": "How can you cook an egg?",
  "modules": [

@@ -1,6 +1,6 @@
-/*globals msaPreview $ console*/
+/*globals $ ZeroClipboard */
 
-msaPreview = {};
+var msaPreview = {};
 
 msaPreview.CouchDS = function(authoredDocId) {
   $.couch.urlPrefix = "/mysystem_designs";
