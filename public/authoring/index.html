@@ -64,11 +64,9 @@
       {{#each MSA.modulesController.content}}
         {{view MSA.NodeView nodeBinding="this"}}
       {{/each}}
-      {{#view Ember.Button
-        target="MSA.modulesController"
-        action="createItem" class="add_button"}}
+      <button {{action "createItem" target="MSA.modulesController"}}>
         Add New Node Type
-      {{/view}}
+      </button>
     </div>
 
     <!-- #### Node Sizes #### -->
@@ -128,11 +126,10 @@
         {{view MSA.LinkView linkBinding="this"}}
       {{/each}}
 
-      {{#view Ember.Button
-        target="MSA.energyTypesController"
-        action="createItem" class="add_button"}}
+      <button {{action "createItem" target="MSA.energyTypesController"}}>
         Add New Energy Type
-      {{/view}}
+      </button>
+
     </div>
 
     <!-- #### Minimum Requirements #### -->
@@ -154,11 +151,9 @@
       {{#each MSA.minRequirementsController.content}}
         {{view MSA.MinRequirementView ruleBinding="this"}}
       {{/each}}
-      {{#view Ember.Button
-        target="MSA.minRequirementsController"
-        action="createItem" class="add_button"}}
+      <button {{action "createItem" target="MSA.minRequirementsController"}}>
         Add New Minimum Requirement
-      {{/view}}
+      </button>
     </div>
 
     <!-- #### Feedback  #### -->
@@ -240,7 +235,6 @@
     {{view MSA.RubricExpressionView}}
 
 
-
     <!-- #### Rules  #### -->
     <div class="options_block">
       <h2>Diagram Rules</h2>
@@ -249,12 +243,9 @@
         {{view MSA.RuleView ruleBinding="this"}}
       {{/each}}
       </ol>
-
-      {{#view Ember.Button
-        target="MSA.diagramRulesController"
-        action="createItem" class="add_button"}}
+      <button {{action "createItem" target="MSA.diagramRulesController"}}>
         Add New Diagram Rule
-      {{/view}}
+      </button>
     </div>
 
     <div class="options_block">
@@ -262,11 +253,9 @@
       {{#each MSA.rubricCategoriesController.content}}
         {{view MSA.CategoryView categoryBinding="this"}}
       {{/each}}
-      {{#view Ember.Button
-        target="MSA.rubricCategoriesController"
-        action="createItem" class="add_button"}}
+      <button {{action "createItem" target="MSA.rubricCategoriesController"}}>
         Add New Category
-      {{/view}}
+      </button>
     </div>
 
 
@@ -281,15 +270,17 @@
         Javascipt for custom rules. e.g.
         <br/>
         <div id="customRuleEvaluator">
-        <div class="codeblock">{{MSA.dataController.activity.customRuleEvaluator}}</div>
-          {{#view Ember.Button target="MSA.customRuleController" action="editCustomRule"}} edit custom rules {{/view}}
+          <div class="codeblock">{{MSA.dataController.activity.customRuleEvaluator}}</div>
+          <button {{action "editCustomRule" target="MSA.customRuleController" }}>
+            edit custom rules
+          </button>
         </div>
       {{/if}}
     </div>
 
   <!-- #### JSON DataHash #### -->
   <div id="datahash_json_view">
-    <div class="codeblock">{{MSA.dataController.dataJson}}</div>
+    <div class="codeblock">MSA.dataController.dataJson (removed)</div>
   </div>
 
   </script>
@@ -327,14 +318,14 @@
   <script type="text/x-handlebars"  data-template-name='node-template'>
     {{view MSA.TextField valueBinding="name" placeholder="name"}}
     {{view MSA.TextField valueBinding="image" placeholder="image"}}
-    <button {{action "remove" on="click" item="model"}}>remove</button>
+    <button {{action "remove" this target="view"}}>remove</button>
   </script>
 
   <!-- #### Link Template #### -->
   <script type="text/x-handlebars"  data-template-name='link-template'>
     {{view MSA.TextField valueBinding="label" placeholder="label"}}
     {{view MSA.TextField valueBinding="color" placeholder="color"}}
-    <button {{action "remove" on="click" item="model"}}>remove</button>
+    <button {{action "remove" this target="view"}}>remove</button>
   </script>
 
   <!-- #### Category Template #### -->
@@ -345,7 +336,7 @@
         <span class="value">
           {{view MSA.TextField valueBinding="name" placeholder="name"}}
         </span>
-        <button {{action "remove" on="click" item="model"}}>remove</button>
+        <button {{action "remove" this target="view"}}>remove</button>
       </div>
     </div>
   </script>
@@ -427,7 +418,9 @@
         }}
       {{/if}}
       <hr/>
-      <button {{action "remove" on="click" item="model"}}>Remove {{view.ruleType}}</button>
+      <button <button {{action "remove" this target="view"}}>
+        remove
+      </button>>Remove {{view.ruleType}}</button>
       <button {{action "moveItemUp" on="click" item="model"}}>↑</button>
       <button {{action "moveItemDown" on="click" item="model"}}>↓</button>
 

@@ -295,7 +295,7 @@ MSA.minRequirementsController = MSA.RulesController.create({
   hasRequirements: false
 });
 
-MSA.dataController = Ember.Object.create({
+MSA.DataController = Ember.Object.extend({
 
   modulesBinding: 'MSA.modulesController.content',
   energyTypesBinding: 'MSA.energyTypesController.content',
@@ -355,7 +355,7 @@ MSA.dataController = Ember.Object.create({
   data: function() {
     var activity = this.get('activity');
     var data;
-    if(Ember.none(activity)) {
+    if(Ember.isNone(activity)) {
       data = this.get('defaultDataHash');
     }
     else {
@@ -412,6 +412,7 @@ MSA.dataController = Ember.Object.create({
     this.set('activity',activity);
   }
 });
+MSA.dataController = MSA.DataController.create({});
 
 MSA.NodeTypesView = Ember.CollectionView.extend({
   tagName: 'ul',
@@ -530,6 +531,7 @@ MSA.NodeView = Ember.View.extend({
   templateName: 'node-template',
   remove: function() {
     MSA.modulesController.removeObject(this.get('node'));
+    return true;
   }
 });
 
@@ -537,6 +539,7 @@ MSA.LinkView = Ember.View.extend({
   templateName: 'link-template',
   remove: function() {
     MSA.energyTypesController.removeObject(this.get('link'));
+    return true;
   }
 });
 
@@ -544,6 +547,7 @@ MSA.CategoryView = Ember.View.extend({
   templateName: 'category-template',
   remove: function() {
     MSA.rubricCategoriesController.removeObject(this.get('category'));
+    return true;
   }
 });
 
