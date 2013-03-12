@@ -7,9 +7,20 @@ MSA.setPreviewApp = function(mysystem) {
   mysystem.reloadAuthoringData();
   mysystem.saveInitialDiagramAsSaveFunction();
 
+  // set maximum update rate...
+  var maxUpdateInterval = 1000;
+  var lastUpdateTime    = 0;
+  var timeOutJob        = null;
   var _update_function = function() {
-    var data = MSA.dataController.get('data');
-    mysystem.updateRuntime(data);
+    if(timeOutJob !== null) {
+      window.clearTimeout(timeOutJob);
+    }
+    var _actualyUpdate = function() {
+      var data = MSA.dataController.get('data');
+      mysystem.updateRuntime(data);
+      console.log("done");
+    };
+    timeOutJob = window.setTimeout(_actualyUpdate,maxUpdateInterval);
   };
 
   MSA.dataController.addObserver('data', MSA.dataController, _update_function);
