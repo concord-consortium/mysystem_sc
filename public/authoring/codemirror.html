@@ -71,7 +71,7 @@
               {line: line, character: character},
               {line: line, character: character+1} );
             if (last_marker) { myCodeMirror.clearMarker(last_marker); };
-            last_marker = myCodeMirror.setMarker(line, "☹→");
+            last_marker = myCodeMirror.setMarker(line, "<span class='error'>✖</span>");
             myCodeMirror.focus();
           }
           else {
@@ -110,7 +110,7 @@
       background-color: #fff;
     }
     #editor_wrap {
-      border: 1px solid black;
+      border: 2px solid gray;
       maring: 1em;
     }
     button {
@@ -120,7 +120,7 @@
       font-family: Lucidatypewriter, monospace;
     }
     .error {
-      background-color: #d79d95;
+      color: #cc5555;
     }
     .label {
       font-size: 1.2em;
@@ -158,7 +158,7 @@
       Rules.extraLinks();               // true if there are links present not defined in any rule.
 
       // sample use:
-      if (Rules.extraLinks()) {w
+      if (Rules.extraLinks()) {
         Rules.addSuggestion("You have some extra links!");
       }
       if (!Rules.iconsUsedOnce()) {
@@ -191,7 +191,6 @@
     </div>
 
     <div id="editor_wrap">
-      <div class='label'>javscript editor:</div>
       <textarea id="code_editor"></textarea>
     </div>
     <div id="js_error_labels" class="label" style="display: none;"> Javascript Errors:</div>

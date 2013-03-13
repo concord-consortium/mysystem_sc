@@ -490,7 +490,7 @@ MSA.editorController = Ember.Object.create({
 
     // or create a new one:
     else {
-      editorWindow = window.open("ace.html", 'editorwindow', features);
+      editorWindow = window.open("codemirror.html", 'editorwindow', features);
       this.set('editorWindow', editorWindow);
       editorWindow.srcText = value;
       editorWindow.helpSelector = owner.helpDiv;
