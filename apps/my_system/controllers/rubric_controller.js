@@ -32,7 +32,7 @@ MySystem.rubricController = SC.ObjectController.create({
         rubricScore = MySystem.RubricScore.instance(),
         expression = MySystem.activityController.get('rubricExpression') || "",
         categories = MySystem.activityController.get('rubricCategories'),
-        nodes      = MySystem.nodesController.get('content'),
+        nodes      = MySystem.store.find(MySystem.Node),
         rules      = MySystem.activityController.get('diagramRules'),
         result     = MySystem.rubricController.UNSCORED,
 
