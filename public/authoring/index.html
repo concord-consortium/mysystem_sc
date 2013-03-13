@@ -306,10 +306,10 @@
       <h2>Rubric Evaluator</h2>
       <div class="rubricExpression codeblock">{{MSA.dataController.activity.rubricExpression}}</div>
       <span class="showScore flow">
-        <button {{action "showScore"}}>Score the digram</button>
+        <button {{action "showScore" this target="view"}}>Score the digram</button>
       </span>
       <span class="edit flow">
-        <button {{action "edit"}}>Edit</button>
+        <button {{action "edit" this target="view"}}>Edit</button>
       </span>
     </div>
   </script>
@@ -367,7 +367,7 @@
       {{#if "isJavascript"}}
             <div class="javascript_rule">
               <div class="rubricExpression codeblock">{{javascriptExpression}}</div>
-              <button {{action "editJSRule" on="click" item="model"}}>edit javascript</button>
+              <button {{action "editJSRule" this target="view" }}>edit javascript</button>
 
             </div>
       {{else}}
@@ -419,10 +419,10 @@
       {{/if}}
       <hr/>
       <button <button {{action "remove" this target="view"}}>
-        remove
-      </button>>Remove {{view.ruleType}}</button>
-      <button {{action "moveItemUp" on="click" item="model"}}>↑</button>
-      <button {{action "moveItemDown" on="click" item="model"}}>↓</button>
+        Remove {{view.ruleType}}
+      </button>
+      <button {{action "moveItemUp" this target="view"}}>↑</button>
+      <button {{action "moveItemDown" this target="view"}}>↓</button>
 
     </div>
     </li>
