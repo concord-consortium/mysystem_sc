@@ -7,8 +7,6 @@
 
 /** @class
 
-  (Document Your View Here)
-
   @extends SC.View
 */
 
@@ -62,7 +60,7 @@ MySystem.LinkFormView = SC.FormView.extend({
         for (var i = 0; i < items.length(); i++) {
           var item = items.objectAt(i);
           var iVal = item.get(key);
-          if (iVal == val) {
+          if (iVal === val) {
             return item;
           }
         }

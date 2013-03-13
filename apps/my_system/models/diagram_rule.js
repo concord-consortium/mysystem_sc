@@ -2,7 +2,7 @@
 // Project:   MySystem.DiagramRule
 // Copyright: ©2011 My Concord Consortium
 // ==========================================================================
-/*globals MySystem */
+/*globals MySystem alert */
 
 /** @class
 
@@ -30,7 +30,7 @@ MySystem.DiagramRule = SC.Record.extend(
 
   // FIXME use something better than node for non typed rules
   paletteItem: function (nodeType) {
-    if( nodeType == 'node' ) {
+    if( nodeType === 'node' ) {
       return MySystem.DiagramRule.genericPaletteItem;
     }
 
@@ -46,7 +46,7 @@ MySystem.DiagramRule = SC.Record.extend(
   energyTypeObject: function() {
     // the energyType could be null for authored content that was created before energy types
     var energyType = this.get('energyType');
-    if( !energyType || energyType == 'any'){
+    if( !energyType || energyType === 'any'){
       return MySystem.DiagramRule.genericEnergyType;
     }
 
@@ -76,7 +76,7 @@ MySystem.DiagramRule = SC.Record.extend(
         passes = count < this.get('number');
         break;
       case 'exactly':
-        passes = count == this.get('number');
+        passes = count === this.get('number');
         break;
       default:
         throw "Invalid comparison value for diagram rule.";
@@ -96,7 +96,7 @@ MySystem.DiagramRule = SC.Record.extend(
     } else if(paletteItem === MySystem.DiagramRule.genericPaletteItem){
       return true;
     } else {
-      return paletteItem.get('uuid') == node.get('nodeType');
+      return paletteItem.get('uuid') === node.get('nodeType');
     }
   },
 
@@ -107,7 +107,7 @@ MySystem.DiagramRule = SC.Record.extend(
       return false;
     }
 
-    if((energyType != MySystem.DiagramRule.genericEnergyType ) && (energyType.get('uuid') != link.get('energyType'))){
+    if((energyType !== MySystem.DiagramRule.genericEnergyType ) && (energyType.get('uuid') !== link.get('energyType'))){
       return false;
     }
 
@@ -134,7 +134,7 @@ MySystem.DiagramRule = SC.Record.extend(
       }
       catch(e) {
         errorMsg = errorMsg.fmt(ruleName, e);
-        if (console && typeof console.log == 'function') {
+        if (console && typeof console.log === 'function') {
           console.log(errorMsg);
         }
         alert(errorMsg);

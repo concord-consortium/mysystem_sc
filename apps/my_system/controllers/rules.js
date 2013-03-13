@@ -28,7 +28,7 @@ MySystem.rulesController = SC.ObjectController.create({
 
   checkMinimumFeedback: function() {
     var reqFails          = 0,
-    nodes                 = this.nodes;
+    nodes                 = this.nodes,
     minimumRequirements   = MySystem.activityController.get('minimumRequirements'),
     minimumRequirementsFB = MySystem.activityController.get('minimumRequirementsFeedback');
 
@@ -58,20 +58,20 @@ MySystem.rulesController = SC.ObjectController.create({
     i         = 0;
 
     // assume that this a real rule
-    if (typeof exampleRule == "object") {
+    if (typeof exampleRule === "object") {
       found = exampleRule;
     }
 
     // search by number
-    if (typeof exampleRule == "number") {
+    if (typeof exampleRule === "number") {
       found = rules[exampleRule];
     }
 
     // search by name
-    if (typeof exampleRule == "string") {
+    if (typeof exampleRule === "string") {
       for(i=0; i< rules.length; i++) {
         rule = rules[i];
-        if (rule.get("name") == exampleRule) {
+        if (rule.get("name") === exampleRule) {
           found = rule;
         }
       }
@@ -188,7 +188,7 @@ MySystem.rulesController = SC.ObjectController.create({
         eval(customRuleEvaluator);
       }
       catch(e) {
-        if (console && typeof console.log == 'function') {
+        if (console && typeof console.log === 'function') {
           console.log("Error evaluating custom rule: " + e);
         }
         // WARNING:  Errors will be dispalyed to users:
@@ -233,6 +233,7 @@ MySystem.rulesController = SC.ObjectController.create({
   iconsUsedOnce: function() {
     var nodes = this.nodes.toArray();
     var types = {};
+    var i = 0;
     var duplicates = false;
     for(i = 0; i < nodes.length; i++) {
       var node = nodes[i];
@@ -290,6 +291,6 @@ MySystem.rulesController = SC.ObjectController.create({
     var nodes = MySystem.store.find(MySystem.Node);
     return (nodes.findProperty('nodeType',nodeName));
   }
-  
+
 });
 
