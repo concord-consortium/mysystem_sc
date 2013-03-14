@@ -1,5 +1,5 @@
 /*globals MySystem, SCUtil, InitialMySystemData*/
-
+sc_require('main');
 MySystem.clearCanvas = function () {
   MySystem.loadInitialDiagram();
 };
@@ -44,7 +44,7 @@ MySystem.registerExternalSaveFunction = function(func, context) {
   }
 };
 
-// Do any processing or cleanup that ought to be done before an external application 
+// Do any processing or cleanup that ought to be done before an external application
 // wants to save data and exit
 MySystem.preExternalSave = function() {
   SC.RunLoop.begin();
@@ -140,7 +140,7 @@ MySystem.reloadAuthoringData = function() {
     MySystem.loadWiseConfig(data, null);
   SC.RunLoop.end();
 };
-      
+
 MySystem.scoreDiagram = function(){
   MySystem.rubricController.displayScore();
 };
