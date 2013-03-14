@@ -18,7 +18,6 @@ MSA.setPreviewApp = function(mysystem) {
     var _actualyUpdate = function() {
       var data = MSA.dataController.get('data');
       mysystem.updateRuntime(data);
-      console.log("done");
     };
     timeOutJob = window.setTimeout(_actualyUpdate,maxUpdateInterval);
   };
