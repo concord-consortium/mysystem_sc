@@ -1,6 +1,28 @@
 /*globals Ember, SCUtil, InitialMySystemData*/
 
 var MSA = Ember.Application.create();
+MSA.PositionControls = Ember.Mixin.create({
+  moveItemUp: function(item) {
+    var c = this.get('content');
+    var i = c.indexOf(item);
+
+    if (i > 0) {
+      var itemBefore = this.objectAt(i-1);
+      this.replaceContent(i-1, 2, [item, itemBefore]);
+    }
+  },
+
+  moveItemDown: function(item) {
+    var c = this.get('content');
+    var i = c.indexOf(item);
+
+
+    if (i < (c.length-1)) {
+      var itemAfter = this.objectAt(i+1);
+      this.replaceContent(i, 2, [itemAfter, item]);
+    }
+  }
+});
 
 MSA.setPreviewApp = function(mysystem) {
   mysystem.setAuthoringDataController(MSA.dataController);
@@ -199,35 +221,9 @@ MSA.RubricCategory = SCUtil.ModelObject.extend({
   name: SCUtil.dataHashProperty
 });
 
-MSA.RubricCategoriesController = SCUtil.ModelArray.extend({
+MSA.RubricCategoriesController = SCUtil.ModelArray.extend(MSA.PositionControls, {
   modelType: MSA.RubricCategory,
   scoreFunction: null,
-
-  moveItemUp: function(button) {
-    var c = this.get('content');
-    var item = button.get('item');
-    var i = c.indexOf(item.get('dataHash'));
-
-    if (i > 0) {
-      this.contentWillChange();
-      var itemBefore = this.objectAt(i-1);
-      this.replaceContent(i-1, 2, [item, itemBefore]);
-      this.contentDidChange();
-    }
-  },
-
-  moveItemDown: function(button) {
-    var c = this.get('content');
-    var item = button.get('item');
-    var i = c.indexOf(item.get('dataHash'));
-
-    if (i < (c.length-1)) {
-      this.contentWillChange();
-      var itemAfter = this.objectAt(i+1);
-      this.replaceContent(i, 2, [itemAfter, item]);
-      this.contentDidChange();
-    }
-  },
 
   showScore: function() {
     var scoreFunction = this.get('scoreFunction');
@@ -237,7 +233,7 @@ MSA.RubricCategoriesController = SCUtil.ModelArray.extend({
   }
 });
 
-MSA.RulesController = SCUtil.ModelArray.extend({
+MSA.RulesController = SCUtil.ModelArray.extend(MSA.PositionControls, {
   modelType: MSA.DiagramRule,
 
   nodesBinding: 'MSA.modulesController.content',
@@ -260,36 +256,18 @@ MSA.RulesController = SCUtil.ModelArray.extend({
 
   linkDirections: ['-->', '<--', '---'],
 
-  moveItemUp: function(item) {
-    var c = this.get('content');
-    var i = c.indexOf(item);
-
-    if (i > 0) {
-      var itemBefore = this.objectAt(i-1);
-      this.replaceContent(i-1, 2, [item, itemBefore]);
-    }
-  },
-
-  moveItemDown: function(item) {
-    var c = this.get('content');
-    var i = c.indexOf(item);
-
-
-    if (i < (c.length-1)) {
-      var itemAfter = this.objectAt(i+1);
-      this.replaceContent(i, 2, [itemAfter, item]);
-    }
-  }
 });
 
 MSA.rubricCategoriesController = MSA.RubricCategoriesController.create({});
 
 
-MSA.modulesController = SCUtil.ModelArray.create({
+MSA.ModuleController  = SCUtil.ModelArray.extend(MSA.PositionControls, {
   modelType: MSA.Module
 });
 
-MSA.energyTypesController = SCUtil.ModelArray.create({
+MSA.modulesController = MSA.ModuleController.create();
+
+MSA.energyTypesController = SCUtil.ModelArray.create(MSA.PositionControls, {
   modelType: MSA.EnergyType
 });
 
@@ -559,6 +537,14 @@ MSA.NodeView = Ember.View.extend({
   templateName: 'node-template',
   remove: function() {
     MSA.modulesController.removeObject(this.get('node'));
+    return true;
+  },
+  moveItemUp: function() {
+    MSA.modulesController.moveItemUp(this.get('node'));
+    return true;
+  },
+  moveItemDown: function() {
+    MSA.modulesController.moveItemDown(this.get('node'));
     return true;
   }
 });

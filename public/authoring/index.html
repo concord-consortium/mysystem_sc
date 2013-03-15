@@ -316,9 +316,15 @@
 
   <!-- #### Node Template #### -->
   <script type="text/x-handlebars"  data-template-name='node-template'>
-    {{view MSA.TextField valueBinding="name" placeholder="name"}}
-    {{view MSA.TextField valueBinding="image" placeholder="image"}}
-    <button {{action "remove" this target="view"}}>remove</button>
+    <div class = "moduleItem">
+      <label>Name:</label>  {{view MSA.TextField valueBinding="name"  placeholder="name"}}
+      <label>Icon:</label> {{view MSA.TextField valueBinding="image" placeholder="image"}}
+      <div class='upDownFlipper'>
+        <button {{action "moveItemUp" this target="MSA.modulesController"}}>⬆</button>
+        <button {{action "moveItemDown" this target="MSA.modulesController"}}>⬇</button>
+      </div>
+      <button {{action "remove" this target="view"}}>remove</button>
+    </div>
   </script>
 
   <!-- #### Link Template #### -->
@@ -421,8 +427,8 @@
       <button <button {{action "remove" this target="view"}}>
         Remove {{view.ruleType}}
       </button>
-      <button {{action "moveItemUp" this target="view"}}>↑</button>
-      <button {{action "moveItemDown" this target="view"}}>↓</button>
+      <button {{action "moveItemUp" this target="view"}}>⬆</button>
+      <button {{action "moveItemDown" this target="view"}}>⬇</button>
 
     </div>
     </li>
