@@ -267,10 +267,10 @@ MSA.ModuleController  = SCUtil.ModelArray.extend(MSA.PositionControls, {
 
 MSA.modulesController = MSA.ModuleController.create();
 
-MSA.energyTypesController = SCUtil.ModelArray.create(MSA.PositionControls, {
+MSA.EnergyTypesController = SCUtil.ModelArray.extend(MSA.PositionControls, {
   modelType: MSA.EnergyType
 });
-
+MSA.energyTypesController = MSA.EnergyTypesController.create();
 
 MSA.diagramRulesController = MSA.RulesController.create({});
 
@@ -420,7 +420,7 @@ MSA.TextArea = Ember.TextArea.extend({
 MSA.TextField = Ember.View.extend({
   classNames: ['ember-text-field'],
   tagName: "input",
-  attributeBindings: ['type', 'value', 'size'],
+  attributeBindings: ['type', 'value', 'size', 'placeholder'],
   type: "text",
   value: "",
   size: null,

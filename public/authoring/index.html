@@ -59,8 +59,6 @@
     <!-- #### Node Types  (Modules) #### -->
     <div class="options_block">
       <h2>Node Types</h2>
-
-      <ul>
       {{#each MSA.modulesController.content}}
         {{view MSA.NodeView nodeBinding="this"}}
       {{/each}}
@@ -317,10 +315,10 @@
   <!-- #### Node Template #### -->
   <script type="text/x-handlebars"  data-template-name='node-template'>
     <div class = "moduleItem">
-      <label>Name:</label>  {{view MSA.TextField valueBinding="name"  placeholder="name"}}
-      <label>Icon:</label> {{view MSA.TextField valueBinding="image" placeholder="image"}}
+      {{view MSA.TextField valueBinding="name"  placeholder="name"}}
+      {{view MSA.TextField  valueBinding="image" placeholder="image"}}
       <div class='upDownFlipper'>
-        <button {{action "moveItemUp" this target="MSA.modulesController"}}>⬆</button>
+        <button {{action "moveItemUp"   this target="MSA.modulesController"}}>⬆</button>
         <button {{action "moveItemDown" this target="MSA.modulesController"}}>⬇</button>
       </div>
       <button {{action "remove" this target="view"}}>remove</button>
@@ -329,9 +327,15 @@
 
   <!-- #### Link Template #### -->
   <script type="text/x-handlebars"  data-template-name='link-template'>
-    {{view MSA.TextField valueBinding="label" placeholder="label"}}
-    {{view MSA.TextField valueBinding="color" placeholder="color"}}
-    <button {{action "remove" this target="view"}}>remove</button>
+    <div class = "moduleItem">
+      {{view MSA.TextField valueBinding="label" placeholder="label"}}
+      {{view MSA.TextField valueBinding="color" placeholder="color"}}
+      <div class='upDownFlipper'>
+        <button {{action "moveItemUp"   this target="MSA.energyTypesController"}}>⬆</button>
+        <button {{action "moveItemDown" this target="MSA.energyTypesController"}}>⬇</button>
+      </div>
+      <button {{action "remove" this target="view"}}>remove</button>
+    </div>
   </script>
 
   <!-- #### Category Template #### -->
