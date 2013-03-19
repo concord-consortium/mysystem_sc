@@ -147,32 +147,29 @@
 
     <div id="evalHelp" class="js_help">
       <span class="label">Custom evaluation functions:</span>
-      Rules.addSuggestion(string);      // add 'string' to the suggestions.
-      Rules.addRuleSuggestion(rule_id); // add the suggestion from rule named 'rule_id'
-      Rules.check(rule_id);             // check 'rule_id' without feedback. (true|false)
-      Rules.run(rule_id);               // run 'rule_id' rule, adding feedback.
-      Rules.runAll();                   // run all the rules, adding feedback.
-      Rules.hasTransformation();        // true if the diagram has transformations
-      Rules.iconsUsedOnce();            // true if the icons were only used one time.
-      Rules.extraLinks(rules);          // true if there are links present not defined in 'rules'.
-      Rules.extraLinks();               // true if there are links present not defined in any rule.
+        category("thing");                     // true if any rules in "thing" are true.
+        feedback("message");                   // Tell the stuent  "message"
+        rule("has a sun");                     // check the rule "has a sun" passes.
+        hasTransformation();                   // true if the diagram has transformations
+        iconsUsedOnce();                       // true if the icons were only used one time.
+        extraLinks();                          // true if there are links present not defined in rules.
+        any('category name', rule('rulename')) // if either rulename or category then true
+        any_f('category name',"good");         // provide feedback "good" if 'category name' matches
+        all('a','b',rule('c'))                 // true if category a, category b, and rule 'c' are matched.
+        not_any_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
+        // none is a synonym for not_any
+        not_all_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
+        // *_f (give feedback last argument)
+        // *_free (give feedack without it counting against the user)
 
       // sample use:
-      if (Rules.extraLinks()) {
-        Rules.addSuggestion("You have some extra links!");
-      }
-      if (!Rules.iconsUsedOnce()) {
-        Rules.addSuggestion("You can only use each icon once.");
-      }
-      if (!Rules.hasTransformation()) {
-        Rules.addSuggestion("How is energy transformed?");
-      }
+      any_free(rule("no nodes"), "You need to add some nodes to your drawing  ...");
+      any_free(rule("no links"), "You must link your nodes using energy types ...");
 
-      // Expert only:
-      Rules.find(rule_id);              // find a rule with a specific name.
-      rules;                            // [] all the rules.
-      nodes;                            // [] all of the nodes.
-      suggestions;                      // [] the suggestion list.
+      any_f(iconsUsedOnce(), "You can only use each icon one time   ...");
+      any_f(extraLinks(),    "Your diagram has some uncessary links ...");
+      // by default the 'no problems feedback will be given if there is no feedback'
+
     </div>
 
     <div id="ruleHelp" class="js_help">

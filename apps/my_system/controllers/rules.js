@@ -3,7 +3,7 @@
 //  Copyright: ©2011 Concord Consortium
 //  ==========================================================================
 
-/*globals MySystem */
+/*globals MySystem alert*/
 
 /**
  @class MySystem.rulController
@@ -113,8 +113,10 @@ MySystem.rulesController = SC.ObjectController.create({
   // runDiagramRules: runs the diagram rules
   // updates "success" and "feedback" properties
   runDiagramRules: function() {
+
     var rules                 = this.rules(),
     enableCustomRuleEvaluator = MySystem.activityController.get('enableCustomRuleEvaluator'),
+    feedbackRules             = MySystem.activityController.get('feedbackRules'),
     correctFeedback           = MySystem.activityController.get('correctFeedback'),
     success                   = this.get('success'),
     feedback                  = this.get('feedback');
@@ -129,6 +131,9 @@ MySystem.rulesController = SC.ObjectController.create({
       if (enableCustomRuleEvaluator) {
         // run custom evaluator, normal rules ignored.
         this._evaluateCustomRules();
+      }
+      else if (typeof feedbackRules === 'string' && feedbackRules.length > 0) {
+        this.evaluateFeedbackRules(feedbackRules);
       }
       else {
         // just run the rules in order
@@ -290,7 +295,136 @@ MySystem.rulesController = SC.ObjectController.create({
   hasNode: function(nodeName) {
     var nodes = MySystem.store.find(MySystem.Node);
     return (nodes.findProperty('nodeType',nodeName));
-  }
+  },
 
+
+  evaluateFeedbackRules: function(expression) {
+    var self         = this,
+        gaveFeedback = false,
+        categories   = MySystem.activityController.get('rubricCategories'),
+        nodes        = MySystem.store.find(MySystem.Node),
+        rules        = MySystem.activityController.get('diagramRules'),
+
+        ruleResults = {},
+
+        resultsOfCategories = categories.forEach(function(c) {
+          var name  = c.get('name'),
+              value = false,
+              found = null,
+              rulesInCategory = rules.filterProperty('category',name);
+
+          found = rulesInCategory.find(function(r) {
+            if (r.check(nodes, MySystem.rulesController) === true) {
+              return true;
+            }
+          });
+          if (found) {
+            value = true;
+          }
+          ruleResults[name] = value;
+        }),
+
+        // depricate me.
+        addSuggestion = function(suggestion) {
+          self.suggestions.push(suggestion);
+        },
+
+        feedback =  function(suggestion) {
+          if(!gaveFeedback) {
+            self.suggestions.push(suggestion);
+            gaveFeedback = true;
+          }
+        },
+
+        rule = function(ruleName) {
+          self.check.call(self,ruleName);
+        },
+
+        hasTransformation = function() {
+          self.hasTransformation.call(self);
+        },
+
+        iconsUsedOnce = function() {
+          self.iconsUsedOnce.call(self);
+        },
+
+        extraLinks = function() {
+          self.extraLinks.call(self);
+        },
+
+        category = function(categoryName) {
+          return ruleResults[categoryName] || false;
+        },
+
+        valueFromArgument = function(argument) {
+          if (typeof argument === 'string')   { return category(argument);   }
+          if (typeof argument === 'function') { return argument.apply(self); }
+          if (typeof argument === 'object')   { return argument.apply(self); }
+          return argument; // hopefully a boolean
+        },
+
+        any = function() {
+          var args = [].slice.apply(arguments);
+          return args.reduce(function(a,b) {
+             a = valueFromArgument(a);
+             b = valueFromArgument(b);
+            return (a||b);
+          }, false);
+        },
+
+        all = function() {
+          var args = [].slice.apply(arguments);
+          return args.reduce(function(a,b) {
+             a = valueFromArgument(a);
+             b = valueFromArgument(b);
+            return (a&&b);
+          }, true);
+        },
+
+        not_any = function() {
+          return (! any.apply(self,arguments));
+        },
+        none = not_any,
+
+        not_all = function() {
+          return (! all.apply(self,arguments));
+        },
+
+        makeFeedbackFunction = function(func) {
+          return function() {
+            var args = Array.prototype.slice.call(arguments,0,-1);
+            var message = Array.prototype.slice.call(arguments,-1);
+            var results = func.apply(self, args);
+            if (results) {
+              feedback(message);
+            }
+          };
+        },
+
+        all_f     = makeFeedbackFunction(all),
+        any_f     = makeFeedbackFunction(any),
+        not_any_f = makeFeedbackFunction(not_any),
+        none_f    = makeFeedbackFunction(none),
+        not_all_f = makeFeedbackFunction(not_all),
+
+
+        errorMsg = "Feedback evaluation Error: \n%@";
+
+    // this is the point of entry for evaluateFeedbackRules
+    (function(){
+      try {
+        //var script = CoffeeScript.compile(expression,{thing: 10});
+        eval(expression);
+      }
+      catch(e) {
+        errorMsg = errorMsg.fmt(e);
+        if (console && typeof console.log === 'function') {
+          console.log(errorMsg);
+        }
+        alert(errorMsg);
+      }
+    }).call(self);
+
+  }
 });
 

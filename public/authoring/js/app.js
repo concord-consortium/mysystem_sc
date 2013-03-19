@@ -64,6 +64,9 @@ MSA.setupParentIFrame = function(dataHash, updateObject, mysystem) {
   if (!dataHash.rubricExpression) {
     dataHash.rubricExpression = "true;";
   }
+  if (!dataHash.feedbackRules) {
+    dataHash.feedbackRules = "feedback('good work!');";
+  }
   if (typeof dataHash.correctFeedback === "undefined" || dataHash.correctFeedback === null){
     dataHash.correctFeedback = "";
   }
@@ -156,6 +159,7 @@ MSA.ActivityModel = SCUtil.ModelObject.extend({
   backgroundImage: SCUtil.dataHashProperty,
   backgroundImageScaling: SCUtil.dataHashProperty,
   rubricExpression: SCUtil.dataHashProperty,
+  feedbackRules: SCUtil.dataHashProperty,
   initialDiagramJson: SCUtil.dataHashProperty
 });
 
@@ -298,6 +302,7 @@ MSA.DataController = Ember.Object.extend({
       "diagram_rules"                : [],
       "rubric_categories"            : [],
       "rubricExpression"             : "true;",
+      "feedbackRules"                : "feedback('good work!');",
       "correctFeedback"              : "Your diagram has no obvious problems.",
       "minimum_requirements"         : [],
       "maxFeedbackItems"             : 0,
@@ -533,6 +538,18 @@ MSA.rubricController = Ember.Object.create({
   }
 });
 
+MSA.feedbackRulesController = Ember.Object.create({
+  helpDiv: '#evalHelp',
+  editFeedback: function() {
+    var value = MSA.dataController.activity.get('feedbackRules');
+    var callback = function(value) {
+      MSA.dataController.activity.set('feedbackRules',value);
+    }.bind(this);
+    MSA.editorController.editCustomRule(this,value,callback);
+  }
+});
+
+
 MSA.NodeView = Ember.View.extend({
   templateName: 'node-template',
   remove: function() {
@@ -596,6 +613,13 @@ MSA.RubricExpressionView = Ember.View.extend({
   },
   edit: function() {
     MSA.rubricController.editRubric();
+  }
+});
+
+MSA.FeedbackRulesView = Ember.View.extend({
+  templateName: 'feedbackRules-template',
+  edit: function() {
+    MSA.feedbackRulesController.editFeedback();
   }
 });
 

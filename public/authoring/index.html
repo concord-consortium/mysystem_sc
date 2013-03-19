@@ -232,7 +232,7 @@
     <!-- #### Rubric Evaluator #### -->
     {{view MSA.RubricExpressionView}}
 
-
+    {{view MSA.FeedbackRulesView}}
     <!-- #### Rules  #### -->
     <div class="options_block">
       <h2>Diagram Rules</h2>
@@ -306,6 +306,17 @@
       <span class="showScore flow">
         <button {{action "showScore" this target="view"}}>Score the digram</button>
       </span>
+      <span class="edit flow">
+        <button {{action "edit" this target="view"}}>Edit</button>
+      </span>
+    </div>
+  </script>
+
+  <!-- #### Feedback Rules Template #### -->
+  <script type="text/x-handlebars"  data-template-name='feedbackRules-template'>
+    <div class="options_block">
+      <h2>Feedback Rules</h2>
+      <div class="feedbackRules codeblock">{{MSA.dataController.activity.feedbackRules}}</div>
       <span class="edit flow">
         <button {{action "edit" this target="view"}}>Edit</button>
       </span>
