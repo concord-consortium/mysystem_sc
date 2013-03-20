@@ -42,19 +42,12 @@
           var opts =  {
             evil: true, nomen: false, onevar: false, regexp: false,
             strict: true, boss: true, undef: true, maxlen: 100, indent:4, expr: true,
-            predef: [
-              "Rules",
-              "all",
-              "any",
-              "score",
-              "result",
-              "diagram",
-              "name",
-              "ruleName",
-              "self",
-              "correctFeedback",
-              "suggestions",
-              "nodes"
+            predef: [ "Rules", "self",
+              "all", "any",     "none",   "not_any",  "not_all",
+              "all_f", "any_f", "none_f", "not_any_F","not_all_f",
+              "rule", "category", "nodes", "links",
+              "score", "result", "suggestions", "feedback",
+              "extraLinks", "iconsUsedOnce", "hasTransformation"
             ]
           };
           var result = JSHINT(src,opts);
@@ -147,43 +140,71 @@
 
     <div id="evalHelp" class="js_help">
       <span class="label">Custom evaluation functions:</span>
-        category("thing");                     // true if any rules in "thing" are true.
-        feedback("message");                   // Tell the stuent  "message"
-        rule("has a sun");                     // check the rule "has a sun" passes.
-        hasTransformation();                   // true if the diagram has transformations
-        iconsUsedOnce();                       // true if the icons were only used one time.
-        extraLinks();                          // true if there are links present not defined in rules.
-        any('category name', rule('rulename')) // if either rulename or category then true
+        any('category name', 'rulename')       // you can use rule names, or category names
         any_f('category name',"good");         // provide feedback "good" if 'category name' matches
         all('a','b',rule('c'))                 // true if category a, category b, and rule 'c' are matched.
         not_any_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
+        rule("has a sun");                     // check the rule "has a sun" passes.
+        category("thing");                     // true if any rules in "thing" are true.
+        hasTransformation();                   // true if the diagram has transformations
+        iconsUsedOnce();                       // true if the icons were only used one time.
+        extraLinks();                          // true if there are links present not defined in rules.
+        feedback("message");                   // Tell the stuent  "message"
+
         // none is a synonym for not_any
+        none_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
         not_all_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
-        // *_f (give feedback last argument)
-        // *_free (give feedack without it counting against the user)
+
+        // can nest
+        any_f(none('has nodes','has links'),extraLinks(), "Your diagram has problems.")
+
 
       // sample use:
-      any_free(rule("no nodes"), "You need to add some nodes to your drawing  ...");
-      any_free(rule("no links"), "You must link your nodes using energy types ...");
-
       any_f(iconsUsedOnce(), "You can only use each icon one time   ...");
       any_f(extraLinks(),    "Your diagram has some uncessary links ...");
-      // by default the 'no problems feedback will be given if there is no feedback'
+
+      // categories take presidence, and will mask a rule with the same name
+      any_f('rule one', 'category a', "feedback here");
+
+      // incase of ambiguity you can specify it manually like this:
+      none_f(rule('has links'), category('has links)', "your diagram must have links!");
+
+      // by default the "Feedback if all rules pass: " feedback will be given
 
     </div>
 
     <div id="ruleHelp" class="js_help">
       <span class="label">JS Rule functions:</span>
-      Rules.check(rule_id);             // check 'rule_id' without feedback. (true|false)
-      Rules.hasNode('name');            // returns true if there is a node named 'name'
-      result = false;                   // fail this rule.
-      Rules.hasTransformation();        // true if the diagram has transformations
-      Rules.iconsUsedOnce();            // true if the icons were only used one time.
-      Rules.extraLinks();               // true if there are links present not defined in any rule.
+        any('category name', 'rulename')       // you can use rule names, or category names
+        any_f('category name',"good");         // provide feedback "good" if 'category name' matches
+        all('a','b',rule('c'))                 // true if category a, category b, and rule 'c' are matched.
+        not_any_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
+        rule("has a sun");                     // check the rule "has a sun" passes.
+        category("thing");                     // true if any rules in "thing" are true.
+        hasTransformation();                   // true if the diagram has transformations
+        iconsUsedOnce();                       // true if the icons were only used one time.
+        extraLinks();                          // true if there are links present not defined in rules.
+        feedback("message");                   // Tell the stuent  "message"
+
+        // none is a synonym for not_any
+        none_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
+        not_all_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
+
+        // can nest
+        any_f(none('has nodes','has links'),extraLinks(), "Your diagram has problems.")
+
 
       // sample use:
-      if (Rules.hasNode('good node') { result = true; }
-      else { result = false; } // result is false by default, so this is redundant.
+      any_f(iconsUsedOnce(), "You can only use each icon one time   ...");
+      any_f(extraLinks(),    "Your diagram has some uncessary links ...");
+
+      // categories take presidence, and will mask a rule with the same name
+      any_f('rule one', 'category a', "feedback here");
+
+      // incase of ambiguity you can specify it manually like this:
+      none_f(rule('has links'), category('has links)', "your diagram must have links!");
+
+      // by default the "Feedback if all rules pass: " feedback will be given
 
     </div>
 
