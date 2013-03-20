@@ -15,7 +15,6 @@ MySystem.rulesController = SC.ObjectController.create({
   success     : false,
   feedback    : "(empty feedback)",
   suggestions : [],
-  nodes       : [],
 
   addSuggestion: function(suggestion) {
     this.suggestions.push(suggestion);
@@ -67,7 +66,7 @@ MySystem.rulesController = SC.ObjectController.create({
   // return the eval result of the
   check: function(_rule) {
     var rule = this.find(_rule);
-    var nodes = this.nodes;
+    var nodes = MySystem.store.find(MySystem.Node);
     var Rules = this; // TODO: pull out rule helpers to module
     return rule.check(nodes,Rules);
   },
@@ -133,7 +132,7 @@ MySystem.rulesController = SC.ObjectController.create({
   // transformations are any nodes which output
   // energytypes other than their input... (berk_req.)
   hasTransformation: function() {
-    var nodes = this.nodes;
+    var nodes = MySystem.store.find(MySystem.Node);
 
     // returns uuids for energytypes or 'unidenitfied_type'
     var linkTypes = function(node,linkTypes) {
@@ -162,7 +161,7 @@ MySystem.rulesController = SC.ObjectController.create({
 
   // true if the icons were only used at most once.
   iconsUsedOnce: function() {
-    var nodes = this.nodes.toArray();
+    var nodes = MySystem.store.find(MySystem.Node).toArray();
     var types = {};
     var i = 0;
     var duplicates = false;
