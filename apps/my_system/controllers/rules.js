@@ -156,7 +156,8 @@ MySystem.rulesController = SC.ObjectController.create({
       }
       return false;
     };
-    return (nodes.filter(hasTransform).length > 1);
+    var filtered = nodes.filter(hasTransform);
+    return (filtered.get('length') >= 1);
   },
 
   // true if the icons were only used at most once.
