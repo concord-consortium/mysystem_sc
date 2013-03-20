@@ -26,26 +26,6 @@ MySystem.rulesController = SC.ObjectController.create({
     this.addSuggestion(rule.get('suggestion'));
   },
 
-  checkMinimumFeedback: function() {
-    var reqFails          = 0,
-    nodes                 = this.nodes,
-    minimumRequirements   = MySystem.activityController.get('minimumRequirements'),
-    minimumRequirementsFB = MySystem.activityController.get('minimumRequirementsFeedback');
-
-    minimumRequirements.forEach( function(rule) {
-      if (!rule.check(nodes)) {
-        reqFails++;
-      }
-    });
-
-    // abort if any of the minimum requirement rules fails
-    if (reqFails > 0) {
-      this.addSuggestion(minimumRequirementsFB);
-      return false;
-    }
-    return true;
-  },
-
   rules: function() {
     var rules = MySystem.activityController.get('diagramRules');
     return rules;
@@ -127,21 +107,10 @@ MySystem.rulesController = SC.ObjectController.create({
     // it would be nice if there was a nodes(only) controller:
     var nodes = this.nodes = MySystem.store.find(MySystem.Node);
 
-    if (this.checkMinimumFeedback()) {
-      if (enableCustomRuleEvaluator) {
-        // run custom evaluator, normal rules ignored.
-        this._evaluateCustomRules();
-      }
-      else if (typeof feedbackRules === 'string' && feedbackRules.length > 0) {
-        this.evaluateFeedbackRules(feedbackRules);
-      }
-      else {
-        // just run the rules in order
-        this.runAll();
-      }
+    if (typeof feedbackRules === 'string' && feedbackRules.length > 0) {
+      this.evaluateFeedbackRules(feedbackRules);
     }
 
-    this.suggestions = suggestions;
     this._trimFeedback();
 
     success  = (this.suggestions.get('length') === 0);
@@ -157,49 +126,6 @@ MySystem.rulesController = SC.ObjectController.create({
     if (maxFeedback && maxFeedback > 0 && this.suggestions.length > maxFeedback) {
       this.suggestions = this.suggestions.slice(0,maxFeedback);
     }
-  },
-
-  _evaluateCustomRules: function() {
-    (function() {
-      // provide context to the evaluator:
-      var customRuleEvaluator       = MySystem.activityController.get('customRuleEvaluator');
-      var nodes                     = MySystem.store.find(MySystem.Node);
-      var correctFeedback           = MySystem.activityController.get('correctFeedback');
-      var suggestions               = this.suggestions;
-      var rules = this.rules();
-
-      var Rules = this;
-
-      // existing:
-      // Rules.addSuggestion(string);      // add string to the suggestions.
-      // Rules.addRuleSuggestion(rule_id); // add the suggestion from rule_id.
-      // Rules.find(rule_id);              // find a rule with a specific name.
-      // Rules.check(rule_id);             // check the given rule, dont add feedback.
-      // Rules.run(rule_id);               // run the given rule, adding feedback.
-      // Rules.runAll();                   // run all the rules, adding feedback.
-      // Rules.hasTransformation();        // true if the diagram has transformations
-      // Rules.iconsUsedOnce();            // true if the icons were only used one time.
-      // Rules.extraLinks(rules=all);      // true if there are links present not defined in rules.
-
-
-      // proposed:
-      // Rules.any([rule-ida,rule-idb,...]);  // true if one of the named rules pass
-      // Rules.all([rule-ida,rule-idb,...]);  // true if all of the named rules pass
-      // Rules.none([rule-ida,rule-idb,..]);  // true if none of the named rules pass
-      // Rules.iconsUnusedIcons();            // true if some icons weren't used.
-      // Rules.allIconsUsed();                // true if all the icons were used.
-
-      try {
-        eval(customRuleEvaluator);
-      }
-      catch(e) {
-        if (console && typeof console.log === 'function') {
-          console.log("Error evaluating custom rule: " + e);
-        }
-        // WARNING:  Errors will be dispalyed to users:
-        suggestions.pushObject("Rule Evaluation Error: " + e);
-      }
-    }).call(this);
   },
 
 
@@ -337,19 +263,19 @@ MySystem.rulesController = SC.ObjectController.create({
         },
 
         rule = function(ruleName) {
-          self.check.call(self,ruleName);
+          return self.check.call(self,ruleName);
         },
 
         hasTransformation = function() {
-          self.hasTransformation.call(self);
+          return self.hasTransformation.call(self);
         },
 
         iconsUsedOnce = function() {
-          self.iconsUsedOnce.call(self);
+          return self.iconsUsedOnce.call(self);
         },
 
         extraLinks = function() {
-          self.extraLinks.call(self);
+          return self.extraLinks.call(self);
         },
 
         category = function(categoryName) {
@@ -357,7 +283,9 @@ MySystem.rulesController = SC.ObjectController.create({
         },
 
         valueFromArgument = function(argument) {
-          if (typeof argument === 'string')   { return category(argument);   }
+          if (typeof argument === 'string')   {
+            return category(argument) || rule(argument);
+          }
           if (typeof argument === 'function') { return argument.apply(self); }
           if (typeof argument === 'object')   { return argument.apply(self); }
           return argument; // hopefully a boolean

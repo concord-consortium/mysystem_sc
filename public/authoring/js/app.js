@@ -70,9 +70,7 @@ MSA.setupParentIFrame = function(dataHash, updateObject, mysystem) {
   if (typeof dataHash.correctFeedback === "undefined" || dataHash.correctFeedback === null){
     dataHash.correctFeedback = "";
   }
-  if (typeof dataHash.minimumRequirementsFeedback === "undefined" || dataHash.minimumRequirementsFeedback === null){
-    dataHash.minimumRequirementsFeedback = "";
-  }
+
   if (typeof dataHash.enableNodeLabelDisplay === "undefined" || dataHash.enableNodeLabelDisplay === null){
     dataHash.enableNodeLabelDisplay = true;
   }
@@ -94,9 +92,7 @@ MSA.setupParentIFrame = function(dataHash, updateObject, mysystem) {
   if (typeof dataHash.customRuleEvaluator === "undefined" || dataHash.customRuleEvaluator === null){
     dataHash.customRuleEvaluator = "";
   }
-  if (!dataHash.minimum_requirements) {
-    dataHash.minimum_requirements = [];
-  }
+
   if (typeof dataHash.maxSubmissionClicks === "undefined" || dataHash.maxSubmissionClicks === null){
     dataHash.maxSubmissionClicks = 0;
   }
@@ -141,7 +137,6 @@ MSA.ActivityModel = SCUtil.ModelObject.extend({
   prompt: SCUtil.dataHashProperty,
   correctFeedback: SCUtil.dataHashProperty,
   maxFeedbackItems: SCUtil.dataHashProperty,
-  minimumRequirementsFeedback: SCUtil.dataHashProperty,
   enableNodeLabelDisplay: SCUtil.dataHashProperty,
   enableNodeLabelEditing: SCUtil.dataHashProperty,
   enableNodeDescriptionEditing: SCUtil.dataHashProperty,
@@ -279,19 +274,10 @@ MSA.energyTypesController = MSA.EnergyTypesController.create();
 MSA.diagramRulesController = MSA.RulesController.create({});
 
 
-
-MSA.minRequirementsController = MSA.RulesController.create({
-  updateHasRequirements: function() {
-    this.set('hasRequirements', (this.get('content.length') > 0));
-  }.observes('content.length'),
-  hasRequirements: false
-});
-
 MSA.DataController = Ember.Object.extend({
 
   modulesBinding: 'MSA.modulesController.content',
   energyTypesBinding: 'MSA.energyTypesController.content',
-  minRequirementsBinding: 'MSA.minRequirementsController.content',
   diagramRulesBinding: 'MSA.diagramRulesController.content',
   rubricCategoriesBinding: 'MSA.rubricCategoriesController.content',
 
@@ -304,9 +290,7 @@ MSA.DataController = Ember.Object.extend({
       "rubricExpression"             : "true;",
       "feedbackRules"                : "feedback('good work!');",
       "correctFeedback"              : "Your diagram has no obvious problems.",
-      "minimum_requirements"         : [],
       "maxFeedbackItems"             : 0,
-      "minimumRequirementsFeedback"  : "You need to work more on your diagram to get feedback!",
       "enableNodeLabelDisplay"       : true,
       "enableNodeLabelEditing"       : false,
       "enableNodeDescriptionEditing" : false,
@@ -357,7 +341,6 @@ MSA.DataController = Ember.Object.extend({
 
     data.modules              = this.get('modules').mapProperty('dataHash');
     data.energy_types         = this.get('energyTypes').mapProperty('dataHash');
-    data.minimum_requirements = this.get('minRequirements').mapProperty('dataHash');
     data.diagram_rules        = this.get('diagramRules').mapProperty('dataHash');
     data.rubric_categories    = this.get('rubricCategories').mapProperty('dataHash');
     this.updateParentHash(data);
@@ -365,7 +348,6 @@ MSA.DataController = Ember.Object.extend({
   }.property( 'activity.rev',
     'energyTypes.@each.rev',
     'modules.@each.rev',
-    'minRequirements.@each.rev',
     'diagramRules.@each.rev',
     'rubricCategories.@each.rev',
     'initialDiagramJson.rev'
@@ -395,7 +377,6 @@ MSA.DataController = Ember.Object.extend({
     MSA.energyTypesController.contentFromHashArray(data.energy_types);
     MSA.diagramRulesController.contentFromHashArray(data.diagram_rules);
     MSA.rubricCategoriesController.contentFromHashArray(data.rubric_categories);
-    MSA.minRequirementsController.contentFromHashArray(data.minimum_requirements);
 
     var activity = MSA.ActivityModel.create();
     var item;
@@ -585,7 +566,6 @@ MSA.CategoryView = Ember.View.extend({
 MSA.RuleView = Ember.View.extend({
   templateName: 'rule-template',
   showName: true,
-  showSuggestion: true,
   ruleType: "Diagram Rule",
   remove: function() {
     MSA.diagramRulesController.removeObject(this.get('rule'));
@@ -600,10 +580,6 @@ MSA.RuleView = Ember.View.extend({
     var rule   = this.get('rule');
     rule.toggleHasLink();
   },
-  editJSRule: function() {
-    var rule   = this.get('rule');
-    rule.editJSRule();
-  }
 });
 
 MSA.RubricExpressionView = Ember.View.extend({
@@ -628,22 +604,4 @@ MSA.PromptView = Ember.View.extend({
   isVisibleBinding: 'MSA.promptController.showPrompt'
 });
 
-MSA.MinRequirementView = Ember.View.extend({
-  templateName: 'rule-template',
-  showName: false,
-  showSuggestion: false,
-  ruleType: "Requirement",
-  remove: function() {
-    MSA.minRequirementsController.removeObject(this.get('rule'));
-  },
-  moveItemUp: function() {
-   MSA.minRequirementsController.moveItemUp(this.get('rule'));
-  },
-  moveItemDown: function() {
-   MSA.minRequirementsController.moveItemDown(this.get('rule'));
-  },
-  toggleHasLink: function() {
-    var rule   = this.get('rule');
-    rule.toggleHasLink();
-  }
-});
+
