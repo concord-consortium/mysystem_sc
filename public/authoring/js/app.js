@@ -65,7 +65,7 @@ MSA.setupParentIFrame = function(dataHash, updateObject, mysystem) {
     dataHash.rubricExpression = "true;";
   }
   if (!dataHash.feedbackRules) {
-    dataHash.feedbackRules = "feedback('good work!');";
+    dataHash.feedbackRules = "none_f(allIconsUsed(), 'you must use every icon in your diagram.');";
   }
   if (typeof dataHash.correctFeedback === "undefined" || dataHash.correctFeedback === null){
     dataHash.correctFeedback = "";
@@ -288,7 +288,7 @@ MSA.DataController = Ember.Object.extend({
       "diagram_rules"                : [],
       "rubric_categories"            : [],
       "rubricExpression"             : "true;",
-      "feedbackRules"                : "feedback('good work!');",
+      "feedbackRules"                : "none_f(allIconsUsed(), 'you must use every icon in your diagram.');",
       "correctFeedback"              : "Your diagram has no obvious problems.",
       "maxFeedbackItems"             : 0,
       "enableNodeLabelDisplay"       : true,

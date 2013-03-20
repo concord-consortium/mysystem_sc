@@ -179,6 +179,17 @@ MySystem.rulesController = SC.ObjectController.create({
     return (!duplicates);
   },
 
+  // true if all icons were used at least once.
+  allIconsUsed: function() {
+    var paeltteItems = MySystem.activityController.get('paletteItems');
+    var nodes = MySystem.store.find(MySystem.Node);
+    var found = paeltteItems.filter(function(paletteItem) {
+      var found = nodes.findProperty("nodeType", paletteItem.get('uuid'));
+      return (found !== null);
+    });
+    return (found.get('length') === paeltteItems.get('length') );
+  },
+
   // true if there were links not defined in rules.
   extraLinks: function(rule_names) {
     // Look for links that don't match one of the 'should' link rules
@@ -275,6 +286,10 @@ MySystem.rulesController = SC.ObjectController.create({
 
         extraLinks = function() {
           return self.extraLinks.call(self);
+        },
+
+        allIconsUsed = function() {
+          return self.allIconsUsed.call(self);
         },
 
         category = function(categoryName) {

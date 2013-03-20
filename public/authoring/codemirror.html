@@ -47,7 +47,7 @@
               "all_f", "any_f", "none_f", "not_any_F","not_all_f",
               "rule", "category", "nodes", "links",
               "score", "result", "suggestions", "feedback",
-              "extraLinks", "iconsUsedOnce", "hasTransformation"
+              "extraLinks", "iconsUsedOnce", "allIconsUsed", "hasTransformation"
             ]
           };
           var result = JSHINT(src,opts);
@@ -147,7 +147,8 @@
         rule("has a sun");                     // check the rule "has a sun" passes.
         category("thing");                     // true if any rules in "thing" are true.
         hasTransformation();                   // true if the diagram has transformations
-        iconsUsedOnce();                       // true if the icons were only used one time.
+        iconsUsedOnce();                       // true if the icons used at most one time.
+        allIconsUsed();                        // true if *all* icons were used at least once
         extraLinks();                          // true if there are links present not defined in rules.
         feedback("message");                   // Tell the stuent  "message"
 
