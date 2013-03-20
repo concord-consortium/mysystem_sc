@@ -281,10 +281,13 @@ MySystem.rulesController = SC.ObjectController.create({
         category = function(categoryName) {
           return ruleResults[categoryName] || false;
         },
+        categoryExists = function(name) {
+          return (typeof ruleResults[name] === 'undefined') ? false : true;
+        },
 
         valueFromArgument = function(argument) {
           if (typeof argument === 'string')   {
-            return category(argument) || rule(argument);
+            return categoryExists(argument) ? category(argument) : rule(argument);
           }
           if (typeof argument === 'function') { return argument.apply(self); }
           if (typeof argument === 'object')   { return argument.apply(self); }
