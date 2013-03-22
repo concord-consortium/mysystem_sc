@@ -25,9 +25,19 @@ MySystem.setupStore = function (obj, ignoreUndeclaredFields) {
   delete MySystem.Link._nextIdIndex;
 
   if (typeof ignoreUndeclaredFields === 'undefined') ignoreUndeclaredFields = NO;
-  
+
   obj.dataSource = SC.CascadeDataSource.create({
-    dataSources: ['studentStateDataSource', 'fixturesDataSource'],
+    dataSources: ['authorContentDataSource','studentStateDataSource', 'fixturesDataSource'],
+
+    authorContentDataSource: MySystem.MergedHashDataSource.create({
+      ignoreUndeclaredFields: ignoreUndeclaredFields,
+      handledRecordTypes: [
+        MySystem.EnergyType,
+        MySystem.PaletteItem,
+        MySystem.Activity,
+        MySystem.RubricCategory,
+        MySystem.DiagramRule],
+    }),
 
     studentStateDataSource: MySystem.MergedHashDataSource.create({
       ignoreUndeclaredFields: ignoreUndeclaredFields,
