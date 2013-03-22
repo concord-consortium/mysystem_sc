@@ -167,10 +167,134 @@ MySystem.activityController = SC.ObjectController.create({
   },
 
   doGetDiagramFeedback: function() {
+    // TODO: where are results and hasProblems defined, where are they used?
     results = this.getDiagramFeedback({isSubmit: YES});
     MySystem.savingController.submit();
     hasProblems = results[0];
     this.showFeedbackPalette();
+  },
+
+  contentFromWiseStepDef: function(wiseStepDef) {
+    var actguid = MySystem.Activity.newGuid("actvitiy");
+    var modules = wiseStepDef.modules;
+    var paletteItem = null;
+    var module= null;
+
+    var activity = MySystem.store.createRecord(
+      MySystem.Activity, {
+      assignmentText: wiseStepDef.prompt,
+      maxFeedbackItems: (wiseStepDef.maxFeedbackItems || 0),
+      enableNodeLabelDisplay: (wiseStepDef.enableNodeLabelDisplay || false),
+      enableNodeLabelEditing: (wiseStepDef.enableNodeLabelEditing || false),
+      enableNodeDescriptionEditing: (wiseStepDef.enableNodeDescriptionEditing || false),
+      enableLinkDescriptionEditing: (wiseStepDef.enableLinkDescriptionEditing || false),
+      enableLinkLabelEditing: (wiseStepDef.enableLinkLabelEditing || false),
+      minimumRequirementsFeedback: (wiseStepDef.minimumRequirementsFeedback || "You need to work more on your diagram to get feedback!"),
+      correctFeedback: (wiseStepDef.correctFeedback || "Your diagram has no obvious problems."),
+      guid: MySystem.Activity.newGuid("activity"),
+      enableCustomRuleEvaluator: (wiseStepDef.enableCustomRuleEvaluator || false),
+      customRuleEvaluator:   (wiseStepDef.customRuleEvaluator || "" ),
+      maxSubmissionClicks:   (wiseStepDef.maxSubmissionClicks || 0  ),
+      maxSubmissionFeedback: (wiseStepDef.maxSubmissionFeedback || "You have clicked 'submit' too many times. Please continue working without hints."),
+      feedbackPanelWidth:    (wiseStepDef.feedbackPanelWidth  || 500),
+      feedbackPanelHeight:   (wiseStepDef.feedbackPanelHeight || 250),
+      terminalRadius:        (wiseStepDef.terminalRadius      || 14 ),
+      nodeHeight:            (wiseStepDef.nodeHeight          || 110),
+      nodeWidth:             (wiseStepDef.nodeWidth           || 100),
+      backgroundImage:       (wiseStepDef.backgroundImage     || null),
+      backgroundImageScaling:(wiseStepDef.backgroundImageScaling|| false),
+      rubricExpression:      (wiseStepDef.rubricExpression || ""),
+      feedbackRules:         (wiseStepDef.feedbackRules || ""),
+      initialDiagramJson:    (wiseStepDef.initialDiagramJson   || "")
+    });
+    this.set("content",activity);
+
+
+    // now delete old entities?
+    var deleteAllRecords = function(recordType) {
+      var ids = MySystem.store.find(recordType).mapProperty('id').toArray();
+        MySystem.store.destroyRecords(recordType,ids);
+    };
+    deleteAllRecords(MySystem.PaletteItem);
+    deleteAllRecords(MySystem.EnergyType);
+    deleteAllRecords(MySystem.DiagramRule);
+    deleteAllRecords(MySystem.RubricCategory);
+
+    var size = modules.length;
+    var i = 0;
+    for (i=0; i < size; i++) {
+      module = modules[i];
+      paletteItem = MySystem.store.createRecord(
+        MySystem.PaletteItem, {
+          title: module.name,
+          image: module.image,
+          uuid: module.uuid},
+          MySystem.Activity.newGuid("palette_item")
+      );
+      activity.get('paletteItems').pushObject(paletteItem);
+    }
+
+    var energy_types = wiseStepDef.energy_types;
+    size = energy_types.length;
+    var type = '';
+    var newEnergyType = null;
+    for (i=0; i < size; i++) {
+      type = energy_types[i];
+      newEnergyType = MySystem.store.createRecord(
+        MySystem.EnergyType, {
+          label: type.label,
+          color: type.color,
+          isEnabled: YES,
+          uuid: type.uuid
+        },
+        MySystem.Activity.newGuid("energyType")
+      );
+      activity.get('energyTypes').pushObject(newEnergyType);
+    }
+    var minimum_requirements = (wiseStepDef.minimum_requirements || []);
+    size = minimum_requirements.length;
+    var newDiagramRule = null;
+    var rule = null;
+    for (i=0; i < size; i++) {
+      rule = minimum_requirements[i];
+      newDiagramRule = MySystem.store.createRecord(
+        MySystem.DiagramRule,
+        rule,
+        MySystem.Activity.newGuid("diagramRule")
+      );
+      activity.get('minimumRequirements').pushObject(newDiagramRule);
+    }
+
+    var diagram_rules = wiseStepDef.diagram_rules;
+    size = diagram_rules.length;
+    newDiagramRule = null;
+    rule = null;
+    for (i=0; i < size; i++) {
+      rule = diagram_rules[i];
+      newDiagramRule = MySystem.store.createRecord(
+        MySystem.DiagramRule,
+        rule,
+        MySystem.Activity.newGuid("diagramRule")
+      );
+      activity.get('diagramRules').pushObject(newDiagramRule);
+    }
+
+    var rubric_categories = wiseStepDef.rubric_categories;
+    var newCategory = null;
+    if (rubric_categories) {
+      size = rubric_categories.length;
+      newCategory = null;
+      rule = null;
+      for (i=0; i < size; i++) {
+        rule = rubric_categories[i];
+        newCategory = MySystem.store.createRecord(
+          MySystem.RubricCategory,
+          rule,
+          MySystem.Activity.newGuid("rubricCategory")
+        );
+        activity.get('rubricCategories').pushObject(newCategory);
+      }
+    }
   }
-}) ;
+});
 

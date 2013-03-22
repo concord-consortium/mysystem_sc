@@ -20,10 +20,10 @@ MySystem.loadCanvas = function () {
   MySystem.parseOldFormatJson(json);
 };
 
+// TODO: latestResponse is not used.
 MySystem.loadWiseConfig = function(authoredContent,latestResponse) {
   SC.run( function() {
-    var activity = MySystem.Activity.fromWiseStepDef(authoredContent);
-    MySystem.activityController.set('content',activity);
+    MySystem.activityController.contentFromWiseStepDef(authoredContent);
     MySystem.loadInitialDiagram();
     MySystem.updateFromDOM();
     var lastFeedback = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
