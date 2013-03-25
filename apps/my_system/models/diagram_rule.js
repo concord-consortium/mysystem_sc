@@ -34,13 +34,7 @@ MySystem.DiagramRule = SC.Record.extend(
       return MySystem.DiagramRule.genericPaletteItem;
     }
 
-    var query = SC.Query.local(MySystem.PaletteItem, 'title = {title}', { title: nodeType });
-    var items = MySystem.store.find(query);
-    if(items.get('length') > 0){
-      return items.objectAt(0);
-    } else {
-      return null;
-    }
+    return MySystem.activityController.get('paletteItems').findProperty("title",nodeType);
   },
 
   energyTypeObject: function() {
@@ -49,14 +43,7 @@ MySystem.DiagramRule = SC.Record.extend(
     if( !energyType || energyType === 'any'){
       return MySystem.DiagramRule.genericEnergyType;
     }
-
-    var query = SC.Query.local(MySystem.EnergyType, 'label = {label}', { label: energyType });
-    var items = MySystem.store.find(query);
-    if(items.get('length') > 0){
-      return items.objectAt(0);
-    } else {
-      return null;
-    }
+    return MySystem.activityController.get('energyTypes').findProperty("label",energyType);
   },
 
   check: function(nodes,evaluator) {
