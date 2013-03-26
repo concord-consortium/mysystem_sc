@@ -49,16 +49,25 @@
 
         var checkSyntax = function() {
           var src = myCodeMirror.getValue();
+          var keywords = {
+            'rubric': [ "all", "any",     "none",   "not_any",  "not_all",
+                "rule", "category", "nodes", "links",
+                "extraLinks", "iconsUsedOnce", "allIconsUsed", "hasTransformation",
+                "all_s", "any_s", "none_s", "not_any_s","not_all_s",
+                "result", "score"
+              ],
+
+            'feedback': [ "all", "any",     "none",   "not_any",  "not_all",
+                "rule", "category", "nodes", "links",
+                "extraLinks", "iconsUsedOnce", "allIconsUsed", "hasTransformation",
+                "all_f", "any_f", "none_f", "not_any_F","not_all_f",
+                "result", "suggestions", "feedback"
+              ]
+          };
           var opts =  {
             evil: true, nomen: false, onevar: false, regexp: false,
             strict: true, boss: true, undef: true, maxlen: 100, indent:4, expr: true,
-            predef: [ "Rules", "self",
-              "all", "any",     "none",   "not_any",  "not_all",
-              "all_f", "any_f", "none_f", "not_any_F","not_all_f",
-              "rule", "category", "nodes", "links",
-              "score", "result", "suggestions", "feedback",
-              "extraLinks", "iconsUsedOnce", "allIconsUsed", "hasTransformation"
-            ]
+            predef: keywords[mode]
           };
           var result = JSHINT(src,opts);
           if (!result) {
@@ -200,16 +209,21 @@
     <div id="rubricHelp" class="js_help">
       <span class="label">Rubric exrpessions:</span>
 
-        any('category name', 'rulename', 4);   // you can only use category names, score number
-        all('a','b', 5);                       // score five if a and b
-        score(5);
+        any_s('category one', 'rule a', 5);   // you can score with rules or categories.
+        any_s(false,all('a','b'), 4);         // score five if a and b. nestable all any.
+        score(3);                             // explicitly set a score.
+        if (rule('rulename')) {...}           // explicitly check a rule.
+        hasTransformation();                   // true if the diagram has transformations
+        iconsUsedOnce();                       // true if the icons used at most one time.
+        allIconsUsed();                        // true if *all* icons were used at least once
+        extraLinks();                          // true if there are links present not defined in rules.
 
         // An example rubric:
-        all ('noah-transform','storage','source','release', 6);
-        all ('noah-transform','storage', 5);
-        all ('noah-transform','source', 5);
-        all ('noah-transform','release', 5);
-        all ('noah-transform',4);
+        all_s('noah-transform','storage','source','release', 6);
+        all_s('noah-transform','storage', 5);
+        all_s('noah-transform','source', 5);
+        all_s('noah-transform','release', 5);
+        all_s('noah-transform',4);
         any('source','storage','release',3);
         any('link',2);
         score(1);

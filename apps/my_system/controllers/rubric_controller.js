@@ -2,7 +2,7 @@
 // Project:   MySystem.DiagramRule
 // Copyright: ©2011 My Concord Consortium
 // ==========================================================================
-/*globals MySystem */
+/*globals alert MySystem */
 
 /** @class
 
@@ -28,15 +28,18 @@ MySystem.rubricController = SC.ObjectController.create({
   // any('link',2);
   // score(1);
   score: function(submit) {
-    var self = this,
-        rubricScore = MySystem.RubricScore.instance(),
+    var self       = this,
+        rulesC     = MySystem.rulesController,
+        rubricScore= MySystem.RubricScore.instance(),
         expression = MySystem.activityController.get('rubricExpression') || "",
         categories = MySystem.activityController.get('rubricCategories'),
         nodes      = MySystem.store.find(MySystem.Node),
         rules      = MySystem.activityController.get('diagramRules'),
         result     = MySystem.rubricController.UNSCORED,
+        hasScored  = false,
 
-        ruleResults = [],
+        categoryResults = {},
+        trueCategories  = [],
 
         resultsOfCategories = categories.forEach(function(c) {
           var name  = c.get('name'),
@@ -51,19 +54,61 @@ MySystem.rubricController = SC.ObjectController.create({
           });
           if (found) {
             value = true;
+            trueCategories.push(name);
           }
-          ruleResults.push({name: name, value: value});
+          categoryResults[name] = value;
+
         }),
 
+        rule = function(ruleName)      { return rulesC.check(ruleName);        },
+        hasTransformation = function() { return rulesC.hasTransformation();    },
+        iconsUsedOnce = function()     { return rulesC.iconsUsedOnce();        },
+        extraLinks = function()        { return rulesC.extraLinks();           },
+        allIconsUsed = function()      { return rulesC.allIconsUsed.call(self);},
+
         category = function(categoryName) {
-          var category = ruleResults.findProperty('name',categoryName);
-          if (category) {
-            return category.value;
-          }
-          return false;
+          return categoryResults[categoryName] || false;
         },
 
-        hasScored = false,
+        categoryExists = function(name) {
+          return (typeof categoryResults[name] === 'undefined') ? false : true;
+        },
+
+        valueFromArgument = function(argument) {
+          if (typeof argument === 'string')   {
+            return categoryExists(argument) ? category(argument) : rule(argument);
+          }
+          if (typeof argument === 'function') { return argument.apply(self); }
+          return argument; // hopefully a boolean
+        },
+
+        any = function() {
+          var args = [].slice.apply(arguments);
+          return args.reduce(function(a,b) {
+             a = valueFromArgument(a);
+             b = valueFromArgument(b);
+            return (a||b);
+          }, false);
+        },
+
+        all = function() {
+          var args = [].slice.apply(arguments);
+          return args.reduce(function(a,b) {
+             a = valueFromArgument(a);
+             b = valueFromArgument(b);
+            return (a&&b);
+          }, true);
+        },
+
+        not_any = function() {
+          return (! any.apply(self,arguments));
+        },
+        none = not_any,
+
+        not_all = function() {
+          return (! all.apply(self,arguments));
+        },
+
 
         score = function(_score) {
           if(!hasScored) {
@@ -72,56 +117,24 @@ MySystem.rubricController = SC.ObjectController.create({
           }
         },
 
-        categoryReduce = function(args,comparefunc) {
-
-          // call like this: result = all('a','b','c',function(){...});
-          var results = args.reduce(function(previousValue,current) {
-            var a = previousValue,
-                b = current;
-
-            // convert items to booleans
-            if (typeof a === 'string')   { a = category(a); }
-            if (typeof b === 'string')   { b = category(b); }
-
-            // run conditional block
-            if (typeof b === 'function') {
-              if (a === true) {
-                b.apply(this);
-                return a;
-              }
+        makeScoreFunction = function(func) {
+          return function() {
+            var args = Array.prototype.slice.call(arguments,0,-1);
+            var _score = Array.prototype.slice.call(arguments,-1);
+            var results = func.apply(self, args);
+            if (results) {
+              score(_score);
             }
-
-            // set score if last argument.
-            if (typeof b === 'number') {
-              if (a === true) {
-                score(b);
-                return a;
-              }
-            }
-
-            // coerce to true or false
-            return (!!comparefunc(a,b));
-          });
-          return results;
+          };
         },
 
-
-        any = function() {
-          var args = [].slice.apply(arguments);
-          categoryReduce(args,function(a,b) {
-            return (a||b);
-          });
-        },
-
-        all = function() {
-          var args = [].slice.apply(arguments);
-          categoryReduce(args,function(a,b) {
-            return (a&&b);
-          });
-        },
+        all_s     = makeScoreFunction(all),
+        any_s     = makeScoreFunction(any),
+        not_any_s = makeScoreFunction(not_any),
+        none_s    = makeScoreFunction(none),
+        not_all_s = makeScoreFunction(not_all),
 
         errorMsg = "Rubric Evaluation Error: \n%@";
-
 
     (function(){
       try {
@@ -130,18 +143,18 @@ MySystem.rubricController = SC.ObjectController.create({
       }
       catch(e) {
         errorMsg = errorMsg.fmt(e);
-        if (console && typeof console.log == 'function') {
+        if (console && typeof console.log === 'function') {
           console.log(errorMsg);
         }
         alert(errorMsg);
       }
     }).call(self);
 
-    rubricScore.update(result, ruleResults.filterProperty('value').mapProperty('name'));
+    rubricScore.update(result, trueCategories);
   },
   displayScore: function() {
     MySystem.rubricController.score();
-    rubricScore = MySystem.RubricScore.instance();
+    var rubricScore = MySystem.RubricScore.instance();
     alert("score: %@\ncategories: %@\nTime: %@".fmt(rubricScore.get('score'),rubricScore.get('categories'),rubricScore.get('timeStamp')));
   }
 });
