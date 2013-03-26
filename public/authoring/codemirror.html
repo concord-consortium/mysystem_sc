@@ -12,6 +12,23 @@
   <script>!window.jQuery && document.write(unescape('%3Cscriptsrc="js/libs/jquery-1.9.1.min.js"%3E%3C/script%3E'))</script>
   <script type="text/javascript">
     $(document).ready(function() {
+        var mode = 'rubric';  // 'rubric || 'feedback'
+
+        var setHelp = function() {
+          var selector = "#"+ mode +"Help";
+          $('#rubricHelp').hide();
+          $('#feedbackHelp').hide();
+          $(selector).show();
+        };
+
+        var setMode = function(modeName) {
+          if (modeName !== 'rubric' && modeName !== 'feedback') {
+            alert("uknown mode name");
+          }
+          mode = modeName;
+          setHelp();
+        };
+
         var myCodeMirror = CodeMirror.fromTextArea($('#code_editor')[0], {
           value: "function myScript(){return 100;}\n",
           mode:  "javascript",
@@ -21,18 +38,11 @@
           matchBrackets: true,
           autofocus: true
         });
+
         if (window.srcText) {
           myCodeMirror.setValue(window.srcText);
         }
-        window.setHelp = function(selector) {
-          $('#ruleHelp').hide();
-          $('#evalHelp').hide();
-          $(selector).show();
-        }
-        // first time:
-        if (window.helpSelector) {
-          window.setHelp(window.helpSelector);
-        }
+
 
         var last_marker = null;
 
@@ -80,13 +90,25 @@
           }
         };
         $("#save_authoring").bind('click',checkSyntax);
+
         $(window).unload(function() {
           if(window.originParent) {
             var message = {'windowClosed': true, 'javascript': myCodeMirror.getValue() };
             window.originParent.postMessage(JSON.stringify(message),"*");
           }
         });
-        window.addEventListener("message", function(evt) {myCodeMirror.setValue(evt.data);}, false);
+        if(window.originParent) {
+          var message = {'ready': true };
+          window.originParent.postMessage(JSON.stringify(message),"*");
+        }
+
+        window.addEventListener("message", function(evt) {
+          var data     = JSON.parse(evt.data);
+          var newCode  = data.code;
+          var mode     = data.mode;
+          myCodeMirror.setValue(newCode);
+          setMode(mode);
+        }, false);
     });
   </script>
   <style type="text/css">
@@ -138,8 +160,9 @@
 <body>
   <div id="container">
 
-    <div id="evalHelp" class="js_help">
-      <span class="label">Custom evaluation functions:</span>
+    <div id="feedbackHelp" class="js_help">
+      <span class="label">Feedback Expressions:</span>
+
         any('category name', 'rulename')       // you can use rule names, or category names
         any_f('category name',"good");         // provide feedback "good" if 'category name' matches
         all('a','b',rule('c'))                 // true if category a, category b, and rule 'c' are matched.
@@ -174,38 +197,22 @@
 
     </div>
 
-    <div id="ruleHelp" class="js_help">
-      <span class="label">JS Rule functions:</span>
-        any('category name', 'rulename')       // you can use rule names, or category names
-        any_f('category name',"good");         // provide feedback "good" if 'category name' matches
-        all('a','b',rule('c'))                 // true if category a, category b, and rule 'c' are matched.
-        not_any_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
-        rule("has a sun");                     // check the rule "has a sun" passes.
-        category("thing");                     // true if any rules in "thing" are true.
-        hasTransformation();                   // true if the diagram has transformations
-        iconsUsedOnce();                       // true if the icons were only used one time.
-        extraLinks();                          // true if there are links present not defined in rules.
-        feedback("message");                   // Tell the stuent  "message"
+    <div id="rubricHelp" class="js_help">
+      <span class="label">Rubric exrpessions:</span>
 
-        // none is a synonym for not_any
-        none_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
-        not_all_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
+        any('category name', 'rulename', 4);   // you can only use category names, score number
+        all('a','b', 5);                       // score five if a and b
+        score(5);
 
-        // can nest
-        any_f(none('has nodes','has links'),extraLinks(), "Your diagram has problems.")
-
-
-      // sample use:
-      any_f(iconsUsedOnce(), "You can only use each icon one time   ...");
-      any_f(extraLinks(),    "Your diagram has some uncessary links ...");
-
-      // categories take presidence, and will mask a rule with the same name
-      any_f('rule one', 'category a', "feedback here");
-
-      // incase of ambiguity you can specify it manually like this:
-      none_f(rule('has links'), category('has links)', "your diagram must have links!");
-
-      // by default the "Feedback if all rules pass: " feedback will be given
+        // An example rubric:
+        all ('noah-transform','storage','source','release', 6);
+        all ('noah-transform','storage', 5);
+        all ('noah-transform','source', 5);
+        all ('noah-transform','release', 5);
+        all ('noah-transform',4);
+        any('source','storage','release',3);
+        any('link',2);
+        score(1);
 
     </div>
 

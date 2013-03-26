@@ -209,10 +209,13 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
   helpDiv: '#ruleHelp',
   editJSRule: function() {
     var self = this;
+    var code = this.get('javascriptExpression');
+    var mode = 'JSRule';
+    var value = {'code': code, 'mode': mode};
     var myCallback = function(newValue) {
       self.set('javascriptExpression',newValue);
     }.bind(self);
-    MSA.editorController.editCustomRule(this,this.get('javascriptExpression'),myCallback);
+    MSA.editorController.editCustomRule(this, value,myCallback);
   }
 });
 
@@ -447,17 +450,14 @@ MSA.editorController = Ember.Object.create({
 
     // reuse existing window:
     if (editorWindow) {
-      editorWindow.postMessage(value,"*");
+      editorWindow.postMessage(JSON.stringify(value),"*");
       editorWindow.focus();
-      editorWindow.setHelp(owner.helpDiv);
     }
 
     // or create a new one:
     else {
       editorWindow = window.open("codemirror.html", 'editorwindow', features);
       this.set('editorWindow', editorWindow);
-      editorWindow.srcText = value;
-      editorWindow.helpSelector = owner.helpDiv;
       editorWindow.originParent = window;
     }
 
@@ -468,14 +468,22 @@ MSA.editorController = Ember.Object.create({
       return;
     }
     var self = this;
+
     var updateMessage = function(event) {
       var message = JSON.parse(event.data);
+      var value = self.get('value');
       if (message.javascript) {
-        self.set('value',message.javascript);
+        value.code = message.javascript;
+        self.set('value', value);
         self.save();
       }
       if (message.windowClosed) {
         self.set('editorWindow',null);
+      }
+      if (message.ready) {
+        self.set('editorWindow', event.source);
+        event.source.postMessage(JSON.stringify(self.get('value')), "*");
+        event.source.focus();
       }
     }.bind(self);
     window.addEventListener("message", updateMessage, false);
@@ -484,9 +492,9 @@ MSA.editorController = Ember.Object.create({
 
   save: function() {
     var value = this.get('value');
-    var callback = this.get("callback");
+    var callback = this.get("callback")
     if (callback) {
-      callback(value);
+      callback(value.code);
     }
     else {
       console.log("false callback defined");
@@ -501,7 +509,9 @@ MSA.promptController = Ember.Object.create({
 MSA.customRuleController = Ember.Object.create({
   helpDiv: '#evalHelp',
   editCustomRule: function() {
-    var value = MSA.dataController.activity.get('customRuleEvaluator');
+    var code = MSA.dataController.activity.get('customRuleEvaluator');
+    var mode  = 'curomRule';
+    var value = {'code': code, 'mode': mode};
     var callback = function(value) {
       MSA.dataController.activity.set('customRuleEvaluator',value);
     }.bind(this);
@@ -512,7 +522,9 @@ MSA.customRuleController = Ember.Object.create({
 MSA.rubricController = Ember.Object.create({
   helpDiv: '#evalHelp',
   editRubric: function() {
-    var value = MSA.dataController.activity.get('rubricExpression');
+    var code  = MSA.dataController.activity.get('rubricExpression');
+    var mode  = 'rubric';
+    var value = {'code': code, 'mode': mode};
     var callback = function(value) {
       MSA.dataController.activity.set('rubricExpression',value);
     }.bind(this);
@@ -523,7 +535,9 @@ MSA.rubricController = Ember.Object.create({
 MSA.feedbackRulesController = Ember.Object.create({
   helpDiv: '#evalHelp',
   editFeedback: function() {
-    var value = MSA.dataController.activity.get('feedbackRules');
+    var code = MSA.dataController.activity.get('feedbackRules');
+    var mode = "feedback";
+    var value = {'code': code, 'mode': mode};
     var callback = function(value) {
       MSA.dataController.activity.set('feedbackRules',value);
     }.bind(this);
