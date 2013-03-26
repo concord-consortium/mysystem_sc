@@ -343,6 +343,7 @@ MSA.DataController = Ember.Object.extend({
     data.energy_types         = this.get('energyTypes').mapProperty('dataHash');
     data.diagram_rules        = this.get('diagramRules').mapProperty('dataHash');
     data.rubric_categories    = this.get('rubricCategories').mapProperty('dataHash');
+    data.type = "mysystem2";
     this.updateParentHash(data);
     return data;
   }.property( 'activity.rev',
