@@ -104,6 +104,11 @@
         };
         $("#save_authoring").bind('click',checkSyntax);
 
+
+        $('.help').click(function() {
+          $(this).next().toggle();
+        });
+
         $(window).unload(function() {
           if(window.originParent) {
             var message = {'windowClosed': true, 'javascript': myCodeMirror.getValue() };
@@ -137,7 +142,13 @@
       overflow: auto;
       background-color: #fff;
     }
+    #help {
+      display: block;
+      width: 100%;
+    }
     #editor_wrap {
+      display: block;
+      width: 100%;
       border: 2px solid gray;
       maring: 1em;
     }
@@ -160,93 +171,78 @@
     .js_help {
       font-family: Lucidatypewriter, monospace;
       white-space: pre;
-      height: 100px;
       overflow: auto;
       margin-bottom: 1em;
       margin-top: 0em;
       padding-top: 0px;
       font-size: 10px;
+      display: none;
     }
-
+    a {text-decoration: underline;}
   </style>
 </head>
 <body>
   <div id="container">
-
-    <div id="feedbackHelp" class="js_help">
-      <span class="label">Feedback Expressions:</span>
-
-        any('category name', 'rulename')       // you can use rule names, or category names
-        any_f('category name',"good");         // provide feedback "good" if 'category name' matches
-        all('a','b',rule('c'))                 // true if category a, category b, and rule 'c' are matched.
-        not_any_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
-        rule("has a sun");                     // check the rule "has a sun" passes.
-        category("thing");                     // true if any rules in "thing" are true.
-        hasTransformation();                   // true if the diagram has transformations
-        iconsUsedOnce();                       // true if the icons used at most one time.
-        allIconsUsed();                        // true if *all* icons were used at least once
-        extraLinks();                          // true if there are links present not defined in rules.
-        feedback("message");                   // Tell the stuent  "message"
-
-        // none is a synonym for not_any
-        none_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
-        not_all_f('a','b','c', 'message')      // provide "message" feedback if none of a b c are true.
-
-        // can nest
-        any_f(none('has nodes','has links'),extraLinks(), "Your diagram has problems.")
-
-
+    <div id="help">
+      <div id="feedbackHelp">
+        <span class="label help"><a>Feedback help</a></span>
+        <div  class="js_help">
       // sample use:
-      any_f(iconsUsedOnce(), "You can only use each icon one time   ...");
-      any_f(extraLinks(),    "Your diagram has some uncessary links ...");
+          any_f(none('has nodes','has links'),extraLinks(), "Your diagram has problems.")
 
-      // categories take presidence, and will mask a rule with the same name
-      any_f('rule one', 'category a', "feedback here");
-
-      // incase of ambiguity you can specify it manually like this:
-      none_f(rule('has links'), category('has links)', "your diagram must have links!");
-
+          any('category name', 'rulename')  // you can use rule names, or category names
+          any_f('category name',"good");    // provide feedback "good" if 'category name' matches
+          all('a','b',true,rule('c'))       // true if category a, category b, and rule 'c' are matched.
+          none_f('a','b','c', 'message')    // provide "message" feedback if none of a b c are true.
+          rule("has a sun");                // check the rule "has a sun" passes.
+          category("thing");                // true if any rules in "thing" are true.
+          hasTransformation();              // true if the diagram has transformations
+          iconsUsedOnce();                  // true if the icons used at most one time.
+          allIconsUsed();                   // true if *all* icons were used at least once
+          extraLinks();                     // true if there are links present not defined in rules.
+          feedback("message");              // Tell the stuent  "message"
       // by default the "Feedback if all rules pass: " feedback will be given
-
+      </div>
     </div>
 
-    <div id="rubricHelp" class="js_help">
-      <span class="label">Rubric expressions:</span>
-
-        any_s('category one', 'rule a', 5);   // you can score with rules or categories.
-        any_s(false,all('a','b'), 4);         // score five if a and b. nestable all any.
-        score(3);                             // explicitly set a score.
-        if (rule('rulename')) {...}           // explicitly check a rule.
-        hasTransformation();                   // true if the diagram has transformations
-        iconsUsedOnce();                       // true if the icons used at most one time.
-        allIconsUsed();                        // true if *all* icons were used at least once
-        extraLinks();                          // true if there are links present not defined in rules.
-
-        // An example rubric:
-        all_s('noah-transform','storage','source','release', 6);
-        all_s('noah-transform','storage', 5);
-        all_s('noah-transform','source', 5);
-        all_s('noah-transform','release', 5);
-        all_s('noah-transform',4);
-        any('source','storage','release',3);
-        any('link',2);
-        score(1);
+    <div id="rubricHelp" >
+      <span class="label help"><a>Rubric help</a></span>
+      <div class="js_help">
+     // An example rubric:
+          all_s('transform','storage','source','release', 6);
+          all_s('transform','storage', 5);
+          all_s('transform','source', 5);
+          all_s('transform','release', 5);
+          all_s('transform',4);
+          any('source','storage','release',3);
+          any('link',2);
+          score(1);
+     // Other ideas:
+          any_s('category one', 'rule a', 5); // you can score with rules or categories.
+          any_s(false,all('a','b'), 4);       // score five if a and b. nestable all any.
+          score(3);                           // explicitly set a score.
+          if (rule('rulename')) {...}         // explicitly check a rule.
+          hasTransformation();                // true if the diagram has transformations
+          iconsUsedOnce();                    // true if the icons used at most one time.
+          allIconsUsed();                     // true if *all* icons were used at least once
+          extraLinks();                       // true if there are links present not defined in rules.
+      </div>
     </div>
-    <div id="JSRuleHelp" class="js_help">
-      <span class="label">Javascript Rule:</span>
-        // example:
-        result = all('rule a', 'rule b', any('rule d','rule e'));
 
-        // result is how this rule 'evaluates' in other contexts.
+    <div id="JSRuleHelp">
+      <span class="label help"><a>Rule help</a></span>
+      <div  class="js_help">
+      // example: ( <em>result</em> is how this rule 'evaluates' in other contexts. )
+          result = all('rule a', 'rule b', any('rule d','rule e'));
 
-        // primatives:
-        all(true,true);                       // evaluates to true
-        any(false,true);                      // evaluates to true
-        not_any(true,true,false);             // evaluates to false
-        none(true,true,false);                // evaluates to false
-        not_all(flase,true,true);             // evaluates to true
-        if (any('rulename')) {...}            // can use JS constructs.
-
+      // Other ideas:
+          all(true,true);                       // evaluates to true
+          any(false,true);                      // evaluates to true
+          not_any(true,true,false);             // evaluates to false
+          none(true,true,false);                // evaluates to false
+          not_all(flase,true,true);             // evaluates to true
+          if (any('rulename')) {...}            // can use JS constructs.
+       </div>
     </div>
 
     <div id="editor_wrap">
