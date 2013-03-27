@@ -62,7 +62,7 @@ MSA.setupParentIFrame = function(dataHash, updateObject, mysystem) {
     dataHash.rubric_categories = [];
   }
   if (!dataHash.rubricExpression) {
-    dataHash.rubricExpression = "true;";
+    dataHash.rubricExpression = "score(1);";
   }
   if (!dataHash.feedbackRules) {
     dataHash.feedbackRules = "none_f(allIconsUsed(), 'you must use every icon in your diagram.');";
@@ -278,7 +278,7 @@ MSA.DataController = Ember.Object.extend({
       "energy_types"                 : [],
       "diagram_rules"                : [],
       "rubric_categories"            : [],
-      "rubricExpression"             : "true;",
+      "rubricExpression"             : "score(1);",
       "feedbackRules"                : "none_f(allIconsUsed(), 'you must use every icon in your diagram.');",
       "correctFeedback"              : "Your diagram has no obvious problems.",
       "maxFeedbackItems"             : 0,
