@@ -18,11 +18,12 @@
           var selector = "#"+ mode +"Help";
           $('#rubricHelp').hide();
           $('#feedbackHelp').hide();
+          $('#JSRuleHelp').hide();
           $(selector).show();
         };
 
         var setMode = function(modeName) {
-          if (modeName !== 'rubric' && modeName !== 'feedback') {
+          if (modeName !== 'rubric' && modeName !== 'feedback' && modeName !== 'JSRule') {
             alert("uknown mode name");
           }
           mode = modeName;
@@ -53,7 +54,7 @@
             'rubric': [ "all", "any",     "none",   "not_any",  "not_all",
                 "rule", "category", "nodes", "links",
                 "extraLinks", "iconsUsedOnce", "allIconsUsed", "hasTransformation",
-                "all_s", "any_s", "none_s", "not_any_s","not_all_s",
+                "all_s", "any_s", "none_s", "not_any_s", "not_all_s",
                 "result", "score"
               ],
 
@@ -61,7 +62,10 @@
                 "rule", "category", "nodes", "links",
                 "extraLinks", "iconsUsedOnce", "allIconsUsed", "hasTransformation",
                 "all_f", "any_f", "none_f", "not_any_F","not_all_f",
-                "result", "suggestions", "feedback"
+                "suggestions", "feedback"
+              ],
+            'JSRule': [ "all", "any",     "none",   "not_any",  "not_all",
+                "rule", "result"
               ]
           };
           var opts =  {
@@ -207,7 +211,7 @@
     </div>
 
     <div id="rubricHelp" class="js_help">
-      <span class="label">Rubric exrpessions:</span>
+      <span class="label">Rubric expressions:</span>
 
         any_s('category one', 'rule a', 5);   // you can score with rules or categories.
         any_s(false,all('a','b'), 4);         // score five if a and b. nestable all any.
@@ -227,6 +231,21 @@
         any('source','storage','release',3);
         any('link',2);
         score(1);
+    </div>
+    <div id="JSRuleHelp" class="js_help">
+      <span class="label">Javascript Rule:</span>
+        // example:
+        result = all('rule a', 'rule b', any('rule d','rule e'));
+
+        // result is how this rule 'evaluates' in other contexts.
+
+        // primatives:
+        all(true,true);                       // evaluates to true
+        any(false,true);                      // evaluates to true
+        not_any(true,true,false);             // evaluates to false
+        none(true,true,false);                // evaluates to false
+        not_all(flase,true,true);             // evaluates to true
+        if (any('rulename')) {...}            // can use JS constructs.
 
     </div>
 

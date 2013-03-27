@@ -109,12 +109,56 @@ MySystem.DiagramRule = SC.Record.extend(
     var self       = this;
     var javascript = this.get("javascriptExpression");
     var ruleName   = this.get('name');
-    var Rules      = evaluator;
+    var rules      = evaluator;
     var diagram    = evaluator;
     var name       = ruleName;
     var result     = false;
 
+
     var errorMsg = "Rule Evaluation Error: rule# %@:\n%@";
+
+    var rule = function(_ruleName) {
+      if(_ruleName === ruleName) {
+        alert("Recursive rule evaluation detected. Returning false.");
+        return false;
+      }
+      return rules.check(_ruleName);
+    };
+
+    var valueFromArgument = function(argument) {
+      if (typeof argument === 'string')   { return rule(argument);       }
+      if (typeof argument === 'function') { return argument.apply(self); }
+      return argument; // hopefully a boolean
+    };
+
+    var any = function() {
+      var args = [].slice.apply(arguments);
+      return args.reduce(function(a,b) {
+         a = valueFromArgument(a);
+         b = valueFromArgument(b);
+        return (a||b);
+      }, false);
+    };
+
+    var all = function() {
+      var args = [].slice.apply(arguments);
+      return args.reduce(function(a,b) {
+         a = valueFromArgument(a);
+         b = valueFromArgument(b);
+        return (a&&b);
+      }, true);
+    };
+
+    var not_any = function() {
+      return (! any.apply(self,arguments));
+    };
+    var none = not_any;
+
+    var not_all = function() {
+      return (! all.apply(self,arguments));
+    };
+
+
     (function(){
       try {
         eval(javascript);

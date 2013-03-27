@@ -338,8 +338,17 @@
                 selectionBinding="category" }}
             </span>
           </span><br/>
+          use javascript rules: {{view Ember.Checkbox checkedBinding="isJavascript"}}
         </div>
       {{/if}}
+       {{#if "isJavascript"}}
+        <div class="options_block">
+          <h2>Javascript Rules</h2>
+          <div class="feedbackRules codeblock">{{view.javascriptExpression}}</div>
+          <span class="edit flow">
+            <button {{action "editJSRule" target="view"}}>edit</button>
+          </span>
+      {{else}}
         The diagram
         {{view Ember.Select
             contentBinding="MSA.diagramRulesController.shouldOptions"
@@ -376,7 +385,7 @@
             selectionBinding="energyType"
           }}
         {{/if}}
-
+      {{/if}}
       <hr/>
       <button <button {{action "remove" this target="view"}}>
         Remove {{view.ruleType}}

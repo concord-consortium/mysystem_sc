@@ -204,18 +204,6 @@ MSA.DiagramRule = SCUtil.ModelObject.extend({
   }.property('not'),
   toggleHasLink: function(){
     this.set('hasLink', !this.get('hasLink'));
-  },
-  editorWindow: null,
-  helpDiv: '#ruleHelp',
-  editJSRule: function() {
-    var self = this;
-    var code = this.get('javascriptExpression');
-    var mode = 'JSRule';
-    var value = {'code': code, 'mode': mode};
-    var myCallback = function(newValue) {
-      self.set('javascriptExpression',newValue);
-    }.bind(self);
-    MSA.editorController.editCustomRule(this, value,myCallback);
   }
 });
 
@@ -492,7 +480,7 @@ MSA.editorController = Ember.Object.create({
 
   save: function() {
     var value = this.get('value');
-    var callback = this.get("callback")
+    var callback = this.get("callback");
     if (callback) {
       callback(value.code);
     }
@@ -582,6 +570,8 @@ MSA.RuleView = Ember.View.extend({
   templateName: 'rule-template',
   showName: true,
   ruleType: "Diagram Rule",
+  javascriptExpressionBinding: "rule.javascriptExpression",
+
   remove: function() {
     MSA.diagramRulesController.removeObject(this.get('rule'));
   },
@@ -595,6 +585,17 @@ MSA.RuleView = Ember.View.extend({
     var rule   = this.get('rule');
     rule.toggleHasLink();
   },
+  editorWindow: null,
+  editJSRule: function() {
+    var self = this;
+    var code = this.get('javascriptExpression');
+    var mode = 'JSRule';
+    var value = {'code': code, 'mode': mode};
+    var myCallback = function(newValue) {
+      self.set('javascriptExpression',newValue);
+    }.bind(this);
+    MSA.editorController.editCustomRule(this, value, myCallback);
+  }
 });
 
 MSA.RubricExpressionView = Ember.View.extend({
