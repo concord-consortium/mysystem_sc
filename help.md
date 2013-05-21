@@ -165,11 +165,11 @@ none_f, all_f, not_any_f, &etc. are more feedback variants.
 
 In most cases, an author should only need to create rules using the authoring GUI.  In some rare cases it makes sense to have a named javascript rule. A typical case for defining a javascript rule is when two or more connection types are equivilent. Giving a name to a javascript rule allows the rule to be reused in the rubric rules, and the scoring rules. 
 
-![simple rules](simple_rule.png)
+![simple rules](images/simple_rule.png)
 
 By checking the "use javascript rules" check box, a rule can evaluate a limited set of javascript.  This can be handy when making 'composite' rules, which summarize the behavior of several other simple rules. 
 
-![js rules](js_rule.png)
+![js rules](images/js_rule.png)
 
 All javascript rules should explicitly set the result property somewhere.  i.e.
 
