@@ -149,6 +149,12 @@ Whereas the Rubric specific functions tended to end in 's', the feedback section
 
 (see: [common js][common_js] for other javascript which can be used here.)
 
+`dontCount();`
+:feedback commands after this are not counted against the student submission counter. This remains in effect until a `count();` command.
+
+`count();`
+:re-enable counting feedback against the student submission counter. By default the counter is on. It must be disabled with a `dontCount();` command.
+
 `feedback('your drawing is awesome');`
 : Set feedback explicitly. This call would be made in some other conditional.
 
@@ -232,6 +238,12 @@ The evaluation system attempts to look for simple recursing javascript rules, an
 : These are the scoring variants of none, all, any &etc. The last argument should be a number indicating the score to be given if the conditions are met.
 
 **Feedback specific:**
+
+`dontCount();`
+:feedback commands after this are not counted against the student submission counter. This remains in effect until a `count();` command.
+
+`count();`
+:re-enable counting feedback against the student submission counter. By default the counter is on. It must be disabled with a `dontCount();` command.
 
 `feedback('your drawing is awesome');`
 : Set feedback explicitly. This call would be made in some other conditional.

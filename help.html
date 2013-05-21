@@ -219,6 +219,12 @@ body{-webkit-font-smoothing:antialiased;font:normal .8764em/1.5em Arial,Verdana,
 
 <p>(see: <a href="#common_js">common js</a> for other javascript which can be used here.)</p>
 <dl>
+<dt><code>dontCount();</code></dt>
+<dd>feedback commands after this are not counted against the student submission counter. This remains in effect until a <code>count();</code> command.</dd>
+
+<dt><code>count();</code></dt>
+<dd>re-enable counting feedback against the student submission counter. By default the counter is on. It must be disabled with a <code>dontCount();</code> command.</dd>
+
 <dt><code>feedback('your drawing is awesome');</code></dt>
 <dd>Set feedback explicitly. This call would be made in some other conditional.</dd>
 
@@ -320,6 +326,12 @@ body{-webkit-font-smoothing:antialiased;font:normal .8764em/1.5em Arial,Verdana,
 
 <p><strong>Feedback specific:</strong></p>
 <dl>
+<dt><code>dontCount();</code></dt>
+<dd>feedback commands after this are not counted against the student submission counter. This remains in effect until a <code>count();</code> command.</dd>
+
+<dt><code>count();</code></dt>
+<dd>re-enable counting feedback against the student submission counter. By default the counter is on. It must be disabled with a <code>dontCount();</code> command.</dd>
+
 <dt><code>feedback('your drawing is awesome');</code></dt>
 <dd>Set feedback explicitly. This call would be made in some other conditional.</dd>
 
