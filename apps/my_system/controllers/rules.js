@@ -15,6 +15,8 @@ MySystem.rulesController = SC.ObjectController.create({
   success     : false,
   feedback    : "(empty feedback)",
   suggestions : [],
+  shouldCount : true,
+  counts      : true,
 
   addSuggestion: function(suggestion) {
     this.suggestions.push(suggestion);
@@ -107,6 +109,7 @@ MySystem.rulesController = SC.ObjectController.create({
     var nodes = this.nodes = MySystem.store.find(MySystem.Node);
 
     if (typeof feedbackRules === 'string' && feedbackRules.length > 0) {
+      this.shouldCount = true;
       this.evaluateFeedbackRules(feedbackRules);
     }
 
@@ -117,6 +120,7 @@ MySystem.rulesController = SC.ObjectController.create({
 
     this.set('success', success);
     this.set('feedback', feedback);
+    this.set('counts', this.shouldCount);
   },
 
 
@@ -264,6 +268,18 @@ MySystem.rulesController = SC.ObjectController.create({
         // depricate me.
         addSuggestion = function(suggestion) {
           self.suggestions.push(suggestion);
+        },
+
+        dontCount = function() {
+          if(!gaveFeedback) {
+            self.shouldCount = false;
+          }
+        },
+
+        count = function() {
+          if(!gaveFeedback) {
+            self.shouldCount = true;
+          }
         },
 
         feedback =  function(suggestion) {

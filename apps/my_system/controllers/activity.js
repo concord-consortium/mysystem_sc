@@ -39,13 +39,15 @@ MySystem.activityController = SC.ObjectController.create({
   getDiagramFeedback: function (options) {
     var success;
     var feedback;
-    
+    var counts;
+
     MySystem.rulesController.runDiagramRules();
     // for now, we can assume that if there are no suggestions the diagram is good
     success             = MySystem.rulesController.get('success');
     feedback            = MySystem.rulesController.get('feedback');
+    counts              = MySystem.rulesController.get('counts');
 
-    MySystem.RuleFeedback.saveFeedback(MySystem.store, feedback, success, options.isSubmit);
+    MySystem.RuleFeedback.saveFeedback(MySystem.store, feedback, success, options.isSubmit, counts);
 
     var lastFeedback        = MySystem.store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
     this.set('lastFeedback',lastFeedback.get('feedback'));

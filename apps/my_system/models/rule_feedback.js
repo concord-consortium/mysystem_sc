@@ -37,7 +37,7 @@ MySystem.RuleFeedback = SC.Record.extend(
 // we only ever want a single of these records to exist
 MySystem.RuleFeedback.LAST_FEEDBACK_GUID = "LAST_FEEDBACK";
 
-MySystem.RuleFeedback.saveFeedback = function(store, feedback, success, isSubmit){
+MySystem.RuleFeedback.saveFeedback = function(store, feedback, success, isSubmit, counts){
   var lastFeedback = store.find(MySystem.RuleFeedback, MySystem.RuleFeedback.LAST_FEEDBACK_GUID);
   var timeStamp = new Date();
   var timeStampMs = timeStamp.getTime();
@@ -50,16 +50,17 @@ MySystem.RuleFeedback.saveFeedback = function(store, feedback, success, isSubmit
       timeStamp: timeStamp,
       timeStampMs: timeStampMs
     });
-    if(isSubmit) {
+
+    if(isSubmit && counts) {
       lastFeedback.set('numOfSubmits', lastFeedback.get('numOfSubmits') + 1);
     }
   } else {
     store.createRecord(
       MySystem.RuleFeedback, 
       {
-        feedback: feedback, 
-        success: success, 
-        numOfSubmits: (isSubmit ? 1 : 0),
+        feedback: feedback,
+        success: success,
+        numOfSubmits: (isSubmit && counts) ? 1 : 0,
         timeStamp: timeStamp,
         timeStampMs: timeStampMs
       }, 
