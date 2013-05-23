@@ -341,14 +341,17 @@ MSA.DataController = Ember.Object.extend({
     'energyTypes.@each.rev',
     'modules.@each.rev',
     'diagramRules.@each.rev',
-    'rubricCategories.@each.rev',
-    'initialDiagramJson.rev'
+    'rubricCategories.@each.rev'
   ).cacheable(),
 
   dataJson: function() {
     return JSON.stringify(this.get('data'),null,2);
   }.property('data').cacheable(),
 
+
+  saveInitialDiagramJson: function(initialDiagram) {
+    this.setPath('activity.initialDiagramJson', initialDiagram);
+  },
 
   loadData: function(dataHash) {
     var data = dataHash;

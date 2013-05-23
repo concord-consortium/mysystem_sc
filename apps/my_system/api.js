@@ -100,25 +100,18 @@ MySystem.saveInitialDiagramJson = function(_data) {
   var previewDiagram = MySystem.loadInitialDiagramJson();
   if (previewDiagram) {
     var dataController = MySystem.getAuthoringDataController();
-    if (dataController) {
-      dataController.set('initialDiagramJson',previewDiagram);
-      var ignored = dataController.get('data'); // force a refresh
-    }
-    if (_data) {
-      _data.initialDiagramJson = previewDiagram;
-    }
+    dataController.saveInitialDiagramJson(previewDiagram);
   }
 };
 
 MySystem.saveInitialDiagramAsSaveFunction = function() {
   MySystem.registerExternalSaveFunction(function(data) {
-    MySystem.updateRuntime(); // kind of silly, but save the initialDiagramJson.
+    MySystem.saveInitialDiagramJson(false);
   });
 };
 
 MySystem.updateRuntime = function(_data) {
   var data = _data;
-  MySystem.saveInitialDiagramJson(_data);
   data = MySystem.getAuthoringData();
 
   // if (typeof data.get !== 'undefined') {
