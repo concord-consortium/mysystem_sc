@@ -224,12 +224,20 @@ MySystem.activityController = SC.ObjectController.create({
 
     var size = modules.length;
     var i = 0;
+    var imageUrl = "";
+
     for (i=0; i < size; i++) {
       module = modules[i];
+      if(typeof MySystem.updateAssetPaths === 'function') {
+        imageUrl = MySystem.updateAssetPaths(module.image);
+      }
+      else {
+        imageUrl = module.image;
+      }
       paletteItem = MySystem.store.createRecord(
         MySystem.PaletteItem, {
           title: module.name,
-          image: module.image,
+          image: imageUrl,
           uuid: module.uuid},
           MySystem.Activity.newGuid("palette_item")
       );

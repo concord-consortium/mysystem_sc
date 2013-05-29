@@ -61,6 +61,19 @@ View.prototype.Mysystem2Node.getAuthoringActvityData = function() {
 };
 
 View.prototype.Mysystem2Node.previewFrameLoaded = function() {
+  var selfRef = this;
+  this.getMySystem().resolveAssetPath = function(contentString) {
+    if(typeof contentString === "undefined") {
+      return "";
+    }
+    var fullProjectFolderPath = selfRef.view.getProjectFolderPath();
+    //make sure the projectFolder ends with '/'
+    if(fullProjectFolderPath.charAt(fullProjectFolderPath.length - 1) != '/') {
+      fullProjectFolderPath += '/';
+    }
+    contentString = contentString.replace(/^\.?\/?assets\//gi, fullProjectFolderPath + 'assets/');
+    return contentString;
+  };
   this.getAuthoringApp().setPreviewApp(this.getMySystem());
 };
 

@@ -110,6 +110,13 @@ MySystem.saveInitialDiagramAsSaveFunction = function() {
   });
 };
 
+MySystem.updateAssetPaths = function (theData) {
+  if (typeof MySystem.resolveAssetPath === "function") {
+    theData = MySystem.resolveAssetPath(theData);
+  }
+  return theData;
+};
+
 MySystem.updateRuntime = function(_data) {
   var data = _data;
   data = MySystem.getAuthoringData();
