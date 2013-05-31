@@ -151,7 +151,6 @@ function receiveMessage(message) {
     if (message.data.command === 'loadAuthorData') {
       var author_data = JSON.parse(message.data.data);
 
-      console.log(author_data);
       SC.RunLoop.begin();
         MySystem.loadWiseConfig(author_data, null);
       SC.RunLoop.end();
