@@ -1,4 +1,4 @@
-/*globals MySystem, SCUtil, InitialMySystemData*/
+/*globals MySystem, SCUtil, InitialMySystemData window alert SC*/
 sc_require('main');
 MySystem.clearCanvas = function () {
   MySystem.loadInitialDiagram();
@@ -145,6 +145,44 @@ MySystem.scoreDiagram = function(){
   MySystem.rubricController.displayScore();
 };
 
+function receiveMessage(message) {
+  if(message.data) {
+
+    if (message.data.command === 'loadAuthorData') {
+      var author_data = JSON.parse(message.data.data);
+
+      console.log(author_data);
+      SC.RunLoop.begin();
+        MySystem.loadWiseConfig(author_data, null);
+      SC.RunLoop.end();
+    }
+
+    if (message.data.command === 'loadStudentData') {
+      SC.$('#my_system_state').text(message.data.data);
+      MySystem.updateFromDOM();
 
 
+      SC.run(function(e) {
+        MySystem.rubricController.score();
+        MySystem.preExternalSave();
+      });
+
+      var rubricScore = MySystem.RubricScore.instance();
+      var score = rubricScore.get('score');
+      var categories = rubricScore.get('categories');
+
+      var data = {
+        'command': 'loadStudentData',
+        'response': MySystem.getStateJson(),
+        'stepWorkId' : message.data.stepWorkId,
+        'score' : score,
+        'categories': categories
+        // 'svg' : MySystem.GraphicPreview.instance().get('svg')
+      };
+      message.source.postMessage(data,  "*");
+    }
+  }
+}
+
+window.addEventListener("message", receiveMessage, false);
 
