@@ -37,7 +37,7 @@ Mysystem2.prototype.saveTriggeredByMySystem = function(isSubmit) {
   // save back to the server. In a single node visit, this will use the same
   // node visit id each time, so it will save the (growing) stack back to the same
   // place each time. 
-  this.node.view.postCurrentNodeVisit(this.node.view.state.getCurrentNodeVisit());
+  this.node.view.postCurrentNodeVisit(this.node.view.getState().getCurrentNodeVisit());
 };
 
 /**
@@ -127,14 +127,14 @@ Mysystem2.prototype.keepStudentLogedIn = function() {
     var interval    = 30; // seconds
       if (typeof eventManager != 'undefined') {
       // watch for changes to the student data and renew the session whenever it changes
-      $('#my_system_state').bind("DOMSubtreeModified", function() {
+      $('#my_system_state').bind("DOMSubtreeModified", {thisView:this.view}, function(event) {
         var now = new Date().getTime();
         var state = $('#my_system_state').text();
         var elapsed = (now - lastRenewal) / 1000;
         if (elapsed > interval) {  // only renew at most once every interval seconds
           SC.Logger.log("renewing session (" + elapsed + "s)");
           lastSate = state;
-          eventManager.fire('renewSession');
+          event.data.thisView.sessionManager.renewSession();
           lastRenewal = now;
         }
       });
@@ -216,7 +216,7 @@ Mysystem2.prototype.save = function(isSubmit) {
      * the student work is saved to the server once they move on to the
      * next step.
      */
-    eventManager.fire('pushStudentWork', state);
+    this.view.pushStudentWork(this.node.id, state);
 
     // push the state object into this or object's own copy of states
     this.states.push(state);
